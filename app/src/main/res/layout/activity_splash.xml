@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/style_default_layout_match_parent"
+    tools:context="com.MohamedTaha.Imagine.New.ui.activities.SplashActivity">
+
+    <FrameLayout
+        android:id="@+id/Cycle_Splash_contener"
+        style="@style/style_default_layout_match_parent" />
+</RelativeLayout>

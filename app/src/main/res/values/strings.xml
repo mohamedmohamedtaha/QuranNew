@@ -1,0 +1,279 @@
+<resources>
+    <!-- اسم التطبيق -->
+    <string name="app_name"> وَلَوْ آيَة</string>
+    <string name="text_fiald">عذراً الرابط غير صالح.\n أرسل للمسؤول</string>
+    <string name="nameTextDefult">-</string>
+    <string name="setDescriptionRequet">جاري التحميل</string>
+    <!--desription Image List -->
+    <string name="decriptionImage">Image Koran</string>
+    <string name="textMainSecond">خَيْرُكُمْ مَنْ تَعْلَمُ القُرْانَ وَعِلْمَهُ</string>
+    <string name="textMain">بَلِّغُوا عَنِّي وَلَوْ آيَةً</string>
+
+    <!--Check Internet -->
+    <string name="text_alert">تنبيه</string>
+    <string name="text_false">تأكد من الانترنت لأن الصوة لم يتم تحميلها على الجهازك</string>
+    <!--text Sub FloatingActionButtonEvaluatiom-->
+    <string name="labelEvaluation">قيمنا على المتجر</string>
+    <!--text Sub FloatingActionButtonEvaluatiom-->
+    <string name="labelSend">راسلنا عبر الإيميل</string>
+    <string name="readNow">قِرَاءَةٌ</string>
+    <string name="notNow">لَيْسَ الآنَ</string>
+    //Close App
+    <string name="tetileClose">إغلاق التطبيق</string>
+    <string name="messageClose">هل تريد إغلاق التطبيق؟</string>
+    <string name="textYes">نعم</string>
+    <string name="textNo">لا</string>
+    <string name="nameSora">القُرْانُ الكَرِيمُ</string>
+    <string name="readswar">الْقِرَاءةُ بِالسُّورٍ </string>
+    <string name="listen_swar">  التِّلَاوَةُ</string>
+    <string name="azkar">  الأذكار</string>
+    <string name="elslah">  مواقيت الصلاة</string>
+
+    <string name="read_parts">الْقِرَاءةُ بِالْأَجْزَاءِ </string>
+    <string name="azkar_elmosle">حَصَّنَ الْمُسْلِمُ</string>
+
+  <!--  <string name="about">\n قراءة القرأن الكريمِ\n والإستماع والتحميل بأكثر من شيخ بسهولة وتشغيله بدون انترنت بعد التحميل.</string>-->
+    <string name="about">يتضمن التطبيق أربعة أقسام رئيسية
+    \n
+     ١- قسم الإستماع يحتوي على أكثر من ٧٠ قارئ وبقراءات مختلفة
+    \n
+    (يمكن تحميل السورة وتشغيلها بعد ذلك بدون الإنترنت)
+    \n
+      ٢- قسم قراءة القرآن عن طريق السور
+    \n
+     ٣- قسم قراءة القرآن عن طريق الأجزاء
+      \n
+    (ويمكنك من حفظ السورة للمواصلة فيما بعد)
+    \n
+  ٤- قسم الأذكار اليومية للمسلم
+    \n
+    (أيضاً يرسل التطبيق إشعارات للتذكير بالقراءة ويمكنك التحكم في مواعيد الإرسال)
+    \n</string>
+
+    <string name="shareApp">مشاركة التطبيق</string>
+    <string name="notSupport">للأسف التليفون لا يوجد به اي تطبيق لإرسال الرسائل</string>
+    <string name="hafs_an_asem">حَفْصٌ عَنْ عَاصِمٍ</string>
+    <string name="khalaf_ben_hamza">خَلَفٌ عَنْ حَمْزَةَ </string>
+    <string name="alsosy_ebn_omar">السُّوسِيّ عَنْ أَبِي عَمْرٍو </string>
+        <string name="qalon_an_nafea">قالون عَنْ نَافِعٍ</string>
+    <string name="warsh_an_nafea">وَرُشّ عَنْ نَافِعٍ </string>
+    <string name="aldawry_ebn_omar">الدَّوْرِيُّ عَنْ أَبِي عَمْرٍو  </string>
+    <string name="aldawry_an_elkasai">الدَّوْرِيُّ عَنْ الْكِسَائِيّ </string>
+    <string name="abnzakor">ابْن ذَكْوَانَ عَنْ ابْنِ عَامِرٍ  </string>
+
+    <string name="elbezy_an_ebnkaser">الْبَزِّيّ وقنبل عَنْ ابْنِ كَثِيرٍ </string>
+    <string name="alon_ben_nafea">الون عَنْ نَافِعٍ مِنْ طَرِيقِ أَبِي نَشِيط </string>
+    <string name="yaqob_elhadrmy">قِرَاءَة يَعْقُوب الْحَضْرَمِيّ بروايتي رُوَيس وَرَوْح  </string>
+    <string name="warsh_an_nafea_by_abe_bakr">وَرُشّ عَنْ نَافِعٍ مِنْ طَرِيقِ أَبِي بَكْرٍ الْأَصْبَهَانِيّ</string>
+
+    <string name="ekmoshaf_elmogawad">الْمُصْحَفُ الْمُجَوِّدُ</string>
+    <string name="abdelrhman_elsodes">عبدالرحمن السديس</string>
+    <string name="adel_elkalbany">عادل الكلباني</string>
+    <string name="mohamed_elmenshawyH">محمد صديق المنشاوي.</string>
+    <string name="mohamed_elmenshawyM">محمد صديق المنشاوي</string>
+    <string name="abdelbaset">عبدالباسط عبدالصمد</string>
+    <string name="mahmoud_elhosaryH">محمود خليل الحصري.</string>
+    <string name="mahmoud_elhosaryM">محمود خليل الحصري</string>
+    <string name="maher_elmeaqly">ماهر المعيقلي</string>
+    <string name="mshary_elafasy">مشاري العفاسي</string>
+    <string name="soud_elsherem">سعود الشريم</string>
+    <string name="mohamed_eltblawy">محمد محمود الطبلاوي</string>
+    <string name="yaser_eldosary">ياسر الدوسري</string>
+    <string name="abdellah_elgeheny">عبدالله الجهني</string>
+    <string name="mohamed_gebrer">محمد جبريل</string>
+    <string name="naser_elqatamy">ناصر القطامي</string>
+    <string name="ahmed_elagamy">أحمد العجمي</string>
+    <string name="mahmoud_elbana">محمود علي البنا</string>
+    <string name="yaser_elqarashy">ياسر القرشي</string>
+    <string name="abdelrhman_elqasem">عبدالمحسن القاسم</string>
+    <string name="slah_elbadry">صلاح البدير</string>
+    <string name="ahmed_eltrabolsy"> أحمد خضر الطرابلسي</string>
+    <string name="ahmed_elhawashy"> أحمد الحواشي</string>
+    <string name="ahmed_saber"> أحمد صابر</string>
+    <string name="ahmed_amer"> أحمد عامر</string>
+    <string name="ahmed_naeane"> أحمد نعينع</string>
+    <string name="akram_al_aalakmi"> أكرم العلاقمي</string>
+    <string name="ibrahim_al_akhdar"> إبراهيم الأخضر</string>
+    <string name="ibrahim_al_dosary"> إبراهيم الدوسري</string>
+    <string name="dokaly_mohamed">الدوكالي محمد العالم</string>
+    <string name="elzen_mohamed">الزين محمد أحمد</string>
+    <string name="al_ouoon_alkushi">العيون الكوشي</string>
+    <string name="alfateh_mohamed">الفاتح محمد الزبير</string>
+    <string name="yasen_elgazaery">ياسين الجزائري</string>
+    <string name="bnder_belela">بندر بليله</string>
+    <string name="jamal_shaker">جمال شاكر عبدالله</string>
+    <string name="jaman_elesemy">جمعان العصيمي</string>
+    <string name="zaki_daghistani">زكي داغستاني</string>
+    <string name="abdelrshed_sofy">عبدالرشيد صوفي</string>
+    <string name="abdelazez_elzahrany">عبدالعزيز الزهراني</string>
+    <string name="ali_elhozefy">علي  الحذيفي</string>
+    <string name="ali_swiesy">علي حجاج السويسي</string>
+    <string name="omar_kzabri">عمر القزابري</string>
+    <string name="mohamed_abd_elhakem"> محمد العبدالله</string>
+    <string name="moftah_elslty"> مفتاح السلطني</string>
+    <string name="nabel_elrefaay"> نبيل الرفاعي</string>
+    <string name="waled_elnaehy"> وليد النائحي</string>
+    <string name="yaser_elmazroay"> ياسر المزروعي</string>
+    <string name="yosem_elshereay">يوسف الشويعي</string>
+    <string name="tawfik_sayegh">توفيق الصايغ</string>
+    <string name="ramy_eldabs"> رامي الدعيس</string>
+    <string name="sahl_yassen">  سهل ياسين</string>
+    <string name="abdelbara_elthebety">  عبدالبارئ الثبيتي</string>
+    <string name="abdelrhman_elosa">  عبدالرحمن العوسي</string>
+    <string name="wadea_elyamany">  وديع اليمني</string>
+    <string name="hatem_fared">  حاتم فريد الواعر</string>
+    <string name="khaled_elmehana"> خالد المهنا</string>
+    <string name="khaled_abdelkafy">خالد عبدالكافي</string>
+    <string name="jleel">خالد الجليل</string>
+    <string name="qht">خالد القحطاني</string>
+    <string name="tnjy">خليفة الطنيجي</string>
+    <string name="s_gmd">سعد الغامدي</string>
+    <string name="saad">سعد المقرن</string>
+    <string name="sayed">سيد رمضان</string>
+    <string name="shatri">أبو بكر الشاطري</string>
+    <string name="taher">شيرزاد عبدالرحمن طاهر</string>
+    <string name="hkm">صابر عبدالحكم</string>
+    <string name="salah_hashim_m">صلاح الهاشم</string>
+    <string name="bu_khtr">صلاح بو خاطر</string>
+    <string name="tareq">طارق عبدالغني دعوب</string>
+    <string name="ryan">عادل ريان</string>
+    <string name="bari">عبدالبارئ محمد</string>
+    <string name="a_majed">عبدالرحمن الماجد</string>
+    <string name="soufi_hfs">عبدالرشيد صوفي</string>
+    <string name="a_ahmed">عبدالعزيز الأحمد</string>
+    <string name="khalf">عبدالله الخلف</string>
+    <string name="abdullahk">عبدالله الكندري</string>
+    <string name="bsfr">عبدالله بصفر</string>
+    <string name="kyat">عبدالله خياط</string>
+    <string name="gulan">عبدالله غيلان</string>
+    <string name="mohsin_harthi">عبدالمحسن الحارثي</string>
+    <string name="obk">عبدالمحسن العبيكان</string>
+    <string name="kanakeri">عبدالهادي أحمد كناكري</string>
+    <string name="wdod">عبدالودود حنيف</string>
+    <string name="a_jbr">علي جابر</string>
+    <string name="hafz">عماد زهير حافظ</string>
+    <string name="frs_a">فارس عباد</string>
+    <string name="shaksh">ماهر شخاشيرو</string>
+    <string name="ayyub">محمدأيوب</string>
+    <string name="earawi">محمد الأيراوي</string>
+    <string name="lhdan">محمد اللحيدان</string>
+    <string name="rashad">محمد رشاد الشريف</string>
+    <string name="shah">محمد صالح عالم شاه</string>
+    <string name="m_krm">محمد عبدالكريم</string>
+    <string name="khan">محمد عثمان خان</string>
+    <string name="mrifai">محمود الرفاعي</string>
+    <string name="sheimy">محمود الشيمي</string>
+    <string name="mustafa">مصطفى إسماعيل</string>
+    <string name="lahoni">مصطفى اللاهوني</string>
+    <string name="ra3ad">مصطفى رعد العزاوي</string>
+    <string name="harthi">معيض الحارثي</string>
+    <string name="bilal">موسى بلال</string>
+    <string name="nasser_almajed">ناصر الماجد</string>
+    <string name="namh">نعمة الحسان</string>
+    <string name="hani">هاني الرفاعي</string>
+    <string name="salamah">ياسر سلامة</string>
+    <string name="yahya">يحيى حوا</string>
+    <string name="noah">يوسف بن نوح أحمد</string>
+
+
+
+
+
+    <string name="save_position">حفظ القراءة</string>
+    <string name="save_position_alzekr">حفظ الذكر</string>
+
+    <string name="save">تم الحفظ</string>
+    <string name="no_data">لا توجد بيانات</string>
+    <string name="no_internet">لا يوجد إنترنت</string>
+    <string name="no_internet_network">ربما لا توجد شبكة إنترنت تأكد من الأنترنت</string>
+    <string name="do_want_Save">هل تريد الرجوع إلى الصفحة المحفوظة</string>
+    <string name="do_want_Save_azkar">هل تريد الرجوع إلى الذكر المحفوظ</string>
+  <string name="do_want_Save_sound">هل تريد حفظ </string>
+
+    <string name="allow">السماح</string>
+    <string name="grand_permission">يجب إعطاء الأذن للتطبيق</string>
+    <string name="cancel">لا</string>
+    <string name="error">خطأ</string>
+    <string name="settings">الضبط</string>
+    <string name="something_error">يحتاج التطبيق للإذن حتى يتم تحميل السورة على جهازك</string>
+    <string name="exit_app">اضغط مرة اخرى للخروج من التطبيق</string>
+    <string name="skip">تخطي</string>
+    <string name="next">التالي</string>
+    <string name="use_way">طريقة الإستخدام</string>
+    <string name="settings_Notification_label">الإشعارات</string>
+
+    <string name="settings_Notification_key" translatable="false">AlarmManager.INTERVAL_HALF_DAY</string>
+    <string name="settings_Notification_default" translatable="false">@string/settings_by_department_value_half_day</string>
+    <string name="settings_by_Notification_every_square_hour">كل ربع ساعة</string>
+    <string name="settings_by_department_value_square_hour" translatable="false">AlarmManager.INTERVAL_FIFTEEN_MINUTES</string>
+    <string name="settings_by_Notification_every_half_hour">كل نصف ساعة</string>
+    <string name="settings_by_department_value_half_hour" translatable="false">AlarmManager.INTERVAL_HALF_HOUR</string>
+    <string name="settings_by_department_label_every_hour">كل ساعة</string>
+    <string name="settings_by_department_value_every_hour" translatable="false">AlarmManager.INTERVAL_HOUR</string>
+    <string name="settings_by_department_label_half_day">كل نصف يوم </string>
+    <string name="settings_by_department_value_half_day" translatable="false">AlarmManager.INTERVAL_HALF_DAY</string>
+    <string name="settings_by_department_label_every_day">كل  يوم </string>
+    <string name="settings_by_department_value_every_day" translatable="false">AlarmManager.INTERVAL_DAY</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="spectial_button">هذا الزر خاص</string>
+    <string name="read_azkar">بقراءة الأذكار اليومية</string>
+    <string name="sound_string">بالاستماع إلى القرآن عن طريق أكثر من 70 قارئ ويمكن تحميل اي سورة ثم تشغيلهابعد ذلك بدون الإنترنت</string>
+    <string name="read_string">خاص بقراءة القرآن عن طريق السور</string>
+    <string name="description_string">لقد قمت بإلغاء التعليمات التي تستعرض شرح التطبيق</string>
+    <string name="end">إنتهاء</string>
+    <string name="sorry">للأسف</string>
+    <string name="search_string">بالبحث</string>
+    <string name="share_string">بمشاركة التطبيق مع الأصدقاء</string>
+    <string name="read_parts_string">بقراءة القرآن عن طريق الاجزاء</string>
+  <string name="mp3">.mp3</string>
+  <string name="package_string">package</string>
+  <string name="download_sound">جاري تحميل السورة</string>
+  <string name="download_successful">تم تحميل السورة بنجاح </string>
+  <string name="download_field">لم يتم تحميل السورة بنجاح </string>
+  <string name="send_problem_string"> السُّورَةُ تَمَّ تَحْمِيلُهَا مِنْ قَبْلُ
+ إِذَا وَاجَهْتُكَ أَيُّ مُشْكِلَةٌ (رَاسِلُنَا) نَحْنُ جَاهِزِينَ لِحَلِّهَا</string>
+
+
+  <string name="Imsak">الامساك</string>
+  <string name="Midnight">قيام الليل</string>
+  <string name="Sunrise">الشروق</string>
+  <string name="Sunset">الغروب</string>
+  <string name="add_data">تم الإضافة</string>
+
+  <string name="azan">مواقيت الصلاة</string>
+  <string name="azan_times">مَوَاقِيتُ الصَّلَاَةِ</string>
+
+  <string name="city">المدينة</string>
+
+  <string name="connect_with_us">حدث خطأ أثناء الحصول على العنوان \10 تواصل مع المسؤولين</string>
+  <string name="date_today">تاريخ اليوم</string>
+  <string name="elasr">العصر</string>
+  <string name="elesha">العشاء</string>
+  <string name="elfagr">الفجر</string>
+  <string name="elmagrab">المغرب</string>
+  <string name="elshoroq">الشروق</string>
+
+  <string name="erro_empty_throwable">Query returned empty result set: Select date_english from store_time_salah where date_english LIKE ? LIMIT 1</string>
+  <string name="error_happen">حدث خطأ غير معروف حاول مرة اخرى</string>
+
+  <string name="hide_bottom_view_on_scroll_behavior">com.google.android.material.behavior.HideBottomViewOnScrollBehavior</string>
+
+  <string name="is_open_gps">الذهاب لصفحة الإعدادات لفتح تحديد الموقع</string>
+
+
+  <string name="not_gps">للأسف لم تقم بفتح ال GPS بشكل صحيح</string>
+  <string name="not_permission">للأسف لم يتم منح الأذن للتطبيق</string>
+
+  <string name="salah_asr">حان الان موعد صلاة العصر</string>
+  <string name="salah_duhr">حان الأن موعد صلاة الظهر</string>
+  <string name="salah_fajr">حان الان موعد صلاة الفجر</string>
+  <string name="salah_isha">حان الان موعد صلاة العشاء</string>
+  <string name="salah_magreb">حان الان موعد صلاة المغرب</string>
+  <string name="salah_sunrise">حان الان موعد الشروق</string>
+
+  <string name="save_zkr">نسخ الذكر</string>
+  <string name="save_zkr_done">تم نسخ الذكر</string>
+  <string name="search_hint">Search</string>
+</resources>

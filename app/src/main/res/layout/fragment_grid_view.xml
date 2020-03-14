@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/style_default_layout_match_parent_with_background"
+    android:layout_margin="@dimen/dimens_mm">
+
+    <GridView
+        android:id="@+id/Fragment_Grid_View_GridView"
+        style="@style/style_default_layout_wrap_match"
+        android:layout_marginBottom="@dimen/dimens_7xl"
+        android:columnWidth="@dimen/dimens_half_hundrand"
+        android:gravity="center"
+        android:horizontalSpacing="@dimen/dimens_mm"
+        android:numColumns="auto_fit"
+        android:paddingTop="@dimen/dimens_mm"
+        android:rotationY="180"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="@dimen/dimens_mm"></GridView>
+
+    <ProgressBar
+        android:id="@+id/FragmentGridView_ProgressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminateDrawable="@drawable/color_progressbar"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/Fragment_Grid_View_TV_No_Data"
+        style="@style/style_text_view_no_data" />
+</RelativeLayout>

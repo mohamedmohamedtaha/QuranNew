@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    style="@style/style_default_layout_match_parent_with_background"
+    tools:context=".ui.activities.NavigationDrawaberActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toobar"
+        style="@style/style_toolbar"></androidx.appcompat.widget.Toolbar>
+
+    <com.miguelcatalan.materialsearchview.MaterialSearchView
+        android:id="@+id/search_view"
+        style="@style/style_default_layout_wrap_match"></com.miguelcatalan.materialsearchview.MaterialSearchView>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/NavigationDrawaberActivity_VPager"
+        style="@style/style_default_layout_match_parent"
+        android:layout_below="@+id/toobar"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"></androidx.viewpager.widget.ViewPager>
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        style="@style/style_default_layout_match_parent"
+        android:layout_below="@+id/toobar" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/nav_view"
+        app:labelVisibilityMode="selected"
+        style="@style/style_navigation_bottom" />
+</RelativeLayout>

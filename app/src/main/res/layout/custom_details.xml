@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/Relative"
+    style="@style/style_default_layout_match_parent"
+    android:background="@drawable/custom_background_transperant"
+  >
+
+    <TextView
+        android:id="@+id/TV_Save_Position"
+        android:textSize="@dimen/txt_size_xs"
+        style="@style/style_text_view" />
+    <TextView
+        android:id="@+id/TV_Save_zakr"
+        android:textSize="@dimen/txt_size_xs"
+        android:visibility="gone"
+        style="@style/style_text_view_left" />
+</RelativeLayout>
