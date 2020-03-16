@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
+import com.MohamedTaha.Imagine.New.AzanFragment;
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.helper.HelperClass;
 import com.MohamedTaha.Imagine.New.helper.SharedPerefrenceHelper;
@@ -92,10 +93,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
             intent.putExtra(SAVE_PAGE, true);
             startActivity(intent);
             overridePendingTransition(R.anim.item_anim_slide_from_top, R.anim.item_anim_no_thing);
-
-
         }
-
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         if (savedInstanceState != null) {
@@ -167,10 +165,10 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                     AzkarFragment azkarFragment = new AzkarFragment();
                     HelperClass.replece(azkarFragment, getSupportFragmentManager(), R.id.frameLayout);
                     break;
-//                case R.id.elslah:
-//                    AzanFragment azanFragment = new AzanFragment();
-//                HelperClass.replece(azanFragment, getSupportFragmentManager(), R.id.frameLayout);
-//                break;
+                case R.id.prayer_times:
+                    AzanFragment azanFragment = new AzanFragment();
+                HelperClass.replece(azanFragment, getSupportFragmentManager(), R.id.frameLayout);
+                break;
             }
             current_fragment = id;
             return true;

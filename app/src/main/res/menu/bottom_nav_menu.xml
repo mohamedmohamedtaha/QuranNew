@@ -17,4 +17,8 @@
         android:id="@+id/azkar"
         android:icon="@drawable/ic_azkar"
         android:title="@string/azkar" />
+    <item
+        android:id="@+id/prayer_times"
+        android:icon="@drawable/ic_azkar"
+        android:title="@string/elslah" />
 </menu>

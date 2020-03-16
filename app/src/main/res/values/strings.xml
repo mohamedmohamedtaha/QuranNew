@@ -32,7 +32,7 @@
     <string name="read_parts">الْقِرَاءةُ بِالْأَجْزَاءِ </string>
     <string name="azkar_elmosle">حَصَّنَ الْمُسْلِمُ</string>
 
-  <!--  <string name="about">\n قراءة القرأن الكريمِ\n والإستماع والتحميل بأكثر من شيخ بسهولة وتشغيله بدون انترنت بعد التحميل.</string>-->
+    <!--  <string name="about">\n قراءة القرأن الكريمِ\n والإستماع والتحميل بأكثر من شيخ بسهولة وتشغيله بدون انترنت بعد التحميل.</string>-->
     <string name="about">يتضمن التطبيق أربعة أقسام رئيسية
     \n
      ١- قسم الإستماع يحتوي على أكثر من ٧٠ قارئ وبقراءات مختلفة
@@ -55,7 +55,7 @@
     <string name="hafs_an_asem">حَفْصٌ عَنْ عَاصِمٍ</string>
     <string name="khalaf_ben_hamza">خَلَفٌ عَنْ حَمْزَةَ </string>
     <string name="alsosy_ebn_omar">السُّوسِيّ عَنْ أَبِي عَمْرٍو </string>
-        <string name="qalon_an_nafea">قالون عَنْ نَافِعٍ</string>
+    <string name="qalon_an_nafea">قالون عَنْ نَافِعٍ</string>
     <string name="warsh_an_nafea">وَرُشّ عَنْ نَافِعٍ </string>
     <string name="aldawry_ebn_omar">الدَّوْرِيُّ عَنْ أَبِي عَمْرٍو  </string>
     <string name="aldawry_an_elkasai">الدَّوْرِيُّ عَنْ الْكِسَائِيّ </string>
@@ -176,9 +176,6 @@
     <string name="noah">يوسف بن نوح أحمد</string>
 
 
-
-
-
     <string name="save_position">حفظ القراءة</string>
     <string name="save_position_alzekr">حفظ الذكر</string>
 
@@ -188,7 +185,7 @@
     <string name="no_internet_network">ربما لا توجد شبكة إنترنت تأكد من الأنترنت</string>
     <string name="do_want_Save">هل تريد الرجوع إلى الصفحة المحفوظة</string>
     <string name="do_want_Save_azkar">هل تريد الرجوع إلى الذكر المحفوظ</string>
-  <string name="do_want_Save_sound">هل تريد حفظ </string>
+    <string name="do_want_Save_sound">هل تريد حفظ </string>
 
     <string name="allow">السماح</string>
     <string name="grand_permission">يجب إعطاء الأذن للتطبيق</string>
@@ -227,53 +224,54 @@
     <string name="search_string">بالبحث</string>
     <string name="share_string">بمشاركة التطبيق مع الأصدقاء</string>
     <string name="read_parts_string">بقراءة القرآن عن طريق الاجزاء</string>
-  <string name="mp3">.mp3</string>
-  <string name="package_string">package</string>
-  <string name="download_sound">جاري تحميل السورة</string>
-  <string name="download_successful">تم تحميل السورة بنجاح </string>
-  <string name="download_field">لم يتم تحميل السورة بنجاح </string>
-  <string name="send_problem_string"> السُّورَةُ تَمَّ تَحْمِيلُهَا مِنْ قَبْلُ
+    <string name="mp3">.mp3</string>
+    <string name="package_string">package</string>
+    <string name="download_sound">جاري تحميل السورة</string>
+    <string name="download_successful">تم تحميل السورة بنجاح </string>
+    <string name="download_field">لم يتم تحميل السورة بنجاح </string>
+    <string name="send_problem_string"> السُّورَةُ تَمَّ تَحْمِيلُهَا مِنْ قَبْلُ
  إِذَا وَاجَهْتُكَ أَيُّ مُشْكِلَةٌ (رَاسِلُنَا) نَحْنُ جَاهِزِينَ لِحَلِّهَا</string>
 
 
-  <string name="Imsak">الامساك</string>
-  <string name="Midnight">قيام الليل</string>
-  <string name="Sunrise">الشروق</string>
-  <string name="Sunset">الغروب</string>
-  <string name="add_data">تم الإضافة</string>
+    <string name="Imsak">الامساك</string>
+    <string name="Midnight">قيام الليل</string>
+    <string name="Sunrise">الشروق</string>
+    <string name="Sunset">الغروب</string>
+    <string name="add_data">تم الإضافة</string>
 
-  <string name="azan">مواقيت الصلاة</string>
-  <string name="azan_times">مَوَاقِيتُ الصَّلَاَةِ</string>
+    <string name="azan">مواقيت الصلاة</string>
+    <string name="azan_times">مَوَاقِيتُ الصَّلَاَةِ</string>
 
-  <string name="city">المدينة</string>
+    <string name="city">المدينة</string>
 
-  <string name="connect_with_us">حدث خطأ أثناء الحصول على العنوان \10 تواصل مع المسؤولين</string>
-  <string name="date_today">تاريخ اليوم</string>
-  <string name="elasr">العصر</string>
-  <string name="elesha">العشاء</string>
-  <string name="elfagr">الفجر</string>
-  <string name="elmagrab">المغرب</string>
-  <string name="elshoroq">الشروق</string>
+    <string name="connect_with_us">حدث خطأ أثناء الحصول على العنوان \10 تواصل مع المسؤولين</string>
+    <string name="date_today">تاريخ اليوم</string>
+    <string name="eldahr">الظهر</string>
+    <string name="elasr">العصر</string>
+    <string name="elesha">العشاء</string>
+    <string name="elfagr">الفجر</string>
+    <string name="elmagrab">المغرب</string>
+    <string name="elshoroq">الشروق</string>
 
-  <string name="erro_empty_throwable">Query returned empty result set: Select date_english from store_time_salah where date_english LIKE ? LIMIT 1</string>
-  <string name="error_happen">حدث خطأ غير معروف حاول مرة اخرى</string>
+    <string name="erro_empty_throwable">Query returned empty result set: Select date_english from store_time_salah where date_english LIKE ? LIMIT 1</string>
+    <string name="error_happen">حدث خطأ غير معروف حاول مرة اخرى</string>
 
-  <string name="hide_bottom_view_on_scroll_behavior">com.google.android.material.behavior.HideBottomViewOnScrollBehavior</string>
+    <string name="hide_bottom_view_on_scroll_behavior">com.google.android.material.behavior.HideBottomViewOnScrollBehavior</string>
 
-  <string name="is_open_gps">الذهاب لصفحة الإعدادات لفتح تحديد الموقع</string>
+    <string name="is_open_gps">الذهاب لصفحة الإعدادات لفتح تحديد الموقع</string>
 
 
-  <string name="not_gps">للأسف لم تقم بفتح ال GPS بشكل صحيح</string>
-  <string name="not_permission">للأسف لم يتم منح الأذن للتطبيق</string>
+    <string name="not_gps">للأسف لم تقم بفتح ال GPS بشكل صحيح</string>
+    <string name="not_permission">للأسف لم يتم منح الأذن للتطبيق</string>
 
-  <string name="salah_asr">حان الان موعد صلاة العصر</string>
-  <string name="salah_duhr">حان الأن موعد صلاة الظهر</string>
-  <string name="salah_fajr">حان الان موعد صلاة الفجر</string>
-  <string name="salah_isha">حان الان موعد صلاة العشاء</string>
-  <string name="salah_magreb">حان الان موعد صلاة المغرب</string>
-  <string name="salah_sunrise">حان الان موعد الشروق</string>
+    <string name="salah_asr">حان الان موعد صلاة العصر</string>
+    <string name="salah_duhr">حان الأن موعد صلاة الظهر</string>
+    <string name="salah_fajr">حان الان موعد صلاة الفجر</string>
+    <string name="salah_isha">حان الان موعد صلاة العشاء</string>
+    <string name="salah_magreb">حان الان موعد صلاة المغرب</string>
+    <string name="salah_sunrise">حان الان موعد الشروق</string>
 
-  <string name="save_zkr">نسخ الذكر</string>
-  <string name="save_zkr_done">تم نسخ الذكر</string>
-  <string name="search_hint">Search</string>
+    <string name="save_zkr">نسخ الذكر</string>
+    <string name="save_zkr_done">تم نسخ الذكر</string>
+    <string name="search_hint">Search</string>
 </resources>
