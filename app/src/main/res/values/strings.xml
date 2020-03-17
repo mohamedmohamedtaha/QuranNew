@@ -245,7 +245,7 @@
     <string name="city">المدينة</string>
 
     <string name="connect_with_us">حدث خطأ أثناء الحصول على العنوان \10 تواصل مع المسؤولين</string>
-    <string name="date_today">تاريخ اليوم</string>
+    <string name="date_today">تاريخ اليوم :</string>
     <string name="eldahr">الظهر</string>
     <string name="elasr">العصر</string>
     <string name="elesha">العشاء</string>

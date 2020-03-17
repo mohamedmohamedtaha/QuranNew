@@ -12,16 +12,29 @@
         android:layout_marginTop="@dimen/dimens_6xl"
         android:layout_height="wrap_content">
         <TextView
+            android:id="@+id/TV_City"
+            style="@style/style_text_view_fragment_azan"
+            android:hint="@string/date_today" />
+        <TextView
+            android:id="@+id/TV_Date_Todat"
+            style="@style/style_text_view_fragment_azan"
+            android:hint="@string/date_today" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/dimens_6xl"
+        android:layout_height="wrap_content">
+        <TextView
             android:id="@+id/TV_Fagr"
-            android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dimens_6xl"
-            android:layout_height="wrap_content"
+          style="@style/style_text_view_fragment_azan"
             android:hint="@string/hello_blank_fragment" />
         <TextView
             android:id="@+id/T_Fagr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/elfagr" />
+            style="@style/style_text_view_fragment_azan"
+
+            android:text="@string/elfagr" />
     </LinearLayout>
 
     <LinearLayout
@@ -32,15 +45,12 @@
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/TV_Dauhr"
-            android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dimens_6xl"
-            android:layout_height="wrap_content"
+            style="@style/style_text_view_fragment_azan"
             android:hint="@string/hello_blank_fragment" />
         <TextView
             android:id="@+id/T_Dauhr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/eldahr" />
+            style="@style/style_text_view_fragment_azan"
+            android:text="@string/eldahr" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -50,15 +60,12 @@
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/TV_Asr"
-            android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dimens_6xl"
-            android:layout_height="wrap_content"
+            style="@style/style_text_view_fragment_azan"
             android:hint="@string/hello_blank_fragment" />
         <TextView
             android:id="@+id/T_Asr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/elasr" />
+            style="@style/style_text_view_fragment_azan"
+            android:text="@string/elasr" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -68,15 +75,12 @@
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/TV_MAgrib"
-            android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dimens_6xl"
-            android:layout_height="wrap_content"
+            style="@style/style_text_view_fragment_azan"
             android:hint="@string/hello_blank_fragment" />
         <TextView
             android:id="@+id/T_MAgrib"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/elmagrab" />
+            style="@style/style_text_view_fragment_azan"
+            android:text="@string/elmagrab" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -86,14 +90,11 @@
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/TV_Esha"
-            android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dimens_6xl"
-            android:layout_height="wrap_content"
+            style="@style/style_text_view_fragment_azan"
             android:hint="@string/hello_blank_fragment" />
         <TextView
             android:id="@+id/T_Esha"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/elesha" />
+            style="@style/style_text_view_fragment_azan"
+            android:text="@string/elesha" />
     </LinearLayout>
 </LinearLayout>

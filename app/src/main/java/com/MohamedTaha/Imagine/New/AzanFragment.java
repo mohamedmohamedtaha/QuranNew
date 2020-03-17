@@ -26,6 +26,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.compareTwoTimes;
+import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.compareTwoTimess;
 import static com.MohamedTaha.Imagine.New.rest.RetrofitClient.getRetrofit;
 
 
@@ -53,6 +55,8 @@ public class AzanFragment extends Fragment {
         apiServices = getRetrofit().create(APIServices.class);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
+        Toast.makeText(getActivity(), " time :" + compareTwoTimes("10:25 pm")
+    + "\n" + compareTwoTimess("10:25 pm"), Toast.LENGTH_SHORT).show();
 
         Call<Azan> azanCall = apiServices.getPrayerTimes("51.508515", "0.1254872", false);
         azanCall.enqueue(new Callback<Azan>() {
@@ -63,8 +67,8 @@ public class AzanFragment extends Fragment {
                 if (azan.getStatus().equals("OK")) {
                     progressBar.setVisibility(View.GONE);
                     datumList.addAll(azan.getData());
-                    AdapterAzan adapterAzan = new AdapterAzan(azan.getData());
-                    //adapterAzan.setAzanList(azan.getData());
+                    AdapterAzan adapterAzan = new AdapterAzan();
+                    adapterAzan.setAzanList(azan.getData());
                     recyclerView.setAdapter(adapterAzan);
                     //   Toast.makeText(getActivity(), "OK: " + azan.getData().get(0).getTimings().getFajr().substring(0, 5), Toast.LENGTH_SHORT).show();
 

@@ -62,6 +62,13 @@
         <item name="android:dividerHeight">@dimen/dimens_sssss</item>
         <item name="android:gravity">center</item>
     </style>
+    <style name="style_text_view_fragment_azan" parent="@style/style_default_layout_wrap_content">
+        <item name="android:layout_marginEnd">@dimen/dimens_xl</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/dimens_l</item>
+
+    </style>
 
     <style name="style_text_view_no_data" parent="@style/style_default_layout_wrap_content">
         <item name="android:layout_gravity">center</item>
