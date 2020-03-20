@@ -12,11 +12,13 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
+import com.MohamedTaha.Imagine.New.AppConstants;
 import com.MohamedTaha.Imagine.New.AzanFragment;
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.helper.HelperClass;
@@ -472,8 +474,24 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // For get data from GpsUtlis.vaja to AzanFragment
+        if (requestCode == AppConstants.GPS_REQUEST){
+            Log.i("TAG", "Skipped");
+            AzanFragment azanFragment = new AzanFragment();
+            HelperClass.replece(azanFragment, getSupportFragmentManager(), R.id.frameLayout);
+            azanFragment.onActivityResult(requestCode,resultCode,data);
+        }else if (requestCode == AzanFragment.LOCATION_PERMISSION_REQUEST_CODE){
+            Log.i("TAG", "LOCATION_PERMISSION_REQUEST_CODE");
 
-    //    private void setupViewPager(ViewPager viewPager){
+        }else {
+            super.onActivityResult(requestCode,resultCode,data);
+
+        }
+    }
+//    private void setupViewPager(ViewPager viewPager){
 //        AdapterForNavigation adapterForNavigation = new AdapterForNavigation(getSupportFragmentManager());
 //        GridViewFragment gridViewFragment = new GridViewFragment();
 //          PartsFragment partsFragment = new PartsFragment();

@@ -198,6 +198,8 @@
     <string name="next">التالي</string>
     <string name="use_way">طريقة الإستخدام</string>
     <string name="settings_Notification_label">الإشعارات</string>
+    <string name="no_google_services">هذا الجوال لا يدعم خدمات جوجل</string>
+
 
     <string name="settings_Notification_key" translatable="false">AlarmManager.INTERVAL_HALF_DAY</string>
     <string name="settings_Notification_default" translatable="false">@string/settings_by_department_value_half_day</string>
@@ -274,4 +276,5 @@
     <string name="save_zkr">نسخ الذكر</string>
     <string name="save_zkr_done">تم نسخ الذكر</string>
     <string name="search_hint">Search</string>
+    <string name="settings_gps">GPS is settings</string>
 </resources>

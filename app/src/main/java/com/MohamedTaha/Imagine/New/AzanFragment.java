@@ -1,21 +1,52 @@
 package com.MohamedTaha.Imagine.New;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentSender;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.MohamedTaha.Imagine.New.Adapter.AdapterAzan;
+import com.MohamedTaha.Imagine.New.helper.GPSTracker;
 import com.MohamedTaha.Imagine.New.mvp.model.azan.Azan;
 import com.MohamedTaha.Imagine.New.mvp.model.azan.Datum;
 import com.MohamedTaha.Imagine.New.rest.APIServices;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,21 +57,66 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.compareTwoTimes;
-import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.compareTwoTimess;
+import static android.content.Context.LOCATION_SERVICE;
 import static com.MohamedTaha.Imagine.New.rest.RetrofitClient.getRetrofit;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AzanFragment extends Fragment {
+public class AzanFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, LocationListener {
+    GoogleApiClient googleApiClient;
+    private LocationRequest locationRequest;
+    private long UPDATE_INTERVAL = 15000; /* 15 secs */
+    private long FASTER_INTERVAL = 5000;
+    private ArrayList permissionsToRequest;
+    private ArrayList permissionsRejected = new ArrayList();
+    private ArrayList permissions = new ArrayList();
+    private final static int ALL_PERMISSIONS_RESULT = 101;
+
+
+    public static final int LOCATION_PERMISSION_REQUEST_CODE = 15;
+    protected LocationManager locationManager;
+    // flag for GPS Status
+    boolean isGPSEnabled = false;
+    // flag for network status
+    boolean isNetworkEnabled = false;
+    // flag for GPS Tracking is enabled
+    boolean isGPSTrackingEnabled = false;
+    boolean isGPSPermission = true;
+    Location location;
+    double latitude;
+    double longitude;
+    // How many Geocoder should return our GPSTracker
+    int geocoderMaxResults = 1;
+    // Store LocationManager.GPS_PROVIDER or LocationManager.NETWORK_PROVIDER information
+    private String provider_info = null;
+    public static final int ERROR_DIALOG_REQUEST = 9001;
+
+    // The minimum distance to change updates in meters
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
+    // The minimum time between updates in milliseconds
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 60; // 1 minute
+    // This int for permission location
+    public static final int MY_PERIMISSIONS_LOCATION = 10;
+    // Get Class Name
+    private static String TAG = GPSTracker.class.getName();
+
+
+    private static final int MY_PERMISSIONS_WRITE_STORAGE = 90;
     APIServices apiServices;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
-    List<Datum>datumList = new ArrayList<>();
+    List<Datum> datumList = new ArrayList<>();
+
+    private static int count_cancled = 0;
+
+    private SettingsClient mSettingsClient;
+    private LocationSettingsRequest mLocationSettingsRequest;
+
 
     public AzanFragment() {
         // Required empty public constructor
@@ -55,9 +131,99 @@ public class AzanFragment extends Fragment {
         apiServices = getRetrofit().create(APIServices.class);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
-        Toast.makeText(getActivity(), " time :" + compareTwoTimes("10:25 pm")
-    + "\n" + compareTwoTimess("10:25 pm"), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(), " time :" + compareTwoTimes("12:12 pm")
+//    + "\n" + compareTwoTimess("12:12 pm"), Toast.LENGTH_SHORT).show();
+        //If service google finds or don't need to update
 
+
+//        if (GPSTracker.isServicesOk(getActivity())){
+//            GPSTracker gpsTracker = new GPSTracker(getContext(),getActivity());
+//
+//            if (gpsTracker.getIsGPSTrackingEnabled()){
+//                double latitude = gpsTracker.getLatitude();
+//                double longitude = gpsTracker.getLongitude();
+//                Toast.makeText(getActivity(), "lat/ long" + latitude + "\n" + longitude, Toast.LENGTH_SHORT).show();
+//
+//            }else {
+//                gpsTracker.showSettingsAlert();
+//
+//            }
+        //check if GPS enabled or not
+//        if ( isGPSPermission && !isGPSEnabled){
+//            showSettingsAlert();
+//        }else {
+        //     getLocation();
+//        new GpsUtils(getActivity()).turnGPSOn(new GpsUtils.onGpsListener() {
+//            @Override
+//            public void gpsStatus(boolean isGPSEnable) {
+//                // turn on GPS
+//                isGPSEnabled = isGPSEnable;
+//            }
+//        });
+
+        //   turnGPS();
+        if (isStoragePermissionGranted()){
+                getLocation();
+            } else {
+                Log.i("TAG", " : " + isGPSEnabled + "/n" + isGPSTrackingEnabled);
+        }
+        //  getLocation();
+        // turnGPSOn();
+
+        //   Toast.makeText(getActivity(), "no ", Toast.LENGTH_SHORT).show();
+        //Can't get location.
+        //GPS or network is not enabled.
+        // Ask user to enable GPS / network in settings.
+
+        //   gpsTracker.getLocationTest();
+
+        // }
+        //If permission true do that
+
+        // isStoragePermissionGranted();
+
+        return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.i("TAG", "onActivityResult");
+        switch (requestCode) {
+            case LOCATION_PERMISSION_REQUEST_CODE:
+                //getting GPS status
+                isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                if (isGPSEnabled) {
+                    Log.i("TAG", "true");
+
+                } else {
+                    Log.i("TAG", "false");
+
+                }
+                break;
+            case AppConstants.GPS_REQUEST:
+                Log.i("TAG", "Return from GPS_REQUEST");
+                switch (resultCode) {
+                    case Activity.RESULT_OK:
+                        Log.i("TAG", "RESULT_OK");
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        // The user was asked to change settings, but chose not to
+                        Log.i("TAG", "RESULT_CANCELED");
+                        //   Toast.makeText(getActivity().getBaseContext(), getString(R.string.grand_permission), Toast.LENGTH_SHORT).show();
+                        //SnackbarForGPS(getString(R.string.grand_permission),getString(R.string.allow));
+                        break;
+                    default:
+                        break;
+
+                }
+                break;
+            default:
+                Log.i("TAG", "result no");
+        }
+    }
+
+    private void getPrayerTimes() {
         Call<Azan> azanCall = apiServices.getPrayerTimes("51.508515", "0.1254872", false);
         azanCall.enqueue(new Callback<Azan>() {
             @Override
@@ -67,11 +233,9 @@ public class AzanFragment extends Fragment {
                 if (azan.getStatus().equals("OK")) {
                     progressBar.setVisibility(View.GONE);
                     datumList.addAll(azan.getData());
-                    AdapterAzan adapterAzan = new AdapterAzan();
+                    AdapterAzan adapterAzan = new AdapterAzan(getActivity());
                     adapterAzan.setAzanList(azan.getData());
                     recyclerView.setAdapter(adapterAzan);
-                    //   Toast.makeText(getActivity(), "OK: " + azan.getData().get(0).getTimings().getFajr().substring(0, 5), Toast.LENGTH_SHORT).show();
-
                 } else {
                     Toast.makeText(getActivity(), "NO", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
@@ -85,6 +249,377 @@ public class AzanFragment extends Fragment {
                 progressBar.setVisibility(View.GONE);
             }
         });
-        return view;
+    }
+
+    private boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // ContextCompat.checkSelfPermission()
+            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.i("TAG", " Grnted fisrt");
+                //    isStoragePermissionGranted();
+
+                // getPrayerTimes();
+                return true;
+            } else {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_PERMISSIONS_WRITE_STORAGE);
+                Log.i("TAG", " not Grnted first ");
+                return false;
+
+            }
+        } else {
+            //permission is automatically granted on sdk<23 upon installation
+            return true;
+        }
+    }
+
+    private void Snackbar(String title, String text_button) {
+        Snackbar snackbar = Snackbar.make(getView(), title, Snackbar.LENGTH_LONG)
+                .setAction(text_button, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        isStoragePermissionGranted();
+
+                    }
+
+                });
+        snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
+        snackbar.show();
+    }
+
+    private void SnackbarPermissionSorage(String title, String text_button) {
+        Snackbar snackbar = Snackbar.make(getView(), title, Snackbar.LENGTH_LONG)
+                .setAction(text_button, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!isGPSEnabled && !isGPSTrackingEnabled) {
+                            getLocation();
+
+                        }
+                    }
+
+                });
+        snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
+        snackbar.show();
+    }
+
+    private void SnackbarForGPS(String title, String text_button) {
+        Snackbar snackbar = Snackbar.make(getView(), title, Snackbar.LENGTH_LONG)
+                .setAction(text_button, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showSettingsAlert();
+                    }
+
+                });
+        snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
+        snackbar.show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        // super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case MY_PERMISSIONS_WRITE_STORAGE: {
+                //If request is canceled , the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission was granted
+                    Log.i("TAG", " Grnted second");
+                    //     47
+                    //  getPrayerTimes();
+                    if (!isGPSEnabled && !isGPSTrackingEnabled) {
+                        getLocation();
+
+                    }
+                } else {
+                    // Permission denied
+                    Snackbar(getString(R.string.grand_permission), getString(R.string.allow));
+                    Log.i("TAG", " not Grnted second");
+
+                }
+                return;
+            }
+            case MY_PERIMISSIONS_LOCATION: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //check if GPS enabled or not
+                    if (!isGPSEnabled) {
+                        turnGPSOn();
+                        //  showSettingsAlert();
+                    }
+
+//                    locationManager.requestLocationUpdates(
+//                            provider_info,
+//                            MIN_TIME_BW_UPDATES,
+//                            MIN_DISTANCE_CHANGE_FOR_UPDATES,
+//                            this
+//                    );
+                    Log.i("TAG", "Graunted Location");
+                    turnGPSOn();
+                    //     openSettings();
+                } else {
+                    Log.i("TAG", "Not Graunted Location");
+                    SnackbarPermissionSorage(getString(R.string.grand_permission), getString(R.string.allow));
+                }
+            }
+            return;
+            case AppConstants.GPS_REQUEST:
+                Log.i("TAG", "Return from GPS_REQUEST");
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    isGPSEnabled = true;
+                    Log.i("TAG", "On GPS");
+                } else {
+                    Log.i("TAG", "On");
+
+                }
+                break;
+        }
+
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    public void showSettingsAlert() {
+        if (getActivity() != null) {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+            //Setting Dialog Title
+            alertDialog.setTitle(R.string.settings_gps);
+            alertDialog.setCancelable(false);
+
+            //Setting Dialog Message
+            alertDialog.setMessage(R.string.is_open_gps);
+            //On Pressing Setting button
+            alertDialog.setPositiveButton(R.string.settings, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivityForResult(intent, LOCATION_PERMISSION_REQUEST_CODE);
+                    // mContext.startActivity(intent);
+                }
+            });
+            //On pressing cancel button
+            alertDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            alertDialog.show();
+        } else {
+            Log.i("TAG", "Activity is null....");
+
+        }
+    }
+
+    public void getLocation() {
+        try {
+            locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+
+            //getting GPS status
+            isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+            //getting network status
+            isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+            // Try to get location if you GPS Service is enabled
+            if (isGPSEnabled) {
+                this.isGPSTrackingEnabled = true;
+                Log.i("TAG", "isGPSEnabled");
+
+                /*
+                 * This provider determines location using
+                 * satellites. Depending on conditions, this provider may take a while to return
+                 * a location fix.
+                 */
+
+                provider_info = LocationManager.GPS_PROVIDER;
+
+            } else if (isNetworkEnabled) { // Try to get location if you Network Service is enabled
+                this.isGPSTrackingEnabled = true;
+                Log.i("TAG", "isNetworkEnabled");
+
+                /*
+                 * This provider determines location based on
+                 * availability of cell tower and WiFi access points. Results are retrieved
+                 * by means of a network lookup.
+                 */
+                provider_info = LocationManager.NETWORK_PROVIDER;
+
+            } else {
+                provider_info = null;
+                //showSettingsAlert();
+            }
+
+            // Application can use GPS or Network Provider
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+                if (ContextCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        && ContextCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    Log.i("TAG", "not Permission");
+
+                    requestPermissions(new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERIMISSIONS_LOCATION);
+
+                    isGPSPermission = false;
+
+                } else if (provider_info != null) {
+                    Log.i("TAG", "provider_info");
+
+//                    locationManager.requestLocationUpdates(
+//                            provider_info,
+//                            MIN_TIME_BW_UPDATES,
+//                            MIN_DISTANCE_CHANGE_FOR_UPDATES,
+//                            this
+//                    );
+                    //      openSettings();
+                    // showSettingsAlert();
+
+                    if (locationManager != null) {
+                        location = locationManager.getLastKnownLocation(provider_info);
+                        updateGPSCoordinates();
+                        Log.i("TAG", ":location is :" + getLatitude() + " \n" + getLongitude());
+//                        Log.i("TAG", "locationManager");
+
+                        //    updateGPSCoordinates();
+                        //  openSettings();
+
+                        getPrayerTimes();
+
+                    } else {
+                        Log.i("TAG", "locationManager is null");
+
+                    }
+                }
+            }
+        } catch (NullPointerException e) {
+            //e.printStackTrace();
+            Log.e(TAG, "Impossible to connect to LocationManager", e);
+        }
+    }
+
+    public void updateGPSCoordinates() {
+        if (location != null) {
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+        }
+    }
+
+    public double getLatitude() {
+        if (location != null) {
+            latitude = location.getLatitude();
+        }
+
+        return latitude;
+    }
+
+    /**
+     * GPSTracker longitude getter and setter
+     *
+     * @return
+     */
+    public double getLongitude() {
+        if (location != null) {
+            longitude = location.getLongitude();
+        }
+
+        return longitude;
+    }
+
+    // method for turn on GPS
+    public void turnGPSOn() {
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        mSettingsClient = LocationServices.getSettingsClient(getActivity());
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(10 * 1000);
+        locationRequest.setFastestInterval(2 * 1000);
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(locationRequest);
+        mLocationSettingsRequest = builder.build();
+//**************************
+        builder.setAlwaysShow(true); //this is the key ingredient
+
+
+//**************************
+//        builder.setAlwaysShow(true); //this is the key ingredient
+        builder.setNeedBle(true);
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            isGPSEnabled = true;
+            Log.i("TAG", "onSuccess.");
+        } else {
+            mSettingsClient
+                    .checkLocationSettings(mLocationSettingsRequest)
+                    .addOnSuccessListener(getActivity(), new OnSuccessListener<LocationSettingsResponse>() {
+                        @SuppressLint("MissingPermission")
+                        @Override
+                        public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+                            //  GPS is already enable, callback GPS status through listener
+                            Log.i("TAG", "onSuccess.....");
+                        }
+                    })
+                    .addOnFailureListener(getActivity(), new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.i("TAG", "onFailure");
+                            if (count_cancled == 1) {
+                                Log.i("TAG", "Cancledd to count 1");
+                                // AzanFragment azanFragment =  new AzanFragment();
+                                //  azanFragment.showSettingsAlert();
+                                // showSettingsAlert();
+                                //   Toast.makeText((Activity) context, "Cancledd to count 1", Toast.LENGTH_LONG).show();
+
+//                                SnackbarForGPS(context.getString(R.string.grand_permission),context.getString(R.string.allow),
+//                                     getCurrentFocus());
+                                return;
+                            }
+
+                            int statusCode = ((ApiException) e).getStatusCode();
+                            switch (statusCode) {
+                                case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                                    Log.i("TAG", "RESOLUTION_REQUIRED.");
+
+                                    try {
+                                        // Show the dialog by calling startResolutionForResult(), and check the
+                                        // result in onActivityResult().
+                                        ResolvableApiException rae = (ResolvableApiException) e;
+                                        Log.i("TAG", "not send.");
+                                        rae.startResolutionForResult(getActivity(), AppConstants.GPS_REQUEST);
+                                        count_cancled++;
+                                    } catch (IntentSender.SendIntentException sie) {
+                                        Log.i("TAG", "PendingIntent unable to execute request.");
+                                    }
+                                    break;
+                                case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+
+                                    String errorMessage = "Location settings are inadequate, and cannot be " +
+                                            "fixed here. Fix in Settings.";
+                                    Log.e("TAG", errorMessage);
+                                    Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+        }
     }
 }

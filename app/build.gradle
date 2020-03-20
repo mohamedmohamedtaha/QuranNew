@@ -81,7 +81,10 @@ dependencies {
 
     // Add the Firebase SDK for Google Analytics
     implementation 'com.google.firebase:firebase-analytics:17.2.3'
-    implementation 'com.google.firebase:firebase-messaging:20.1.2'
+    implementation 'com.google.firebase:firebase-messaging:20.1.3'
     implementation 'org.jetbrains:annotations:15.0'
+
+    //Add services location
+    implementation'com.google.android.gms:play-services-location:17.0.0'
 
 }

@@ -4,7 +4,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_gravity="center"
@@ -16,7 +15,7 @@
             style="@style/style_text_view_fragment_azan"
             android:hint="@string/date_today" />
         <TextView
-            android:id="@+id/TV_Date_Todat"
+            android:id="@+id/TV_Date_Today"
             style="@style/style_text_view_fragment_azan"
             android:hint="@string/date_today" />
     </LinearLayout>
@@ -35,6 +34,22 @@
             style="@style/style_text_view_fragment_azan"
 
             android:text="@string/elfagr" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/dimens_6xl"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/TV_Sunrise"
+            style="@style/style_text_view_fragment_azan"
+            android:hint="@string/hello_blank_fragment" />
+        <TextView
+            android:id="@+id/T_Sunrise"
+            style="@style/style_text_view_fragment_azan"
+
+            android:text="@string/Sunrise" />
     </LinearLayout>
 
     <LinearLayout

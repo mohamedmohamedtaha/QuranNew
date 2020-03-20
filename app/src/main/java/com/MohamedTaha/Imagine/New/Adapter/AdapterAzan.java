@@ -1,12 +1,14 @@
 package com.MohamedTaha.Imagine.New.Adapter;
 
+import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.MohamedTaha.Imagine.New.R;
@@ -22,11 +24,11 @@ import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.compareTwoTim
 import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertTimeToAM;
 
 public class AdapterAzan extends RecyclerView.Adapter<AdapterAzan.RecyclerAzanViewHolder> {
-
-
+    private Context context;
     private List<Datum> azanList = new ArrayList<>();
 
-    public AdapterAzan() {
+    public AdapterAzan(Context context) {
+        this.context = context;
     }
 
     public void setAzanList(List<Datum> azanList) {
@@ -48,11 +50,31 @@ public class AdapterAzan extends RecyclerView.Adapter<AdapterAzan.RecyclerAzanVi
         Datum azan = azanList.get(position);
 
         holder.TVFagr.setText(convertTimeToAM(azan.getTimings().getFajr().substring(0, 5)));
+        holder.TVSunrise.setText(convertTimeToAM(azan.getTimings().getSunrise().substring(0, 5)));
         holder.TVDauhr.setText(convertTimeToAM(azan.getTimings().getDhuhr().substring(0, 5)));
         holder.TVAsr.setText(convertTimeToAM(azan.getTimings().getAsr().substring(0, 5)));
         holder.TVMAgrib.setText(convertTimeToAM(azan.getTimings().getMaghrib().substring(0, 5)));
         holder.TVEsha.setText(convertTimeToAM(azan.getTimings().getIsha().substring(0, 5)));
-        holder.TVDateTodat.setText(convertTimeToAM(azan.getDate().getGregorian().getDate()));
+        holder.TVDateToday.setText(azan.getDate().getGregorian().getDate());
+        if (compareTwoTimes(convertTimeToAM(azan.getTimings().getFajr().substring(0, 5)))) {
+            holder.TVFagr.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
+        } else if (compareTwoTimes(convertTimeToAM(azan.getTimings().getSunrise().substring(0, 5)))) {
+            holder.TVSunrise.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
+
+        } else if (compareTwoTimes(convertTimeToAM(azan.getTimings().getDhuhr().substring(0, 5)))) {
+            holder.TVDauhr.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
+
+        } else if (compareTwoTimes(convertTimeToAM(azan.getTimings().getAsr().substring(0, 5)))) {
+            holder.TVAsr.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
+
+        } else if (compareTwoTimes(convertTimeToAM(azan.getTimings().getMaghrib().substring(0, 5)))) {
+            holder.TVMAgrib.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
+
+        } else if (compareTwoTimes(convertTimeToAM(azan.getTimings().getIsha().substring(0, 5)))) {
+            holder.TVEsha.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
+        }else {
+
+        }
 
     }
 
@@ -65,6 +87,8 @@ public class AdapterAzan extends RecyclerView.Adapter<AdapterAzan.RecyclerAzanVi
         private View view;
         @BindView(R.id.TV_Fagr)
         TextView TVFagr;
+        @BindView(R.id.TV_Sunrise)
+        TextView TVSunrise;
         @BindView(R.id.TV_Dauhr)
         TextView TVDauhr;
         @BindView(R.id.TV_Asr)
@@ -75,8 +99,9 @@ public class AdapterAzan extends RecyclerView.Adapter<AdapterAzan.RecyclerAzanVi
         TextView TVEsha;
         @BindView(R.id.TV_City)
         TextView TVCity;
-        @BindView(R.id.TV_Date_Todat)
-        TextView TVDateTodat;
+        @BindView(R.id.TV_Date_Today)
+        TextView TVDateToday;
+
         public RecyclerAzanViewHolder(@NonNull View itemView) {
             super(itemView);
             this.view = itemView;
