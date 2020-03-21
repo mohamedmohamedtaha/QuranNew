@@ -1,11 +1,84 @@
 
 package com.MohamedTaha.Imagine.New.mvp.model.azan;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
+@Entity(tableName = "prayer_time")
 public class Timings {
+    public Timings(String date_today, String city, String note, String fajr, String sunrise, String dhuhr, String asr, String sunset, String maghrib, String isha, String imsak, String midnight) {
+        this.date_today = date_today;
+        this.city = city;
+        this.note = note;
+        this.fajr = fajr;
+        this.sunrise = sunrise;
+        this.dhuhr = dhuhr;
+        this.asr = asr;
+        this.sunset = sunset;
+        this.maghrib = maghrib;
+        this.isha = isha;
+        this.imsak = imsak;
+        this.midnight = midnight;
+    }
+@Ignore
+    public Timings(int id, String date_today, String city, String note, String fajr, String sunrise, String dhuhr, String asr, String sunset, String maghrib, String isha, String imsak, String midnight) {
+        this.id = id;
+        this.date_today = date_today;
+        this.city = city;
+        this.note = note;
+        this.fajr = fajr;
+        this.sunrise = sunrise;
+        this.dhuhr = dhuhr;
+        this.asr = asr;
+        this.sunset = sunset;
+        this.maghrib = maghrib;
+        this.isha = isha;
+        this.imsak = imsak;
+        this.midnight = midnight;
+    }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getDate_today() {
+        return date_today;
+    }
+
+    public void setDate_today(String date_today) {
+        this.date_today = date_today;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id_prayer_time")
+    private int id;
+    private String date_today;
+    private String city;
+    private String note;
     @SerializedName("Fajr")
     @Expose
     private String fajr;

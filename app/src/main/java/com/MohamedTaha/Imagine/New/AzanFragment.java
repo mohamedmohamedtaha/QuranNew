@@ -26,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,6 +35,7 @@ import com.MohamedTaha.Imagine.New.helper.GPSTracker;
 import com.MohamedTaha.Imagine.New.mvp.model.azan.Azan;
 import com.MohamedTaha.Imagine.New.mvp.model.azan.Datum;
 import com.MohamedTaha.Imagine.New.rest.APIServices;
+import com.MohamedTaha.Imagine.New.room.TimingsViewModel;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -66,6 +68,7 @@ import static com.MohamedTaha.Imagine.New.rest.RetrofitClient.getRetrofit;
  */
 public class AzanFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
+    private TimingsViewModel timingsViewModel;
     GoogleApiClient googleApiClient;
 
     private LocationRequest locationRequest;
@@ -129,6 +132,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_azan, container, false);
         ButterKnife.bind(this, view);
+        timingsViewModel = ViewModelProviders.of(this).get(TimingsViewModel.class);
         apiServices = getRetrofit().create(APIServices.class);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);

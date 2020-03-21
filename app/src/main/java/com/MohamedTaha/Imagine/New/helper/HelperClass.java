@@ -20,7 +20,10 @@ import com.MohamedTaha.Imagine.New.R;
 
 import java.util.Locale;
 
+import www.sanju.motiontoast.MotionToast;
+
 public class HelperClass {
+
     public static void customToast(Activity activity, String ToastTitle) {
         LayoutInflater inflater = activity.getLayoutInflater();
         View layout = inflater.inflate(R.layout.custom_toast,

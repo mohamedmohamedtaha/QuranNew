@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import www.sanju.motiontoast.MotionToast;
 
 import static com.MohamedTaha.Imagine.New.helper.Images.IMAGES;
 import static com.MohamedTaha.Imagine.New.helper.Images.addImagesList;
