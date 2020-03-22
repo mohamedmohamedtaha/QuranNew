@@ -2,6 +2,7 @@ package com.MohamedTaha.Imagine.New.room;
 
 import android.app.Application;
 
+
 import androidx.lifecycle.LiveData;
 
 import com.MohamedTaha.Imagine.New.mvp.model.azan.Timings;
@@ -13,13 +14,13 @@ public class TimingsRepository {
     private static TimingsDao timingsDao;
     private LiveData<List<Timings>> listLiveData;
 
-    public TimingsRepository(Application application) {
+    TimingsRepository(Application application) {
         TimingsAppDatabase database = TimingsAppDatabase.getInstance(application);
         timingsDao = database.timingsDao();
         listLiveData = timingsDao.getAllTimings();
     }
     public static TimingsRepository getInstance(Application application){
-        if (timingsRepository != null){
+        if (timingsRepository == null){
             synchronized (TimingsRepository.class){
                 if (timingsRepository == null){
                     timingsRepository = new TimingsRepository(application);

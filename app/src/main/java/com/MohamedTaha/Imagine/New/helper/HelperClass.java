@@ -20,8 +20,6 @@ import com.MohamedTaha.Imagine.New.R;
 
 import java.util.Locale;
 
-import www.sanju.motiontoast.MotionToast;
-
 public class HelperClass {
 
     public static void customToast(Activity activity, String ToastTitle) {

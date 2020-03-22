@@ -10,6 +10,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 @Entity(tableName = "prayer_time")
 public class Timings {
+    public Timings() {
+    }
+
     public Timings(String date_today, String city, String note, String fajr, String sunrise, String dhuhr, String asr, String sunset, String maghrib, String isha, String imsak, String midnight) {
         this.date_today = date_today;
         this.city = city;

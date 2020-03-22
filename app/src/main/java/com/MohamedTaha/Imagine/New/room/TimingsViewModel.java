@@ -16,7 +16,8 @@ public class TimingsViewModel extends AndroidViewModel {
     public TimingsViewModel(@NonNull Application application) {
         super(application);
         timingsRepository = TimingsRepository.getInstance(application);
-        getAllTimings = timingsRepository.getAllTimings();
+       // timingsRepository = new TimingsRepository(application);
+           getAllTimings = timingsRepository.getAllTimings();
     }
     public LiveData<List<Timings>> getAllTimings(){
         return getAllTimings;

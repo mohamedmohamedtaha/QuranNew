@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -26,7 +27,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,7 +38,9 @@ import com.MohamedTaha.Imagine.New.Adapter.AdapterAzan;
 import com.MohamedTaha.Imagine.New.helper.GPSTracker;
 import com.MohamedTaha.Imagine.New.mvp.model.azan.Azan;
 import com.MohamedTaha.Imagine.New.mvp.model.azan.Datum;
+import com.MohamedTaha.Imagine.New.mvp.model.azan.Timings;
 import com.MohamedTaha.Imagine.New.rest.APIServices;
+import com.MohamedTaha.Imagine.New.room.TimingsAppDatabase;
 import com.MohamedTaha.Imagine.New.room.TimingsViewModel;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.ApiException;
@@ -97,7 +103,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     // Store LocationManager.GPS_PROVIDER or LocationManager.NETWORK_PROVIDER information
     private String provider_info = null;
     public static final int ERROR_DIALOG_REQUEST = 9001;
-    private int save_request_code ;
+    private int save_request_code;
 
     // The minimum distance to change updates in meters
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
@@ -132,7 +138,23 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_azan, container, false);
         ButterKnife.bind(this, view);
-        timingsViewModel = ViewModelProviders.of(this).get(TimingsViewModel.class);
+        //For get data from database Room
+        //----------------------------------------------------------------------------------
+        timingsViewModel = new ViewModelProvider(this).get(TimingsViewModel.class);
+        timingsViewModel.getAllTimings().observe(getActivity(), new Observer<List<Timings>>() {
+            @Override
+            public void onChanged(List<Timings> timings) {
+                progressBar.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+                TVShowError.setVisibility(View.GONE);
+                AdapterAzan adapterAzan = new AdapterAzan(getActivity());
+                adapterAzan.setAzanList(timings);
+
+                //   adapterAzan.setAzanList(azan.getData());
+                recyclerView.setAdapter(adapterAzan);
+            }
+        });
+        //----------------------------------------------------------------------------------
         apiServices = getRetrofit().create(APIServices.class);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -225,8 +247,8 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                         // The user was asked to change settings, but chose not to
                         Log.i("TAG", "RESULT_CANCELED");
                         return;
-                        //   Toast.makeText(getActivity().getBaseContext(), getString(R.string.grand_permission), Toast.LENGTH_SHORT).show();
-                        //SnackbarForGPS(getString(R.string.grand_permission),getString(R.string.allow));
+                    //   Toast.makeText(getActivity().getBaseContext(), getString(R.string.grand_permission), Toast.LENGTH_SHORT).show();
+                    //SnackbarForGPS(getString(R.string.grand_permission),getString(R.string.allow));
                     default:
                         break;
 
@@ -245,13 +267,20 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                 Azan azan = response.body();
                 try {
                     if (azan.getStatus().equals("OK")) {
-                        progressBar.setVisibility(View.GONE);
-                        recyclerView.setVisibility(View.VISIBLE);
-                        TVShowError.setVisibility(View.GONE);
-                        datumList.addAll(azan.getData());
-                        AdapterAzan adapterAzan = new AdapterAzan(getActivity());
-                        adapterAzan.setAzanList(azan.getData());
-                        recyclerView.setAdapter(adapterAzan);
+                    //    Save_timings();
+//                        List<Timings> timings = new ArrayList<>();
+//                        for (int i = 0; i < azan.size(); i++) {
+//                            Timings timingsOne = new Timings();
+//                            timings.get(i).getDate_today();
+//                            timings.get(i).getFajr();
+//                            timings.get(i).getSunrise();
+//                            timings.get(i).getDhuhr();
+//                            timings.get(i).getAsr();
+//                            timings.get(i).getMaghrib();
+//                            timings.get(i).getIsha();
+//                            timingsViewModel.insert(timingsOne);
+//                        }
+//                        Log.i("TAG", "timings" + timings.size());
                     } else {
                         Toast.makeText(getActivity(), "NO", Toast.LENGTH_SHORT).show();
                         progressBar.setVisibility(View.GONE);
@@ -366,11 +395,11 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //check if GPS enabled or not
                     if (!isGPSEnabled) {
-                         if ( save_request_code == 1001){
+                        if (save_request_code == 1001) {
                             Log.i("TAG", "save_request_code" + save_request_code);
                             showSettingsAlert();
-                        }else {
-                             turnGPSOn();
+                        } else {
+                            turnGPSOn();
 
                         }
                         //  showSettingsAlert();
@@ -383,10 +412,10 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
 //                            this
 //                    );
                     Log.i("TAG", "Graunted Location");
-                    if ( save_request_code == 1001){
+                    if (save_request_code == 1001) {
                         Log.i("TAG", "save_request_code" + save_request_code);
                         showSettingsAlert();
-                    }else {
+                    } else {
                         turnGPSOn();
 
                     }                    //     openSettings();
@@ -461,8 +490,8 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                     try {
                         Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                         startActivityForResult(intent, LOCATION_PERMISSION_REQUEST_CODE);
-                    }catch (Exception e){
-                        Log.i("TAG", "Activity e is :" +  e.getMessage());
+                    } catch (Exception e) {
+                        Log.i("TAG", "Activity e is :" + e.getMessage());
 
                     }
                     // mContext.startActivity(intent);
@@ -572,13 +601,14 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
 
                     }
                 } else {
-                    if ( save_request_code == 1001){
+                    if (save_request_code == 1001) {
                         Log.i("TAG", "save_request_code" + save_request_code);
                         showSettingsAlert();
-                    }else {
+                    } else {
                         turnGPSOn();
 
-                    }                }
+                    }
+                }
             }
         } catch (NullPointerException e) {
             //e.printStackTrace();
@@ -678,4 +708,32 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                     });
         }
     }
+ private void Save_timings(){
+        class SaveTimings extends AsyncTask<Timings, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Timings... timings) {
+                Timings timingsOne = new Timings();
+                timingsOne.setDate_today("20-2-2020");
+                timingsOne.setFajr("50:30 pm ");
+                timingsOne.setSunrise("50:30 pm ");
+                timingsOne.setDhuhr("50:30 pm ");
+                timingsOne.setAsr("50:30 pm ");
+                timingsOne.setMaghrib("50:30 pm ");
+                timingsOne.setIsha("50:30 pm ");
+                TimingsAppDatabase.getInstance(getActivity()).timingsDao().insertTimings(timingsOne);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                Toast.makeText(getActivity(), "Saved all data", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        SaveTimings saveTimings = new SaveTimings();
+        saveTimings.execute();
+    }
 }
+

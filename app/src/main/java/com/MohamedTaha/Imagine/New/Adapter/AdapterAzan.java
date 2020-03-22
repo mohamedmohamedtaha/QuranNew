@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.mvp.model.azan.Datum;
+import com.MohamedTaha.Imagine.New.mvp.model.azan.Timings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,13 +26,13 @@ import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertTimeTo
 
 public class AdapterAzan extends RecyclerView.Adapter<AdapterAzan.RecyclerAzanViewHolder> {
     private Context context;
-    private List<Datum> azanList = new ArrayList<>();
+    private List<Timings> azanList = new ArrayList<>();
 
     public AdapterAzan(Context context) {
         this.context = context;
     }
 
-    public void setAzanList(List<Datum> azanList) {
+    public void setAzanList(List<Timings> azanList) {
         this.azanList = azanList;
         notifyDataSetChanged();
     }
@@ -47,30 +48,30 @@ public class AdapterAzan extends RecyclerView.Adapter<AdapterAzan.RecyclerAzanVi
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerAzanViewHolder holder, int position) {
-        Datum azan = azanList.get(position);
+        Timings azan = azanList.get(position);
 
-        holder.TVFagr.setText(convertTimeToAM(azan.getTimings().getFajr().substring(0, 5)));
-        holder.TVSunrise.setText(convertTimeToAM(azan.getTimings().getSunrise().substring(0, 5)));
-        holder.TVDauhr.setText(convertTimeToAM(azan.getTimings().getDhuhr().substring(0, 5)));
-        holder.TVAsr.setText(convertTimeToAM(azan.getTimings().getAsr().substring(0, 5)));
-        holder.TVMAgrib.setText(convertTimeToAM(azan.getTimings().getMaghrib().substring(0, 5)));
-        holder.TVEsha.setText(convertTimeToAM(azan.getTimings().getIsha().substring(0, 5)));
-        holder.TVDateToday.setText(azan.getDate().getGregorian().getDate());
-        if (compareTwoTimes(convertTimeToAM(azan.getTimings().getFajr().substring(0, 5)))) {
+        holder.TVFagr.setText(convertTimeToAM(azan.getFajr().substring(0, 5)));
+        holder.TVSunrise.setText(convertTimeToAM(azan.getSunrise().substring(0, 5)));
+        holder.TVDauhr.setText(convertTimeToAM(azan.getDhuhr().substring(0, 5)));
+        holder.TVAsr.setText(convertTimeToAM(azan.getAsr().substring(0, 5)));
+        holder.TVMAgrib.setText(convertTimeToAM(azan.getMaghrib().substring(0, 5)));
+        holder.TVEsha.setText(convertTimeToAM(azan.getIsha().substring(0, 5)));
+        holder.TVDateToday.setText(azan.getDate_today());
+        if (compareTwoTimes(convertTimeToAM(azan.getFajr().substring(0, 5)))) {
             holder.TVFagr.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
-        } else if (compareTwoTimes(convertTimeToAM(azan.getTimings().getSunrise().substring(0, 5)))) {
+        } else if (compareTwoTimes(convertTimeToAM(azan.getSunrise().substring(0, 5)))) {
             holder.TVSunrise.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
 
-        } else if (compareTwoTimes(convertTimeToAM(azan.getTimings().getDhuhr().substring(0, 5)))) {
+        } else if (compareTwoTimes(convertTimeToAM(azan.getDhuhr().substring(0, 5)))) {
             holder.TVDauhr.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
 
-        } else if (compareTwoTimes(convertTimeToAM(azan.getTimings().getAsr().substring(0, 5)))) {
+        } else if (compareTwoTimes(convertTimeToAM(azan.getAsr().substring(0, 5)))) {
             holder.TVAsr.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
 
-        } else if (compareTwoTimes(convertTimeToAM(azan.getTimings().getMaghrib().substring(0, 5)))) {
+        } else if (compareTwoTimes(convertTimeToAM(azan.getMaghrib().substring(0, 5)))) {
             holder.TVMAgrib.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
 
-        } else if (compareTwoTimes(convertTimeToAM(azan.getTimings().getIsha().substring(0, 5)))) {
+        } else if (compareTwoTimes(convertTimeToAM(azan.getIsha().substring(0, 5)))) {
             holder.TVEsha.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
         }else {
 

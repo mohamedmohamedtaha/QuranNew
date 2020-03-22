@@ -1,6 +1,7 @@
 package com.MohamedTaha.Imagine.New.room;
 
 import androidx.lifecycle.LiveData;
+import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -10,7 +11,7 @@ import androidx.room.Update;
 import com.MohamedTaha.Imagine.New.mvp.model.azan.Timings;
 
 import java.util.List;
-
+@Dao
 public interface TimingsDao {
     @Query("SELECT * FROM prayer_time")
     LiveData<List<Timings>>getAllTimings();
@@ -24,7 +25,7 @@ public interface TimingsDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateTimings(Timings timings);
 
-    @Query("SELECT * FROM  prayer_time")
+    @Query("DELETE FROM  prayer_time")
     void deleteAllTimings();
 
 }
