@@ -59,6 +59,8 @@ public class AdapterAzanVP extends PagerAdapter {
         recyclerAzanViewHolder.TVMAgrib.setText(convertTimeToAM(azan.getMaghrib().substring(0, 5)));
         recyclerAzanViewHolder.TVEsha.setText(convertTimeToAM(azan.getIsha().substring(0, 5)));
         recyclerAzanViewHolder.TVDateToday.setText(azan.getDate_today());
+        recyclerAzanViewHolder.TVCity.setText(azan.getCity());
+
         if (convertDate().equals(azan.getDate_today()) && compareTwoTimes(convertTimeToAM(azan.getFajr().substring(0, 5)))) {
             recyclerAzanViewHolder.TVFagr.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
         } else if (convertDate().equals(azan.getDate_today()) && compareTwoTimes(convertTimeToAM(azan.getSunrise().substring(0, 5)))) {

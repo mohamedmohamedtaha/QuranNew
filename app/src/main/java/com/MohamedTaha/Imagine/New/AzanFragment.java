@@ -4,10 +4,13 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -27,12 +30,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.MohamedTaha.Imagine.New.Adapter.AdapterAzan;
 import com.MohamedTaha.Imagine.New.Adapter.AdapterAzanVP;
 import com.MohamedTaha.Imagine.New.helper.GPSTracker;
 import com.MohamedTaha.Imagine.New.helper.HelperClass;
@@ -57,10 +57,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.text.SimpleDateFormat;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -130,14 +128,15 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     APIServices apiServices;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
-//    @BindView(R.id.recycler_view)
+    //    @BindView(R.id.recycler_view)
 //    RecyclerView recyclerView;
     @BindView(R.id.TV_Show_Error)
     TextView TVShowError;
     List<Datum> datumList = new ArrayList<>();
     private SettingsClient mSettingsClient;
     private LocationSettingsRequest mLocationSettingsRequest;
-    String language_name ;
+    String language_name;
+    String city_name = null;
 
 
     public AzanFragment() {
@@ -162,27 +161,29 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
 //            Toast.makeText(context, "Same:  " +convertDate(), Toast.LENGTH_SHORT).show();
 //
 //        }
-
         //For get data from database Room
         //----------------------------------------------------------------------------------
         timingsViewModel = new ViewModelProvider(this).get(TimingsViewModel.class);
-
+        // For get Date today
         timingsViewModel.getTimingsByDataToday(convertDate()).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(date_today -> {
                     data_today = date_today;
-                    Toast.makeText(getActivity(), "date today is " + date_today, Toast.LENGTH_SHORT).show();
-                },e ->{
-                    Toast.makeText(getActivity(), "e : " +e.getMessage(), Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(getActivity(), "date today is " + date_today, Toast.LENGTH_SHORT).show();
+                }, e -> {
+                    Toast.makeText(getActivity(), "e : " + e.getMessage(), Toast.LENGTH_SHORT).show();
 
                 });
-        Toast.makeText(getActivity(), "Today is " + timingsViewModel.getTimingsByDataToday(convertDate()), Toast.LENGTH_SHORT).show();
+        //For get all data
         timingsViewModel.getAllTimingsRxjava().subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(all_Data -> {
                     //conusme Timings prayer here which is a list of Timings
                     if (all_Data.size() <= 0) {
                         //The data is null
+                        progressBar.setVisibility(View.GONE);
+                        TVShowError.setVisibility(View.VISIBLE);
+                        TVShowError.setText(getString(R.string.no_data));
                         Log.i("TAG", "The data is null : " + all_Data.size());
                     } else {
                         progressBar.setVisibility(View.GONE);
@@ -279,14 +280,17 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                 isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
                 if (isGPSEnabled) {
                     Log.i("TAG", "true");
-                    getPrayerTimes();
+                  //  if (location != null ){
+                        getPrayerTimes(getLatitude(),getLongitude());
+
+                    //}
 
                 } else {
                     Log.i("TAG", "false");
                     TVShowError.setVisibility(View.VISIBLE);
                     TVShowError.setText(getActivity().getString(R.string.not_allow));
                     progressBar.setVisibility(View.GONE);
-                  //  recyclerView.setVisibility(View.GONE);
+                    //  recyclerView.setVisibility(View.GONE);
 
                 }
                 break;
@@ -315,15 +319,16 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         }
     }
 
-    private void getPrayerTimes() {
-        Call<Azan> azanCall = apiServices.getPrayerTimes("51.508515", "0.1254872", false);
+    private void getPrayerTimes(double latitude,double longitude) {
+        //24.788626, 46.777509
+        Call<Azan> azanCall = apiServices.getPrayerTimes("46.777509", "24.788626", false);
         azanCall.enqueue(new Callback<Azan>() {
             @Override
             public void onResponse(Call<Azan> call, Response<Azan> response) {
                 Azan azan = response.body();
                 try {
                     if (azan.getStatus().equals("OK")) {
-                        //  Delete_timings();
+                        //      Delete_timings();
 //                        for (int i = 0; i < azan.getData().size(); i++) {
 //                            Timings timingsOne = new Timings();
 //                            timingsOne.setFajr(azan.getData().get(i).getTimings().getFajr());
@@ -333,10 +338,10 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
 //                            timingsOne.setMaghrib(azan.getData().get(i).getTimings().getMaghrib());
 //                            timingsOne.setIsha(azan.getData().get(i).getTimings().getIsha());
 //                            timingsOne.setDate_today(azan.getData().get(i).getDate().getGregorian().getDate());
+//                            timingsOne.setId_seq(i);
+//                            timingsOne.setCity(city_name);
 //
-//                            Save_timings(timingsOne);
-
-  //                      }
+//                            Save_timings(timingsOne); }
                     } else {
                         Toast.makeText(getActivity(), "NO", Toast.LENGTH_SHORT).show();
                         progressBar.setVisibility(View.GONE);
@@ -562,7 +567,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                     TVShowError.setText(getActivity().getString(R.string.not_allow));
 
                     progressBar.setVisibility(View.GONE);
-              //      recyclerView.setVisibility(View.GONE);
+                    //      recyclerView.setVisibility(View.GONE);
                 }
             });
 
@@ -644,14 +649,19 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                     if (locationManager != null) {
                         location = locationManager.getLastKnownLocation(provider_info);
                         updateGPSCoordinates();
+                      city_name =  getCityName(getLatitude(),getLongitude());
                         Log.i("TAG", ":location is :" + getLatitude() + " \n" + getLongitude());
+                        Log.i("TAG", ":City name is :" + city_name);
+
 //                        Log.i("TAG", "locationManager");
 
                         //    updateGPSCoordinates();
                         //  openSettings();
 
-                        getPrayerTimes();
+                  //      if (location != null ){
+                            getPrayerTimes(getLatitude(),getLongitude());
 
+                    //    }
                     } else {
                         Log.i("TAG", "locationManager is null");
 
@@ -720,8 +730,11 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             isGPSEnabled = true;
             Log.i("TAG", "onSuccess.");
-            getPrayerTimes();
-        } else {
+           // if (location != null && latitude <0 && longitude <0){
+                getPrayerTimes(getLatitude(),getLongitude());
+
+    //        }
+    } else {
             mSettingsClient
                     .checkLocationSettings(mLocationSettingsRequest)
                     .addOnSuccessListener(getActivity(), new OnSuccessListener<LocationSettingsResponse>() {
@@ -767,17 +780,8 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
 
     private void Save_timings(Timings timings_prayer) {
         class SaveTimings extends AsyncTask<Timings, Void, Void> {
-
             @Override
             protected Void doInBackground(Timings... timings) {
-//                Timings timingsOne = new Timings();
-//                timingsOne.setDate_today("20-2-2020");
-//                timingsOne.setFajr("50:30 pm ");
-//                timingsOne.setSunrise("50:30 pm ");
-//                timingsOne.setDhuhr("50:30 pm ");
-//                timingsOne.setAsr("50:30 pm ");
-//                timingsOne.setMaghrib("50:30 pm ");
-//                timingsOne.setIsha("50:30 pm ");
                 TimingsAppDatabase.getInstance(getActivity()).timingsDao().insertTimings(timings_prayer);
                 return null;
             }
@@ -811,6 +815,40 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
 
         Delete_timings delete_timings = new Delete_timings();
         delete_timings.execute();
+    }
+    public String getCityName(double latitude, double longitude) {
+        String cityName = "";
+        if (location != null) {
+            //For change language to Arabic
+            Locale locale = new Locale("ar");
+            //For change language to English
+           // Geocoder geocoder = new Geocoder(getActivity(), Locale.ENGLISH);
+            Geocoder geocoder = new Geocoder(getActivity(), locale);
+
+            try {
+                /**
+                 * Geocoder.getFromLocation - Returns an array of Addresses
+                 * that are known to describe the area immediately surrounding the given latitude and longitude.
+                 */
+                List<Address> addresses = geocoder.getFromLocation(latitude, longitude, this.geocoderMaxResults);
+                if (addresses.size()> 0){
+                    for (Address adr : addresses){
+                        if (adr.getLocality() != null && adr.getLocality().length()>0){
+                            cityName = adr.getLocality();
+                            break;
+                        }
+                    }
+                }
+
+                return cityName;
+            } catch (IOException e) {
+                //e.printStackTrace();
+
+
+            }
+        }
+
+        return null;
     }
 
 }

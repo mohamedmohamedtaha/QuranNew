@@ -79,6 +79,16 @@ public class Timings {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id_prayer_time")
     private int id;
+    private int id_seq;
+
+    public int getId_seq() {
+        return id_seq;
+    }
+
+    public void setId_seq(int id_seq) {
+        this.id_seq = id_seq;
+    }
+
     private String date_today;
     private String city;
     private String note;

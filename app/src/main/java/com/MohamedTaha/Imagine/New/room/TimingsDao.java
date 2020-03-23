@@ -22,7 +22,7 @@ public interface TimingsDao {
     Flowable<List<Timings>> getAllTimingsRxjave();
 
 
-    @Query("SELECT id_prayer_time FROM prayer_time WHERE date_today = :date_today")
+    @Query("SELECT id_seq FROM prayer_time WHERE date_today = :date_today")
     Flowable<Integer> getTimingsByDataToday(String date_today);
 
 //    @Query("SELECT date_today FROM prayer_time WHERE date_today = :date_today")

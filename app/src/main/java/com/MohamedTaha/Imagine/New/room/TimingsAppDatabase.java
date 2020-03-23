@@ -7,11 +7,12 @@ import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.MohamedTaha.Imagine.New.mvp.model.azan.Timings;
 
-@Database(entities = {Timings.class},version = 1,exportSchema = false)
+@Database(entities = {Timings.class},version = 2,exportSchema = false)
 public abstract class TimingsAppDatabase extends RoomDatabase {
     private static final String TAG = TimingsAppDatabase.class.getSimpleName();
     private static final Object LOCK = new Object();
@@ -26,7 +27,8 @@ public abstract class TimingsAppDatabase extends RoomDatabase {
                 Log.d(TAG, "getInstance: Creating a new database instance");
                 mInstance = Room.databaseBuilder(context.getApplicationContext(),
                         TimingsAppDatabase.class,
-                        TimingsAppDatabase.DATABASE_NAME).build();
+                        TimingsAppDatabase.DATABASE_NAME)
+                        .fallbackToDestructiveMigration().build();
             }}
             Log.d(TAG,"getInstance :  Getting the database instance, no need to recreated it.");
         }
@@ -44,6 +46,13 @@ public abstract class TimingsAppDatabase extends RoomDatabase {
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
+        }
+    };
+    //For migration after edit or add on the table
+    static final Migration MIGRATION_1_2 = new Migration(1,2) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+
         }
     };
 }
