@@ -15,6 +15,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
+
+    <com.booking.rtlviewpager.RtlViewPager
+        android:id="@+id/AzanFragment_VP"
+        style="@style/style_default_layout_match_parent"></com.booking.rtlviewpager.RtlViewPager>
+
     <TextView
         android:id="@+id/TV_Show_Error"
         android:layout_centerInParent="true"

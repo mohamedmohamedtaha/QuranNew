@@ -11,6 +11,12 @@ public class ConvertTimes {
     }
 
     private static boolean isTrue  ;
+    public static String convertDate(){
+        Date calendar = Calendar.getInstance().getTime();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        String DateString = simpleDateFormat.format(calendar);
+        return DateString;
+    }
     public static String convertTimeToAM(String old_time){
         String final_time = null;
         SimpleDateFormat _24Hours = new SimpleDateFormat("hh:mm");

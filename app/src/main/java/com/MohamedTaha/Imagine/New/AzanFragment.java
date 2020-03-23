@@ -29,19 +29,20 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.MohamedTaha.Imagine.New.Adapter.AdapterAzan;
+import com.MohamedTaha.Imagine.New.Adapter.AdapterAzanVP;
 import com.MohamedTaha.Imagine.New.helper.GPSTracker;
+import com.MohamedTaha.Imagine.New.helper.HelperClass;
 import com.MohamedTaha.Imagine.New.mvp.model.azan.Azan;
 import com.MohamedTaha.Imagine.New.mvp.model.azan.Datum;
 import com.MohamedTaha.Imagine.New.mvp.model.azan.Timings;
 import com.MohamedTaha.Imagine.New.rest.APIServices;
 import com.MohamedTaha.Imagine.New.room.TimingsAppDatabase;
 import com.MohamedTaha.Imagine.New.room.TimingsViewModel;
+import com.booking.rtlviewpager.RtlViewPager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -56,16 +57,23 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.content.Context.LOCATION_SERVICE;
+import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertDate;
 import static com.MohamedTaha.Imagine.New.rest.RetrofitClient.getRetrofit;
 
 
@@ -74,6 +82,8 @@ import static com.MohamedTaha.Imagine.New.rest.RetrofitClient.getRetrofit;
  */
 public class AzanFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
+    @BindView(R.id.AzanFragment_VP)
+    RtlViewPager AzanFragmentVP;
     private TimingsViewModel timingsViewModel;
     GoogleApiClient googleApiClient;
 
@@ -114,18 +124,20 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     // Get Class Name
     private static String TAG = GPSTracker.class.getName();
 
+    int data_today;
 
     private static final int MY_PERMISSIONS_WRITE_STORAGE = 90;
     APIServices apiServices;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
-    @BindView(R.id.recycler_view)
-    RecyclerView recyclerView;
+//    @BindView(R.id.recycler_view)
+//    RecyclerView recyclerView;
     @BindView(R.id.TV_Show_Error)
     TextView TVShowError;
     List<Datum> datumList = new ArrayList<>();
     private SettingsClient mSettingsClient;
     private LocationSettingsRequest mLocationSettingsRequest;
+    String language_name ;
 
 
     public AzanFragment() {
@@ -138,26 +150,70 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_azan, container, false);
         ButterKnife.bind(this, view);
+        //to Check before change Language
+        language_name = Locale.getDefault().getLanguage();
+        if (!language_name.equals("ar")) {
+            HelperClass.change_language("ar", getActivity());
+        }
+//        if (convertDate().equals("23-03-2020")){
+//            Toast.makeText(context, "Same", Toast.LENGTH_SHORT).show();
+//        }
+//        else {
+//            Toast.makeText(context, "Same:  " +convertDate(), Toast.LENGTH_SHORT).show();
+//
+//        }
+
         //For get data from database Room
         //----------------------------------------------------------------------------------
         timingsViewModel = new ViewModelProvider(this).get(TimingsViewModel.class);
-        timingsViewModel.getAllTimings().observe(getActivity(), new Observer<List<Timings>>() {
-            @Override
-            public void onChanged(List<Timings> timings) {
-                progressBar.setVisibility(View.GONE);
-                recyclerView.setVisibility(View.VISIBLE);
-                TVShowError.setVisibility(View.GONE);
-                AdapterAzan adapterAzan = new AdapterAzan(getActivity());
-                adapterAzan.setAzanList(timings);
 
-                //   adapterAzan.setAzanList(azan.getData());
-                recyclerView.setAdapter(adapterAzan);
-            }
-        });
+        timingsViewModel.getTimingsByDataToday(convertDate()).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(date_today -> {
+                    data_today = date_today;
+                    Toast.makeText(getActivity(), "date today is " + date_today, Toast.LENGTH_SHORT).show();
+                },e ->{
+                    Toast.makeText(getActivity(), "e : " +e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                });
+        Toast.makeText(getActivity(), "Today is " + timingsViewModel.getTimingsByDataToday(convertDate()), Toast.LENGTH_SHORT).show();
+        timingsViewModel.getAllTimingsRxjava().subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(all_Data -> {
+                    //conusme Timings prayer here which is a list of Timings
+                    if (all_Data.size() <= 0) {
+                        //The data is null
+                        Log.i("TAG", "The data is null : " + all_Data.size());
+                    } else {
+                        progressBar.setVisibility(View.GONE);
+                        TVShowError.setVisibility(View.GONE);
+                        AdapterAzanVP adapterAzan = new AdapterAzanVP(getActivity());
+                        adapterAzan.setAzanList(all_Data);
+                        AzanFragmentVP.setAdapter(adapterAzan);
+                        AzanFragmentVP.setCurrentItem(data_today);
+                        Log.i("TAG", "all data " + all_Data.size());
+                    }
+                }, e -> {
+                    Log.i("TAG", "Error RXJava" + e.getMessage());
+                });
+
+//        timingsViewModel.getAllTimings().observe(getActivity(), new Observer<List<Timings>>() {
+//            @Override
+//            public void onChanged(List<Timings> timings) {
+//                progressBar.setVisibility(View.GONE);
+//             //   recyclerView.setVisibility(View.VISIBLE);
+//                TVShowError.setVisibility(View.GONE);
+//                AdapterAzanVP adapterAzan = new AdapterAzanVP(getActivity());
+//                adapterAzan.setAzanList(timings);
+//
+//                //   adapterAzan.setAzanList(azan.getData());
+//                AzanFragmentVP.setAdapter(adapterAzan);
+//            }
+//        });
         //----------------------------------------------------------------------------------
         apiServices = getRetrofit().create(APIServices.class);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(linearLayoutManager);
+        //recyclerView.setLayoutManager(linearLayoutManager);
         Log.i("TAG", "onCreateView");
 
 //        Toast.makeText(getActivity(), " time :" + compareTwoTimes("12:12 pm")
@@ -230,7 +286,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                     TVShowError.setVisibility(View.VISIBLE);
                     TVShowError.setText(getActivity().getString(R.string.not_allow));
                     progressBar.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.GONE);
+                  //  recyclerView.setVisibility(View.GONE);
 
                 }
                 break;
@@ -267,24 +323,24 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                 Azan azan = response.body();
                 try {
                     if (azan.getStatus().equals("OK")) {
-                    //    Save_timings();
-//                        List<Timings> timings = new ArrayList<>();
-//                        for (int i = 0; i < azan.size(); i++) {
+                        //  Delete_timings();
+//                        for (int i = 0; i < azan.getData().size(); i++) {
 //                            Timings timingsOne = new Timings();
-//                            timings.get(i).getDate_today();
-//                            timings.get(i).getFajr();
-//                            timings.get(i).getSunrise();
-//                            timings.get(i).getDhuhr();
-//                            timings.get(i).getAsr();
-//                            timings.get(i).getMaghrib();
-//                            timings.get(i).getIsha();
-//                            timingsViewModel.insert(timingsOne);
-//                        }
-//                        Log.i("TAG", "timings" + timings.size());
+//                            timingsOne.setFajr(azan.getData().get(i).getTimings().getFajr());
+//                            timingsOne.setSunrise(azan.getData().get(i).getTimings().getSunrise());
+//                            timingsOne.setDhuhr(azan.getData().get(i).getTimings().getDhuhr());
+//                            timingsOne.setAsr(azan.getData().get(i).getTimings().getAsr());
+//                            timingsOne.setMaghrib(azan.getData().get(i).getTimings().getMaghrib());
+//                            timingsOne.setIsha(azan.getData().get(i).getTimings().getIsha());
+//                            timingsOne.setDate_today(azan.getData().get(i).getDate().getGregorian().getDate());
+//
+//                            Save_timings(timingsOne);
+
+  //                      }
                     } else {
                         Toast.makeText(getActivity(), "NO", Toast.LENGTH_SHORT).show();
                         progressBar.setVisibility(View.GONE);
-                        recyclerView.setVisibility(View.GONE);
+                        //recyclerView.setVisibility(View.GONE);
                         TVShowError.setVisibility(View.VISIBLE);
                         TVShowError.setText(getActivity().getString(R.string.cant));
                     }
@@ -506,7 +562,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                     TVShowError.setText(getActivity().getString(R.string.not_allow));
 
                     progressBar.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.GONE);
+              //      recyclerView.setVisibility(View.GONE);
                 }
             });
 
@@ -708,20 +764,21 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                     });
         }
     }
- private void Save_timings(){
+
+    private void Save_timings(Timings timings_prayer) {
         class SaveTimings extends AsyncTask<Timings, Void, Void> {
 
             @Override
             protected Void doInBackground(Timings... timings) {
-                Timings timingsOne = new Timings();
-                timingsOne.setDate_today("20-2-2020");
-                timingsOne.setFajr("50:30 pm ");
-                timingsOne.setSunrise("50:30 pm ");
-                timingsOne.setDhuhr("50:30 pm ");
-                timingsOne.setAsr("50:30 pm ");
-                timingsOne.setMaghrib("50:30 pm ");
-                timingsOne.setIsha("50:30 pm ");
-                TimingsAppDatabase.getInstance(getActivity()).timingsDao().insertTimings(timingsOne);
+//                Timings timingsOne = new Timings();
+//                timingsOne.setDate_today("20-2-2020");
+//                timingsOne.setFajr("50:30 pm ");
+//                timingsOne.setSunrise("50:30 pm ");
+//                timingsOne.setDhuhr("50:30 pm ");
+//                timingsOne.setAsr("50:30 pm ");
+//                timingsOne.setMaghrib("50:30 pm ");
+//                timingsOne.setIsha("50:30 pm ");
+                TimingsAppDatabase.getInstance(getActivity()).timingsDao().insertTimings(timings_prayer);
                 return null;
             }
 
@@ -735,5 +792,26 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         SaveTimings saveTimings = new SaveTimings();
         saveTimings.execute();
     }
+
+    private void Delete_timings() {
+        class Delete_timings extends AsyncTask<Timings, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Timings... timings) {
+                TimingsAppDatabase.getInstance(getActivity()).timingsDao().deleteAllTimings();
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                Toast.makeText(getActivity(), "Delete all data", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        Delete_timings delete_timings = new Delete_timings();
+        delete_timings.execute();
+    }
+
 }
 

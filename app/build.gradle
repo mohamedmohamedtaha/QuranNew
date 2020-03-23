@@ -72,9 +72,15 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
     implementation 'com.squareup.retrofit2:retrofit:2.1.0'
-    implementation 'io.reactivex:rxandroid:1.2.0'
+
     implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
-    // change version number with latest version.
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    //For Subcription where there in Azkar Fragment
+    implementation 'io.reactivex:rxandroid:1.2.0'
+
+
+// optional - RxJava support for Room
+    implementation "androidx.room:room-rxjava2:$room_version"
 
     // Add the Firebase SDK for Google Analytics
     implementation 'com.google.firebase:firebase-analytics:17.2.3'
@@ -84,23 +90,18 @@ dependencies {
     //Add services location
     implementation 'com.google.android.gms:play-services-location:17.0.0'
 
-    // optional - RxJava support for Room
-    implementation "androidx.room:room-rxjava2:$room_version"
+
     // Room components
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     androidTestImplementation "androidx.room:room-testing:$room_version"
-
 // Lifecycle components
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
-
 // UI
     implementation "com.google.android.material:material:$materialVersion"
-
 // Testing
     androidTestImplementation "androidx.arch.core:core-testing:$coreTestingVersion"
-
 // for LifeCycle Awareness
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
