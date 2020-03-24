@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.MohamedTaha.Imagine.New.AppConstants;
@@ -29,6 +30,7 @@ import com.MohamedTaha.Imagine.New.informationInrto.TapTargetView;
 import com.MohamedTaha.Imagine.New.mvp.interactor.NavigationDrawarInteractor;
 import com.MohamedTaha.Imagine.New.notification.NotificationHelper;
 import com.MohamedTaha.Imagine.New.mvp.presenter.NavigationDrawarPresenter;
+import com.MohamedTaha.Imagine.New.room.TimingsViewModel;
 import com.MohamedTaha.Imagine.New.ui.fragments.AzkarFragment;
 import com.MohamedTaha.Imagine.New.ui.fragments.FragmentSound;
 import com.MohamedTaha.Imagine.New.ui.fragments.GridViewFragment;
@@ -42,9 +44,12 @@ import java.util.ArrayList;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.MohamedTaha.Imagine.New.helper.Images.IMAGES;
 import static com.MohamedTaha.Imagine.New.helper.Images.addImagesList;
+import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertDate;
 import static com.MohamedTaha.Imagine.New.ui.activities.SwipePagesActivity.IS_TRUE;
 import static com.MohamedTaha.Imagine.New.ui.fragments.SplashFragment.SAVE_ALL_IMAGES;
 import static com.MohamedTaha.Imagine.New.ui.fragments.SplashFragment.SAVE_PAGE;
@@ -73,6 +78,8 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     private NavigationDrawarPresenter presenter;
     MenuItem prevMenuItem;
     TapTargetSequence sequence;
+    private TimingsViewModel timingsViewModel;
+    public static int data_today;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +89,20 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         presenter = new NavigationDrawarInteractor(this);
         appPackageName = getPackageName();
 
+        //-----------------------------------------------------------------------------------------------------------
+        // check, Is data today is there or not in database ?
+        timingsViewModel = new ViewModelProvider(this).get(TimingsViewModel.class);
+        timingsViewModel.getTimingsByDataToday(convertDate()).subscribeOn(Schedulers.trampoline())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(date_today -> {
+                    data_today = date_today;
+                    Log.i("TAG", "Navigation Drawaer : " + data_today);
+                    //  Toast.makeText(getActivity(), "date today is " + date_today, Toast.LENGTH_SHORT).show();
+                }, e -> {
+                    Toast.makeText(getApplicationContext(), "e : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                });
+        //-----------------------------------------------------------------------------------------------------------
         //for show way using
         if (!SharedPerefrenceHelper.getBooleanForWayUsing(getApplicationContext(),IS_FIRST_TIME_WAY_USING,false)){
             showInformation();
