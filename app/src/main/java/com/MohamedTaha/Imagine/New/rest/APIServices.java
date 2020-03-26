@@ -11,7 +11,7 @@ import retrofit2.http.Query;
 
 public interface APIServices {
     @GET("calendar")
-    Call<Azan> getPrayerTimes(@Query("latitude") String latitude, @Query("longitude") String longitude, @Query("annual") boolean annual);
+    Call<Azan> getPrayerTimes(@Query("latitude") double latitude, @Query("longitude") double longitude, @Query("annual") boolean annual);
 
 
 }

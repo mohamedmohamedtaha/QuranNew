@@ -16,7 +16,6 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -61,11 +60,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.Callable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
@@ -74,7 +71,6 @@ import retrofit2.Response;
 import rx.Subscription;
 
 import static android.content.Context.LOCATION_SERVICE;
-import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertDate;
 import static com.MohamedTaha.Imagine.New.rest.RetrofitClient.getRetrofit;
 import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.data_today;
 
@@ -144,7 +140,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     private Subscription subscription;
 
 
-
     public AzanFragment() {
         // Required empty public constructor
     }
@@ -174,7 +169,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
 //
 //        }
         //For delete all data and retrieve  new data
-     //    Delete_timings();
         //For get data from database Room
         //----------------------------------------------------------------------------------
 //        Flowable<Integer> flowale = Flowable.fromCallable(new Callable<Integer>() {
@@ -185,13 +179,13 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
 //                return timings;
 //            }
 //        });
-     //   subscription =
+        //   subscription =
         timingsViewModel = new ViewModelProvider(this).get(TimingsViewModel.class);
         // For get Date today
 
         //For get all data
         timingsViewModel.getAllTimingsRxjava().subscribeOn(Schedulers.trampoline())
-               // .concatMap()
+                // .concatMap()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(all_Data -> {
                     //conusme Timings prayer here which is a list of Timings
@@ -202,22 +196,23 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                         TVShowError.setText(getString(R.string.no_data));
                         AzanFragmentVP.setVisibility(View.GONE);
                         Log.i("TAG", "The data is null : " + all_Data.size());
-
                         Log.i("TAG", "after 1 : " + data_today);
                     } else {
-                            progressBar.setVisibility(View.GONE);
-                            TVShowError.setVisibility(View.GONE);
-                            AzanFragmentVP.setVisibility(View.VISIBLE);
-                            AdapterAzanVP adapterAzan = new AdapterAzanVP(getActivity());
-                            adapterAzan.setAzanList(all_Data);
-                            AzanFragmentVP.setAdapter(adapterAzan);
-                            AzanFragmentVP.setCurrentItem(data_today);
-                            Log.i("TAG", "all data " + all_Data.size());
+                        progressBar.setVisibility(View.GONE);
+                        TVShowError.setVisibility(View.GONE);
+                        AzanFragmentVP.setVisibility(View.VISIBLE);
+                        AdapterAzanVP adapterAzan = new AdapterAzanVP(getActivity());
+                        adapterAzan.setAzanList(all_Data);
+                        AzanFragmentVP.setAdapter(adapterAzan);
+                        AzanFragmentVP.setCurrentItem(data_today);
+                        Log.i("TAG", "all data " + all_Data.size());
                     }
                 }, e -> {
                     Log.i("TAG", "Error RXJava" + e.getMessage());
                 });
-        //For check Is the permission is granted and the data don't find
+        //  Delete_timings();
+
+//        //For check Is the permission is granted and the data don't find
         if (isStoragePermissionGranted() && data_today == 0) {
             getLocation();
         }
@@ -229,7 +224,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
 //                TVShowError.setVisibility(View.GONE);
 //                AdapterAzanVP adapterAzan = new AdapterAzanVP(getActivity());
 //                adapterAzan.setAzanList(timings);
-//
 //                //   adapterAzan.setAzanList(azan.getData());
 //                AzanFragmentVP.setAdapter(adapterAzan);
 //            }
@@ -297,22 +291,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                 //getting GPS status
                 isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
                 if (isGPSEnabled) {
-                    Log.i("TAG", "true");
-                    //For wait before get the location
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (location != null && data_today == 0) {
-                                Log.i("TAG", "second prager" + data_today);
-                                getPrayerTimes(getLatitude(), getLongitude());
-                                Log.i("TAG", "second prager" + data_today);
-
-                            } else {
-                                Log.i("TAG", "Location two is : " + location);
-
-                            }
-                        }
-                    },5000);
                 } else {
                     Log.i("TAG", "false");
                     TVShowError.setVisibility(View.VISIBLE);
@@ -349,7 +327,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
 
     private void getPrayerTimes(double latitude, double longitude) {
         //24.788626, 46.777509
-        Call<Azan> azanCall = apiServices.getPrayerTimes("46.777509", "24.788626", false);
+        Call<Azan> azanCall = apiServices.getPrayerTimes(latitude, longitude, false);
         azanCall.enqueue(new Callback<Azan>() {
             @Override
             public void onResponse(Call<Azan> call, Response<Azan> response) {
@@ -368,7 +346,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                             timingsOne.setDate_today(azan.getData().get(i).getDate().getGregorian().getDate());
                             timingsOne.setId_seq(i);
                             timingsOne.setCity(city_name);
-
                             Save_timings(timingsOne);
                         }
                     } else {
@@ -515,16 +492,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                 }
             }
             return;
-//            case AppConstants.GPS_REQUEST:
-//                Log.i("TAG", "Return from GPS_REQUEST");
-//                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    isGPSEnabled = true;
-//                    Log.i("TAG", "On GPS");
-//                } else {
-//                    Log.i("TAG", "On");
-//
-//                }
-//                break;
         }
 
     }
@@ -546,7 +513,15 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
 
     @Override
     public void onLocationChanged(Location location) {
+        Log.i("TAG", "Location Changed is : " + location);
+        if (location != null && data_today == 0) {
+            city_name = getCityName(location, location.getLatitude(), location.getLongitude());
+            Log.i("TAG", "City name : " + city_name);
+            getPrayerTimes(location.getLatitude(), location.getLongitude());
+        } else {
+            Log.i("TAG", "Location two is : " + location);
 
+        }
     }
 
     @Override
@@ -584,7 +559,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                         Log.i("TAG", "Activity e is :" + e.getMessage());
 
                     }
-                    // mContext.startActivity(intent);
                 }
             });
             //On pressing cancel button
@@ -594,9 +568,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                     dialog.dismiss();
                     TVShowError.setVisibility(View.VISIBLE);
                     TVShowError.setText(getActivity().getString(R.string.not_allow));
-
                     progressBar.setVisibility(View.GONE);
-                    //      recyclerView.setVisibility(View.GONE);
                 }
             });
 
@@ -646,8 +618,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
             } else {
                 provider_info = null;
                 Log.i("TAG", "provider_info is null");
-
-                //showSettingsAlert();
             }
 
             Log.i("TAG", "Go away ");
@@ -672,35 +642,13 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                             MIN_DISTANCE_CHANGE_FOR_UPDATES,
                             this
                     );
-                    //      openSettings();
-                    // showSettingsAlert();
-
                     if (locationManager != null) {
                         location = locationManager.getLastKnownLocation(provider_info);
                         updateGPSCoordinates();
-                        city_name = getCityName(getLatitude(), getLongitude());
+                        city_name = getCityName(location, getLatitude(), getLongitude());
                         Log.i("TAG", ":location is :" + getLatitude() + " \n" + getLongitude());
                         Log.i("TAG", ":City name is :" + city_name);
-
-//                        Log.i("TAG", "locationManager");
-
-                        //    updateGPSCoordinates();
-                        //  openSettings();
-                        //For wait before get the location
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (location != null && data_today == 0) {
-                                    Log.i("TAG", "second prager" + data_today);
-                                    getPrayerTimes(getLatitude(), getLongitude());
-                                    Log.i("TAG", "second prager" + data_today);
-
-                                } else {
-                                    Log.i("TAG", "Location one is : " + location);
-
-                                }
-                            }
-                        },5000);
+                        progressBar.setVisibility(View.VISIBLE);
 
                     } else {
                         Log.i("TAG", "locationManager is null");
@@ -771,20 +719,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
             isGPSEnabled = true;
             Log.i("TAG", "onSuccess.");
             //For wait before get the location
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (location != null && data_today == 0) {
-                        Log.i("TAG", "second prager" + data_today);
-                        getPrayerTimes(getLatitude(), getLongitude());
-                        Log.i("TAG", "second prager" + data_today);
-
-                    } else {
-                        Log.i("TAG", "Location three is : " + location);
-
-                    }
-                }
-            },5000);
         } else {
             mSettingsClient
                     .checkLocationSettings(mLocationSettingsRequest)
@@ -868,7 +802,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         delete_timings.execute();
     }
 
-    public String getCityName(double latitude, double longitude) {
+    public String getCityName(Location location, double latitude, double longitude) {
         String cityName = "";
         if (location != null) {
             //For change language to Arabic
