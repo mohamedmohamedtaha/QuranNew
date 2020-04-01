@@ -15,11 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import rx.Observable;
-import rx.Observer;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.observers.DisposableObserver;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import static com.MohamedTaha.Imagine.New.helper.Images.addImagesList;
 import static com.MohamedTaha.Imagine.New.helper.Images.getPositionForNameSwars;
@@ -30,8 +31,7 @@ public class GridViewFragmentInteractor implements GridViewFragmentPresenter {
     private List<ModelSora> name_Sroa;
     private String[] a = null;
     private String[] nzol_elsora = null;
-    private Subscription subscription;
-    private Subscription subscriptionForNameSora;
+    private CompositeDisposable disposable = new CompositeDisposable();
 
     public GridViewFragmentInteractor(GridViewFragmentView fragmentView, FragmentActivity context) {
         this.fragmentView = fragmentView;
@@ -60,29 +60,35 @@ public class GridViewFragmentInteractor implements GridViewFragmentPresenter {
                 }
                 return name_Sroa;
             }
-        });
-        subscriptionForNameSora = observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<ModelSora>>() {
-                    @Override
-                    public void onCompleted() {
-                    }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        disposable.add(observable.subscribeWith(new DisposableObserver<List<ModelSora>>() {
+            @Override
+            public void onNext(@NonNull List<ModelSora> modelSoras) {
+                if (fragmentView != null) {
+                    fragmentView.showAllINameSour(name_Sroa);
+                    fragmentView.thereData();
+                    fragmentView.showAnimation();
+                    Log.i("SetNameSora", "onNext");
 
-                    @Override
-                    public void onError(Throwable e) {
-                    }
+                }
+            }
 
-                    @Override
-                    public void onNext(List<ModelSora> modelSoras) {
-                        if (fragmentView != null) {
-                            fragmentView.showAllINameSour(name_Sroa);
-                            fragmentView.thereData();
-                            fragmentView.showAnimation();
-                            Log.i("SetNameSora", "onNext");
+            @Override
+            public void onError(@NonNull Throwable e) {
+                if (fragmentView != null) {
+                    fragmentView.hideProgress();
+                }
+            }
 
-                        }
-                    }
-                });
+            @Override
+            public void onComplete() {
+                if (fragmentView != null) {
+                    fragmentView.hideProgress();
+                }
+                Log.i("addImages", "onCompleted");
+            }
+        }));
     }
 
     @Override
@@ -93,45 +99,41 @@ public class GridViewFragmentInteractor implements GridViewFragmentPresenter {
             public List<Integer> call() throws Exception {
                 return addImagesList();
             }
-        });
-        subscription = modelAzkarObservable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<List<Integer>>() {
-                    @Override
-                    public void onCompleted() {
-                        if (fragmentView != null) {
-                            fragmentView.hideProgress();
-                        }
-                        Log.i("addImages", "onCompleted");
-                    }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        disposable.add(modelAzkarObservable.subscribeWith(new DisposableObserver<List<Integer>>() {
+            @Override
+            public void onNext(@NonNull List<Integer> integers) {
+                if (fragmentView != null) {
+                    fragmentView.showAllImages(integers);
+                    Log.i("addImages", "onNext");
+                }
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        if (fragmentView != null) {
-                            fragmentView.hideProgress();
-                        }
-                    }
+            @Override
+            public void onError(@NonNull Throwable e) {
+                if (fragmentView != null) {
+                    fragmentView.hideProgress();
+                }
+            }
 
-                    @Override
-                    public void onNext(List<Integer> integers) {
-                        if (fragmentView != null) {
-                            fragmentView.showAllImages(integers);
-                            Log.i("addImages", "onNext");
-                        }
-                    }
-                });
-
+            @Override
+            public void onComplete() {
+                if (fragmentView != null) {
+                    fragmentView.hideProgress();
+                }
+                Log.i("addImages", "onCompleted");
+            }
+        }));
     }
 
 
     @Override
     public void onDestroy() {
         fragmentView = null;
-        if (subscription != null && !subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
-        }
-        if (subscriptionForNameSora != null && !subscriptionForNameSora.isUnsubscribed()) {
-            subscriptionForNameSora.unsubscribe();
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.clear();
+            disposable.dispose();
         }
     }
 

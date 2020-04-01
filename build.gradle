@@ -22,6 +22,9 @@ allprojects {
 
         //For Animation
         maven { url 'https://jitpack.io' }
+        //For RXJava
+        maven { url "https://oss.jfrog.org/libs-snapshot" }
+
 
     }
 }
@@ -31,12 +34,12 @@ task clean(type: Delete) {
 }
 ext {
     supportLibraryVersion = '28.0.0'
-    supportButterKnife = '10.1.0'
+    supportButterKnife = '10.2.1'
     room_version = '2.2.5'
 
     archLifecycleVersion = '2.2.0-rc2'
     coreTestingVersion = '2.1.0'
-    materialVersion = '1.0.0'
+    materialVersion = '1.1.0'
     lifecycle_version = "2.2.0"
 
 }

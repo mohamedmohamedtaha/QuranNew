@@ -1,6 +1,7 @@
 package com.MohamedTaha.Imagine.New.mvp.interactor;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.mvp.model.ModelAzkar;
@@ -12,17 +13,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import rx.Observable;
-import rx.Observer;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.observers.DisposableObserver;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 
 public class AzkarFragmentInteractor implements AzkarFragmentPresenter {
+    private static final String TAG = "TAG";
     private AzkarFragmentView azkarFragmentView;
     private List<ModelAzkar> modelAzkar;
     private Context context;
-    private Subscription subscription;
+    private CompositeDisposable disposable;
 
     String[] array_azkar;
     String[] array_describe_azkar;
@@ -34,6 +40,7 @@ public class AzkarFragmentInteractor implements AzkarFragmentPresenter {
 
     @Override
     public void getAllData() {
+        disposable = new CompositeDisposable();
         azkarFragmentView.showProgress();
         Observable<List<ModelAzkar>> modelAzkarObservable = Observable.fromCallable(new Callable<List<ModelAzkar>>() {
             @Override
@@ -53,40 +60,46 @@ public class AzkarFragmentInteractor implements AzkarFragmentPresenter {
                 }
                 return modelAzkar;
             }
-        });
-        subscription = modelAzkarObservable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<ModelAzkar>>() {
-                    @Override
-                    public void onCompleted() {
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        disposable.add( modelAzkarObservable.subscribeWith(new DisposableObserver<List<ModelAzkar>>() {
+            @Override
+            public void onNext(@NonNull List<ModelAzkar> modelAzkars) {
+                if (azkarFragmentView != null) {
+                    azkarFragmentView.showAllINameAzkar(modelAzkars);
+                    azkarFragmentView.showAnimation();
+                    Log.d(TAG, "onNext  " );
 
-                        if (azkarFragmentView != null) {
-                            azkarFragmentView.hideProgress();
-                        }
-                    }
+                }
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        if (azkarFragmentView != null) {
-                            azkarFragmentView.hideProgress();
-                        }
-                    }
+            @Override
+            public void onError(@NonNull Throwable e) {
+                if (azkarFragmentView != null) {
+                    azkarFragmentView.hideProgress();
+                    Log.d(TAG, "onError  " );
 
-                    @Override
-                    public void onNext(List<ModelAzkar> modelAzkars) {
-                        if (azkarFragmentView != null) {
-                            azkarFragmentView.showAllINameAzkar(modelAzkars);
-                            azkarFragmentView.showAnimation();
-                        }
-                    }
-                });
+                }
+            }
+
+            @Override
+            public void onComplete() {
+                if (azkarFragmentView != null) {
+                    azkarFragmentView.hideProgress();
+                    Log.d(TAG, "onComplete  " );
+
+                }
+            }
+        }));
     }
 
     @Override
     public void onDestroy() {
         this.azkarFragmentView = null;
-        if (subscription != null && !subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.clear();
+            disposable.dispose();
+            Log.d(TAG, "disposable cleared  " );
         }
     }
 
@@ -102,7 +115,6 @@ public class AzkarFragmentInteractor implements AzkarFragmentPresenter {
                 azkarFragmentView.showAfterSearch();
                 azkarFragmentView.thereData();
             }
-
         });
     }
 

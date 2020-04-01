@@ -63,12 +63,14 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import rx.Subscription;
 
 import static android.content.Context.LOCATION_SERVICE;
 import static com.MohamedTaha.Imagine.New.rest.RetrofitClient.getRetrofit;
@@ -137,7 +139,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     private LocationSettingsRequest mLocationSettingsRequest;
     String language_name;
     String city_name = null;
-    private Subscription subscription;
+    private CompositeDisposable disposable = new CompositeDisposable();
 
 
     public AzanFragment() {
@@ -184,9 +186,31 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         // For get Date today
 
         //For get all data
-        timingsViewModel.getAllTimingsRxjava().subscribeOn(Schedulers.trampoline())
+
+        timingsViewModel.getAllTimingsRxjava()
+                .subscribeOn(Schedulers.io())
                 // .concatMap()
                 .observeOn(AndroidSchedulers.mainThread())
+//        disposable.add(timingsViewModel.getAllTimingsRxjava()
+//                .subscribeOn(Schedulers.io())
+//                // .concatMap()
+//                .observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableObserver<List<Timings>>(){
+//
+//                    @Override
+//                    public void onNext(@NonNull List<Timings> timings) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(@NonNull Throwable e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//                }));
                 .subscribe(all_Data -> {
                     //conusme Timings prayer here which is a list of Timings
                     if (all_Data.size() <= 0) {

@@ -1,11 +1,11 @@
-package com.MohamedTaha.Imagine.New.notification;
+package com.MohamedTaha.Imagine.New.notification.quran;
 
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import static com.MohamedTaha.Imagine.New.notification.AlarmReceiver.TIME_SEND;
+import static com.MohamedTaha.Imagine.New.notification.quran.AlarmReceiver.TIME_SEND;
 
 /**
  * Created by MANASATT on 04/09/17.

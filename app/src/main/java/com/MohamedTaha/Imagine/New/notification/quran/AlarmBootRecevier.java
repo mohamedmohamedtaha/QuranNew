@@ -1,4 +1,4 @@
-package com.MohamedTaha.Imagine.New.notification;
+package com.MohamedTaha.Imagine.New.notification.quran;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

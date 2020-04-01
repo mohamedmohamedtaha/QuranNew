@@ -66,10 +66,12 @@
                 android:value="com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity" />
         </activity>
 
-        <receiver android:name="com.MohamedTaha.Imagine.New.notification.CancelNotification" />
-        <receiver android:name="com.MohamedTaha.Imagine.New.notification.AlarmReceiver" />
+        <receiver android:name="com.MohamedTaha.Imagine.New.notification.quran.CancelNotification" />
+        <receiver android:name="com.MohamedTaha.Imagine.New.notification.quran.AlarmReceiver" />
+        <receiver android:name="com.MohamedTaha.Imagine.New.notification.prayerTimes.AlarmReceiverPrayerTime" />
+
         <receiver
-            android:name="com.MohamedTaha.Imagine.New.notification.AlarmBootRecevier"
+            android:name="com.MohamedTaha.Imagine.New.notification.quran.AlarmBootRecevier"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

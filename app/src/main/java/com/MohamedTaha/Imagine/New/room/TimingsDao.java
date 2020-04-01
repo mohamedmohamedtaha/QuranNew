@@ -13,6 +13,8 @@ import com.MohamedTaha.Imagine.New.mvp.model.azan.Timings;
 import java.util.List;
 
 import io.reactivex.Flowable;
+
+
 @Dao
 public interface TimingsDao {
     @Query("SELECT * FROM prayer_time")

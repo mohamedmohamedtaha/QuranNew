@@ -11,6 +11,7 @@ import java.util.List;
 
 import io.reactivex.Flowable;
 
+
 public class TimingsRepository {
     private static TimingsRepository timingsRepository;
     private static TimingsDao timingsDao;

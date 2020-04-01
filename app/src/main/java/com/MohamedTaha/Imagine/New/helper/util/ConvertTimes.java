@@ -80,5 +80,14 @@ public class ConvertTimes {
         }
         return isTrue;
     }
+    public static String convertFromMilliSecondsToTime(Long milliSeconds){
+        //Create a DateFormatter object for displaying date in specified format
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm aa");
+//Create a calender object that will convert the date and time value in millisecond to date.
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(milliSeconds);
+        return simpleDateFormat.format(calendar.getTime());
+
+    }
 
 }

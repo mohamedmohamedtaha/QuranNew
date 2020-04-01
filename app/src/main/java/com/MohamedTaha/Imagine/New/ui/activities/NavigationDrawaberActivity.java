@@ -28,14 +28,14 @@ import com.MohamedTaha.Imagine.New.informationInrto.TapTarget;
 import com.MohamedTaha.Imagine.New.informationInrto.TapTargetSequence;
 import com.MohamedTaha.Imagine.New.informationInrto.TapTargetView;
 import com.MohamedTaha.Imagine.New.mvp.interactor.NavigationDrawarInteractor;
-import com.MohamedTaha.Imagine.New.notification.NotificationHelper;
 import com.MohamedTaha.Imagine.New.mvp.presenter.NavigationDrawarPresenter;
+import com.MohamedTaha.Imagine.New.mvp.view.NavigationDrawarView;
+import com.MohamedTaha.Imagine.New.notification.quran.NotificationHelper;
 import com.MohamedTaha.Imagine.New.room.TimingsViewModel;
 import com.MohamedTaha.Imagine.New.ui.fragments.AzkarFragment;
 import com.MohamedTaha.Imagine.New.ui.fragments.FragmentSound;
 import com.MohamedTaha.Imagine.New.ui.fragments.GridViewFragment;
 import com.MohamedTaha.Imagine.New.ui.fragments.PartsFragment;
-import com.MohamedTaha.Imagine.New.mvp.view.NavigationDrawarView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -50,6 +50,7 @@ import io.reactivex.schedulers.Schedulers;
 import static com.MohamedTaha.Imagine.New.helper.Images.IMAGES;
 import static com.MohamedTaha.Imagine.New.helper.Images.addImagesList;
 import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertDate;
+import static com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationHelperPrayerTime.sendNotificationForPrayerTime;
 import static com.MohamedTaha.Imagine.New.ui.activities.SwipePagesActivity.IS_TRUE;
 import static com.MohamedTaha.Imagine.New.ui.fragments.SplashFragment.SAVE_ALL_IMAGES;
 import static com.MohamedTaha.Imagine.New.ui.fragments.SplashFragment.SAVE_PAGE;
@@ -89,10 +90,33 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         presenter = new NavigationDrawarInteractor(this);
         appPackageName = getPackageName();
 
+
+//        Flowable<Integer> integerObservable = Flowable.just(1, 2, 3);
+//        Completable completable = integerObservable.concatMapCompletable(x -> {
+//            return Completable.timer(x, TimeUnit.MICROSECONDS)
+//                    //    .subscribeOn(io.reactivex.rxjava3.schedulers.Schedulers.io())
+//                    //  .observeOn(io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread())
+//                    .doOnComplete(() -> Log.d("TOTO", x.toString() + Thread.currentThread().getName()));
+//        });
+//
+//        completable.doOnComplete(() -> Log.d("TOTO", "All items fineshed"  + Thread.currentThread().getName()))
+//        .blockingAwait();
+
         //-----------------------------------------------------------------------------------------------------------
         // check, Is data today is there or not in database ?
-        timingsViewModel = new ViewModelProvider(this).get(TimingsViewModel.class);
-        timingsViewModel.getTimingsByDataToday(convertDate()).subscribeOn(Schedulers.trampoline())
+       timingsViewModel = new ViewModelProvider(this).get(TimingsViewModel.class);
+//        io.reactivex.Flowable<Integer> integerFlowable = timingsViewModel.getTimingsByDataToday(convertDate());
+//        io.reactivex.Completable completable1 = integerFlowable.concatMapCompletable(date_today ->{
+//           return io.reactivex.Completable.timer(date_today,TimeUnit.MICROSECONDS)
+//                   .doOnComplete(()->Log.d("TOTO" , date_today.toString() + Thread.currentThread().getName()));
+//        });
+//        completable1.doOnComplete(()-> Log.d("TOTO" , "All items fineshed" + Thread.currentThread().getName()))
+//                .blockingAwait();
+
+
+        timingsViewModel.getTimingsByDataToday(convertDate()).
+                subscribeOn(Schedulers.trampoline())
+                // Add RXAndroid2 for support with Room because still RXjava3 don't support Room
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(date_today -> {
                     data_today = date_today;
@@ -104,12 +128,12 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                 });
         //-----------------------------------------------------------------------------------------------------------
         //for show way using
-        if (!SharedPerefrenceHelper.getBooleanForWayUsing(getApplicationContext(),IS_FIRST_TIME_WAY_USING,false)){
+        if (!SharedPerefrenceHelper.getBooleanForWayUsing(getApplicationContext(), IS_FIRST_TIME_WAY_USING, false)) {
             showInformation();
             SharedPerefrenceHelper.putBooleanForWayUsing(getApplicationContext(), IS_FIRST_TIME_WAY_USING, true);
         }
         //For open on the save pages immediately
-        if (SharedPerefrenceHelper.getBoolean(getApplicationContext(), IS_TRUE, false)){
+        if (SharedPerefrenceHelper.getBoolean(getApplicationContext(), IS_TRUE, false)) {
             addImagesList();
             Intent intent = new Intent(getApplicationContext(), SwipePagesActivity.class);
             intent.putIntegerArrayListExtra(SAVE_ALL_IMAGES, (ArrayList<Integer>) IMAGES);
@@ -190,8 +214,8 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                     break;
                 case R.id.prayer_times:
                     AzanFragment azanFragment = new AzanFragment();
-                HelperClass.replece(azanFragment, getSupportFragmentManager(), R.id.frameLayout);
-                break;
+                    HelperClass.replece(azanFragment, getSupportFragmentManager(), R.id.frameLayout);
+                    break;
             }
             current_fragment = id;
             return true;
@@ -218,6 +242,8 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         //For Settings Notifications
         NotificationHelper.sendNotificationEveryHalfDay(getApplicationContext());
         NotificationHelper.enableBootRecieiver(getApplicationContext());
+
+        sendNotificationForPrayerTime(getApplicationContext());
     }
 
     @Override
@@ -231,7 +257,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                 break;
             case R.id.action_use_way:
                 SharedPerefrenceHelper.removeDataForWayUsing(this);
-              //  SharedPerefrenceHelper.putBooleanForWayUsing(this,IS_FIRST_TIME_WAY_USING,false);
+                //  SharedPerefrenceHelper.putBooleanForWayUsing(this,IS_FIRST_TIME_WAY_USING,false);
                 //SharedPerefrenceHelper.putFirstTime(getApplicationContext(), FIRST_TIME, false);
                 HelperClass.startActivity(getApplicationContext(), SplashActivity.class);
                 break;
@@ -317,12 +343,12 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                                 .tintTarget(false)
                                 .id(2),
                         //This for R.id.spectial_button
-                        TapTarget.forToolbarOverflow(toobar,"   هذا الزر خاص", "      ضبط زمن الأشعارات  " +
+                        TapTarget.forToolbarOverflow(toobar, "   هذا الزر خاص", "      ضبط زمن الأشعارات  " +
                                 "\n" +
                                 "      عرض طريقة الاستخدام مرة أخرى    "
-                                +"\n"+
+                                + "\n" +
                                 "      وتقييم التطبيق     " +
-                                        "\n"+
+                                "\n" +
                                 "      ومراسلتنا    ")
                                 .outerCircleColor(R.color.blue)
                                 .outerCircleAlpha(0.9f)
@@ -371,14 +397,14 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                 });
 
         // You don't always need a sequence, and for that there's a single time tap target
-          TapTargetView.showFor(this, TapTarget.forView(findViewById(R.id.read_quran), getString(R.string.spectial_button),getString(R.string.read_string) )
+        TapTargetView.showFor(this, TapTarget.forView(findViewById(R.id.read_quran), getString(R.string.spectial_button), getString(R.string.read_string))
                 .cancelable(false)
                 .drawShadow(true)
                 .transparentTarget(true)
                 .outerCircleColor(R.color.blue)
-                  .outerCircleAlpha(0.9f)
+                .outerCircleAlpha(0.9f)
                 .textColor(android.R.color.white)
-                  .targetCircleColor(R.color.colorAccent)
+                .targetCircleColor(R.color.colorAccent)
                 .tintTarget(false), new TapTargetView.Listener() {
             @Override
             public void onTargetClick(TapTargetView view) {
@@ -434,7 +460,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     }
 
     private void setShowThreeItem() {
-        TapTargetView.showFor(this, TapTarget.forView(findViewById(R.id.read_parts), getString(R.string.spectial_button),getString(R.string.read_parts_string)
+        TapTargetView.showFor(this, TapTarget.forView(findViewById(R.id.read_parts), getString(R.string.spectial_button), getString(R.string.read_parts_string)
         )
                 .cancelable(false)
                 .drawShadow(true)
@@ -499,16 +525,16 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // For get data from GpsUtlis.vaja to AzanFragment
-        if (requestCode == AppConstants.GPS_REQUEST){
+        if (requestCode == AppConstants.GPS_REQUEST) {
             Log.i("TAG", "Skipped");
             AzanFragment azanFragment = new AzanFragment();
             HelperClass.replece(azanFragment, getSupportFragmentManager(), R.id.frameLayout);
-            azanFragment.onActivityResult(requestCode,resultCode,data);
-        }else if (requestCode == AzanFragment.LOCATION_PERMISSION_REQUEST_CODE){
+            azanFragment.onActivityResult(requestCode, resultCode, data);
+        } else if (requestCode == AzanFragment.LOCATION_PERMISSION_REQUEST_CODE) {
             Log.i("TAG", "LOCATION_PERMISSION_REQUEST_CODE");
 
-        }else {
-            super.onActivityResult(requestCode,resultCode,data);
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
 
         }
     }

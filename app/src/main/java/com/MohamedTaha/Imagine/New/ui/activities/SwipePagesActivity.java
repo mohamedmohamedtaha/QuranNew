@@ -1,11 +1,9 @@
 package com.MohamedTaha.Imagine.New.ui.activities;
 
 import android.app.NotificationManager;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -30,9 +28,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.MohamedTaha.Imagine.New.helper.Images.SAVE_POSITION;
-import static com.MohamedTaha.Imagine.New.notification.AlarmReceiver.NOTIFICATION_ID;
-import static com.MohamedTaha.Imagine.New.notification.AlarmReceiver.SAVE_Position_Notification;
-import static com.MohamedTaha.Imagine.New.notification.AlarmReceiver.TIME_SEND;
+import static com.MohamedTaha.Imagine.New.notification.quran.AlarmReceiver.NOTIFICATION_ID;
+import static com.MohamedTaha.Imagine.New.notification.quran.AlarmReceiver.SAVE_Position_Notification;
+import static com.MohamedTaha.Imagine.New.notification.quran.AlarmReceiver.TIME_SEND;
 import static com.MohamedTaha.Imagine.New.ui.fragments.AzkarFragment.SAVE_AZKAR;
 import static com.MohamedTaha.Imagine.New.ui.fragments.AzkarFragment.SAVE_POTION_AZKAR;
 import static com.MohamedTaha.Imagine.New.ui.fragments.GridViewFragment.SAVE_IMAGES;

@@ -15,12 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import rx.Observable;
-import rx.Observer;
-import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.observers.DisposableObserver;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import static com.MohamedTaha.Imagine.New.helper.Images.addImagesList;
 import static com.MohamedTaha.Imagine.New.helper.Images.getPositionForNameParts;
@@ -30,8 +30,8 @@ public class PartsFragmentsInteractor implements PartsFragmentPresenter {
     private String[] name_parts;
     private Context context;
     private List<ModelSora> name_part_list = new ArrayList<>();
-    private Subscription subscription_name_sora;
-    private Subscription subscriptionImages;
+    //private Subscription subscription_name_sora;
+    private CompositeDisposable disposable = new CompositeDisposable();
 
 
     public PartsFragmentsInteractor(PartsFragmentView partsFragmentView, FragmentActivity fragmentActivity) {
@@ -49,31 +49,32 @@ public class PartsFragmentsInteractor implements PartsFragmentPresenter {
                 public List<Integer> call() throws Exception {
                     return addImagesList();
                 }
-            });
-            subscriptionImages = modelAzkarObservable.subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<List<Integer>>() {
-                        @Override
-                        public void onCompleted() {
-                            if (partsFragmentView != null) {
-                                partsFragmentView.hideProgress();
-                            }
-                        }
+            }).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread());
+            disposable.add(modelAzkarObservable.subscribeWith(new DisposableObserver<List<Integer>>(){
+                @Override
+                public void onNext(@NonNull List<Integer> integers) {
+                    if (partsFragmentView != null) {
+                        partsFragmentView.showAllImages(integers);
+                    }
+                }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            if (partsFragmentView != null) {
-                                partsFragmentView.hideProgress();
-                            }
-                        }
+                @Override
+                public void onError(@NonNull Throwable e) {
+                    if (partsFragmentView != null) {
+                        partsFragmentView.hideProgress();
+                    }
+                }
 
-                        @Override
-                        public void onNext(List<Integer> integers) {
-                            if (partsFragmentView != null) {
-                                partsFragmentView.showAllImages(integers);
-                            }
-                        }
-                    });
+                @Override
+                public void onComplete() {
+                    if (partsFragmentView != null) {
+                        partsFragmentView.hideProgress();
+                    }
+                }
+            }));
+
+
         }
     }
 
@@ -101,36 +102,40 @@ public class PartsFragmentsInteractor implements PartsFragmentPresenter {
                 }
                 return name_part_list;
             }
-        });
-        subscription_name_sora = modelAzkarObservable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<ModelSora>>() {
-                    @Override
-                    public void onCompleted() {
-                    }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        disposable.add(modelAzkarObservable.subscribeWith(new DisposableObserver<List<ModelSora>>(){
+            @Override
+            public void onNext(@NonNull List<ModelSora> modelSoras) {
+                if (partsFragmentView != null) {
+                    partsFragmentView.showAllINamePart(modelSoras);
+                    partsFragmentView.showAnimation();
+                }
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                    }
+            @Override
+            public void onError(@NonNull Throwable e) {
+                if (partsFragmentView != null) {
+                    partsFragmentView.hideProgress();
+                }
+            }
 
-                    @Override
-                    public void onNext(List<ModelSora> modelSoras) {
-                        if (partsFragmentView != null) {
-                            partsFragmentView.showAllINamePart(modelSoras);
-                            partsFragmentView.showAnimation();
-                        }
-                    }
-                });
+            @Override
+            public void onComplete() {
+                if (partsFragmentView != null) {
+                    partsFragmentView.hideProgress();
+                }
+            }
+        }));
     }
 
     @Override
     public void onDestroy() {
         this.partsFragmentView = null;
-        if (subscription_name_sora != null && !subscription_name_sora.isUnsubscribed()) {
-            subscription_name_sora.unsubscribe();
-        }
-        if (subscriptionImages != null && !subscriptionImages.isUnsubscribed()) {
-            subscriptionImages.unsubscribe();
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.clear();
+            disposable.dispose();
+
         }
     }
 

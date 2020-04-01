@@ -3,6 +3,7 @@ package com.MohamedTaha.Imagine.New.mvp.interactor;
 import androidx.fragment.app.FragmentActivity;
 
 import com.MohamedTaha.Imagine.New.mvp.model.ImageModel;
+import com.MohamedTaha.Imagine.New.mvp.model.ModelAzkar;
 import com.MohamedTaha.Imagine.New.mvp.presenter.ListSoundReaderPresenter;
 import com.MohamedTaha.Imagine.New.mvp.view.ListSoundReaderView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -11,18 +12,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import rx.Observable;
-import rx.Observer;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.observers.DisposableObserver;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import static com.MohamedTaha.Imagine.New.helper.Images.getData;
 
 public class ListSoundReaderInteractor implements ListSoundReaderPresenter {
     private ListSoundReaderView listSoundReaderView;
     private FragmentActivity context;
-    private Subscription subscription;
+    private CompositeDisposable disposable;
 
 
     public ListSoundReaderInteractor(ListSoundReaderView listSoundReaderView, FragmentActivity context) {
@@ -33,14 +35,15 @@ public class ListSoundReaderInteractor implements ListSoundReaderPresenter {
     @Override
     public void onDestroy() {
         listSoundReaderView = null;
-        if (subscription != null && !subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.clear();
+            disposable.dispose();
         }
     }
 
     @Override
     public void getAllData() {
-
+ disposable = new CompositeDisposable();
         listSoundReaderView.showProgress();
 
         Observable<List<ImageModel>> modelAzkarObservable = Observable.fromCallable(new Callable<List<ImageModel>>() {
@@ -48,32 +51,31 @@ public class ListSoundReaderInteractor implements ListSoundReaderPresenter {
             public List<ImageModel> call() throws Exception {
                 return getData(context);
             }
-        });
-        subscription = modelAzkarObservable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<ImageModel>>() {
-                    @Override
-                    public void onCompleted() {
-                        if (listSoundReaderView != null) {
-                            listSoundReaderView.hideProgress();
-                        }
-                    }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        disposable.add(modelAzkarObservable.subscribeWith(new DisposableObserver<List<ImageModel>>(){
+            @Override
+            public void onNext(@NonNull List<ImageModel> modelAzkars) {
+                if (listSoundReaderView != null) {
+                    listSoundReaderView.showAllData(modelAzkars);
+                    listSoundReaderView.showAnimation();
+                }
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        if (listSoundReaderView != null) {
-                            listSoundReaderView.hideProgress();
-                        }
-                    }
+            @Override
+            public void onError(@NonNull Throwable e) {
+                if (listSoundReaderView != null) {
+                    listSoundReaderView.hideProgress();
+                }
+            }
 
-                    @Override
-                    public void onNext(List<ImageModel> imageModels) {
-                        if (listSoundReaderView != null) {
-                            listSoundReaderView.showAllData(imageModels);
-                            listSoundReaderView.showAnimation();
-                        }
-                    }
-                });
+            @Override
+            public void onComplete() {
+                if (listSoundReaderView != null) {
+                    listSoundReaderView.hideProgress();
+                }
+            }
+        }));
     }
 
     @Override

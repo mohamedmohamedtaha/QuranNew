@@ -12,6 +12,7 @@ import java.util.List;
 
 import io.reactivex.Flowable;
 
+
 public class TimingsViewModel extends AndroidViewModel {
     private TimingsRepository timingsRepository;
     private LiveData<List<Timings>> getAllTimings;

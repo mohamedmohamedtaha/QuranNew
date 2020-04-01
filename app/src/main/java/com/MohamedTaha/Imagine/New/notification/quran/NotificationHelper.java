@@ -1,4 +1,4 @@
-package com.MohamedTaha.Imagine.New.notification;
+package com.MohamedTaha.Imagine.New.notification.quran;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -29,19 +29,15 @@ public class NotificationHelper {
         //getString Retrieve a String value from the Preference
         String repear = sharedPreferences.getString(context.getString(R.string.settings_Notification_key),
                 context.getString(R.string.settings_Notification_default));
-
         //Setting intent to class where notification will be handled
         Intent intent = new Intent(context, AlarmReceiver.class);
-
         //Setting pending intent to respond to broadcast sent by AlarmManager every day at 8am
         alarmPendingIntent = PendingIntent.getBroadcast(context, ALARM_TYPE_ELAPSED, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         //getting instance of AlarmManager service
         alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-
         //Inexact alarm everyday since device is booted up. This is a better choise and
         //scales well when device time preference/locale is changed
         //we are setting alarm to fire notification after 15 minutes , and every 15 minutes there on
-
         alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
                 SystemClock.elapsedRealtime() + setAlarm(repear),
                 setAlarm(repear), alarmPendingIntent);
