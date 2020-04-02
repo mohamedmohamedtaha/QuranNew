@@ -32,7 +32,7 @@ import static com.MohamedTaha.Imagine.New.helper.Images.addImagesList;
  */
 
 public class AlarmReceiver extends BroadcastReceiver {
-    public static int notificationId;
+    private static int notificationId;
     private static final String CHANNEL_ID = "com.MohamedTaha.Imagine.Quran.notification";
     public static final String NOTIFICATION_ID = "notificationOpen";
     public static final String TIME_SEND = "time_send";

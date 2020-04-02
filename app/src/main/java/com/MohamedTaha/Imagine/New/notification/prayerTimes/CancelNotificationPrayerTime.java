@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import static com.MohamedTaha.Imagine.New.notification.prayerTimes.AlarmReceiverPrayerTime.SEND_TIME_FOR_SEINDING;
 import static com.MohamedTaha.Imagine.New.notification.prayerTimes.AlarmReceiverPrayerTime.cancelMultipleAlarms;
 import static com.MohamedTaha.Imagine.New.notification.quran.AlarmReceiver.TIME_SEND;
 
@@ -13,13 +14,13 @@ import static com.MohamedTaha.Imagine.New.notification.quran.AlarmReceiver.TIME_
  */
 
 public class CancelNotificationPrayerTime extends BroadcastReceiver {
-    private int time_send;
+    private int send_time;
 
     @Override
     public void onReceive(Context context, Intent intent) {
       //  cancelMultipleAlarms(context);
-        time_send = intent.getIntExtra(TIME_SEND, -1);
+        send_time = intent.getIntExtra(SEND_TIME_FOR_SEINDING, -1);
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.cancel(time_send);
+        manager.cancel(send_time);
     }
 }

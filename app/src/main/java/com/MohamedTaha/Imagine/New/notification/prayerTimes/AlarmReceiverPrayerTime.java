@@ -15,7 +15,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
@@ -23,26 +22,16 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import com.MohamedTaha.Imagine.New.R;
-import com.MohamedTaha.Imagine.New.notification.quran.CancelNotification;
 import com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity;
-import com.MohamedTaha.Imagine.New.ui.activities.SwipePagesActivity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import org.parceler.Parcels;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Random;
 
-import static com.MohamedTaha.Imagine.New.helper.Images.IMAGES;
-import static com.MohamedTaha.Imagine.New.helper.Images.addImagesList;
-import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.compareTwoTimes;
-import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertDate;
 import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertFromMilliSecondsToTime;
-import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertTimeToAM;
 import static com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationHelperPrayerTime.TEXT_NOTIFICATION;
 
 /**
@@ -51,324 +40,43 @@ import static com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationH
 
 public class AlarmReceiverPrayerTime extends BroadcastReceiver {
     private static final String CHANNEL_ID = "com.MohamedTaha.Imagine.Quran.notification";
-    public static final String TIME_SEND = "time_send";
+    public static final String SEND_TIME_FOR_SEINDING = "time_send";
+    private static final String NOTIFICATION_ID_FOR_PRAYER_TIMES = "notification_id_for_prayer_times";
     public static int num;
-    //  private ArrayList<String> text_for_prayer_time  = new ArrayList<>();
-    //  private String text_for_prayer_time  ;
-  //  private ArrayList<ModelMessageNotification> text_for_prayer_time;
-
-    ArrayList<ModelMessageNotification> minutes ;
+    private int notification_id_for_prayer_times;
+    ArrayList<ModelMessageNotification> minutes;
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        //   intent = new Intent(context, NavigationDrawaberActivity.class);
-        //  text_for_prayer_time = new ModelMessageNotification();
+        minutes = new ArrayList<>();
+        minutes.clear();
         if (intent != null) {
-            minutes = new ArrayList<>();
             Bundle bundle = intent.getExtras();
-            Type listType = new TypeToken<List<ModelMessageNotification>>() {}.getType();
+            Type listType = new TypeToken<List<ModelMessageNotification>>() {
+            }.getType();
             String st = bundle.getString(TEXT_NOTIFICATION);
-            minutes = new Gson().fromJson(st,listType);
-       //     Calendar calendar = Calendar.getInstance();
-         //   calendar.setTimeInMillis(System.currentTimeMillis());
-            for (int i =0;i<minutes.size();i++){
-          //      if (compareTwoTimes(convertTimeToAM("07:05 pm")) ){
-            //          if (convertFromMilliSecondsToTime(calendar.getTimeInMillis()).equals(convertFromMilliSecondsToTime(text_for_prayer_time.get(i).getTime_payer()))){
-                Log.d("TT", convertFromMilliSecondsToTime(minutes.get(i).getTime_payer()) + ":" +minutes.get(i).getText_notification());
-                    //Log.d("TT", "Size :" + convertFromMilliSecondsToTime(calendar.getTimeInMillis()));
-//               }
-//                Log.d("TTT", convertFromMilliSecondsToTime(text_for_prayer_time.get(0).getTime_payer()) + ":"
-//                        +convertFromMilliSecondsToTime(calendar.getTimeInMillis()));
+            minutes = new Gson().fromJson(st, listType);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            for (int i = 0; i < minutes.size(); i++) {
+                if (convertFromMilliSecondsToTime(calendar.getTimeInMillis())
+                        .equals(convertFromMilliSecondsToTime(minutes.get(i).getTime_payer()))) {
+                    Log.d("TT", convertFromMilliSecondsToTime(minutes.get(i).getTime_payer()) + ":" +
+                            minutes.get(i).getText_notification());
+                    /**This flag is generally used by activies that want to present a launcher style
+                     behavior:they give the user  *a list of separete things* that can be done
+                     ,which otherwise run completely independently of the acitivity launching them*/
+                    intent = new Intent(context, NavigationDrawaberActivity.class);
+                    intent.putExtra(NOTIFICATION_ID_FOR_PRAYER_TIMES, notification_id_for_prayer_times);
+                    intent.putExtra(SEND_TIME_FOR_SEINDING, num);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    PendingIntent openIntent = PendingIntent.getActivity(context, num, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    //Build notification
+                    createNotification(context, openIntent, context.getString(R.string.app_name), minutes.get(i).getText_notification());
+                } else {
+                }
             }
-         //   text_for_prayer_time = new Gson().fromJson(bundle.getString(TEXT_NOTIFICATION), ModelMessageNotification.class);
-            //text_for_prayer_time = Parcels.unwrap(intent.getParcelableExtra(TEXT_NOTIFICATION));
-            //     minutes = Parcels.unwrap(bundle.getParcelable(TEXT_NOTIFICATION));
-            //  text_for_prayer_time = bundle.getString(TEXT_NOTIFICATION);
-            //      text_for_prayer_time = bundle.getString(TEXT_NOTIFICATION);
-
-//            if (text_for_prayer_time.length >= 0){
-//
-//            }
-//            for (int i= 0; i < text_for_prayer_time.length; i++){
-
-            // }
-
-            //  Log.d("TT",text_for_prayer_time + "   intent : " +intent.getData());
-        } else {
-            //       Log.d("TT","intent : " +intent);
-
         }
-
-        /**
-         This flag is generally used by activies that want to present a launcher style
-         behavior:they give the user  *a list of separete things* that can be done
-         ,which otherwise run completely independently of the acitivity launching them
-         */
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    /*
-      Start Activity
-    */
-        PendingIntent openIntent = PendingIntent.getActivity(context, num, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        createNotification(context, openIntent, context.getString(R.string.app_name), "test");
-
-        //Build notification
-        //   createNotification(context, openIntent, context.getString(R.string.app_name), toastMessages[randomIndex]);
-    }
-
-    public static int setNotificationForShow(int randomIndex) {
-        int number;
-        switch (randomIndex) {
-            case 0:
-            case 1:
-                number = 0;
-                break;
-            case 2:
-            case 3:
-                number = 1;
-                break;
-            case 4:
-                number = 45;
-                break;
-            case 5:
-                number = 52;
-                break;
-            case 6:
-            case 16:
-                number = 53;
-                break;
-            case 7:
-            case 8:
-                number = 48;
-                break;
-            case 9:
-            case 10:
-            case 21:
-                number = 5;
-                break;
-            case 11:
-            case 72:
-                number = 9;
-                break;
-            case 12:
-            case 13:
-                number = 10;
-                break;
-            case 14:
-                number = 49;
-                break;
-            case 15:
-                number = 50;
-                break;
-            case 17:
-                number = 54;
-                break;
-            case 18:
-            case 19:
-                number = 55;
-                break;
-            case 20:
-                number = 3;
-                break;
-            case 22:
-            case 23:
-                number = 2;
-                break;
-            case 24:
-                number = 3;
-                break;
-            case 25:
-            case 26:
-                number = 75;
-                break;
-            case 27:
-            case 28:
-            case 29:
-                number = 76;
-                break;
-            case 30:
-                number = 77;
-                break;
-            case 31:
-            case 32:
-                number = 78;
-                break;
-            case 33:
-                number = 81;
-                break;
-            case 34:
-            case 35:
-                number = 83;
-                break;
-            case 36:
-                number = 84;
-                break;
-            case 37:
-                number = 85;
-                break;
-            case 38:
-                number = 86;
-                break;
-            case 39:
-                number = 106;
-                break;
-            case 40:
-            case 41:
-                number = 108;
-                break;
-            case 42:
-                number = 109;
-                break;
-            case 43:
-                number = 110;
-                break;
-            case 44:
-                number = 111;
-                break;
-            case 45:
-                number = 112;
-                break;
-            case 46:
-            case 47:
-            case 48:
-            case 49:
-                number = 602;
-                break;
-            case 50:
-                number = 599;
-                break;
-            case 51:
-                number = 596;
-                break;
-            case 52:
-            case 53:
-                number = 597;
-                break;
-            case 54:
-                number = 596;
-                break;
-            case 55:
-            case 56:
-            case 57:
-                number = 595;
-                break;
-            case 58:
-                number = 593;
-                break;
-            case 59:
-                number = 592;
-                break;
-            case 60:
-                number = 585;
-                break;
-            case 61:
-                number = 586;
-                break;
-            case 62:
-            case 63:
-                number = 591;
-                break;
-            case 64:
-            case 65:
-                number = 590;
-                break;
-            case 66:
-                number = 589;
-                break;
-            case 67:
-                number = 590;
-                break;
-            case 68:
-            case 69:
-            case 70:
-                number = 588;
-                break;
-            case 71:
-                number = 585;
-                break;
-            case 73:
-            case 74:
-                number = 258;
-                break;
-            case 75:
-                number = 262;
-                break;
-            case 76:
-                number = 271;
-                break;
-            case 77:
-                number = 273;
-                break;
-            case 78:
-                number = 274;
-                break;
-            case 79:
-                number = 275;
-                break;
-            case 80:
-            case 81:
-                number = 276;
-                break;
-            case 82:
-                number = 280;
-                break;
-            case 83:
-                number = 281;
-                break;
-            case 84:
-                number = 282;
-                break;
-            case 85:
-                number = 283;
-                break;
-            case 86:
-                number = 284;
-                break;
-            case 87:
-                number = 347;
-                break;
-            case 88:
-                number = 343;
-                break;
-            case 89:
-                number = 292;
-                break;
-            case 90:
-                number = 295;
-                break;
-            case 91:
-                number = 297;
-                break;
-            case 92:
-                number = 298;
-                break;
-            case 93:
-                number = 302;
-                break;
-            case 94:
-                number = 305;
-                break;
-            case 95:
-                number = 308;
-                break;
-            case 96:
-                number = 309;
-                break;
-            case 97:
-                number = 310;
-                break;
-            case 98:
-                number = 317;
-                break;
-            case 99:
-                number = 320;
-                break;
-            case 100:
-                number = 322;
-                break;
-            default:
-                number = 330;
-        }
-        return number;
     }
 
     public static NotificationCompat.Builder createNotification(Context context, PendingIntent openIntent, CharSequence ticker, CharSequence desribe) {
@@ -377,11 +85,10 @@ public class AlarmReceiverPrayerTime extends BroadcastReceiver {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createChannel(context);
         }
-//        Intent cancelNotification = new Intent(context, CancelNotification.class);
-//        //    cancelNotification.putExtra(NOTIFICATION_ID, notificationId);
-//        cancelNotification.putExtra(TIME_SEND, num);
+        Intent cancelNotification = new Intent(context, CancelNotificationPrayerTime.class);
+        cancelNotification.putExtra(SEND_TIME_FOR_SEINDING, num);
 
-        //  PendingIntent exitPending = PendingIntent.getBroadcast(context, num, cancelNotification, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent exitPending = PendingIntent.getBroadcast(context, num, cancelNotification, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Bitmap bitmap_icon = BitmapFactory.decodeResource(context.getResources(), R.mipmap.logo);
         //Create a new Notification
@@ -402,7 +109,7 @@ public class AlarmReceiverPrayerTime extends BroadcastReceiver {
         builder.setColor(ContextCompat.getColor(context.getApplicationContext(), R.color.colorPrimaryDark));
 
         //will make it a Heads Up  Display Style
-        //    builder.addAction(R.drawable.ic_close, context.getString(R.string.notNow), exitPending);
+        builder.addAction(R.drawable.ic_close, context.getString(R.string.notNow), exitPending);
         builder.addAction(R.drawable.ic_reply, context.getString(R.string.readNow), openIntent);
         builder.setContentIntent(openIntent);
         builder.setDefaults(Notification.DEFAULT_ALL);//Require VIBREATE permission
@@ -444,21 +151,6 @@ public class AlarmReceiverPrayerTime extends BroadcastReceiver {
 
     }
 
-    //    public static void  setMultiple(Context context){
-//        AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-//        ArrayList<PendingIntent> pendingIntents = new ArrayList<PendingIntent>();
-//        for (int i=0; i<10; i++){
-//            Intent intent = new Intent(context,AlarmReceiverPrayerTime.class);
-//            PendingIntent pendingIntent = PendingIntent.getBroadcast(context,i,intent,0);
-//            alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,SystemClock.elapsedRealtime()+60000 *i ,
-//                    pendingIntent);
-//            pendingIntents.add(pendingIntent);
-//            createNotification(context, pendingIntent, context.getString(R.string.app_name), "Test Notification");
-//            Log.d("TT" , "i is : " + i);
-//        }
-//        Log.d("TT" , "finish");
-//
-//    }
     public static void cancelMultipleAlarms(Context context) {
         int size = 3;
         AlarmManager alarmManager[] = new AlarmManager[size];
@@ -490,4 +182,6 @@ public class AlarmReceiverPrayerTime extends BroadcastReceiver {
         notificationChannel2.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
         manager.createNotificationChannel(notificationChannel2);
     }
+
+
 }
