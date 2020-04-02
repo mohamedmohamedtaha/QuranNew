@@ -69,6 +69,7 @@
         <receiver android:name="com.MohamedTaha.Imagine.New.notification.quran.CancelNotification" />
         <receiver android:name="com.MohamedTaha.Imagine.New.notification.quran.AlarmReceiver" />
         <receiver android:name="com.MohamedTaha.Imagine.New.notification.prayerTimes.AlarmReceiverPrayerTime" />
+        <receiver android:name="com.MohamedTaha.Imagine.New.notification.prayerTimes.CancelNotificationPrayerTime" />
 
         <receiver
             android:name="com.MohamedTaha.Imagine.New.notification.quran.AlarmBootRecevier"
