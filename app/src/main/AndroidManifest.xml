@@ -68,7 +68,7 @@
 
         <receiver android:name="com.MohamedTaha.Imagine.New.notification.quran.CancelNotification" />
         <receiver android:name="com.MohamedTaha.Imagine.New.notification.quran.AlarmReceiver" />
-        <receiver android:name="com.MohamedTaha.Imagine.New.notification.prayerTimes.AlarmReceiverPrayerTime" />
+<!--        <receiver android:name="com.MohamedTaha.Imagine.New.notification.prayerTimes.AlarmReceiverPrayerTime" />-->
         <receiver android:name="com.MohamedTaha.Imagine.New.notification.prayerTimes.CancelNotificationPrayerTime" />
 
         <receiver
@@ -92,6 +92,7 @@
                 <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
         </service>
+        <service android:name=".service.ServiceForPlayPrayerTimesNotification" android:enabled="true"/>
 
         <receiver android:name="com.MohamedTaha.Imagine.New.service.MediaPlayerService$DeleteNotification">
             <intent-filter>

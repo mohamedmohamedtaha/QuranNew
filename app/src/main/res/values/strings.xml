@@ -21,6 +21,8 @@
     //Close App
     <string name="tetileClose">إغلاق التطبيق</string>
     <string name="messageClose">هل تريد إغلاق التطبيق؟</string>
+    <string name="close"> إغلاق</string>
+
     <string name="textYes">نعم</string>
     <string name="textNo">لا</string>
     <string name="nameSora">القُرْانُ الكَرِيمُ</string>

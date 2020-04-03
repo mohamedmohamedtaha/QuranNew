@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.MohamedTaha.Imagine.New.notification.quran.AlarmBootRecevier;
+import com.MohamedTaha.Imagine.New.service.ServiceForPlayPrayerTimesNotification;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -33,23 +34,32 @@ public class NotificationHelperPrayerTime {
         //Set the alarm to start independed prayer timer
         Calendar setTime = Calendar.getInstance();
         setTime.setTimeInMillis(System.currentTimeMillis());
-        setTimePrayerWithText(listForSavePrayerTimes, setTime, 20, 35, "حان الأن موعد أذان الفجر");
-        setTimePrayerWithText(listForSavePrayerTimes, setTime, 20, 37, "حان الأن موعد أذان الشروق");
-        setTimePrayerWithText(listForSavePrayerTimes, setTime, 20, 39, "حان الأن موعد أذان الظهر");
-        setTimePrayerWithText(listForSavePrayerTimes, setTime, 20, 41, "حان الأن موعد أذان العصر");
-        setTimePrayerWithText(listForSavePrayerTimes, setTime, 21, 25, "حان الأن موعد أذان المغرب");
-        setTimePrayerWithText(listForSavePrayerTimes, setTime, 20, 59, "حان الأن موعد أذان العشاء");
+        setTimePrayerWithText(listForSavePrayerTimes, setTime, 22, 15, "حان الأن موعد أذان الفجر");
+        setTimePrayerWithText(listForSavePrayerTimes, setTime, 22, 20, "حان الأن موعد أذان الشروق");
+        setTimePrayerWithText(listForSavePrayerTimes, setTime, 22, 25, "حان الأن موعد أذان الظهر");
+        setTimePrayerWithText(listForSavePrayerTimes, setTime, 22, 30, "حان الأن موعد أذان العصر");
+        setTimePrayerWithText(listForSavePrayerTimes, setTime, 22, 35, "حان الأن موعد أذان المغرب");
+        setTimePrayerWithText(listForSavePrayerTimes, setTime, 22, 40, "حان الأن موعد أذان العشاء");
         AlarmManager[] alarmManager = new AlarmManager[listForSavePrayerTimes.size()];
         Intent intent[] = new Intent[alarmManager.length];
         for (int i = 0; i < alarmManager.length; i++) {
-            intent[i] = new Intent(context, AlarmReceiverPrayerTime.class);
+
+         //1   intent[i] = new Intent(context, AlarmReceiverPrayerTime.class);
+            intent[i] = new Intent(context, ServiceForPlayPrayerTimesNotification.class);
             Bundle bundle = new Bundle();
             bundle.putString(TEXT_NOTIFICATION, new Gson().toJson(listForSavePrayerTimes));
             intent[i].putExtras(bundle);
             /* Here is very important,when we set one alarm, pending intent id becomes zero
             but if we want set multiple alarms pending intent id has to be unique so i counter
             is enough to be unique for PendingIntent    */
-            pendingIntent = PendingIntent.getBroadcast(context, i, intent[i], 0);
+
+          //2  pendingIntent = PendingIntent.getBroadcast(context, i, intent[i], 0);
+            pendingIntent = PendingIntent.getService(context, i, intent[i], 0);
+
+
+          //  context.startService(new Intent(context, ServiceForPlayPrayerTimesNotification.class));
+        //    context.stopService(new Intent(context, ServiceForPlayPrayerTimesNotification.class));
+
             alarmManager[i] = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             alarmManager[i].setExact(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
             Log.d("TT", "i is : " + convertFromMilliSecondsToTime(setTime.getTimeInMillis()) +

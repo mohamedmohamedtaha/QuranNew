@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -39,7 +40,7 @@ import static com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationH
  */
 
 public class AlarmReceiverPrayerTime extends BroadcastReceiver {
-    private static final String CHANNEL_ID = "com.MohamedTaha.Imagine.Quran.notification";
+    private static final String CHANNEL_ID = "com.MohamedTaha.Imagine.Quran.notification.prayer.times";
     public static final String SEND_TIME_FOR_SEINDING = "time_send";
     private static final String NOTIFICATION_ID_FOR_PRAYER_TIMES = "notification_id_for_prayer_times";
     public static int num;
@@ -72,14 +73,14 @@ public class AlarmReceiverPrayerTime extends BroadcastReceiver {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     PendingIntent openIntent = PendingIntent.getActivity(context, num, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                     //Build notification
-                    createNotification(context, openIntent, context.getString(R.string.app_name), minutes.get(i).getText_notification());
+              //      createNotification(context, openIntent, context.getString(R.string.app_name), minutes.get(i).getText_notification());
                 } else {
                 }
             }
         }
     }
 
-    public static NotificationCompat.Builder createNotification(Context context, PendingIntent openIntent, CharSequence ticker, CharSequence desribe) {
+    public static NotificationCompat.Builder createNotification(Context context, CharSequence ticker, CharSequence desribe) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         //you only need to create  the cnannel on API 26+ devices
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -87,7 +88,6 @@ public class AlarmReceiverPrayerTime extends BroadcastReceiver {
         }
         Intent cancelNotification = new Intent(context, CancelNotificationPrayerTime.class);
         cancelNotification.putExtra(SEND_TIME_FOR_SEINDING, num);
-
         PendingIntent exitPending = PendingIntent.getBroadcast(context, num, cancelNotification, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Bitmap bitmap_icon = BitmapFactory.decodeResource(context.getResources(), R.mipmap.logo);
@@ -109,9 +109,7 @@ public class AlarmReceiverPrayerTime extends BroadcastReceiver {
         builder.setColor(ContextCompat.getColor(context.getApplicationContext(), R.color.colorPrimaryDark));
 
         //will make it a Heads Up  Display Style
-        builder.addAction(R.drawable.ic_close, context.getString(R.string.notNow), exitPending);
-        builder.addAction(R.drawable.ic_reply, context.getString(R.string.readNow), openIntent);
-        builder.setContentIntent(openIntent);
+        builder.addAction(R.drawable.ic_close, context.getString(R.string.close), exitPending);
         builder.setDefaults(Notification.DEFAULT_ALL);//Require VIBREATE permission
         builder.setStyle(new NotificationCompat.BigTextStyle().bigText(desribe));
         builder.setAutoCancel(true);
@@ -144,7 +142,7 @@ public class AlarmReceiverPrayerTime extends BroadcastReceiver {
 //                    setAlarm(repear), alarmPendingIntent);
             alarmManager[i] = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             alarmManager[i].set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-            createNotification(context, pendingIntent, context.getString(R.string.app_name), "Test for Notification");
+            createNotification(context, context.getString(R.string.app_name), "Test for Notification");
             Log.d("TT", "i is : " + i);
 
         }
