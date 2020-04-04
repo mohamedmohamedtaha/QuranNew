@@ -20,7 +20,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.MohamedTaha.Imagine.New.AppConstants;
-import com.MohamedTaha.Imagine.New.AzanFragment;
+import com.MohamedTaha.Imagine.New.ui.fragments.AzanFragment;
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.helper.HelperClass;
 import com.MohamedTaha.Imagine.New.helper.SharedPerefrenceHelper;
@@ -44,12 +44,15 @@ import java.util.ArrayList;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.MohamedTaha.Imagine.New.helper.Images.IMAGES;
 import static com.MohamedTaha.Imagine.New.helper.Images.addImagesList;
 import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertDate;
+import static com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationHelperPrayerTime.enableBootRecieiver;
 import static com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationHelperPrayerTime.sendNotificationForPrayerTime;
 import static com.MohamedTaha.Imagine.New.ui.activities.SwipePagesActivity.IS_TRUE;
 import static com.MohamedTaha.Imagine.New.ui.fragments.SplashFragment.SAVE_ALL_IMAGES;
@@ -112,6 +115,46 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 //        });
 //        completable1.doOnComplete(()-> Log.d("TOTO" , "All items fineshed" + Thread.currentThread().getName()))
 //                .blockingAwait();
+
+//
+//        Observable<Integer>integerObservable = Observable.just(1,2);
+//        Observable<String> stringObservable = integerObservable.flatMap(result1 -> Observable.just("Value is :" +
+//                result1));
+//        stringObservable.subscribe(finalResult ->Log.d("Final result : " ,"Final :" +  finalResult));
+
+
+        Flowable<Integer> integerObservable = timingsViewModel.getTimingsByDataToday(convertDate());
+                integerObservable.
+                subscribeOn(Schedulers.trampoline())
+                // Add RXAndroid2 for support with Room because still RXjava3 don't support Room
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(date_today -> {
+                    data_today = date_today;
+                    Log.i("TAG", "Navigation Drawaer : " + data_today);
+                    //  Toast.makeText(getActivity(), "date today is " + date_today, Toast.LENGTH_SHORT).show();
+                }, e -> {
+                    Toast.makeText(getApplicationContext(), "e : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                });
+
+        Flowable<Integer>integerObservable1 = Flowable.just(3,4);
+        Flowable.merge(integerObservable,integerObservable1)
+        .subscribe(finalResult ->
+
+                {
+                    if (data_today > 0){
+                        Log.d("Final result : " ," Flowable Final :" +  data_today +" "+finalResult);
+
+                    }else {
+                        Log.d("Final result : " ," Flowable Final :" +finalResult);
+
+                    }
+                }
+
+              );
+
+
+
 
 
         timingsViewModel.getTimingsByDataToday(convertDate()).
@@ -243,7 +286,9 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         NotificationHelper.sendNotificationEveryHalfDay(getApplicationContext());
         NotificationHelper.enableBootRecieiver(getApplicationContext());
 
-        sendNotificationForPrayerTime(getApplicationContext());
+//        sendNotificationForPrayerTime(getApplicationContext());
+//        enableBootRecieiver(getApplicationContext());
+
     }
 
     @Override

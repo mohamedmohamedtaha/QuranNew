@@ -15,7 +15,7 @@ public class AlarmBootRecevierPrayerTime extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
             //only enabling one type of notification
-            NotificationHelper.sendNotificationEveryHalfDay(context);
+            NotificationHelperPrayerTime.sendNotificationForPrayerTime(context);
         }
     }
 }

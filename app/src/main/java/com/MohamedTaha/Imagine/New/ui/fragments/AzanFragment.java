@@ -1,4 +1,4 @@
-package com.MohamedTaha.Imagine.New;
+package com.MohamedTaha.Imagine.New.ui.fragments;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -33,6 +33,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.MohamedTaha.Imagine.New.Adapter.AdapterAzanVP;
+import com.MohamedTaha.Imagine.New.AppConstants;
+import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.helper.GPSTracker;
 import com.MohamedTaha.Imagine.New.helper.HelperClass;
 import com.MohamedTaha.Imagine.New.mvp.model.azan.Azan;
@@ -63,8 +65,6 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -73,6 +73,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.content.Context.LOCATION_SERVICE;
+import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertDate;
 import static com.MohamedTaha.Imagine.New.rest.RetrofitClient.getRetrofit;
 import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.data_today;
 
@@ -187,30 +188,23 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
 
         //For get all data
 
+        timingsViewModel.getTimingsByDataToday(convertDate()).
+                subscribeOn(Schedulers.trampoline())
+                // Add RXAndroid2 for support with Room because still RXjava3 don't support Room
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(date_today -> {
+                    data_today = date_today;
+                    Log.i("TAG", "Navigation Drawaer : " + data_today);
+                    //  Toast.makeText(getActivity(), "date today is " + date_today, Toast.LENGTH_SHORT).show();
+                }, e -> {
+                    Toast.makeText(getActivity(), "e : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                });
+
         timingsViewModel.getAllTimingsRxjava()
                 .subscribeOn(Schedulers.io())
                 // .concatMap()
                 .observeOn(AndroidSchedulers.mainThread())
-//        disposable.add(timingsViewModel.getAllTimingsRxjava()
-//                .subscribeOn(Schedulers.io())
-//                // .concatMap()
-//                .observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableObserver<List<Timings>>(){
-//
-//                    @Override
-//                    public void onNext(@NonNull List<Timings> timings) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(@NonNull Throwable e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//
-//                    }
-//                }));
                 .subscribe(all_Data -> {
                     //conusme Timings prayer here which is a list of Timings
                     if (all_Data.size() <= 0) {
@@ -233,7 +227,8 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                     }
                 }, e -> {
                     Log.i("TAG", "Error RXJava" + e.getMessage());
-                });
+                })
+        ;
         //  Delete_timings();
 
 //        //For check Is the permission is granted and the data don't find

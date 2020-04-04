@@ -28,7 +28,7 @@ public class TimingsViewModel extends AndroidViewModel {
     public Flowable<List<Timings>> getAllTimingsRxjava(){
         return getAllTimingsRxjava;
     }
-    public   Flowable<Integer>getTimingsByDataToday(String date_today){
+    public Flowable<Integer>getTimingsByDataToday(String date_today){
         return timingsRepository.getTimingsByDataToday(date_today);
     }
 

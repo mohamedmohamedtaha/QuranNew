@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".AzanFragment">
+    tools:context=".ui.fragments.AzanFragment">
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_centerInParent="true"

@@ -78,6 +78,13 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+        <receiver
+            android:name="com.MohamedTaha.Imagine.New.notification.prayerTimes.AlarmBootRecevierPrayerTime"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
         <service android:name=".firebaseNotification.MyFirebaseMessagingService">
             <intent-filter>
