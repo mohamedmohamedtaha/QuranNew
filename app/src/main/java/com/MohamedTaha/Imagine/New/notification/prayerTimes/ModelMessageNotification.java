@@ -2,13 +2,12 @@ package com.MohamedTaha.Imagine.New.notification.prayerTimes;
 
 import org.parceler.Parcel;
 
-import java.util.ArrayList;
 @Parcel
 public class ModelMessageNotification {
-    private Long time_payer;
-    private  String text_notification;
+    Long time_payer;
+    String text_notification;
 
-    public ModelMessageNotification(Long time_payer,   String text_notification) {
+    public ModelMessageNotification(Long time_payer, String text_notification) {
         this.time_payer = time_payer;
         this.text_notification = text_notification;
     }
@@ -24,7 +23,7 @@ public class ModelMessageNotification {
         this.time_payer = time_payer;
     }
 
-    public   String getText_notification() {
+    public String getText_notification() {
         return text_notification;
     }
 

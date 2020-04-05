@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.MohamedTaha.Imagine.New.AppConstants;
+import com.MohamedTaha.Imagine.New.databinding.ActivityNavigationDrawaberBinding;
 import com.MohamedTaha.Imagine.New.ui.fragments.AzanFragment;
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.helper.HelperClass;
@@ -61,11 +63,12 @@ import static com.MohamedTaha.Imagine.New.ui.fragments.SplashFragment.SAVE_PAGE;
 public class NavigationDrawaberActivity extends AppCompatActivity implements NavigationDrawarView {
     private static final String SAVE_STATE_VIEW_PAGER = "save_state_view_pager";
     public static final String IS_FIRST_TIME_WAY_USING = "way_sueing";
+    private ActivityNavigationDrawaberBinding activityNavigationDrawaberBinding;
 
-    @BindView(R.id.nav_view)
-    BottomNavigationView navView;
-    @BindView(R.id.toobar)
-    Toolbar toobar;
+//    @BindView(R.id.nav_view)
+//    BottomNavigationView navView;
+//    @BindView(R.id.toobar)
+//    Toolbar toobar;
     @BindString(R.string.about)
     String aboutString;
     @BindString(R.string.shareApp)
@@ -74,8 +77,8 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     String notSupport;
     @BindString(R.string.exit_app)
     String exit_app;
-    @BindView(R.id.NavigationDrawaberActivity_VPager)
-    ViewPager NavigationDrawaberActivityVPager;
+//    @BindView(R.id.NavigationDrawaberActivity_VPager)
+//    ViewPager NavigationDrawaberActivityVPager;
     private int current_fragment;
     public static MaterialSearchView searchView;
     String appPackageName;
@@ -88,8 +91,12 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_navigation_drawaber);
-        ButterKnife.bind(this);
+        activityNavigationDrawaberBinding = ActivityNavigationDrawaberBinding.inflate(getLayoutInflater());
+        View view = activityNavigationDrawaberBinding.getRoot();
+        setContentView(view);
+
+      //   setContentView(R.layout.activity_navigation_drawaber);
+       // ButterKnife.bind(this);
         presenter = new NavigationDrawarInteractor(this);
         appPackageName = getPackageName();
 
@@ -123,35 +130,35 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 //        stringObservable.subscribe(finalResult ->Log.d("Final result : " ,"Final :" +  finalResult));
 
 
-        Flowable<Integer> integerObservable = timingsViewModel.getTimingsByDataToday(convertDate());
-                integerObservable.
-                subscribeOn(Schedulers.trampoline())
-                // Add RXAndroid2 for support with Room because still RXjava3 don't support Room
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(date_today -> {
-                    data_today = date_today;
-                    Log.i("TAG", "Navigation Drawaer : " + data_today);
-                    //  Toast.makeText(getActivity(), "date today is " + date_today, Toast.LENGTH_SHORT).show();
-                }, e -> {
-                    Toast.makeText(getApplicationContext(), "e : " + e.getMessage(), Toast.LENGTH_SHORT).show();
-
-                });
-
-        Flowable<Integer>integerObservable1 = Flowable.just(3,4);
-        Flowable.merge(integerObservable,integerObservable1)
-        .subscribe(finalResult ->
-
-                {
-                    if (data_today > 0){
-                        Log.d("Final result : " ," Flowable Final :" +  data_today +" "+finalResult);
-
-                    }else {
-                        Log.d("Final result : " ," Flowable Final :" +finalResult);
-
-                    }
-                }
-
-              );
+//        Flowable<Integer> integerObservable = timingsViewModel.getTimingsByDataToday(convertDate());
+//                integerObservable.
+//                subscribeOn(Schedulers.trampoline())
+//                // Add RXAndroid2 for support with Room because still RXjava3 don't support Room
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(date_today -> {
+//                    data_today = date_today;
+//                    Log.i("TAG", "Navigation Drawaer : " + data_today);
+//                    //  Toast.makeText(getActivity(), "date today is " + date_today, Toast.LENGTH_SHORT).show();
+//                }, e -> {
+//                    Toast.makeText(getApplicationContext(), "e : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//
+//                });
+//
+//        Flowable<Integer>integerObservable1 = Flowable.just(3,4);
+//        Flowable.merge(integerObservable,integerObservable1)
+//        .subscribe(finalResult ->
+//
+//                {
+//                    if (data_today > 0){
+//                        Log.d("Final result : " ," Flowable Final :" +  data_today +" "+finalResult);
+//
+//                    }else {
+//                        Log.d("Final result : " ," Flowable Final :" +finalResult);
+//
+//                    }
+//                }
+//
+//              );
 
 
 
@@ -185,16 +192,17 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
             overridePendingTransition(R.anim.item_anim_slide_from_top, R.anim.item_anim_no_thing);
         }
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
-        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        activityNavigationDrawaberBinding.navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        //navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         if (savedInstanceState != null) {
             int save = savedInstanceState.getInt(SAVE_STATE_VIEW_PAGER);
-            navView.setSelectedItemId(save);
+            activityNavigationDrawaberBinding.navView.setSelectedItemId(save);
         } else {
-            navView.setSelectedItemId(R.id.read_quran);
+            activityNavigationDrawaberBinding.navView.setSelectedItemId(R.id.read_quran);
         }
-        setSupportActionBar(toobar);
+        setSupportActionBar(activityNavigationDrawaberBinding.toobar);
         //for change color text toolbar
-        toobar.setTitleTextColor(Color.parseColor("#FFFFFF"));
+        activityNavigationDrawaberBinding.toobar.setTitleTextColor(Color.parseColor("#FFFFFF"));
 
 //        NavigationDrawaberActivityVPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 //            @Override
@@ -267,7 +275,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 
     @Override
     public void onBackPressed() {
-        presenter.exitApp(searchView, navView);
+        presenter.exitApp(searchView, activityNavigationDrawaberBinding.navView);
     }
 
     @Override
@@ -362,13 +370,13 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     }
 
     public void showInformation() {
-        toobar.inflateMenu(R.menu.menu);
+        activityNavigationDrawaberBinding.toobar.inflateMenu(R.menu.menu);
 
         sequence = new TapTargetSequence(this)
                 .targets(
                         // This tap target will target the tool bar
                         //This for R.id.action_search
-                        TapTarget.forToolbarMenuItem(toobar, R.id.action_search, getString(R.string.spectial_button), getString(R.string.search_string))
+                        TapTarget.forToolbarMenuItem(activityNavigationDrawaberBinding.toobar, R.id.action_search, getString(R.string.spectial_button), getString(R.string.search_string))
 
                                 .transparentTarget(true)
                                 .outerCircleColor(R.color.blue)
@@ -379,7 +387,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                                 .tintTarget(false)
                                 .id(1),
                         //This for R.id.action_share
-                        TapTarget.forToolbarMenuItem(toobar, R.id.action_share, getString(R.string.spectial_button), getString(R.string.share_string))
+                        TapTarget.forToolbarMenuItem(activityNavigationDrawaberBinding.toobar, R.id.action_share, getString(R.string.spectial_button), getString(R.string.share_string))
                                 .outerCircleColor(R.color.blue)
                                 .outerCircleAlpha(0.9f)
                                 .textColor(android.R.color.white)
@@ -388,7 +396,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                                 .tintTarget(false)
                                 .id(2),
                         //This for R.id.spectial_button
-                        TapTarget.forToolbarOverflow(toobar, "   هذا الزر خاص", "      ضبط زمن الأشعارات  " +
+                        TapTarget.forToolbarOverflow(activityNavigationDrawaberBinding.toobar, "   هذا الزر خاص", "      ضبط زمن الأشعارات  " +
                                 "\n" +
                                 "      عرض طريقة الاستخدام مرة أخرى    "
                                 + "\n" +
@@ -456,7 +464,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                 super.onTargetClick(view);
                 // .. which evidently starts the sequence we defined earlier
                 //  sequence.start();
-                navView.setSelectedItemId(R.id.sound_quran);
+                activityNavigationDrawaberBinding.navView.setSelectedItemId(R.id.sound_quran);
                 setTwoShow();
             }
 
@@ -487,7 +495,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
             public void onTargetClick(TapTargetView view) {
                 super.onTargetClick(view);
                 // .. which evidently starts the sequence we defined earlier
-                navView.setSelectedItemId(R.id.read_parts);
+                activityNavigationDrawaberBinding.navView.setSelectedItemId(R.id.read_parts);
                 setShowThreeItem();
             }
 
@@ -519,7 +527,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
             public void onTargetClick(TapTargetView view) {
                 super.onTargetClick(view);
                 // .. which evidently starts the sequence we defined earlier
-                navView.setSelectedItemId(R.id.azkar);
+                activityNavigationDrawaberBinding.navView.setSelectedItemId(R.id.azkar);
                 setShowFourItem();
             }
 

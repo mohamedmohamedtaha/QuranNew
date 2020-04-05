@@ -21,8 +21,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,6 +33,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.MohamedTaha.Imagine.New.Adapter.AdapterAzanVP;
 import com.MohamedTaha.Imagine.New.AppConstants;
 import com.MohamedTaha.Imagine.New.R;
+import com.MohamedTaha.Imagine.New.databinding.FragmentAzanBinding;
 import com.MohamedTaha.Imagine.New.helper.GPSTracker;
 import com.MohamedTaha.Imagine.New.helper.HelperClass;
 import com.MohamedTaha.Imagine.New.mvp.model.azan.Azan;
@@ -43,7 +42,6 @@ import com.MohamedTaha.Imagine.New.mvp.model.azan.Timings;
 import com.MohamedTaha.Imagine.New.rest.APIServices;
 import com.MohamedTaha.Imagine.New.room.TimingsAppDatabase;
 import com.MohamedTaha.Imagine.New.room.TimingsViewModel;
-import com.booking.rtlviewpager.RtlViewPager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -63,8 +61,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -83,8 +80,8 @@ import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivi
  */
 public class AzanFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
-    @BindView(R.id.AzanFragment_VP)
-    RtlViewPager AzanFragmentVP;
+    //    @BindView(R.id.AzanFragment_VP)
+//    RtlViewPager AzanFragmentVP;
     private TimingsViewModel timingsViewModel;
     GoogleApiClient googleApiClient;
 
@@ -129,18 +126,20 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
 
     private static final int MY_PERMISSIONS_WRITE_STORAGE = 90;
     APIServices apiServices;
-    @BindView(R.id.progressBar)
-    ProgressBar progressBar;
+    //    @BindView(R.id.progressBar)
+//    ProgressBar progressBar;
     //    @BindView(R.id.recycler_view)
 //    RecyclerView recyclerView;
-    @BindView(R.id.TV_Show_Error)
-    TextView TVShowError;
+//    @BindView(R.id.TV_Show_Error)
+//    TextView TVShowError;
     List<Datum> datumList = new ArrayList<>();
     private SettingsClient mSettingsClient;
     private LocationSettingsRequest mLocationSettingsRequest;
     String language_name;
     String city_name = null;
     private CompositeDisposable disposable = new CompositeDisposable();
+    private FragmentAzanBinding fragmentAzanBinding;
+    private List<Timings> getAllData = new ArrayList<>();
 
 
     public AzanFragment() {
@@ -151,8 +150,10 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_azan, container, false);
-        ButterKnife.bind(this, view);
+        // View view = inflater.inflate(R.layout.fragment_azan, container, false);
+        fragmentAzanBinding = FragmentAzanBinding.inflate(inflater, container, false);
+        View viewBuinding = fragmentAzanBinding.getRoot();
+        //  ButterKnife.bind(this, view);
         //to Check before change Language
         language_name = Locale.getDefault().getLanguage();
         if (!language_name.equals("ar")) {
@@ -185,11 +186,8 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         //   subscription =
         timingsViewModel = new ViewModelProvider(this).get(TimingsViewModel.class);
         // For get Date today
-
-        //For get all data
-
-        timingsViewModel.getTimingsByDataToday(convertDate()).
-                subscribeOn(Schedulers.trampoline())
+        Flowable<Integer> flowableGetDateTodayFromDatabase = timingsViewModel.getTimingsByDataToday(convertDate());
+        flowableGetDateTodayFromDatabase.subscribeOn(Schedulers.trampoline())
                 // Add RXAndroid2 for support with Room because still RXjava3 don't support Room
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(date_today -> {
@@ -201,40 +199,79 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
 
                 });
 
-        timingsViewModel.getAllTimingsRxjava()
+
+        Flowable<List<Timings>> flowableGetAllPrayerTimingFromDatabase = timingsViewModel.getAllTimingsRxjava();
+        flowableGetAllPrayerTimingFromDatabase.subscribeOn(Schedulers.io())
+                // .concatMap()
+             //   .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(all_Data -> {
+                    getAllData = all_Data;
+
+                    //conusme Timings prayer here which is a list of Timings
+//                    if (all_Data.size() <= 0) {
+//                        //The data is null
+//                        fragmentAzanBinding.progressBar.setVisibility(View.GONE);
+//                        fragmentAzanBinding.TVShowError.setVisibility(View.VISIBLE);
+//                        fragmentAzanBinding.TVShowError.setText(getString(R.string.no_data));
+//                        fragmentAzanBinding.AzanFragmentVP.setVisibility(View.GONE);
+//                        Log.i("TAG", "The data is null : " + all_Data.size());
+//                        Log.i("TAG", "after 1 : " + data_today);
+//                    } else {
+//                        fragmentAzanBinding.progressBar.setVisibility(View.GONE);
+//                        fragmentAzanBinding.TVShowError.setVisibility(View.GONE);
+//                        fragmentAzanBinding.AzanFragmentVP.setVisibility(View.VISIBLE);
+//                        AdapterAzanVP adapterAzan = new AdapterAzanVP(getActivity());
+//                        adapterAzan.setAzanList(all_Data);
+//                        fragmentAzanBinding.AzanFragmentVP.setAdapter(adapterAzan);
+//                        fragmentAzanBinding.AzanFragmentVP.setCurrentItem(data_today);
+//                        Log.i("TAG", "all data " + all_Data.size());
+//                    }
+                }, e -> {
+                    Log.i("TAG", "Error RXJava" + e.getMessage());
+                });
+        Flowable.merge(flowableGetDateTodayFromDatabase,flowableGetAllPrayerTimingFromDatabase)
                 .subscribeOn(Schedulers.io())
                 // .concatMap()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(all_Data -> {
-                    //conusme Timings prayer here which is a list of Timings
-                    if (all_Data.size() <= 0) {
+                .subscribe(finalResult ->{
+                    if (data_today > 0){
+
+                        //conusme Timings prayer here which is a list of Timings
+                    if (getAllData == null && getAllData.size() <= 0) {
                         //The data is null
-                        progressBar.setVisibility(View.GONE);
-                        TVShowError.setVisibility(View.VISIBLE);
-                        TVShowError.setText(getString(R.string.no_data));
-                        AzanFragmentVP.setVisibility(View.GONE);
-                        Log.i("TAG", "The data is null : " + all_Data.size());
+                        fragmentAzanBinding.progressBar.setVisibility(View.GONE);
+                        fragmentAzanBinding.TVShowError.setVisibility(View.VISIBLE);
+                        fragmentAzanBinding.TVShowError.setText(getString(R.string.no_data));
+                        fragmentAzanBinding.AzanFragmentVP.setVisibility(View.GONE);
+                        Log.i("TAG", "The data is null : " + getAllData.size());
                         Log.i("TAG", "after 1 : " + data_today);
                     } else {
-                        progressBar.setVisibility(View.GONE);
-                        TVShowError.setVisibility(View.GONE);
-                        AzanFragmentVP.setVisibility(View.VISIBLE);
+                        fragmentAzanBinding.progressBar.setVisibility(View.GONE);
+                        fragmentAzanBinding.TVShowError.setVisibility(View.GONE);
+                        fragmentAzanBinding.AzanFragmentVP.setVisibility(View.VISIBLE);
                         AdapterAzanVP adapterAzan = new AdapterAzanVP(getActivity());
-                        adapterAzan.setAzanList(all_Data);
-                        AzanFragmentVP.setAdapter(adapterAzan);
-                        AzanFragmentVP.setCurrentItem(data_today);
-                        Log.i("TAG", "all data " + all_Data.size());
+                        adapterAzan.setAzanList(getAllData);
+                        fragmentAzanBinding.AzanFragmentVP.setAdapter(adapterAzan);
+                        fragmentAzanBinding.AzanFragmentVP.setCurrentItem(data_today);
+                        Log.i("TAG", "all data " + getAllData.size());
                     }
-                }, e -> {
-                    Log.i("TAG", "Error RXJava" + e.getMessage());
-                })
-        ;
-        //  Delete_timings();
+                        Log.d("Final result is : " ," Flowable Final :" +  data_today +" "+finalResult);
+
+                    }else {
+                     //   Log.d("Final result : " ," Flowable Final :" +finalResult);
 
 //        //For check Is the permission is granted and the data don't find
-        if (isStoragePermissionGranted() && data_today == 0) {
-            getLocation();
-        }
+                        if (isStoragePermissionGranted() && data_today == 0) {
+                            getLocation();
+                        }
+                    }
+                });
+        //  Delete_timings();
+//
+////        //For check Is the permission is granted and the data don't find
+//        if (isStoragePermissionGranted() && data_today == 0) {
+//            getLocation();
+//        }
 //        timingsViewModel.getAllTimings().observe(getActivity(), new Observer<List<Timings>>() {
 //            @Override
 //            public void onChanged(List<Timings> timings) {
@@ -297,7 +334,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
 
         // isStoragePermissionGranted();
 
-        return view;
+        return viewBuinding;
     }
 
     @Override
@@ -312,9 +349,9 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                 if (isGPSEnabled) {
                 } else {
                     Log.i("TAG", "false");
-                    TVShowError.setVisibility(View.VISIBLE);
-                    TVShowError.setText(getActivity().getString(R.string.not_allow));
-                    progressBar.setVisibility(View.GONE);
+                    fragmentAzanBinding.TVShowError.setVisibility(View.VISIBLE);
+                    fragmentAzanBinding.TVShowError.setText(getActivity().getString(R.string.not_allow));
+                    fragmentAzanBinding.progressBar.setVisibility(View.GONE);
                     //  recyclerView.setVisibility(View.GONE);
 
                 }
@@ -369,10 +406,10 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                         }
                     } else {
                         Toast.makeText(getActivity(), "NO", Toast.LENGTH_SHORT).show();
-                        progressBar.setVisibility(View.GONE);
+                        fragmentAzanBinding.progressBar.setVisibility(View.GONE);
                         //recyclerView.setVisibility(View.GONE);
-                        TVShowError.setVisibility(View.VISIBLE);
-                        TVShowError.setText(getActivity().getString(R.string.cant));
+                        fragmentAzanBinding.TVShowError.setVisibility(View.VISIBLE);
+                        fragmentAzanBinding.TVShowError.setText(getActivity().getString(R.string.cant));
                     }
                 } catch (Exception e) {
                     Log.i("TAG", " Error " + e.getMessage());
@@ -382,7 +419,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
             @Override
             public void onFailure(Call<Azan> call, Throwable t) {
                 Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                progressBar.setVisibility(View.GONE);
+                fragmentAzanBinding.progressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -585,9 +622,9 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    TVShowError.setVisibility(View.VISIBLE);
-                    TVShowError.setText(getActivity().getString(R.string.not_allow));
-                    progressBar.setVisibility(View.GONE);
+                    fragmentAzanBinding.TVShowError.setVisibility(View.VISIBLE);
+                    fragmentAzanBinding.TVShowError.setText(getActivity().getString(R.string.not_allow));
+                    fragmentAzanBinding.progressBar.setVisibility(View.GONE);
                 }
             });
 
@@ -667,7 +704,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                         city_name = getCityName(location, getLatitude(), getLongitude());
                         Log.i("TAG", ":location is :" + getLatitude() + " \n" + getLongitude());
                         Log.i("TAG", ":City name is :" + city_name);
-                        progressBar.setVisibility(View.VISIBLE);
+                        fragmentAzanBinding.progressBar.setVisibility(View.VISIBLE);
 
                     } else {
                         Log.i("TAG", "locationManager is null");
