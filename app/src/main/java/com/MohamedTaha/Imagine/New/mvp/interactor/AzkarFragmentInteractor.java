@@ -95,12 +95,13 @@ public class AzkarFragmentInteractor implements AzkarFragmentPresenter {
 
     @Override
     public void onDestroy() {
-        this.azkarFragmentView = null;
         if (disposable != null && !disposable.isDisposed()) {
             disposable.clear();
             disposable.dispose();
             Log.d(TAG, "disposable cleared  " );
         }
+        this.azkarFragmentView = null;
+
     }
 
     @Override

@@ -14,6 +14,11 @@
         android:title="@string/shareApp"
         app:showAsAction="always" />
     <item
+        android:id="@+id/action_elarbaoon_elnawawy"
+        android:icon="@drawable/ic_share"
+        android:title="@string/el_arbaoon_elnawawy"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_settings"
         android:title="@string/settings"
         app:showAsAction="never" />

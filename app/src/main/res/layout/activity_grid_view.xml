@@ -5,7 +5,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/GridViewActivity_GV_Show_Images"
         style="@style/style_list_view"
-        android:layout_gravity="center_horizontal"></androidx.recyclerview.widget.RecyclerView>
+        android:layout_gravity="center_horizontal">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 
     <ProgressBar

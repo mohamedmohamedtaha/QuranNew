@@ -323,6 +323,9 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
             case R.id.action_rate:
                 presenter.actionRate(appPackageName);
                 break;
+            case R.id.action_elarbaoon_elnawawy:
+                HelperClass.startActivity(getApplicationContext(),ElarbaoonElnawawyActivity.class);
+                break;
             default:
         }
         return super.onOptionsItemSelected(item);
