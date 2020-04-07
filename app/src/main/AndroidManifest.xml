@@ -27,8 +27,8 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="false"
         android:theme="@style/FullScreenWindow">
-        <activity android:name=".ui.activities.ElarbaoonElnawawyActivity"></activity>
-        <!-- for GPS -->
+        <activity android:name=".ui.activities.ContianerDescriptionElnawawyActivity"></activity>
+        <activity android:name=".ui.activities.ElarbaoonElnawawyActivity" /> <!-- for GPS -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

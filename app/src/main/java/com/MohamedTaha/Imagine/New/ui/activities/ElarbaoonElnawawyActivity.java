@@ -3,6 +3,8 @@ package com.MohamedTaha.Imagine.New.ui.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -15,14 +17,19 @@ import android.view.animation.LayoutAnimationController;
 import com.MohamedTaha.Imagine.New.Adapter.AdapterElarbaoonElnawawy;
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.databinding.ActivityElarbaoonElnawawyBinding;
+import com.MohamedTaha.Imagine.New.helper.HelperClass;
 import com.MohamedTaha.Imagine.New.mvp.interactor.ElarbaoonElnwawyInteractor;
 import com.MohamedTaha.Imagine.New.mvp.model.ElarbaoonElnawawyModel;
 import com.MohamedTaha.Imagine.New.mvp.presenter.ElarbaoonElnwawyPresenter;
 import com.MohamedTaha.Imagine.New.mvp.view.ElarbaoonElnwawyView;
+import com.MohamedTaha.Imagine.New.ui.fragments.DescriptionElarbaoonFragment;
+import com.MohamedTaha.Imagine.New.ui.fragments.SplashFragment;
+import com.google.gson.Gson;
 
 import java.util.List;
 
 public class ElarbaoonElnawawyActivity extends AppCompatActivity implements ElarbaoonElnwawyView {
+    public static final String POSITION = "position";
     private ActivityElarbaoonElnawawyBinding activityElarbaoonElnawawyBinding;
     private ElarbaoonElnwawyPresenter elarbaoonElnwawyPresenter;
     private List<ElarbaoonElnawawyModel>elnawawyModelList;
@@ -55,6 +62,7 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
         adapterElarbaoonElnawawy = new AdapterElarbaoonElnawawy(stringList, new AdapterElarbaoonElnawawy.ClickListener() {
             @Override
             public void onClick(int position) {
+                openFragmentElnawary(position);
 
             }
         });
@@ -99,6 +107,7 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
          adapterElarbaoonElnawawy = new AdapterElarbaoonElnawawy(elnawawyModelList, new AdapterElarbaoonElnawawy.ClickListener() {
             @Override
             public void onClick(int position) {
+                openFragmentElnawary(position);
 
             }
         });
@@ -121,6 +130,7 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
         adapterElarbaoonElnawawy = new AdapterElarbaoonElnawawy(elnawawyModelList, new AdapterElarbaoonElnawawy.ClickListener() {
             @Override
             public void onClick(int position) {
+                openFragmentElnawary(position);
 
             }
         });
@@ -161,6 +171,22 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
         globalMenu.findItem(R.id.action_use_way).setVisible(false);
         globalMenu.findItem(R.id.action_settings).setVisible(false);
         globalMenu.findItem(R.id.action_rate).setVisible(false);
+        globalMenu.findItem(R.id.action_elarbaoon_elnawawy).setVisible(false);
+
         return super.onPrepareOptionsMenu(globalMenu);
+    }
+    private void openFragmentElnawary(int position){
+     //   HelperClass.startActivity(getApplicationContext(), ContianerDescriptionElnawawyActivity.class);
+        Intent startActivity = new Intent(getApplicationContext(), ContianerDescriptionElnawawyActivity.class);
+        startActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Bundle bundle = new Bundle();
+        startActivity.putExtra(POSITION,new Gson().toJson(position));
+        startActivity(startActivity);
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        }
+
     }
 }

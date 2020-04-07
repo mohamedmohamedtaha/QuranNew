@@ -282,4 +282,7 @@
     <string name="search_hint">Search</string>
     <string name="settings_gps">GPS is settings</string>
     <string name="el_arbaoon_elnawawy">الأربعون النووية</string>
+    <string name="text_elhadeth">نص الحديث</string>
+    <string name="description_elhadeth">شرح الحديث</string>
+    <string name="translate_elhadeth">ترجمة الراوي</string>
 </resources>

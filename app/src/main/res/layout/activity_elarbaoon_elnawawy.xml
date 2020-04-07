@@ -26,12 +26,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ElarbaoonElnawawyActivity_RecyclerView"
-        style="@style/style_list_view"
+        style="@style/style_reycler_view_elnawawy"
         android:layout_below="@+id/ElarbaoonElnawawyActivity_TB"
+        android:layout_gravity="center_horizontal"
         android:clickable="true"
         android:focusable="true"
-        android:layoutDirection="ltr"
-        android:layout_gravity="center_horizontal" />
+        android:layoutDirection="ltr" />
 
     <ProgressBar
         android:id="@+id/ElarbaoonElnawawyActivity_ProgressBar"
