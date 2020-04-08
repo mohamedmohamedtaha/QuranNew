@@ -56,6 +56,7 @@ public class ElarbaoonElnwawyInteractor implements ElarbaoonElnwawyPresenter {
                         elnawawyModel.setText_elhadeth(text_elhadeth[i]);
                         elnawawyModel.setDescription_elhadeth(description_elhadeth[i]);
                         elnawawyModel.setTranselate_elhadeth(transelate_elhadeth[i]);
+                        elnawawyModel.setPosition(i);
                         elnawawyModelList.add(elnawawyModel);
                     }
                 }catch (Exception e){

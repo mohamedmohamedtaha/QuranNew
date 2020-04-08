@@ -107,8 +107,7 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
          adapterElarbaoonElnawawy = new AdapterElarbaoonElnawawy(elnawawyModelList, new AdapterElarbaoonElnawawy.ClickListener() {
             @Override
             public void onClick(int position) {
-                openFragmentElnawary(position);
-
+                openFragmentElnawary(elnawawyModelList.get(position).getPosition());
             }
         });
         activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivityRecyclerView.setAdapter(adapterElarbaoonElnawawy);

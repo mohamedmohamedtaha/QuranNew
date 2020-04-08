@@ -6,6 +6,15 @@ public class ElarbaoonElnawawyModel {
     private String text_elhadeth;
     private String description_elhadeth;
     private String transelate_elhadeth;
+    private int position;
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
 
     public String getNumber_elhadeth() {
         return number_elhadeth;
