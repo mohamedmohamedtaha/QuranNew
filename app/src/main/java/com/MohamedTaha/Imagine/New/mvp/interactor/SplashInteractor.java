@@ -35,7 +35,6 @@ public class SplashInteractor implements SplashPresenter {
                      context.runOnUiThread(new Runnable() {
                          @Override
                          public void run() {
-
                              splashView.goToSlider();
                          }
                      });

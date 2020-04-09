@@ -4,6 +4,7 @@
     style="@style/style_default_layout_wrap_content"
     android:layout_gravity="center"
     android:orientation="horizontal">
+<!--    this page don'tuse -->
 
     <com.google.android.material.card.MaterialCardView style="@style/style_material_card_view">
         <RelativeLayout style="@style/style_default_layout_wrap_content">
@@ -11,11 +12,11 @@
             <TextView
                 android:id="@+id/TV_Name_Sora"
                 android:layout_width="@dimen/defaultValueTowHandredTen"
-                android:layout_height="@dimen/dimens_xxxxl"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingTop="@dimen/dimens_mm"
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/txt_size_l"
+                android:textSize="@dimen/txt_size_m"
                 android:textStyle="bold"
                 tools:text="@string/nameSora" />
 
@@ -29,7 +30,7 @@
                 android:layout_marginBottom="@dimen/dimens_ss"
                 android:layoutDirection="rtl"
                 android:textColor="@color/colorAccent"
-                android:textSize="@dimen/txt_size_l"
+                android:textSize="@dimen/txt_size_s"
                 android:textStyle="bold"
                 tools:text="@string/nameSora" />
         </RelativeLayout>

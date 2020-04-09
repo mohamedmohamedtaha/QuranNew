@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/style_default_layout_match_parent_with_background"
+    style="@style/style_default_layout_match_parent"
+
     tools:context=".ui.fragments.elnawawy.DescriptionElhaedthFragment">
+<!--    style="@style/style_default_layout_match_parent_with_background"-->
 
     <com.MohamedTaha.Imagine.New.libraryTextView.TextViewEx
         android:id="@+id/DescriptionElhaedthFragment_TV_Description_Elhaseth"

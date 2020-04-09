@@ -1,8 +1,5 @@
 package com.MohamedTaha.Imagine.New.ui.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,27 +11,32 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+
 import com.MohamedTaha.Imagine.New.Adapter.AdapterElarbaoonElnawawy;
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.databinding.ActivityElarbaoonElnawawyBinding;
-import com.MohamedTaha.Imagine.New.helper.HelperClass;
 import com.MohamedTaha.Imagine.New.mvp.interactor.ElarbaoonElnwawyInteractor;
 import com.MohamedTaha.Imagine.New.mvp.model.ElarbaoonElnawawyModel;
 import com.MohamedTaha.Imagine.New.mvp.presenter.ElarbaoonElnwawyPresenter;
 import com.MohamedTaha.Imagine.New.mvp.view.ElarbaoonElnwawyView;
-import com.MohamedTaha.Imagine.New.ui.fragments.DescriptionElarbaoonFragment;
-import com.MohamedTaha.Imagine.New.ui.fragments.SplashFragment;
 import com.google.gson.Gson;
 
 import java.util.List;
 
 public class ElarbaoonElnawawyActivity extends AppCompatActivity implements ElarbaoonElnwawyView {
     public static final String POSITION = "position";
+    public static final String NAME_ELHADETH = "name_elhadeth";
+    public static final String NUMBER_ELHADETH = "number_elhadeth";
+
     private ActivityElarbaoonElnawawyBinding activityElarbaoonElnawawyBinding;
     private ElarbaoonElnwawyPresenter elarbaoonElnwawyPresenter;
-    private List<ElarbaoonElnawawyModel>elnawawyModelList;
+    private List<ElarbaoonElnawawyModel> elnawawyModelList;
     private Menu globalMenu;
-    private AdapterElarbaoonElnawawy adapterElarbaoonElnawawy ;
+    private AdapterElarbaoonElnawawy adapterElarbaoonElnawawy;
+    private ElarbaoonElnawawyModel elnawawyModel = new ElarbaoonElnawawyModel();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +44,7 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
         View view = activityElarbaoonElnawawyBinding.getRoot();
         setContentView(view);
         activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivityTVElarbaoonElnawawy.setText(getString(R.string.el_arbaoon_elnawawy));
-        elarbaoonElnwawyPresenter = new ElarbaoonElnwawyInteractor(this,getApplicationContext());
+        elarbaoonElnwawyPresenter = new ElarbaoonElnwawyInteractor(this, getApplicationContext());
         custom_toolbar();
         elarbaoonElnwawyPresenter.getAllData();
         elarbaoonElnwawyPresenter.setOnSearchView(activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivitySearchView);
@@ -62,8 +64,10 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
         adapterElarbaoonElnawawy = new AdapterElarbaoonElnawawy(stringList, new AdapterElarbaoonElnawawy.ClickListener() {
             @Override
             public void onClick(int position) {
-                openFragmentElnawary(position);
-
+                elnawawyModel.setPosition(position);
+                elnawawyModel.setName_elhadeth(stringList.get(position).getName_elhadeth());
+                elnawawyModel.setNumber_elhadeth(stringList.get(position).getNumber_elhadeth());
+                openFragmentElnawary(elnawawyModel);
             }
         });
         activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivityRecyclerView.setAdapter(adapterElarbaoonElnawawy);
@@ -102,18 +106,19 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
     @Override
     public void showAllElahadeth(List<ElarbaoonElnawawyModel> strings) {
         elnawawyModelList = strings;
-        Log.d("TAG", "Show all model" + strings.size());
-
-         adapterElarbaoonElnawawy = new AdapterElarbaoonElnawawy(elnawawyModelList, new AdapterElarbaoonElnawawy.ClickListener() {
+        adapterElarbaoonElnawawy = new AdapterElarbaoonElnawawy(elnawawyModelList, new AdapterElarbaoonElnawawy.ClickListener() {
             @Override
             public void onClick(int position) {
-                openFragmentElnawary(elnawawyModelList.get(position).getPosition());
+                elnawawyModel.setPosition(position);
+                elnawawyModel.setName_elhadeth(elnawawyModelList.get(position).getName_elhadeth());
+                elnawawyModel.setNumber_elhadeth(elnawawyModelList.get(position).getNumber_elhadeth());
+                openFragmentElnawary(elnawawyModel);
             }
         });
         activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivityRecyclerView.setAdapter(adapterElarbaoonElnawawy);
         adapterElarbaoonElnawawy.notifyDataSetChanged();
         //For feel when Search
-        elarbaoonElnwawyPresenter.setOnQueryTextForElhadeth(activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivitySearchView,elnawawyModelList);
+        elarbaoonElnwawyPresenter.setOnQueryTextForElhadeth(activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivitySearchView, elnawawyModelList);
 
     }
 
@@ -129,13 +134,16 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
         adapterElarbaoonElnawawy = new AdapterElarbaoonElnawawy(elnawawyModelList, new AdapterElarbaoonElnawawy.ClickListener() {
             @Override
             public void onClick(int position) {
-                openFragmentElnawary(position);
-
+                elnawawyModel.setPosition(position);
+                elnawawyModel.setName_elhadeth(elnawawyModelList.get(position).getName_elhadeth());
+                elnawawyModel.setNumber_elhadeth(elnawawyModelList.get(position).getNumber_elhadeth());
+                openFragmentElnawary(elnawawyModel);
             }
         });
         activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivityRecyclerView.setAdapter(adapterElarbaoonElnawawy);
 
     }
+
     public void custom_toolbar() {
         setSupportActionBar(activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivityTB);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -143,6 +151,7 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
         //for delete label for Activity
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -171,21 +180,16 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
         globalMenu.findItem(R.id.action_settings).setVisible(false);
         globalMenu.findItem(R.id.action_rate).setVisible(false);
         globalMenu.findItem(R.id.action_elarbaoon_elnawawy).setVisible(false);
-
         return super.onPrepareOptionsMenu(globalMenu);
     }
-    private void openFragmentElnawary(int position){
-     //   HelperClass.startActivity(getApplicationContext(), ContianerDescriptionElnawawyActivity.class);
+
+    private void openFragmentElnawary(ElarbaoonElnawawyModel elnawawyModel) {
         Intent startActivity = new Intent(getApplicationContext(), ContianerDescriptionElnawawyActivity.class);
         startActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        Bundle bundle = new Bundle();
-        startActivity.putExtra(POSITION,new Gson().toJson(position));
+        startActivity.putExtra(POSITION, new Gson().toJson(elnawawyModel));
         startActivity(startActivity);
-
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         }
-
     }
 }

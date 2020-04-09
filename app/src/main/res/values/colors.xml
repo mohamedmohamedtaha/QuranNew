@@ -11,6 +11,7 @@
     <color name="blue">#10618D</color>
     <color name="blue_light">#69C3F5</color>
     <color name="blue_more_light">#C9ECFF</color>
+    <color name="color_background_tool_bar">#8BCCEF</color>
 
     <color name="color_default_background_navigation">#434343</color>
     <!--Color TextView DetailsSoundActivity XML and Splash Activity XML  and Color TextView ActionBar XML-->

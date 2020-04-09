@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Customize your theme here. -->
@@ -161,7 +161,7 @@
     <style name="style_material_card_view" parent="@style/style_default_layout_wrap_content">
         <item name="android:layout_margin">@dimen/dimens_m</item>
         <item name="cardBackgroundColor">@android:color/white</item>
-        <item name="android:outlineSpotShadowColor">@color/colorAccent</item>
+        <item name="android:outlineSpotShadowColor" tools:targetApi="p">@color/blue_light</item>
         <item name="cardCornerRadius">@dimen/dimens_l</item>
         <item name="cardElevation">@dimen/dimens_m</item>
     </style>

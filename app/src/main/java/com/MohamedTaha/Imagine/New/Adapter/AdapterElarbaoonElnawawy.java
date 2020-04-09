@@ -20,6 +20,7 @@ import butterknife.ButterKnife;
 
 public class AdapterElarbaoonElnawawy extends RecyclerView.Adapter<AdapterElarbaoonElnawawy.ElarbaoonViewHolder> {
 
+
     private CustomElarbaoonElnawawyBinding customElarbaoonElnawawyBinding;
     private List<ElarbaoonElnawawyModel> elnawawyModelsList;
     private Context context;
@@ -39,7 +40,7 @@ public class AdapterElarbaoonElnawawy extends RecyclerView.Adapter<AdapterElarba
     @Override
     public ElarbaoonViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //customElarbaoonElnawawyBinding = CustomElarbaoonElnawawyBinding.inflate();
-        View row = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_elarbaoon_elnawawy, null);
+        View row = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_layout_read_quran, null);
         ElarbaoonViewHolder elarbaoonViewHolder = new ElarbaoonViewHolder(row);
         row.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,13 +67,18 @@ public class AdapterElarbaoonElnawawy extends RecyclerView.Adapter<AdapterElarba
     }
 
     static class ElarbaoonViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.TV_Name_Elhadeth)
+        @BindView(R.id.TV_Name_Sora)
         TextView TVNameElhadeth;
-        @BindView(R.id.TV_Number_Elhadeth)
+        @BindView(R.id.TV_Nzol_elsora)
         TextView TVNumberElhadeth;
+//        @BindView(R.id.TV_Name_Elhadeth)
+//        TextView TVNameElhadeth;
+//        @BindView(R.id.TV_Number_Elhadeth)
+//        TextView TVNumberElhadeth;
+
         public ElarbaoonViewHolder(@NonNull View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
 
         }
     }

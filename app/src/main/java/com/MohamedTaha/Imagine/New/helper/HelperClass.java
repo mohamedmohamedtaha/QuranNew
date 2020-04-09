@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -64,5 +66,14 @@ public class HelperClass {
         exitAppIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(exitAppIntent);
     }
+
+    public void custom_toolbar(Context context, Toolbar toolbar) {
+        ((AppCompatActivity)context).setSupportActionBar(toolbar);
+//        ((AppCompatActivity)context).setDisplayHomeAsUpEnabled(true);
+//        ((AppCompatActivity)context.setDisplayShowHomeEnabled(true);
+//        //for delete label for Activity
+//        getSupportActionBar().setDisplayShowTitleEnabled(false);
+    }
+
 
 }

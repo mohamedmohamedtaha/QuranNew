@@ -34,7 +34,7 @@ public class AdapterGridView extends RecyclerView.Adapter<AdapterGridView.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View row = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_layout_grid_view, null);
+        View row = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_layout_read_quran, null);
         ViewHolder viewHolder = new ViewHolder(row);
         row.setOnClickListener(new View.OnClickListener() {
             @Override

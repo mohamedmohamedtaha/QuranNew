@@ -10,16 +10,21 @@ import com.MohamedTaha.Imagine.New.Adapter.PagerAdapterElarbaoonElnawawy;
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.databinding.ActivityContianerDescriptionElnawawyBinding;
 import com.MohamedTaha.Imagine.New.helper.HelperClass;
+import com.MohamedTaha.Imagine.New.mvp.model.ElarbaoonElnawawyModel;
 import com.MohamedTaha.Imagine.New.ui.fragments.DescriptionElarbaoonFragment;
 import com.MohamedTaha.Imagine.New.ui.fragments.elnawawy.DescriptionElhaedthFragment;
 import com.google.gson.Gson;
 
+import static com.MohamedTaha.Imagine.New.ui.activities.ElarbaoonElnawawyActivity.NAME_ELHADETH;
+import static com.MohamedTaha.Imagine.New.ui.activities.ElarbaoonElnawawyActivity.NUMBER_ELHADETH;
 import static com.MohamedTaha.Imagine.New.ui.activities.ElarbaoonElnawawyActivity.POSITION;
 
 
 public class ContianerDescriptionElnawawyActivity extends AppCompatActivity {
     private ActivityContianerDescriptionElnawawyBinding activity_contianer_description_elnawawy;
-    private  int position_elhadeth ;
+    private ElarbaoonElnawawyModel position_elhadeth ;
+    private String name_elhadeth;
+    private String number_elhadeth;
 
 
     @Override
@@ -30,11 +35,17 @@ public class ContianerDescriptionElnawawyActivity extends AppCompatActivity {
         setContentView(view);
         Intent intent = getIntent();
         if (intent != null){
-            position_elhadeth = new Gson().fromJson(intent.getStringExtra(POSITION),Integer.class);
+            position_elhadeth = new Gson().fromJson(intent.getStringExtra(POSITION),ElarbaoonElnawawyModel.class);
+//            name_elhadeth = new Gson().fromJson(intent.getStringExtra(NAME_ELHADETH), String.class);
+//            number_elhadeth = new Gson().fromJson(intent.getStringExtra(NUMBER_ELHADETH), String.class);
+
         }
         DescriptionElarbaoonFragment descriptionElarbaoonFragment = new DescriptionElarbaoonFragment();
         Bundle bundle = new Bundle();
         bundle.putString(POSITION,new Gson().toJson(position_elhadeth));
+//        bundle.putString(NAME_ELHADETH,new Gson().toJson(name_elhadeth));
+//        bundle.putString(NUMBER_ELHADETH,new Gson().toJson(number_elhadeth));
+
         descriptionElarbaoonFragment.setArguments(bundle);
         HelperClass.replece(descriptionElarbaoonFragment, getSupportFragmentManager(), R.id.Cycle_Elarbaoon_Elnawawy_contener);
        // overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);

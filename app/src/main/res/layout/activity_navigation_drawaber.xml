@@ -5,8 +5,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
-    style="@style/style_default_layout_match_parent_with_background"
+    style="@style/style_default_layout_match_parent"
     tools:context=".ui.activities.NavigationDrawaberActivity">
+<!--    style="@style/style_default_layout_match_parent_with_background"-->
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toobar"

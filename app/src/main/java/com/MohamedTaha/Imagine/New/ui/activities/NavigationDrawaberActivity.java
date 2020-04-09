@@ -69,14 +69,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 //    BottomNavigationView navView;
 //    @BindView(R.id.toobar)
 //    Toolbar toobar;
-    @BindString(R.string.about)
-    String aboutString;
-    @BindString(R.string.shareApp)
-    String shareApp;
-    @BindString(R.string.notSupport)
-    String notSupport;
-    @BindString(R.string.exit_app)
-    String exit_app;
+
 //    @BindView(R.id.NavigationDrawaberActivity_VPager)
 //    ViewPager NavigationDrawaberActivityVPager;
     private int current_fragment;
@@ -303,7 +296,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_share:
-                presenter.shareApp(aboutString, appPackageName);
+                presenter.shareApp(getString(R.string.about), appPackageName);
                 break;
             case R.id.action_send_us:
                 presenter.sendUs();
@@ -333,7 +326,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 
     @Override
     public void showMessageExitApp() {
-        HelperClass.customToast(this, exit_app);
+        HelperClass.customToast(this, getString(R.string.exit_app));
     }
 
     @Override
@@ -343,7 +336,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 
     @Override
     public void getShareApp(Intent intent) {
-        startActivity(Intent.createChooser(intent, shareApp));
+        startActivity(Intent.createChooser(intent, getString(R.string.shareApp)));
     }
 
     @Override
@@ -351,7 +344,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         if (intentEmail.resolveActivity(getPackageManager()) != null) {
             startActivity(intentEmail);
         } else {
-            HelperClass.customToast(this, notSupport);
+            HelperClass.customToast(this, getString(R.string.notSupport));
         }
     }
 
