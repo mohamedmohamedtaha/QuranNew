@@ -1,7 +1,9 @@
 package com.MohamedTaha.Imagine.New.ui.activities;
 
 import android.app.NotificationManager;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -14,7 +16,10 @@ import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.helper.HelperClass;
 import com.MohamedTaha.Imagine.New.helper.SharedPerefrenceHelper;
 import com.MohamedTaha.Imagine.New.helper.ShowDialog;
+import com.MohamedTaha.Imagine.New.helper.Utilities;
 import com.MohamedTaha.Imagine.New.mvp.model.ModelAzkar;
+import com.MohamedTaha.Imagine.New.service.MediaPlayerService;
+import com.MohamedTaha.Imagine.New.service.ServiceForNotificationImage;
 import com.booking.rtlviewpager.RtlViewPager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -57,6 +62,8 @@ public class SwipePagesActivity extends AppCompatActivity {
     Bundle bundle;
     int notificationId =-1;
     String language_name ;
+    public boolean isServiceRunning;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +76,9 @@ public class SwipePagesActivity extends AppCompatActivity {
         if (!language_name.equals("ar")) {
             HelperClass.change_language("ar", this);
         }
+        isServiceRunning = Utilities.isServiceRunning(ServiceForNotificationImage.class.getName(), getApplicationContext());
+        Log.d("TAG" , " Service is :" + isServiceRunning);
+
         //for close Notification
         notificationId = getIntent().getIntExtra(NOTIFICATION_ID, -1);
         int timeSend  = getIntent().getIntExtra(TIME_SEND,-1);
@@ -78,6 +88,7 @@ public class SwipePagesActivity extends AppCompatActivity {
             AdapterForSwipe adapterForSwipe = new AdapterForSwipe(this, imagesNotification);
             SwipePagesActivityVP.setAdapter(adapterForSwipe);
             SwipePagesActivityVP.setCurrentItem(notificationId);
+            Log.d("TAG" , " " + notificationId);
 
             NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             notificationManager.cancel(timeSend);
@@ -188,6 +199,7 @@ public class SwipePagesActivity extends AppCompatActivity {
     private void getArgemnetsNotification() {
         if (bundle != null) {
             imagesNotification = bundle.getIntegerArrayList(SAVE_Position_Notification);
+            Log.d("TAG" , " " + imagesNotification);
         }
     }
     private void createImageNotification() {
@@ -195,7 +207,11 @@ public class SwipePagesActivity extends AppCompatActivity {
             for (int i = 0; i < imagesNotification.size(); i++) {
                 bundle.putInt(SAVE_Position_Notification, imagesNotification.get(i));
                     }
-            SwipePagesActivityPB.setVisibility(View.GONE);
+                          //  bundle.putInt(SAVE_Position_Notification, imagesNotification);
+        Log.d("TAG" , " " + imagesNotification);
+
+
+        SwipePagesActivityPB.setVisibility(View.GONE);
         }
     }
     private void getImagesFirst() {
@@ -211,6 +227,7 @@ public class SwipePagesActivity extends AppCompatActivity {
             SwipePagesActivityPB.setVisibility(View.GONE);
         }
     }
+
     private void getArgemnetsForAzkar() {
         if (bundle != null) {
             Type listType = new TypeToken<List<ModelAzkar>>() {
@@ -251,6 +268,9 @@ public class SwipePagesActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        if (isServiceRunning) {
+            stopService(new Intent(this, ServiceForNotificationImage.class));
+        }
 //        if (bundle.getBoolean(SAVE_PAGE)){
 //            Intent intent = new Intent(SwipePagesActivity.this, SwipePagesActivity.class);
 //            startActivity(intent);

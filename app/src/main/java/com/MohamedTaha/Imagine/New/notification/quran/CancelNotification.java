@@ -4,6 +4,9 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
+
+import com.MohamedTaha.Imagine.New.service.ServiceForNotificationImage;
 
 import static com.MohamedTaha.Imagine.New.notification.quran.AlarmReceiver.TIME_SEND;
 
@@ -19,5 +22,6 @@ public class CancelNotification extends BroadcastReceiver {
         time_send = intent.getIntExtra(TIME_SEND, -1);
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(time_send);
+        context.stopService(new Intent(context, ServiceForNotificationImage.class));
     }
 }

@@ -118,49 +118,6 @@ public class AlarmReceiverPrayerTime extends BroadcastReceiver {
 
         return builder;
     }
-
-    public static void setMultipleAlarms(Context context) {
-        List<Integer> minutes = new ArrayList<>();
-        minutes.add(30);
-        minutes.add(31);
-        minutes.add(32);
-        PendingIntent pendingIntent = null;
-        AlarmManager[] alarmManager = new AlarmManager[minutes.size()];
-        Intent intent[] = new Intent[alarmManager.length];
-        for (int i = 0; i < alarmManager.length; i++) {
-            intent[i] = new Intent(context, AlarmReceiverPrayerTime.class);
-            /*
-        Here is very important,when we set one alarm, pending intent id becomes zero
-        but if we want set multiple alarms pending intent id has to be unique so i counter
-        is enough to be unique for PendingIntent
-      */
-            pendingIntent = PendingIntent.getBroadcast(context, i, intent[i], 0);
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.MINUTE, minutes.get(i));
-//            alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
-//                    SystemClock.elapsedRealtime() + setAlarm(repear),
-//                    setAlarm(repear), alarmPendingIntent);
-            alarmManager[i] = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            alarmManager[i].set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-            createNotification(context, context.getString(R.string.app_name), "Test for Notification");
-            Log.d("TT", "i is : " + i);
-
-        }
-
-    }
-
-    public static void cancelMultipleAlarms(Context context) {
-        int size = 3;
-        AlarmManager alarmManager[] = new AlarmManager[size];
-        Intent intent[] = new Intent[size];
-        for (int i = 0; i < size; i++) {
-            alarmManager[i] = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            intent[i] = new Intent(context, AlarmReceiverPrayerTime.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, i, intent[i], 0);
-            alarmManager[i].cancel(pendingIntent);
-        }
-    }
-
     @RequiresApi(Build.VERSION_CODES.O)
     public static void createChannel(Context context) {
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

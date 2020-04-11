@@ -9,8 +9,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.MohamedTaha.Imagine.New.R;
+import com.MohamedTaha.Imagine.New.service.ServiceForNotificationImage;
 
 import static android.content.Context.ALARM_SERVICE;
 
@@ -30,9 +32,11 @@ public class NotificationHelper {
         String repear = sharedPreferences.getString(context.getString(R.string.settings_Notification_key),
                 context.getString(R.string.settings_Notification_default));
         //Setting intent to class where notification will be handled
-        Intent intent = new Intent(context, AlarmReceiver.class);
+     //  Intent intent = new Intent(context, AlarmReceiver.class);
+        Intent intent = new Intent(context, ServiceForNotificationImage.class);
+        Log.d("TAG", "ServiceForNotificationImage ");
         //Setting pending intent to respond to broadcast sent by AlarmManager every day at 8am
-        alarmPendingIntent = PendingIntent.getBroadcast(context, ALARM_TYPE_ELAPSED, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmPendingIntent = PendingIntent.getService(context, ALARM_TYPE_ELAPSED, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         //getting instance of AlarmManager service
         alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         //Inexact alarm everyday since device is booted up. This is a better choise and
