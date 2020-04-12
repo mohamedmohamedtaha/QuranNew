@@ -72,9 +72,6 @@ import retrofit2.Response;
 import static android.content.Context.LOCATION_SERVICE;
 import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertDate;
 import static com.MohamedTaha.Imagine.New.rest.RetrofitClient.getRetrofit;
-import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.data_today;
-
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -112,7 +109,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     private String provider_info = null;
     public static final int ERROR_DIALOG_REQUEST = 9001;
     private int save_request_code;
-
+private int data_today;
     // The minimum distance to change updates in meters
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
     // The minimum time between updates in milliseconds
@@ -186,86 +183,88 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         //   subscription =
         timingsViewModel = new ViewModelProvider(this).get(TimingsViewModel.class);
         // For get Date today
-        Flowable<Integer> flowableGetDateTodayFromDatabase = timingsViewModel.getTimingsByDataToday(convertDate());
+        Flowable<Integer> flowableGetDateTodayFromDatabase = timingsViewModel.getTimingsByDataToday("02-04-2020");
         flowableGetDateTodayFromDatabase.subscribeOn(Schedulers.trampoline())
                 // Add RXAndroid2 for support with Room because still RXjava3 don't support Room
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(date_today -> {
                     data_today = date_today;
-                    Log.i("TAG", "Navigation Drawaer : " + data_today);
+                    Log.i("TAG", "Navigation Drawaer : " + data_today + " : " + date_today);
+                    Log.i("TAG", " Convert date : " + convertDate());
+
+
                     //  Toast.makeText(getActivity(), "date today is " + date_today, Toast.LENGTH_SHORT).show();
                 }, e -> {
                     Toast.makeText(getActivity(), "e : " + e.getMessage(), Toast.LENGTH_SHORT).show();
 
                 });
 
-
-        Flowable<List<Timings>> flowableGetAllPrayerTimingFromDatabase = timingsViewModel.getAllTimingsRxjava();
-        flowableGetAllPrayerTimingFromDatabase.subscribeOn(Schedulers.io())
-                // .concatMap()
-             //   .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(all_Data -> {
-                    getAllData = all_Data;
-
-                    //conusme Timings prayer here which is a list of Timings
-//                    if (all_Data.size() <= 0) {
+//
+//        Flowable<List<Timings>> flowableGetAllPrayerTimingFromDatabase = timingsViewModel.getAllTimingsRxjava();
+//        flowableGetAllPrayerTimingFromDatabase.subscribeOn(Schedulers.io())
+//                // .concatMap()
+//             //   .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(all_Data -> {
+//                    getAllData = all_Data;
+//
+//                    //conusme Timings prayer here which is a list of Timings
+////                    if (all_Data.size() <= 0) {
+////                        //The data is null
+////                        fragmentAzanBinding.progressBar.setVisibility(View.GONE);
+////                        fragmentAzanBinding.TVShowError.setVisibility(View.VISIBLE);
+////                        fragmentAzanBinding.TVShowError.setText(getString(R.string.no_data));
+////                        fragmentAzanBinding.AzanFragmentVP.setVisibility(View.GONE);
+////                        Log.i("TAG", "The data is null : " + all_Data.size());
+////                        Log.i("TAG", "after 1 : " + data_today);
+////                    } else {
+////                        fragmentAzanBinding.progressBar.setVisibility(View.GONE);
+////                        fragmentAzanBinding.TVShowError.setVisibility(View.GONE);
+////                        fragmentAzanBinding.AzanFragmentVP.setVisibility(View.VISIBLE);
+////                        AdapterAzanVP adapterAzan = new AdapterAzanVP(getActivity());
+////                        adapterAzan.setAzanList(all_Data);
+////                        fragmentAzanBinding.AzanFragmentVP.setAdapter(adapterAzan);
+////                        fragmentAzanBinding.AzanFragmentVP.setCurrentItem(data_today);
+////                        Log.i("TAG", "all data " + all_Data.size());
+////                    }
+//                }, e -> {
+//                    Log.i("TAG", "Error RXJava" + e.getMessage());
+//                });
+//        Flowable.merge(flowableGetDateTodayFromDatabase,flowableGetAllPrayerTimingFromDatabase)
+//                .subscribeOn(Schedulers.io())
+//                // .concatMap()
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(finalResult ->{
+//                    if (data_today > 0){
+//
+//                        //conusme Timings prayer here which is a list of Timings
+//                    if (getAllData == null && getAllData.size() <= 0) {
 //                        //The data is null
 //                        fragmentAzanBinding.progressBar.setVisibility(View.GONE);
 //                        fragmentAzanBinding.TVShowError.setVisibility(View.VISIBLE);
 //                        fragmentAzanBinding.TVShowError.setText(getString(R.string.no_data));
 //                        fragmentAzanBinding.AzanFragmentVP.setVisibility(View.GONE);
-//                        Log.i("TAG", "The data is null : " + all_Data.size());
+//                        Log.i("TAG", "The data is null : " + getAllData.size());
 //                        Log.i("TAG", "after 1 : " + data_today);
 //                    } else {
 //                        fragmentAzanBinding.progressBar.setVisibility(View.GONE);
 //                        fragmentAzanBinding.TVShowError.setVisibility(View.GONE);
 //                        fragmentAzanBinding.AzanFragmentVP.setVisibility(View.VISIBLE);
 //                        AdapterAzanVP adapterAzan = new AdapterAzanVP(getActivity());
-//                        adapterAzan.setAzanList(all_Data);
+//                        adapterAzan.setAzanList(getAllData);
 //                        fragmentAzanBinding.AzanFragmentVP.setAdapter(adapterAzan);
 //                        fragmentAzanBinding.AzanFragmentVP.setCurrentItem(data_today);
-//                        Log.i("TAG", "all data " + all_Data.size());
+//                        Log.i("TAG", "all data " + getAllData.size());
+//                        Log.d("Final result is : " ," Flowable Final :" +  data_today +" "+finalResult);
+//
 //                    }
-                }, e -> {
-                    Log.i("TAG", "Error RXJava" + e.getMessage());
-                });
-        Flowable.merge(flowableGetDateTodayFromDatabase,flowableGetAllPrayerTimingFromDatabase)
-                .subscribeOn(Schedulers.io())
-                // .concatMap()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(finalResult ->{
-                    if (data_today > 0){
-
-                        //conusme Timings prayer here which is a list of Timings
-                    if (getAllData == null && getAllData.size() <= 0) {
-                        //The data is null
-                        fragmentAzanBinding.progressBar.setVisibility(View.GONE);
-                        fragmentAzanBinding.TVShowError.setVisibility(View.VISIBLE);
-                        fragmentAzanBinding.TVShowError.setText(getString(R.string.no_data));
-                        fragmentAzanBinding.AzanFragmentVP.setVisibility(View.GONE);
-                        Log.i("TAG", "The data is null : " + getAllData.size());
-                        Log.i("TAG", "after 1 : " + data_today);
-                    } else {
-                        fragmentAzanBinding.progressBar.setVisibility(View.GONE);
-                        fragmentAzanBinding.TVShowError.setVisibility(View.GONE);
-                        fragmentAzanBinding.AzanFragmentVP.setVisibility(View.VISIBLE);
-                        AdapterAzanVP adapterAzan = new AdapterAzanVP(getActivity());
-                        adapterAzan.setAzanList(getAllData);
-                        fragmentAzanBinding.AzanFragmentVP.setAdapter(adapterAzan);
-                        fragmentAzanBinding.AzanFragmentVP.setCurrentItem(data_today);
-                        Log.i("TAG", "all data " + getAllData.size());
-                    }
-                        Log.d("Final result is : " ," Flowable Final :" +  data_today +" "+finalResult);
-
-                    }else {
-                     //   Log.d("Final result : " ," Flowable Final :" +finalResult);
-
-//        //For check Is the permission is granted and the data don't find
-                        if (isStoragePermissionGranted() && data_today == 0) {
-                            getLocation();
-                        }
-                    }
-                });
+//                    }else {
+//                     //   Log.d("Final result : " ," Flowable Final :" +finalResult);
+////        //For check Is the permission is granted and the data don't find
+//                        if (isStoragePermissionGranted() && data_today == 0) {
+//                            getLocation();
+//                        }
+//                    }
+//                });
         //  Delete_timings();
 //
 ////        //For check Is the permission is granted and the data don't find

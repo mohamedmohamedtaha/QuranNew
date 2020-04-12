@@ -18,8 +18,6 @@ import com.MohamedTaha.Imagine.New.helper.SharedPerefrenceHelper;
 import com.MohamedTaha.Imagine.New.helper.ShowDialog;
 import com.MohamedTaha.Imagine.New.helper.Utilities;
 import com.MohamedTaha.Imagine.New.mvp.model.ModelAzkar;
-import com.MohamedTaha.Imagine.New.service.MediaPlayerService;
-import com.MohamedTaha.Imagine.New.service.ServiceForNotificationImage;
 import com.booking.rtlviewpager.RtlViewPager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -62,7 +60,6 @@ public class SwipePagesActivity extends AppCompatActivity {
     Bundle bundle;
     int notificationId =-1;
     String language_name ;
-    public boolean isServiceRunning;
 
 
     @Override
@@ -76,9 +73,6 @@ public class SwipePagesActivity extends AppCompatActivity {
         if (!language_name.equals("ar")) {
             HelperClass.change_language("ar", this);
         }
-        isServiceRunning = Utilities.isServiceRunning(ServiceForNotificationImage.class.getName(), getApplicationContext());
-        Log.d("TAG" , " Service is :" + isServiceRunning);
-
         //for close Notification
         notificationId = getIntent().getIntExtra(NOTIFICATION_ID, -1);
         int timeSend  = getIntent().getIntExtra(TIME_SEND,-1);
@@ -268,9 +262,6 @@ public class SwipePagesActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if (isServiceRunning) {
-            stopService(new Intent(this, ServiceForNotificationImage.class));
-        }
 //        if (bundle.getBoolean(SAVE_PAGE)){
 //            Intent intent = new Intent(SwipePagesActivity.this, SwipePagesActivity.class);
 //            startActivity(intent);

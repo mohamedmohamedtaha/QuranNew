@@ -99,9 +99,6 @@
         <service
             android:name=".service.ServiceForPlayPrayerTimesNotification"
             android:enabled="true" />
-        <service
-            android:name=".service.ServiceForNotificationImage"
-            android:enabled="true" />
 
         <receiver android:name=".service.MediaPlayerService$DeleteNotification">
             <intent-filter>

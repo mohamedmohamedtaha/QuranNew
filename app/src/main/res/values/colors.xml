@@ -4,7 +4,6 @@
     <color name="colorPrimary">#FCFCFC</color>
     <color name="colorAccent">#F05A28</color>
     <color name="colorOrange">#F37E58</color>
-
     <color name="colorBackground">#BDBDBD</color>
     <color name="colorButton">#f9ea1f</color>
     <color name="colorNameShekhFragment">#f7db07</color>
@@ -12,15 +11,15 @@
     <color name="blue_light">#69C3F5</color>
     <color name="blue_more_light">#C9ECFF</color>
     <color name="color_background_tool_bar">#8BCCEF</color>
-
     <color name="color_default_background_navigation">#434343</color>
-    <!--Color TextView DetailsSoundActivity XML and Splash Activity XML  and Color TextView ActionBar XML-->
+    <!--Color TextView DetailsSoundActivity XML and Splash Activity XML and Color TextView ActionBar XML-->
     <color name="textColorTime">#FFFFC411</color>
     <color name="colorTransparent">#03636250</color>
     <color name="redTransparent">#07FDE401</color>
     <!--Color BackgroundFloatingButton XML -->
     <color name="textColorBackgroundFloatingButton">#92948d</color>
     <color name="textColortextContent">#f5f2f2</color>
-    <color name="color">#0547F0</color>
+    <color name="color">#3F51B5</color>
+    <color name="color_background_drawable">#11A0E3</color>
 
 </resources>

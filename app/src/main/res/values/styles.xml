@@ -124,7 +124,7 @@
 
     <style name="style_navigation_bottom" parent="@style/style_default_layout_wrap_match">
         <item name="android:layout_alignParentBottom">true</item>
-        <item name="android:background">@color/blue</item>
+        <item name="android:background">@color/color_background_drawable</item>
         <item name="elevation">@dimen/dimens_l</item>
         <item name="itemIconTint">@drawable/background_color_navigation_bottom</item>
         <item name="itemTextColor">@drawable/background_color_navigation_bottom</item>
