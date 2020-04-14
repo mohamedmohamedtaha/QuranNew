@@ -79,6 +79,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     MenuItem prevMenuItem;
     TapTargetSequence sequence;
     private TimingsViewModel timingsViewModel;
+    public static  int data_today = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,21 +154,20 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 //              );
 
 
+        timingsViewModel = new ViewModelProvider(this).get(TimingsViewModel.class);
+        // For get Date today
+        timingsViewModel.getTimingsByDataToday(convertDate()).
+                subscribeOn(Schedulers.trampoline())
+                // Add RXAndroid2 for support with Room because still RXjava3 don't support Room
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(date_today -> {
+                    data_today = date_today;
+                    Log.i("TAG", "Navigation Drawaer : " + data_today);
+                    //  Toast.makeText(getActivity(), "date today is " + date_today, Toast.LENGTH_SHORT).show();
+                }, e -> {
+                    Toast.makeText(getApplicationContext(), "e : " + e.getMessage(), Toast.LENGTH_SHORT).show();
 
-
-
-//        timingsViewModel.getTimingsByDataToday(convertDate()).
-//                subscribeOn(Schedulers.trampoline())
-//                // Add RXAndroid2 for support with Room because still RXjava3 don't support Room
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(date_today -> {
-//                    data_today = date_today;
-//                    Log.i("TAG", "Navigation Drawaer : " + data_today);
-//                    //  Toast.makeText(getActivity(), "date today is " + date_today, Toast.LENGTH_SHORT).show();
-//                }, e -> {
-//                    Toast.makeText(getApplicationContext(), "e : " + e.getMessage(), Toast.LENGTH_SHORT).show();
-//
-//                });
+                });
         //-----------------------------------------------------------------------------------------------------------
         //for show way using
         if (!SharedPerefrenceHelper.getBooleanForWayUsing(getApplicationContext(), IS_FIRST_TIME_WAY_USING, false)) {

@@ -196,9 +196,7 @@ public class ListSoundReader extends AppCompatActivity {
 
         dialog = new Dialog(this);
 
-
         //   broadCastReceverDownload();
-
         if (!isServiceRunning) {
             FragmentListSoundLLControlMedia.setVisibility(View.GONE);
         }

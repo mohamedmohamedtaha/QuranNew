@@ -13,6 +13,7 @@ import com.MohamedTaha.Imagine.New.mvp.model.azan.Timings;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 
 @Dao
@@ -24,19 +25,24 @@ public interface TimingsDao {
     Flowable<List<Timings>> getAllTimingsRxjave();
 
 
-    @Query("SELECT id_prayer_time FROM prayer_time WHERE date_today = :date_today")
+    @Query("SELECT id_seq FROM prayer_time WHERE date_today = :date_today")
     Flowable<Integer> getTimingsByDataToday(String date_today);
 
 //    @Query("SELECT date_today FROM prayer_time WHERE date_today = :date_today")
 //    Flowable<String> getTimingsByDataToday(String date_today);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertTimings(Timings timings);
+    void insertTimings(Timings... timings);
+
+//    @Insert(onConflict = OnConflictStrategy.REPLACE)
+//    Single<List<Timings>> insertTimings(Timings timings);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateTimings(Timings timings);
 
-    @Query("DELETE FROM  prayer_time")
+        @Query("DELETE FROM  prayer_time")
     void deleteAllTimings();
-
+//
+//    @Query("DELETE FROM  prayer_time")
+//   Single<List<Timings>> deleteAllTimings();
 }
