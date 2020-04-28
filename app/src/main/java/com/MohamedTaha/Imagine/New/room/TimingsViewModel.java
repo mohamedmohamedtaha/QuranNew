@@ -1,6 +1,7 @@
 package com.MohamedTaha.Imagine.New.room;
 
 import android.app.Application;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -17,6 +18,7 @@ public class TimingsViewModel extends AndroidViewModel {
     private TimingsRepository timingsRepository;
     private LiveData<List<Timings>> getAllTimings;
     private Flowable<List<Timings>> getAllTimingsRxjava;
+    private Context context;
 
     public TimingsViewModel(@NonNull Application application) {
         super(application);

@@ -1,6 +1,7 @@
 package com.MohamedTaha.Imagine.New.room;
 
 import android.app.Application;
+import android.content.Context;
 
 
 import androidx.lifecycle.LiveData;
@@ -25,6 +26,22 @@ public class TimingsRepository {
         listLiveDataRxjava = timingsDao.getAllTimingsRxjave();
 
     }
+    TimingsRepository(Context application) {
+        TimingsAppDatabase database = TimingsAppDatabase.getInstance(application);
+        timingsDao = database.timingsDao();
+        listLiveData = timingsDao.getAllTimings();
+        listLiveDataRxjava = timingsDao.getAllTimingsRxjave();
+
+    }
+    public static TimingsRepository getInstance(Context application){
+        if (timingsRepository == null){
+            synchronized (TimingsRepository.class){
+                if (timingsRepository == null){
+                    timingsRepository = new TimingsRepository(application);
+                }
+            }
+        }return timingsRepository;
+    }
     public static TimingsRepository getInstance(Application application){
         if (timingsRepository == null){
             synchronized (TimingsRepository.class){
@@ -39,6 +56,9 @@ public class TimingsRepository {
     }
     public   Flowable<Integer>getTimingsByDataToday(String date_today){
         return timingsDao.getTimingsByDataToday(date_today);
+    }
+    public   Flowable<Timings>getPrayerTimesForCurrentDate(String date_today){
+        return timingsDao.getPrayerTimesForCurrentDate(date_today);
     }
 
     public LiveData<List<Timings>>getAllTimings(){

@@ -1,9 +1,13 @@
 package com.MohamedTaha.Imagine.New.ui.activities;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,7 +30,9 @@ import com.MohamedTaha.Imagine.New.informationInrto.TapTargetSequence;
 import com.MohamedTaha.Imagine.New.mvp.interactor.NavigationDrawarInteractor;
 import com.MohamedTaha.Imagine.New.mvp.presenter.NavigationDrawarPresenter;
 import com.MohamedTaha.Imagine.New.mvp.view.NavigationDrawarView;
+import com.MohamedTaha.Imagine.New.notification.quran.AlarmReceiver;
 import com.MohamedTaha.Imagine.New.notification.quran.NotificationHelper;
+import com.MohamedTaha.Imagine.New.receiver.GetPrayerTimesEveryDay;
 import com.MohamedTaha.Imagine.New.room.TimingsViewModel;
 import com.MohamedTaha.Imagine.New.ui.fragments.AzanFragment;
 import com.MohamedTaha.Imagine.New.ui.fragments.AzkarFragment;
@@ -37,6 +43,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -205,6 +212,27 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 
 //        sendNotificationForPrayerTime(getApplicationContext());
 //        enableBootRecieiver(getApplicationContext());
+        getPrayeeTimesEveryday(getApplicationContext());
+    }
+    public static void getPrayeeTimesEveryday(Context context){
+        int ALARM_TYPE_ELAPSED = 101;
+        AlarmManager alarmManager;
+        PendingIntent alarmPendingIntent;
+
+        Intent intent = new Intent(context, GetPrayerTimesEveryDay.class);
+        //  Intent intent = new Intent(context, ServiceForNotificationImage.class);
+        Log.d("TAG", "ServiceForNotificationImage ");
+        //Setting pending intent to respond to broadcast sent by AlarmManager every day at 8am
+        alarmPendingIntent = PendingIntent.getBroadcast(context, ALARM_TYPE_ELAPSED, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        //getting instance of AlarmManager service
+        Calendar setTime = Calendar.getInstance();
+        setTime.setTimeInMillis(System.currentTimeMillis());
+        setTime.set(Calendar.HOUR_OF_DAY, 20);
+        setTime.set(Calendar.MINUTE, 14);
+        alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
+                AlarmManager.RTC_WAKEUP,
+                setTime.getTimeInMillis(), alarmPendingIntent);
 
     }
 

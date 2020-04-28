@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.MohamedTaha.Imagine.New.mvp.model.azan.Timings;
 import com.MohamedTaha.Imagine.New.notification.quran.AlarmBootRecevier;
 import com.MohamedTaha.Imagine.New.service.ServiceForPlayPrayerTimesNotification;
 import com.google.gson.Gson;
@@ -26,7 +28,7 @@ import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertFromMi
 public class NotificationHelperPrayerTime {
     public static final String TEXT_NOTIFICATION = "text_notification";
 
-    public static void sendNotificationForPrayerTime(Context context) {
+    public static void sendNotificationForPrayerTime(Context context, Timings prayer_times) {
         //Setting intent to class where notification will be handled
         List<ModelMessageNotification> listForSavePrayerTimes = new ArrayList<>();
         listForSavePrayerTimes.clear();
@@ -35,7 +37,14 @@ public class NotificationHelperPrayerTime {
         Calendar setTime = Calendar.getInstance();
         setTime.setTimeInMillis(System.currentTimeMillis());
         //Get all data from Room database
-
+        Toast.makeText(context, "Prayer times is " +
+                        prayer_times.getFajr().substring(0, 5) +
+                        " \n" + prayer_times.getSunrise().substring(0, 5)
+                        + " \n" + prayer_times.getDhuhr().substring(0, 5)
+                        + " \n" + prayer_times.getAsr().substring(0, 5)
+                        + " \n" + prayer_times.getMaghrib().substring(0, 5)
+                        + " \n" + prayer_times.getIsha().substring(0, 5)
+                , Toast.LENGTH_SHORT).show();
         setTimePrayerWithText(listForSavePrayerTimes, setTime, 22, 15, "حان الأن موعد أذان الفجر");
         setTimePrayerWithText(listForSavePrayerTimes, setTime, 22, 20, "حان الأن موعد أذان الشروق");
         setTimePrayerWithText(listForSavePrayerTimes, setTime, 22, 25, "حان الأن موعد أذان الظهر");
