@@ -6,10 +6,6 @@ import android.content.Intent;
 
 import com.MohamedTaha.Imagine.New.notification.quran.NotificationHelper;
 
-/**
- * Created by MANASATT on 04/09/17.
- */
-
 public class AlarmBootRecevierPrayerTime extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {

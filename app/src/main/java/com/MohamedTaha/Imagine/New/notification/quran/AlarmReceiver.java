@@ -98,7 +98,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             case 6:
             case 16:
                 number = 53;
-                NotificationWithImage.add(R.drawable.page5);
+                NotificationWithImage.add(R.drawable.page55);
                 break;
             case 7:
             case 8:
@@ -298,7 +298,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             case 69:
             case 70:
                 number = 588;
-                NotificationWithImage.add(R.drawable.page600);
+                NotificationWithImage.add(R.drawable.page590);
 
                 break;
             case 71:

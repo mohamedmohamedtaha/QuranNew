@@ -222,6 +222,18 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                     Log.i("TAG", "Error RXJava" + e.getMessage());
                 });
 
+        //For check Is the permission is granted and the data don't find
+        if (isStoragePermissionGranted() && data_today == 0) {
+            getLocation();
+        }
+
+
+
+
+
+
+        
+
 //        Flowable.merge(flowableGetDateTodayFromDatabase, flowableGetAllPrayerTimingFromDatabase)
 //                .subscribeOn(Schedulers.io())
 //                .observeOn(AndroidSchedulers.mainThread())
@@ -250,10 +262,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
 //
 //                    }
 //                });
-        //For check Is the permission is granted and the data don't find
-        if (isStoragePermissionGranted() && data_today == 0) {
-            getLocation();
-        }
+
       //  if (data_today == 0){
 //            TimingsAppDatabase.getInstance(getActivity()).DeletePrayerTimes(this);
       //  }

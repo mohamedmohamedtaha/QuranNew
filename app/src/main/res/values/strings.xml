@@ -244,7 +244,6 @@
     <string name="add_data">تم الإضافة</string>
     <string name="not_allow">للأسف لم تعطي الأذن للتطبيق حتى يجلب البيانات من اللإنترنت</string>
     <string name="cant">للأسف حدث خطأ ما يرجى إعادة المحاولة </string>
-
     <string name="azan">مواقيت الصلاة</string>
     <string name="azan_times">مَوَاقِيتُ الصَّلَاَةِ</string>
 

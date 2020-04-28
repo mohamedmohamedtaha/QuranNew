@@ -34,6 +34,8 @@ public class NotificationHelperPrayerTime {
         //Set the alarm to start independed prayer timer
         Calendar setTime = Calendar.getInstance();
         setTime.setTimeInMillis(System.currentTimeMillis());
+        //Get all data from Room database
+
         setTimePrayerWithText(listForSavePrayerTimes, setTime, 22, 15, "حان الأن موعد أذان الفجر");
         setTimePrayerWithText(listForSavePrayerTimes, setTime, 22, 20, "حان الأن موعد أذان الشروق");
         setTimePrayerWithText(listForSavePrayerTimes, setTime, 22, 25, "حان الأن موعد أذان الظهر");
