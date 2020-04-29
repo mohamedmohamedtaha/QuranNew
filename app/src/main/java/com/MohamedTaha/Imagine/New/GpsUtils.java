@@ -30,13 +30,13 @@ import static com.MohamedTaha.Imagine.New.ui.fragments.AzanFragment.LOCATION_PER
 
 public class GpsUtils extends Activity {
 
-   // private Context context;
+    // private Context context;
     private View view;
     private SettingsClient mSettingsClient;
     private LocationSettingsRequest mLocationSettingsRequest;
     private LocationManager locationManager;
     private LocationRequest locationRequest;
-    private  static int count_cancled = 0;
+    private static int count_cancled = 0;
     private Activity activity;
 
     public GpsUtils(Activity activity) {
@@ -71,7 +71,7 @@ public class GpsUtils extends Activity {
                         @SuppressLint("MissingPermission")
                         @Override
                         public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                     //  GPS is already enable, callback GPS status through listener
+                            //  GPS is already enable, callback GPS status through listener
                             Log.i("TAG", "onSuccess.....");
 
                             if (onGpsListener != null) {
@@ -83,12 +83,12 @@ public class GpsUtils extends Activity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Log.i("TAG", "onFailure");
-                            if (count_cancled == 1){
+                            if (count_cancled == 1) {
                                 Log.i("TAG", "Cancledd to count 1");
-                               // AzanFragment azanFragment =  new AzanFragment();
-                              //  azanFragment.showSettingsAlert();
+                                // AzanFragment azanFragment =  new AzanFragment();
+                                //  azanFragment.showSettingsAlert();
                                 showSettingsAlert();
-                             //   Toast.makeText((Activity) context, "Cancledd to count 1", Toast.LENGTH_LONG).show();
+                                //   Toast.makeText((Activity) context, "Cancledd to count 1", Toast.LENGTH_LONG).show();
 
 //                                SnackbarForGPS(context.getString(R.string.grand_permission),context.getString(R.string.allow),
 //                                     getCurrentFocus());
@@ -106,7 +106,7 @@ public class GpsUtils extends Activity {
                                         ResolvableApiException rae = (ResolvableApiException) e;
                                         Log.i("TAG", "not send.");
                                         rae.startResolutionForResult(activity, AppConstants.GPS_REQUEST);
-                                        count_cancled ++;
+                                        count_cancled++;
                                     } catch (IntentSender.SendIntentException sie) {
                                         Log.i("TAG", "PendingIntent unable to execute request.");
                                     }
@@ -126,57 +126,45 @@ public class GpsUtils extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i("TAG", "onActivityResult");
-
         if (requestCode == AppConstants.GPS_REQUEST) {
             Log.i("TAG", "Return from GPS_REQUEST");
-
             if (resultCode == Activity.RESULT_OK) {
                 //  isGPSEnabled = true;
                 Log.i("TAG", "On GPS");
             } else {
                 Log.i("TAG", "On");
-
             }
         } else {
             Log.i("TAG", "result no");
-
         }
     }
+
     public interface onGpsListener {
         void gpsStatus(boolean isGPSEnable);
     }
-    public void showSettingsAlert () {
-        if (activity.getCallingActivity() != null){
 
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
-        //Setting Dialog Title
-        alertDialog.setTitle(R.string.settings_gps);
-        alertDialog.setCancelable(false);
-
-        //Setting Dialog Message
-        alertDialog.setMessage(R.string.is_open_gps);
-        //On Pressing Setting button
-        alertDialog.setPositiveButton(R.string.settings, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                activity.startActivityForResult(intent, LOCATION_PERMISSION_REQUEST_CODE);
-                //context.startActivity(intent);
-            }
-        });
-        //On pressing cancel button
-        alertDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        alertDialog.show();
-    }else {
+    public void showSettingsAlert() {
+        if (activity.getCallingActivity() != null) {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
+            alertDialog.setTitle(R.string.settings_gps);
+            alertDialog.setCancelable(false);
+            alertDialog.setMessage(R.string.is_open_gps);
+            alertDialog.setPositiveButton(R.string.settings, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    activity.startActivityForResult(intent, LOCATION_PERMISSION_REQUEST_CODE);
+                }
+            });
+            alertDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            alertDialog.show();
+        } else {
             Log.i("TAG", "Activity 2 is null....");
-
         }
     }
-
 }

@@ -224,16 +224,14 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         Log.d("TAG", "ServiceForNotificationImage ");
         //Setting pending intent to respond to broadcast sent by AlarmManager every day at 8am
         alarmPendingIntent = PendingIntent.getBroadcast(context, ALARM_TYPE_ELAPSED, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        //getting instance of AlarmManager service
         Calendar setTime = Calendar.getInstance();
         setTime.setTimeInMillis(System.currentTimeMillis());
-        setTime.set(Calendar.HOUR_OF_DAY, 20);
-        setTime.set(Calendar.MINUTE, 14);
+        setTime.set(Calendar.HOUR_OF_DAY, 16);
+        setTime.set(Calendar.MINUTE, 32);
         alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
-                AlarmManager.RTC_WAKEUP,
+                AlarmManager.INTERVAL_DAY,
                 setTime.getTimeInMillis(), alarmPendingIntent);
-
     }
 
     @Override
@@ -247,8 +245,6 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                 break;
             case R.id.action_use_way:
                 SharedPerefrenceHelper.removeDataForWayUsing(this);
-                //  SharedPerefrenceHelper.putBooleanForWayUsing(this,IS_FIRST_TIME_WAY_USING,false);
-                //SharedPerefrenceHelper.putFirstTime(getApplicationContext(), FIRST_TIME, false);
                 HelperClass.startActivity(getApplicationContext(), SplashActivity.class);
                 break;
             case R.id.action_settings:
@@ -312,7 +308,6 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // For get data from GpsUtlis.vaja to AzanFragment
         if (requestCode == AppConstants.GPS_REQUEST) {
             Log.i("TAG", "Skipped");
             AzanFragment azanFragment = new AzanFragment();
@@ -320,10 +315,8 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
             azanFragment.onActivityResult(requestCode, resultCode, data);
         } else if (requestCode == AzanFragment.LOCATION_PERMISSION_REQUEST_CODE) {
             Log.i("TAG", "LOCATION_PERMISSION_REQUEST_CODE");
-
         } else {
             super.onActivityResult(requestCode, resultCode, data);
-
         }
     }
 //    private void setupViewPager(ViewPager viewPager){

@@ -107,7 +107,6 @@ public abstract class TimingsAppDatabase extends RoomDatabase {
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
                     }
 
                     @Override

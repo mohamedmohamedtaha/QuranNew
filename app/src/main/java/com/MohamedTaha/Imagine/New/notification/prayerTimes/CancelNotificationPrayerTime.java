@@ -22,6 +22,5 @@ public class CancelNotificationPrayerTime extends BroadcastReceiver {
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(send_time);
         context.stopService(new Intent(context, ServiceForPlayPrayerTimesNotification.class));
-
     }
 }
