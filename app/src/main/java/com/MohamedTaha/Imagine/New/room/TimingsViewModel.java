@@ -33,7 +33,9 @@ public class TimingsViewModel extends AndroidViewModel {
     public Flowable<Integer>getTimingsByDataToday(String date_today){
         return timingsRepository.getTimingsByDataToday(date_today);
     }
-
+    public Flowable<String>getCityName(){
+        return timingsRepository.getCityName();
+    }
     public LiveData<List<Timings>> getAllTimings(){
         return getAllTimings;
     }

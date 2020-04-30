@@ -45,6 +45,7 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -66,7 +67,8 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     MenuItem prevMenuItem;
     TapTargetSequence sequence;
     private TimingsViewModel timingsViewModel;
-    public static int data_today = 0;
+    public static int store_date_today = 0;
+    public static String store_city_name =null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,19 +81,12 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         appPackageName = getPackageName();
 
         timingsViewModel = new ViewModelProvider(this).get(TimingsViewModel.class);
-        // For get Date today
-        timingsViewModel.getTimingsByDataToday(convertDate()).
-                subscribeOn(Schedulers.trampoline())
-                // Add RXAndroid2 for support with Room because still RXjava3 don't support Room
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(date_today -> {
-                    data_today = date_today;
-                    Log.i("TAG", "Navigation Drawaer : " + data_today);
-                    //  Toast.makeText(getActivity(), "date today is " + date_today, Toast.LENGTH_SHORT).show();
-                }, e -> {
-                    Toast.makeText(getApplicationContext(), "e : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        getDateTodayFromDatabase();
+        getCityName();
 
-                });
+
+
+
         //for show way using
         if (!SharedPerefrenceHelper.getBooleanForWayUsing(getApplicationContext(), IS_FIRST_TIME_WAY_USING, false)) {
             ShowGuide showGuide = new ShowGuide(NavigationDrawaberActivity.this, activityNavigationDrawaberBinding.toobar,
@@ -148,6 +143,33 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 //        });
 //        setupViewPager(NavigationDrawaberActivityVPager);
 //
+    }
+    private void getDateTodayFromDatabase(){
+        // For get Date today
+        timingsViewModel.getTimingsByDataToday(convertDate()).
+                subscribeOn(Schedulers.trampoline())
+                // Add RXAndroid2 for support with Room because still RXjava3 don't support Room
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(date_today -> {
+                    store_date_today = date_today;
+                    Log.i("TAG", "Navigation Drawaer : " + store_date_today);
+                    //  Toast.makeText(getActivity(), "date today is " + date_today, Toast.LENGTH_SHORT).show();
+                }, e -> {
+                    Toast.makeText(getApplicationContext(), "e : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                });
+    }
+    private void getCityName(){
+        timingsViewModel = new ViewModelProvider(this).get(TimingsViewModel.class);
+        Flowable<String> getCityName = timingsViewModel.getCityName();
+        getCityName.subscribeOn(Schedulers.io())
+                .subscribe(city_name -> {
+                    store_city_name = city_name;
+                    Log.d("TAG", "City name from database is :" + store_city_name);
+                },error -> {
+                    Log.d("TAG", "City name from database is :" + error.getMessage());
+
+                });
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -309,7 +331,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AppConstants.GPS_REQUEST) {
-            Log.i("TAG", "Skipped");
+            Log.i("TAG Navigation drawaber", "Skipped");
             AzanFragment azanFragment = new AzanFragment();
             HelperClass.replece(azanFragment, getSupportFragmentManager(), R.id.frameLayout);
             azanFragment.onActivityResult(requestCode, resultCode, data);

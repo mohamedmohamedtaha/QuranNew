@@ -29,6 +29,9 @@ public interface TimingsDao {
     @Query("SELECT * FROM prayer_time WHERE date_today = :date_today")
     Flowable<Timings> getPrayerTimesForCurrentDate(String date_today);
 
+    @Query("SELECT city FROM prayer_time LIMIT 1")
+    Flowable<String> getCityName();
+
 //    @Query("SELECT date_today FROM prayer_time WHERE date_today = :date_today")
 //    Flowable<String> getTimingsByDataToday(String date_today);
 

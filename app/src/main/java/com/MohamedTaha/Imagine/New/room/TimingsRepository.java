@@ -57,6 +57,9 @@ public class TimingsRepository {
     public   Flowable<Integer>getTimingsByDataToday(String date_today){
         return timingsDao.getTimingsByDataToday(date_today);
     }
+    public   Flowable<String>getCityName(){
+        return timingsDao.getCityName();
+    }
     public   Flowable<Timings>getPrayerTimesForCurrentDate(String date_today){
         return timingsDao.getPrayerTimesForCurrentDate(date_today);
     }

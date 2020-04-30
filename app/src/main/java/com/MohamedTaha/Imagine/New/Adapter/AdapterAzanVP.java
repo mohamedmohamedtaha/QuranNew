@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,19 +27,22 @@ import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertDate;
 import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertTimeToAM;
 
 public class AdapterAzanVP extends PagerAdapter {
+
     private Context context;
     private List<Timings> azanList = new ArrayList<>();
+
     public AdapterAzanVP(Context context) {
         this.context = context;
     }
+
     @Override
     public int getCount() {
-        if (azanList != null && azanList.size() >=0){
+        if (azanList != null && azanList.size() >= 0) {
             return azanList.size();
-        }
-        else {
+        } else {
             return 0;
-        }    }
+        }
+    }
 
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
@@ -48,7 +52,7 @@ public class AdapterAzanVP extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        View row = LayoutInflater.from(context).inflate(R.layout.custom_azan,null);
+        View row = LayoutInflater.from(context).inflate(R.layout.custom_azan, null);
         RecyclerAzanViewHolder recyclerAzanViewHolder = new RecyclerAzanViewHolder(row);
         Timings azan = azanList.get(position);
 
@@ -60,6 +64,12 @@ public class AdapterAzanVP extends PagerAdapter {
         recyclerAzanViewHolder.TVEsha.setText(convertTimeToAM(azan.getIsha().substring(0, 5)));
         recyclerAzanViewHolder.TVDateToday.setText(azan.getDate_today());
         recyclerAzanViewHolder.TVCity.setText(azan.getCity());
+        recyclerAzanViewHolder.IBRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Click", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         if (convertDate().equals(azan.getDate_today()) && compareTwoTimes(convertTimeToAM(azan.getFajr().substring(0, 5)))) {
             recyclerAzanViewHolder.TVFagr.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
@@ -77,12 +87,13 @@ public class AdapterAzanVP extends PagerAdapter {
 
         } else if (convertDate().equals(azan.getDate_today()) && compareTwoTimes(convertTimeToAM(azan.getIsha().substring(0, 5)))) {
             recyclerAzanViewHolder.TVEsha.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
-        }else {
+        } else {
 
         }
         container.addView(row);
-    return row;
+        return row;
     }
+
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((View) object);
@@ -93,6 +104,7 @@ public class AdapterAzanVP extends PagerAdapter {
         this.azanList = azanList;
         notifyDataSetChanged();
     }
+
 
     public static class RecyclerAzanViewHolder extends RecyclerView.ViewHolder {
         private View view;
@@ -112,6 +124,8 @@ public class AdapterAzanVP extends PagerAdapter {
         TextView TVCity;
         @BindView(R.id.TV_Date_Today)
         TextView TVDateToday;
+        @BindView(R.id.IB_Refresh)
+        ImageButton IBRefresh;
 
         public RecyclerAzanViewHolder(@NonNull View itemView) {
             super(itemView);
