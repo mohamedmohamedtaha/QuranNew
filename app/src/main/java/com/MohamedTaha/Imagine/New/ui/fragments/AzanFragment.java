@@ -161,10 +161,21 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                             fragmentAzanBinding.progressBar.setVisibility(View.GONE);
                             fragmentAzanBinding.TVShowError.setVisibility(View.GONE);
                             fragmentAzanBinding.AzanFragmentVP.setVisibility(View.VISIBLE);
-                            AdapterAzanVP adapterAzan = new AdapterAzanVP(getActivity());
+                            AdapterAzanVP adapterAzan = new AdapterAzanVP(getActivity(), new AdapterAzanVP.ClickListener() {
+                                @Override
+                                public void CheckCity() {
+                                  //  city_name = getCityName(location, getLatitude(), getLongitude());
+                                    if (!store_city_name.equals(city_name)){
+                                        Toast.makeText(getActivity(), "yes", Toast.LENGTH_SHORT).show();
+                                    }else {
+                                        Toast.makeText(getActivity(), "no", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                }
+                            });
                             adapterAzan.setAzanList(getAllData);
                             fragmentAzanBinding.AzanFragmentVP.setAdapter(adapterAzan);
-                            fragmentAzanBinding.AzanFragmentVP.setCurrentItem(store_date_today);
+                            fragmentAzanBinding.AzanFragmentVP.setCurrentItem(store_date_today-1);
                             Log.i("TAG", "all data " + getAllData.size());
                         }
                     } else {
@@ -177,8 +188,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                 }, e -> {
                     Log.i("TAG", "Error RXJava" + e.getMessage());
                 });
-        Log.d("TAG", "city_name : "+ city_name);
-
         if (store_date_today <= 0 /*&& !store_city_name.equals(city_name)*/) {
             TimingsAppDatabase.getInstance(getActivity()).DeletePrayerTimes(AzanFragment.this);
             Log.d("TAG", "Add");
@@ -471,7 +480,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                     Log.i("TAG", ":location is :" + getLatitude() + "" + getLongitude() + ":City name is :" + city_name);
                     Log.i("TAG", ":City name is :" + city_name);
                     getPrayerTimes(location.getLatitude(), location.getLongitude());
-
                     //  fragmentAzanBinding.progressBar.setVisibility(View.VISIBLE);
 //                    if (save_request_code_back_from_turn_gps == 1001) {
 //                        Log.i("TAG", "save_request_code" + save_request_code_back_from_turn_gps);
@@ -485,7 +493,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                     getLocationTest();
                     Log.d("TAG", "The location  null");
-
                 }
             }
         });

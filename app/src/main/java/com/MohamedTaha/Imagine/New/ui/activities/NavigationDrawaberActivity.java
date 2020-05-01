@@ -83,10 +83,6 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         timingsViewModel = new ViewModelProvider(this).get(TimingsViewModel.class);
         getDateTodayFromDatabase();
         getCityName();
-
-
-
-
         //for show way using
         if (!SharedPerefrenceHelper.getBooleanForWayUsing(getApplicationContext(), IS_FIRST_TIME_WAY_USING, false)) {
             ShowGuide showGuide = new ShowGuide(NavigationDrawaberActivity.this, activityNavigationDrawaberBinding.toobar,
@@ -152,7 +148,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(date_today -> {
                     store_date_today = date_today;
-                    Log.i("TAG", "Navigation Drawaer : " + store_date_today);
+                    Log.i("TAG", "date today from data base : " + store_date_today);
                     //  Toast.makeText(getActivity(), "date today is " + date_today, Toast.LENGTH_SHORT).show();
                 }, e -> {
                     Toast.makeText(getApplicationContext(), "e : " + e.getMessage(), Toast.LENGTH_SHORT).show();

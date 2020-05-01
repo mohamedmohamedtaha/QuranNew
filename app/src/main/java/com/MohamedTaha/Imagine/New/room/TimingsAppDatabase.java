@@ -72,7 +72,7 @@ public abstract class TimingsAppDatabase extends RoomDatabase {
                     timingsOne.setMaghrib(azan.getData().get(i).getTimings().getMaghrib());
                     timingsOne.setIsha(azan.getData().get(i).getTimings().getIsha());
                     timingsOne.setDate_today(azan.getData().get(i).getDate().getGregorian().getDate());
-                    timingsOne.setId_seq(i);
+                    timingsOne.setId_seq(i+1);
                     timingsOne.setCity(city_name);
                     timingsDao().insertTimings(timingsOne);
                     Log.d("TAG","i :"+ i);

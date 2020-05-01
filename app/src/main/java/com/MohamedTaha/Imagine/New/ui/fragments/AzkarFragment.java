@@ -15,13 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.MohamedTaha.Imagine.New.Adapter.AdapterForAzkar;
-import com.MohamedTaha.Imagine.New.Adapter.RecycleViewReaderAdapter;
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.mvp.interactor.AzkarFragmentInteractor;
 import com.MohamedTaha.Imagine.New.mvp.model.ModelAzkar;
 import com.MohamedTaha.Imagine.New.mvp.presenter.AzkarFragmentPresenter;
-import com.MohamedTaha.Imagine.New.ui.activities.SwipePagesActivity;
 import com.MohamedTaha.Imagine.New.mvp.view.AzkarFragmentView;
+import com.MohamedTaha.Imagine.New.ui.activities.SwipePagesActivity;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -79,8 +78,7 @@ public class AzkarFragment extends Fragment implements AzkarFragmentView {
     @Override
     public void showAfterQueryText(List<ModelAzkar> stringList) {
         modelAzkar = stringList;
-        adapterForAzkar = new AdapterForAzkar(stringList, new RecycleViewReaderAdapter.ClickListener() {
-
+        adapterForAzkar = new AdapterForAzkar(stringList, new AdapterForAzkar.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 bundle.putString(SAVE_AZKAR, new Gson().toJson(modelAzkarBundle));
@@ -123,8 +121,7 @@ public class AzkarFragment extends Fragment implements AzkarFragmentView {
         modelAzkar = strings;
         linearLayoutManager = new LinearLayoutManager(getActivity());
         AzkarFragmentRecycleView.setLayoutManager(linearLayoutManager);
-        adapterForAzkar = new AdapterForAzkar(modelAzkar, new RecycleViewReaderAdapter.ClickListener() {
-
+        adapterForAzkar = new AdapterForAzkar(modelAzkar, new AdapterForAzkar.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 bundle.putString(SAVE_AZKAR, new Gson().toJson(modelAzkar));
@@ -134,6 +131,7 @@ public class AzkarFragment extends Fragment implements AzkarFragmentView {
                 intent.putExtras(bundle);
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.item_anim_slide_from_top, R.anim.item_anim_no_thing);
+
             }
         });
 
@@ -153,7 +151,7 @@ public class AzkarFragment extends Fragment implements AzkarFragmentView {
 
     @Override
     public void showAfterSearch() {
-        adapterForAzkar = new AdapterForAzkar(modelAzkar, new RecycleViewReaderAdapter.ClickListener() {
+        adapterForAzkar = new AdapterForAzkar(modelAzkar, new AdapterForAzkar.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 bundle.putString(SAVE_AZKAR, new Gson().toJson(modelAzkar));

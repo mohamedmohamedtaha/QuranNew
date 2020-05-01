@@ -25,14 +25,17 @@ import butterknife.ButterKnife;
 import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.compareTwoTimes;
 import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertDate;
 import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertTimeToAM;
+import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.store_city_name;
 
 public class AdapterAzanVP extends PagerAdapter {
 
     private Context context;
     private List<Timings> azanList = new ArrayList<>();
+    private ClickListener checkCity;
 
-    public AdapterAzanVP(Context context) {
+    public AdapterAzanVP(Context context,ClickListener checkCity)  {
         this.context = context;
+        this.checkCity = checkCity;
     }
 
     @Override
@@ -67,7 +70,9 @@ public class AdapterAzanVP extends PagerAdapter {
         recyclerAzanViewHolder.IBRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Click", Toast.LENGTH_SHORT).show();
+                if (checkCity != null){
+                    checkCity.CheckCity();
+                }
             }
         });
 
@@ -92,6 +97,9 @@ public class AdapterAzanVP extends PagerAdapter {
         }
         container.addView(row);
         return row;
+    }
+    public interface ClickListener {
+        void CheckCity();
     }
 
     @Override

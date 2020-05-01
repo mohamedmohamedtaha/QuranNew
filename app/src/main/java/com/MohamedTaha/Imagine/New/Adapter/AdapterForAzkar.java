@@ -19,9 +19,9 @@ import butterknife.ButterKnife;
 
 public class AdapterForAzkar extends RecyclerView.Adapter<AdapterForAzkar.RecyclerAzkarViewHolder> {
     private List<ModelAzkar> modelAzkars = new ArrayList<>();
-    private RecycleViewReaderAdapter.ClickListener clickListener;
+    private ClickListener clickListener;
 
-    public AdapterForAzkar(List<ModelAzkar> modelAzkars, RecycleViewReaderAdapter.ClickListener clickListener) {
+    public AdapterForAzkar(List<ModelAzkar> modelAzkars, ClickListener clickListener) {
         this.modelAzkars = modelAzkars;
         this.clickListener = clickListener;
     }
