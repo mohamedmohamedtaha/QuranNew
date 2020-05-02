@@ -94,7 +94,7 @@ public class AdapterAzan extends RecyclerView.Adapter<AdapterAzan.RecyclerAzanVi
         TextView TVDauhr;
         @BindView(R.id.TV_Asr)
         TextView TVAsr;
-        @BindView(R.id.TV_MAgrib)
+        @BindView(R.id.TV_Magrib)
         TextView TVMAgrib;
         @BindView(R.id.TV_Esha)
         TextView TVEsha;

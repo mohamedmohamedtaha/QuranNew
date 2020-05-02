@@ -36,6 +36,7 @@
         <activity
             android:name=".ui.activities.SettingsActivity"
             android:label="@string/settings_Notification_label"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -45,9 +46,11 @@
         <activity
             android:name=".ui.activities.SwipePagesActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTop"
             android:theme="@style/FullScreenWindow" />
         <activity
             android:name=".ui.activities.DetailsSoundActivity"
+            android:launchMode="singleTop"
             android:configChanges="orientation|screenSize" />
         <activity
             android:name=".ui.activities.SplashActivity"
@@ -60,6 +63,7 @@
         </activity>
         <activity
             android:name=".ui.activities.ListSoundReader"
+            android:launchMode="singleTop"
             android:configChanges="orientation|screenSize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

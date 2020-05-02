@@ -169,7 +169,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                                         Toast.makeText(getActivity(), "yes", Toast.LENGTH_SHORT).show();
                                     }else {
                                         Toast.makeText(getActivity(), "no", Toast.LENGTH_SHORT).show();
-
                                     }
                                 }
                             });
@@ -348,6 +347,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
         snackbar.show();
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

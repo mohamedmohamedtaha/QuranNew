@@ -38,6 +38,8 @@ public class NotificationHelperPrayerTime {
                 Integer.valueOf(prayer_times.getIsha().substring(3, 5)), "حان الأن موعد أذان العشاء");
         Alarm alarm = new Alarm(context);
         alarm.setAlarm(pendingIntent, setTime, ServiceForPlayPrayerTimesNotification.class, listForSavePrayerTimes);
+        Log.d("TAG", "Fire Alarm " + listForSavePrayerTimes.get(3));
+
     }
 
     private static void setTimePrayerWithText(List<ModelMessageNotification> modelMessageNotificationList,

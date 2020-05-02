@@ -1,56 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="horizontal"
         android:layout_marginTop="@dimen/dimens_6xl"
-        android:layout_height="wrap_content">
+        android:orientation="horizontal">
+
         <ImageButton
             android:id="@+id/IB_Refresh"
-            android:layout_marginEnd="@dimen/dimens_xl"
-            android:background="@drawable/ic_refresh"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dimens_xl"
+            android:background="@drawable/ic_refresh" />
+
         <TextView
             android:id="@+id/TV_City"
             style="@style/style_text_view_fragment_azan"
             android:hint="@string/date_today" />
+
         <TextView
             android:id="@+id/TV_Date_Today"
             style="@style/style_text_view_fragment_azan"
             android:hint="@string/date_today" />
     </LinearLayout>
+
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/dimens_6xl"
-        android:layout_height="wrap_content">
+        android:layout_marginEnd="@dimen/dimens_xl"
+        android:layout_marginStart="@dimen/dimens_xl"
+        android:layout_marginTop="@dimen/dimens_xxxl"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/TV_Show_Time_Fagr"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="invisible"
+            android:background="@android:color/darker_gray"
+            />
+        <!--            style="@style/style_text_view_fragment_azan_show_timer"-->
+
         <TextView
             android:id="@+id/TV_Fagr"
-          style="@style/style_text_view_fragment_azan"
-            android:hint="@string/hello_blank_fragment" />
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            tools:hint="@string/hello_blank_fragment" />
+
         <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:id="@+id/T_Fagr"
-            style="@style/style_text_view_fragment_azan"
 
             android:text="@string/elfagr" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/dimens_6xl"
-        android:layout_height="wrap_content">
+        android:layout_marginTop="@dimen/dimens_xl"
+        android:orientation="horizontal">
+
         <TextView
+            android:id="@+id/TV_Show_Time_sunrise"
+            style="@style/style_text_view_fragment_azan_show_timer"
+            android:visibility="invisible" />
+
+        <TextView
+
             android:id="@+id/TV_Sunrise"
             style="@style/style_text_view_fragment_azan"
-            android:hint="@string/hello_blank_fragment" />
+            tools:hint="@string/hello_blank_fragment" />
+
         <TextView
             android:id="@+id/T_Sunrise"
             style="@style/style_text_view_fragment_azan"
@@ -60,59 +92,90 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/dimens_6xl"
-        android:layout_height="wrap_content">
+        android:layout_marginTop="@dimen/dimens_xl"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/TV_Show_Time_Dauhr"
+            style="@style/style_text_view_fragment_azan_show_timer"
+            android:visibility="invisible" />
+
         <TextView
             android:id="@+id/TV_Dauhr"
             style="@style/style_text_view_fragment_azan"
-            android:hint="@string/hello_blank_fragment" />
+            tools:hint="@string/hello_blank_fragment" />
+
         <TextView
             android:id="@+id/T_Dauhr"
             style="@style/style_text_view_fragment_azan"
             android:text="@string/eldahr" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/dimens_6xl"
-        android:layout_height="wrap_content">
+        android:layout_marginTop="@dimen/dimens_xl"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/TV_Show_Time_Asr"
+            style="@style/style_text_view_fragment_azan_show_timer"
+            android:visibility="invisible" />
+
         <TextView
             android:id="@+id/TV_Asr"
             style="@style/style_text_view_fragment_azan"
-            android:hint="@string/hello_blank_fragment" />
+            tools:hint="@string/hello_blank_fragment" />
+
         <TextView
             android:id="@+id/T_Asr"
             style="@style/style_text_view_fragment_azan"
             android:text="@string/elasr" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/dimens_6xl"
-        android:layout_height="wrap_content">
+        android:layout_marginTop="@dimen/dimens_xl"
+        android:orientation="horizontal">
+
         <TextView
-            android:id="@+id/TV_MAgrib"
+            android:id="@+id/TV_Show_Time_Magrib"
+            style="@style/style_text_view_fragment_azan_show_timer"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/TV_Magrib"
             style="@style/style_text_view_fragment_azan"
-            android:hint="@string/hello_blank_fragment" />
+            tools:hint="@string/hello_blank_fragment" />
+
         <TextView
             android:id="@+id/T_MAgrib"
             style="@style/style_text_view_fragment_azan"
             android:text="@string/elmagrab" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/dimens_6xl"
-        android:layout_height="wrap_content">
+        android:layout_marginTop="@dimen/dimens_xl"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/TV_Show_Time_Esha"
+            style="@style/style_text_view_fragment_azan_show_timer"
+            android:visibility="invisible" />
+
         <TextView
             android:id="@+id/TV_Esha"
             style="@style/style_text_view_fragment_azan"
-            android:hint="@string/hello_blank_fragment" />
+            tools:hint="@string/hello_blank_fragment" />
+
         <TextView
             android:id="@+id/T_Esha"
             style="@style/style_text_view_fragment_azan"

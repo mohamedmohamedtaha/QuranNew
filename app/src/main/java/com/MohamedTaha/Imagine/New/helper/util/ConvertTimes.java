@@ -1,5 +1,8 @@
 package com.MohamedTaha.Imagine.New.helper.util;
 
+import android.icu.util.TimeUnit;
+import android.util.Log;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -46,8 +49,26 @@ public class ConvertTimes {
         long mills = current_time_date_after_editing.getTime() - time_compare_date.getTime() ;
         int hours =(int) mills / (1000 * 60 * 60);
         int mins =(int) (mills / (1000 * 60 ))% 60;
+        int seconds = (int) ((mills % (1000 * 60 * 60)) % (1000 * 60) / 1000);
+
+//        if (mins < 10){
+//            return " - 0 " +  mins + " " + second;
+      //  secondsString = "0" + seconds;
+
+        //}
+        if (mills<-10 || mills == 0){
+            return String.format("%02d",mins) ;
+        }
+        else {
+            return String.format("+%02d",mins) ;
+        }
+
         //compare(hours,mins);
-        return hours + " : " + mins;
+        //return hours + " : " + mins ;
+      //  String minute = String.format("%02d",mins);
+      //  String secondd = String.format("%02d",seconds);
+      //  Log.d("TAG second", secondd);
+
     }
 
     public static boolean compareTwoTimes(String time_compare_string){

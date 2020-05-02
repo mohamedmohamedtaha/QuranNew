@@ -236,7 +236,6 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         int ALARM_TYPE_ELAPSED = 101;
         AlarmManager alarmManager;
         PendingIntent alarmPendingIntent;
-
         Intent intent = new Intent(context, GetPrayerTimesEveryDay.class);
         //  Intent intent = new Intent(context, ServiceForNotificationImage.class);
         Log.d("TAG", "ServiceForNotificationImage ");
@@ -244,8 +243,8 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         alarmPendingIntent = PendingIntent.getBroadcast(context, ALARM_TYPE_ELAPSED, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Calendar setTime = Calendar.getInstance();
         setTime.setTimeInMillis(System.currentTimeMillis());
-        setTime.set(Calendar.HOUR_OF_DAY, 16);
-        setTime.set(Calendar.MINUTE, 32);
+        setTime.set(Calendar.HOUR_OF_DAY, 1);
+        setTime.set(Calendar.MINUTE, 05);
         alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
                 AlarmManager.INTERVAL_DAY,
