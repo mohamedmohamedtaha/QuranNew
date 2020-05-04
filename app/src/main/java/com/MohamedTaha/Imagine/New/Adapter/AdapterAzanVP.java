@@ -2,6 +2,7 @@ package com.MohamedTaha.Imagine.New.Adapter;
 
 import android.content.Context;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,7 @@ public class AdapterAzanVP extends PagerAdapter {
         View row = LayoutInflater.from(context).inflate(R.layout.custom_azan, null);
         RecyclerAzanViewHolder recyclerAzanViewHolder = new RecyclerAzanViewHolder(row);
         Timings azan = azanList.get(position);
+        Log.d("TAG","Time fagr is :" +azan.getFajr());
 
         recyclerAzanViewHolder.TVFagr.setText(convertTimeToAM(azan.getFajr().substring(0, 5)));
         recyclerAzanViewHolder.TVSunrise.setText(convertTimeToAM(azan.getSunrise().substring(0, 5)));
@@ -88,40 +90,26 @@ public class AdapterAzanVP extends PagerAdapter {
 //            }
 //        },0,1000);
 //        recyclerAzanViewHolder.TVShowTimeFagr.setText( " " + 2* 5 + "\n" + "5 + " + (2  *5)+ "\n" + " 5" + 2* 5);
-        recyclerAzanViewHolder.TVShowTimeFagr.setVisibility(View.VISIBLE);
-       showTimer(recyclerAzanViewHolder.TVShowTimeFagr,"19:55");
+      //  recyclerAzanViewHolder.TVShowTimeFagr.setVisibility(View.VISIBLE);
+    //    showTimer(recyclerAzanViewHolder.TVShowTimeFagr, "19:55");
         if (convertDate().equals(azan.getDate_today()) && compareTwoTimes(convertTimeToAM(azan.getFajr().substring(0, 5)))) {
             recyclerAzanViewHolder.TVFagr.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
-            showTimer(recyclerAzanViewHolder.TVShowTimeFagr,azan.getFajr().substring(0, 5));
-
-//            new CountDownTimer(20 * 60000, 1000) {
-//
-//                @Override
-//                public void onTick(long millisUntilFinished) {
-//                    recyclerAzanViewHolder.TVShowTimeFagr.setVisibility(View.VISIBLE);
-//                    recyclerAzanViewHolder.TVShowTimeFagr.setText(compareTwoTimess(convertTimeToAM(azan.getFajr().substring(0, 5))));
-//                }
-//
-//                @Override
-//                public void onFinish() {
-//                    recyclerAzanViewHolder.TVShowTimeFagr.setVisibility(View.INVISIBLE);
-//                }
-//            }.start();
+            showTimer(recyclerAzanViewHolder.TVShowTimeFagr, azan.getFajr().substring(0, 5));
         } else if (convertDate().equals(azan.getDate_today()) && compareTwoTimes(convertTimeToAM(azan.getSunrise().substring(0, 5)))) {
             recyclerAzanViewHolder.TVSunrise.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
-            showTimer(recyclerAzanViewHolder.TVShowTimeSunrise,azan.getSunrise().substring(0, 5));
+            showTimer(recyclerAzanViewHolder.TVShowTimeSunrise, azan.getSunrise().substring(0, 5));
         } else if (convertDate().equals(azan.getDate_today()) && compareTwoTimes(convertTimeToAM(azan.getDhuhr().substring(0, 5)))) {
             recyclerAzanViewHolder.TVDauhr.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
-            showTimer(recyclerAzanViewHolder.TVShowTimeDauhr,azan.getDhuhr().substring(0, 5));
+            showTimer(recyclerAzanViewHolder.TVShowTimeDauhr, azan.getDhuhr().substring(0, 5));
         } else if (convertDate().equals(azan.getDate_today()) && compareTwoTimes(convertTimeToAM(azan.getAsr().substring(0, 5)))) {
             recyclerAzanViewHolder.TVAsr.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
-            showTimer(recyclerAzanViewHolder.TVShowTimeAsr,azan.getAsr().substring(0, 5));
+            showTimer(recyclerAzanViewHolder.TVShowTimeAsr, azan.getAsr().substring(0, 5));
         } else if (convertDate().equals(azan.getDate_today()) && compareTwoTimes(convertTimeToAM(azan.getMaghrib().substring(0, 5)))) {
             recyclerAzanViewHolder.TVMagrib.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
-            showTimer(recyclerAzanViewHolder.TVShowTimeMagrib,azan.getMaghrib().substring(0, 5));
+            showTimer(recyclerAzanViewHolder.TVShowTimeMagrib, azan.getMaghrib().substring(0, 5));
         } else if (convertDate().equals(azan.getDate_today()) && compareTwoTimes(convertTimeToAM(azan.getIsha().substring(0, 5)))) {
             recyclerAzanViewHolder.TVEsha.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
-            showTimer(recyclerAzanViewHolder.TVShowTimeEsha,azan.getIsha().substring(0, 5));
+            showTimer(recyclerAzanViewHolder.TVShowTimeEsha, azan.getIsha().substring(0, 5));
         } else {
         }
         container.addView(row);
@@ -142,8 +130,9 @@ public class AdapterAzanVP extends PagerAdapter {
             }
         }.start();
     }
-    public static void cancelTimer(){
-        if (show_timer_every_menutes !=null){
+
+    public static void cancelTimer() {
+        if (show_timer_every_menutes != null) {
             show_timer_every_menutes.cancel();
             show_timer_every_menutes = null;
 
@@ -159,12 +148,10 @@ public class AdapterAzanVP extends PagerAdapter {
         container.removeView((View) object);
     }
 
-
     public void setAzanList(List<Timings> azanList) {
         this.azanList = azanList;
         notifyDataSetChanged();
     }
-
 
     public static class RecyclerAzanViewHolder extends RecyclerView.ViewHolder {
         private View view;

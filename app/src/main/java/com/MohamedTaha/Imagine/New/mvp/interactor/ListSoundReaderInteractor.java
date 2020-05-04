@@ -3,7 +3,6 @@ package com.MohamedTaha.Imagine.New.mvp.interactor;
 import androidx.fragment.app.FragmentActivity;
 
 import com.MohamedTaha.Imagine.New.mvp.model.ImageModel;
-import com.MohamedTaha.Imagine.New.mvp.model.ModelAzkar;
 import com.MohamedTaha.Imagine.New.mvp.presenter.ListSoundReaderPresenter;
 import com.MohamedTaha.Imagine.New.mvp.view.ListSoundReaderView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -43,7 +42,7 @@ public class ListSoundReaderInteractor implements ListSoundReaderPresenter {
 
     @Override
     public void getAllData() {
- disposable = new CompositeDisposable();
+        disposable = new CompositeDisposable();
         listSoundReaderView.showProgress();
 
         Observable<List<ImageModel>> modelAzkarObservable = Observable.fromCallable(new Callable<List<ImageModel>>() {
@@ -53,7 +52,7 @@ public class ListSoundReaderInteractor implements ListSoundReaderPresenter {
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
-        disposable.add(modelAzkarObservable.subscribeWith(new DisposableObserver<List<ImageModel>>(){
+        disposable.add(modelAzkarObservable.subscribeWith(new DisposableObserver<List<ImageModel>>() {
             @Override
             public void onNext(@NonNull List<ImageModel> modelAzkars) {
                 if (listSoundReaderView != null) {

@@ -24,6 +24,7 @@ public class NotificationHelperPrayerTime {
         Calendar setTime = Calendar.getInstance();
         setTime.setTimeInMillis(System.currentTimeMillis());
         Log.d("TAG", "Fire Alarm " + prayer_times.getDate_today());
+
         setTimePrayerWithText(listForSavePrayerTimes, setTime, Integer.valueOf(prayer_times.getFajr().substring(0, 2)),
                 Integer.valueOf(prayer_times.getFajr().substring(3, 5)), "حان الأن موعد أذان الفجر");
         setTimePrayerWithText(listForSavePrayerTimes, setTime, Integer.valueOf(prayer_times.getSunrise().substring(0, 2)),
@@ -38,8 +39,13 @@ public class NotificationHelperPrayerTime {
                 Integer.valueOf(prayer_times.getIsha().substring(3, 5)), "حان الأن موعد أذان العشاء");
         Alarm alarm = new Alarm(context);
         alarm.setAlarm(pendingIntent, setTime, ServiceForPlayPrayerTimesNotification.class, listForSavePrayerTimes);
-        Log.d("TAG", "Fire Alarm " + listForSavePrayerTimes.get(3));
-
+        Log.d("TAG", "Fire Alarm " + listForSavePrayerTimes.get(0).getTime_payer() + "/n"+
+                listForSavePrayerTimes.get(1).getTime_payer() + "/n"
+               + listForSavePrayerTimes.get(2).getTime_payer() + "/n"
+                +listForSavePrayerTimes.get(3).getTime_payer() + "/n"
+                +listForSavePrayerTimes.get(4).getTime_payer() + "/n"
+                +listForSavePrayerTimes.get(5).getTime_payer() + "/n"
+        );
     }
 
     private static void setTimePrayerWithText(List<ModelMessageNotification> modelMessageNotificationList,

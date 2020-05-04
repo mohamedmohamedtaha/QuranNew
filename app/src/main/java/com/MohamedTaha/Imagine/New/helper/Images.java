@@ -1042,7 +1042,7 @@ public class Images {
         imageModels.add(new ImageModel(context.getString(R.string.ahmed_amer), R.drawable.ahmed_amer, context.getString(R.string.hafs_an_asem), 10));
         imageModels.add(new ImageModel(context.getString(R.string.ahmed_naeane), R.drawable.ahmed_neanea, context.getString(R.string.hafs_an_asem), 11));
         imageModels.add(new ImageModel(context.getString(R.string.akram_al_aalakmi), R.drawable.akram_al_aalakmi, context.getString(R.string.hafs_an_asem), 12));
-        imageModels.add(new ImageModel(context.getString(R.string.ibrahim_al_akhdar), R.drawable.ebrahem_khoder, context.getString(R.string.hafs_an_asem), 3));
+        imageModels.add(new ImageModel(context.getString(R.string.ibrahim_al_akhdar), R.drawable.ebrahem_khoder, context.getString(R.string.hafs_an_asem), 13));
         imageModels.add(new ImageModel(context.getString(R.string.ibrahim_al_dosary), R.drawable.ebrahem_eldosary, context.getString(R.string.hafs_an_asem), 14));
         imageModels.add(new ImageModel(context.getString(R.string.ibrahim_al_dosary), R.drawable.ebrahem_eldosary, context.getString(R.string.warsh_an_nafea), 15));
         imageModels.add(new ImageModel(context.getString(R.string.bnder_belela), R.drawable.belela, context.getString(R.string.hafs_an_asem), 16));
@@ -1072,7 +1072,7 @@ public class Images {
         imageModels.add(new ImageModel(context.getString(R.string.adel_elkalbany), R.drawable.elklbany, context.getString(R.string.hafs_an_asem), 40));
         imageModels.add(new ImageModel(context.getString(R.string.abdelbaset), R.drawable.abdeelbaset, context.getString(R.string.hafs_an_asem), 41));
         imageModels.add(new ImageModel(context.getString(R.string.abdelbaset), R.drawable.abdeelbaset, context.getString(R.string.warsh_an_nafea), 42));
-        imageModels.add(new ImageModel(context.getString(R.string.abdelbaset), R.drawable.abdeelbaset, context.getString(R.string.ekmoshaf_elmogawad), 34));
+        imageModels.add(new ImageModel(context.getString(R.string.abdelbaset), R.drawable.abdeelbaset, context.getString(R.string.ekmoshaf_elmogawad), 43));
         imageModels.add(new ImageModel(context.getString(R.string.abdellah_elgeheny), R.drawable.elgeheny, context.getString(R.string.hafs_an_asem), 44));
         imageModels.add(new ImageModel(context.getString(R.string.abdelrhman_elqasem), R.drawable.elqasem, context.getString(R.string.hafs_an_asem), 45));
         imageModels.add(new ImageModel(context.getString(R.string.abdelrshed_sofy), R.drawable.soufi_hfs, context.getString(R.string.alsosy_ebn_omar), 46));
@@ -1148,7 +1148,7 @@ public class Images {
         imageModels.add(new ImageModel(context.getString(R.string.yasen_elgazaery), R.drawable.yasen_elgazaery, context.getString(R.string.warsh_an_nafea), 116));
         imageModels.add(new ImageModel(context.getString(R.string.yahya), R.drawable.yahya, context.getString(R.string.hafs_an_asem), 117));
         imageModels.add(new ImageModel(context.getString(R.string.noah), R.drawable.noah, context.getString(R.string.hafs_an_asem), 118));
-        imageModels.add(new ImageModel(context.getString(R.string.yosem_elshereay), R.drawable.yosem_elshereay, context.getString(R.string.hafs_an_asem), 118));
+        imageModels.add(new ImageModel(context.getString(R.string.yosem_elshereay), R.drawable.yosem_elshereay, context.getString(R.string.hafs_an_asem), 119));
     return imageModels;
     }
 }

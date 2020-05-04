@@ -188,11 +188,11 @@ public class ListSoundReader extends AppCompatActivity {
         noInternetReceiver = new NoInternetReceiver();
         utilities = new Utilities();
         isServiceRunning = Utilities.isServiceRunning(MediaPlayerService.class.getName(), getApplicationContext());
-        FragmentListSoundLLControlMedia =  findViewById(R.id.Fragment_List_Sound_LL_Control_Media);
-        ListSoundReaderLoadingIndicator =  findViewById(R.id.ListSoundReader_loading_indicator);
-        imageViewAlbumArt =  findViewById(R.id.imageViewAlbumArt);
-        btnPlay =  findViewById(R.id.btnPlay);
-        btnPause =  findViewById(R.id.btnPause);
+        FragmentListSoundLLControlMedia = findViewById(R.id.Fragment_List_Sound_LL_Control_Media);
+        ListSoundReaderLoadingIndicator = findViewById(R.id.ListSoundReader_loading_indicator);
+        imageViewAlbumArt = findViewById(R.id.imageViewAlbumArt);
+        btnPlay = findViewById(R.id.btnPlay);
+        btnPause = findViewById(R.id.btnPause);
 
         dialog = new Dialog(this);
 
@@ -202,9 +202,9 @@ public class ListSoundReader extends AppCompatActivity {
         }
         playeIntent = new Intent(ListSoundReader.this, MediaPlayerService.class);
         intent = getIntent();
-        textBufferDuration =  findViewById(R.id.textBufferDuration);
-        textDuration =  findViewById(R.id.textDuration);
-        textNowPlaying =  findViewById(R.id.textNowPlaying);
+        textBufferDuration = findViewById(R.id.textBufferDuration);
+        textDuration = findViewById(R.id.textDuration);
+        textNowPlaying = findViewById(R.id.textNowPlaying);
         seekBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
 
         custom_toolbar();
@@ -217,7 +217,7 @@ public class ListSoundReader extends AppCompatActivity {
             imageModelTest = new Gson().fromJson(bundle.getStringExtra(SHEKH_NAME), String.class);
         }
         FILENAME = "/" + imageModelTest + "/";
-        searchView =  findViewById(R.id.search_view);
+        searchView = findViewById(R.id.search_view);
         FragmentListSoundTVNameSora.setText(imageModelTest);
         //For start position from right don't left
         GridLayoutManager linearLayoutManager = new GridLayoutManager(getApplicationContext(), 2) {
@@ -371,7 +371,7 @@ public class ListSoundReader extends AppCompatActivity {
                                                   TextView textView = (TextView) dialog.findViewById(R.id.show_text);
                                                   textView.setText(getResources().getString(R.string.do_want_Save_sound) + " " + name_sora);
                                                   Button yesButton = dialog.findViewById(R.id.BT_Yes);
-                                                  Button noButton =  dialog.findViewById(R.id.BT_No);
+                                                  Button noButton = dialog.findViewById(R.id.BT_No);
                                                   yesButton.setOnClickListener(new View.OnClickListener() {
                                                       @Override
                                                       public void onClick(View v) {
@@ -442,7 +442,7 @@ public class ListSoundReader extends AppCompatActivity {
 
                         }
                     });
-         cursor.close();
+                    cursor.close();
                 }
 
             }
@@ -670,6 +670,7 @@ public class ListSoundReader extends AppCompatActivity {
         globalMenu.findItem(R.id.action_use_way).setVisible(false);
         globalMenu.findItem(R.id.action_settings).setVisible(false);
         globalMenu.findItem(R.id.action_rate).setVisible(false);
+        globalMenu.findItem(R.id.action_elarbaoon_elnawawy).setVisible(false);
         return super.onPrepareOptionsMenu(globalMenu);
     }
 
@@ -715,8 +716,8 @@ public class ListSoundReader extends AppCompatActivity {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            //    position_seekBar  = utilities.progressToTimer(seekBar.getProgress(),totalDuration);
-                           }
+                //    position_seekBar  = utilities.progressToTimer(seekBar.getProgress(),totalDuration);
+            }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -724,7 +725,7 @@ public class ListSoundReader extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                    position_seekBar  = utilities.progressToTimer(seekBar.getProgress(),totalDuration);
+                position_seekBar = utilities.progressToTimer(seekBar.getProgress(), totalDuration);
                 mediaPlayer.seekTo(position_seekBar);
             }
         });

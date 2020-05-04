@@ -34,9 +34,23 @@ public class SoundRepositiory {
     String[] ArrayLinkElqarashy;
     String[] ArrayLinkElqasem;
     String[] ArrayLinkBder;
-    String[] ArrayLinkAhmedElhawashy, ArrayLinkAhmedEltrabolsy, ArrayLinkAhmedKhedrEltrabolsy, ArrayLinkAhmedSaber, ArrayLinkAhmedAmer, ArrayLinkAhmedNeanea, ArrayLinkAkramAlAalakmi, ArrayLinkEbrahemElakhdar, ArrayLinkEbraghemeldosary, ArrayLinkEbraghem_eldosaryWarsh, ArrayLinkEldokalyMohamed, ArrayLinkElzenMohamed, ArrayLinkEloyonElkorashy, ArrayLinkElfalehMohamed, ArrayLinkYasenElgazaery, ArrayLinkBnderBelela, ArrayLinkJamalShaker, ArrayLinkJamanElesemy, ArrayLinkZaky, ArrayLinkSoufiKlf, ArrayLinkSoufi, ArrayLinkbdelazezZahrani, ArrayLinkAliElhozefy, ArrayLinkAliElhozefyHafs, ArrayLinkAlyElswesy,
-            ArrayLinkOmarElqzabry, ArrayLinkAbdelhakemAlabdlah, ArrayLinklinkesMoftahElsltny, ArrayLinkNabelElrefay, ArrayLinkWaledElnaahy, ArrayLinkYaserElmazroay, ArrayLinkYosefElshereay, ArraylinkesTwfeaElsayegh, ArraylinkesRamyEldeaas, ArraylinkesSahlYassen, ArraylinkesAbdelbariElthebety, ArraylinkesAbdelrhmanEloasi, ArraylinkesElhosaryWarsh, ArraylinkesWadeaElyamany, ArraylinkesMoftahElsalatnyEldawary, ArraylinkesMoftahElsalatnyEnbZakor, ArraylinkesMoftahHafs, ArraylinkesHatemFared, ArraylinkesKhalidElmohana, ArraylinkesKhalidAbdElkafy, linkesKhaledElgalel, linkesKhaledElqahtamny, linkesKhalefaEltenegy, linkesSadElghamdy, linkeSadElmeqren, linkesSyedRamadan, linkesElshatry,
-            linkesShahrzadTaher, linkesHKM, linkesSalahHashim, linkesBuKhtr, linkesTareq, linkesRyan, linkesBary, linkesAbdelbasetHAfs, linkesAbdelbasetWarsh, linkesAbdelrhmanMaged, linkesSoufiHfs, linkesAbdelazezAhmed, linkeKkhalf, linkesAbdalah, linkesBsfr, linkesKyat, linkesGulan, linkesmohsin_harthi, linkesObk, linkesKanakeri, linkesWdod, linkesAjbr, linkesHafz, linkesFrs_a, linkesShakshFs, linkesAyyub, linkesEarawi, linkesLhdan, linkesRashad, linkesShah, linkesAbdullahDoris, linkesM_krm, linkesMkreem_warsh, linkesKhan, linkesMrifai, linkesSheimy, linkesBna_mjwds, linkesMustafa, linkesLahoni, linkesRa3ad, linkesHarthi, linkesBilal, linkesNasser_almajed, linkesNamh, linkesHani, linkesSalamah, linkesYahya, linkesNoah;
+    String[] ArrayLinkAhmedElhawashy, ArrayLinkAhmedEltrabolsy, ArrayLinkAhmedKhedrEltrabolsy, ArrayLinkAhmedSaber, ArrayLinkAhmedAmer,
+            ArrayLinkAhmedNeanea, ArrayLinkAkramAlAalakmi, ArrayLinkEbrahemElakhdar, ArrayLinkEbraghemeldosary, ArrayLinkEbraghem_eldosaryWarsh,
+            ArrayLinkEldokalyMohamed, ArrayLinkElzenMohamed, ArrayLinkEloyonElkorashy, ArrayLinkElfalehMohamed, ArrayLinkYasenElgazaery,
+            ArrayLinkBnderBelela, ArrayLinkJamalShaker, ArrayLinkJamanElesemy, ArrayLinkZaky, ArrayLinkSoufiKlf, ArrayLinkSoufi,
+            ArrayLinkbdelazezZahrani, ArrayLinkAliElhozefy, ArrayLinkAliElhozefyHafs, ArrayLinkAlyElswesy, ArrayLinkOmarElqzabry,
+            ArrayLinkAbdelhakemAlabdlah, ArrayLinklinkesMoftahElsltny, ArrayLinkNabelElrefay, ArrayLinkWaledElnaahy, ArrayLinkYaserElmazroay,
+            ArrayLinkYosefElshereay, ArraylinkesTwfeaElsayegh, ArraylinkesRamyEldeaas, ArraylinkesSahlYassen, ArraylinkesAbdelbariElthebety,
+            ArraylinkesAbdelrhmanEloasi, ArraylinkesElhosaryWarsh, ArraylinkesWadeaElyamany, ArraylinkesMoftahElsalatnyEldawary,
+            ArraylinkesMoftahElsalatnyEnbZakor, ArraylinkesMoftahHafs, ArraylinkesHatemFared, ArraylinkesKhalidElmohana,
+            ArraylinkesKhalidAbdElkafy, linkesKhaledElgalel, linkesKhaledElqahtamny, linkesKhalefaEltenegy, linkesSadElghamdy,
+            linkeSadElmeqren, linkesSyedRamadan, linkesElshatry, linkesShahrzadTaher, linkesHKM, linkesSalahHashim, linkesBuKhtr,
+            linkesTareq, linkesRyan, linkesBary, linkesAbdelbasetHAfs, linkesAbdelbasetWarsh, linkesAbdelrhmanMaged, linkesSoufiHfs,
+            linkesAbdelazezAhmed, linkeKkhalf, linkesAbdalah, linkesBsfr, linkesKyat, linkesGulan, linkesmohsin_harthi, linkesObk,
+            linkesKanakeri, linkesWdod, linkesAjbr, linkesHafz, linkesFrs_a, linkesShakshFs, linkesAyyub, linkesEarawi, linkesLhdan,
+            linkesRashad, linkesShah, linkesAbdullahDoris, linkesM_krm, linkesMkreem_warsh, linkesKhan, linkesMrifai, linkesSheimy,
+            linkesBna_mjwds, linkesMustafa, linkesLahoni, linkesRa3ad, linkesHarthi, linkesBilal, linkesNasser_almajed, linkesNamh,
+            linkesHani, linkesSalamah, linkesYahya, linkesNoah;
 
 
     public SoundRepositiory(Application application) {
@@ -538,7 +552,7 @@ public class SoundRepositiory {
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
                     model.setName_sora(soar[i]);
-                    model.setSora_link(linkeSadElmeqren[i]);
+                    model.setSora_link(linkesSyedRamadan[i]);
                     model.setPosition(i);
                     model.setName_shekh(application.getString(R.string.sayed));
                     model.setUrl_image(R.drawable.syed_rmdan);
@@ -1403,6 +1417,7 @@ public class SoundRepositiory {
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
                     model.setName_sora(soar[i]);
+                    model.setSora_link(ArrayLinkYaserEldosary[i]);
                     model.setPosition(i);
                     model.setName_shekh(application.getString(R.string.yaser_eldosary));
                     model.setUrl_image(R.drawable.eldosary);

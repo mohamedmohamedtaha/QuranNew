@@ -30,9 +30,11 @@ import com.MohamedTaha.Imagine.New.informationInrto.TapTargetSequence;
 import com.MohamedTaha.Imagine.New.mvp.interactor.NavigationDrawarInteractor;
 import com.MohamedTaha.Imagine.New.mvp.presenter.NavigationDrawarPresenter;
 import com.MohamedTaha.Imagine.New.mvp.view.NavigationDrawarView;
+import com.MohamedTaha.Imagine.New.notification.prayerTimes.AlarmBootRecevierPrayerTime;
 import com.MohamedTaha.Imagine.New.notification.quran.AlarmReceiver;
 import com.MohamedTaha.Imagine.New.notification.quran.NotificationHelper;
 import com.MohamedTaha.Imagine.New.receiver.GetPrayerTimesEveryDay;
+import com.MohamedTaha.Imagine.New.room.TimingsRepository;
 import com.MohamedTaha.Imagine.New.room.TimingsViewModel;
 import com.MohamedTaha.Imagine.New.ui.fragments.AzanFragment;
 import com.MohamedTaha.Imagine.New.ui.fragments.AzkarFragment;
@@ -52,6 +54,8 @@ import io.reactivex.schedulers.Schedulers;
 import static com.MohamedTaha.Imagine.New.helper.Images.IMAGES;
 import static com.MohamedTaha.Imagine.New.helper.Images.addImagesList;
 import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertDate;
+import static com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationHelperPrayerTime.enableBootRecieiver;
+import static com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationHelperPrayerTime.sendNotificationForPrayerTime;
 import static com.MohamedTaha.Imagine.New.ui.activities.SwipePagesActivity.IS_TRUE;
 import static com.MohamedTaha.Imagine.New.ui.fragments.SplashFragment.SAVE_ALL_IMAGES;
 import static com.MohamedTaha.Imagine.New.ui.fragments.SplashFragment.SAVE_PAGE;
@@ -153,6 +157,19 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                 }, e -> {
                     Toast.makeText(getApplicationContext(), "e : " + e.getMessage(), Toast.LENGTH_SHORT).show();
 
+                });
+        TimingsRepository timingsRepository = TimingsRepository.getInstance(this);
+        timingsRepository.getPrayerTimesForCurrentDate(convertDate()).
+                subscribeOn(Schedulers.trampoline())
+                // Add RXAndroid2 for support with Room because still RXjava3 don't support Room
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(prayer_times -> {
+                    if (prayer_times.getDate_today().equals(convertDate())){
+                          Log.d("TAG","Time fagr is :" +prayer_times.getFajr());
+
+                    }
+                }, e -> {
+                    Log.d("TAG",e.getMessage() );
                 });
     }
     private void getCityName(){
