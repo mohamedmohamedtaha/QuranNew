@@ -5,36 +5,29 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.fragments.AzanFragment">
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="?android:attr/progressBarStyleLarge"
-        android:visibility="gone"
-        android:indeterminateDrawable="@drawable/color_progressbar"
-        />
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+
 
     <com.booking.rtlviewpager.RtlViewPager
         android:id="@+id/AzanFragment_VP"
+        android:visibility="gone"
         style="@style/style_default_layout_match_parent"></com.booking.rtlviewpager.RtlViewPager>
-
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminateDrawable="@drawable/color_progressbar" />
     <TextView
         android:id="@+id/TV_Show_Error"
-        android:layout_centerInParent="true"
-        android:textSize="@dimen/dimens_xl"
-        android:visibility="gone"
-        android:hint="@string/not_allow"
-        android:gravity="center"
-        android:textColor="@android:color/black"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:hint="@string/not_allow"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/dimens_xl"
+        android:visibility="gone" />
 
 
 </RelativeLayout>
