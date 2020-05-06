@@ -27,6 +27,7 @@ import butterknife.ButterKnife;
 import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.compareTwoTimes;
 import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.compareTwoTimess;
 import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertDate;
+import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertDateToFormatArabic;
 import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertTimeToAM;
 
 public class AdapterAzanVP extends PagerAdapter {
@@ -61,15 +62,15 @@ public class AdapterAzanVP extends PagerAdapter {
         View row = LayoutInflater.from(context).inflate(R.layout.custom_azan, null);
         RecyclerAzanViewHolder recyclerAzanViewHolder = new RecyclerAzanViewHolder(row);
         Timings azan = azanList.get(position);
+        convertDateToFormatArabic(azan.getDate_today());
         Log.d("TAG","Time fagr is :" +azan.getFajr());
-
         recyclerAzanViewHolder.TVFagr.setText(convertTimeToAM(azan.getFajr().substring(0, 5)));
         recyclerAzanViewHolder.TVSunrise.setText(convertTimeToAM(azan.getSunrise().substring(0, 5)));
         recyclerAzanViewHolder.TVDauhr.setText(convertTimeToAM(azan.getDhuhr().substring(0, 5)));
         recyclerAzanViewHolder.TVAsr.setText(convertTimeToAM(azan.getAsr().substring(0, 5)));
         recyclerAzanViewHolder.TVMagrib.setText(convertTimeToAM(azan.getMaghrib().substring(0, 5)));
         recyclerAzanViewHolder.TVEsha.setText(convertTimeToAM(azan.getIsha().substring(0, 5)));
-        recyclerAzanViewHolder.TVDateToday.setText(azan.getDate_today());
+        recyclerAzanViewHolder.TVDateToday.setText(convertDateToFormatArabic(azan.getDate_today()));
         recyclerAzanViewHolder.TVCity.setText(azan.getCity());
         recyclerAzanViewHolder.IBRefresh.setOnClickListener(new View.OnClickListener() {
             @Override

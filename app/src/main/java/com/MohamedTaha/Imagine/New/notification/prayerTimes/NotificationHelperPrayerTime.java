@@ -39,13 +39,13 @@ public class NotificationHelperPrayerTime {
                 Integer.valueOf(prayer_times.getIsha().substring(3, 5)), "حان الأن موعد أذان العشاء");
         Alarm alarm = new Alarm(context);
         alarm.setAlarm(pendingIntent, setTime, ServiceForPlayPrayerTimesNotification.class, listForSavePrayerTimes);
-        Log.d("TAG", "Fire Alarm " + listForSavePrayerTimes.get(0).getTime_payer() + "/n"+
-                listForSavePrayerTimes.get(1).getTime_payer() + "/n"
-               + listForSavePrayerTimes.get(2).getTime_payer() + "/n"
-                +listForSavePrayerTimes.get(3).getTime_payer() + "/n"
-                +listForSavePrayerTimes.get(4).getTime_payer() + "/n"
-                +listForSavePrayerTimes.get(5).getTime_payer() + "/n"
-        );
+//        Log.d("TAG", "Fire Alarm " + listForSavePrayerTimes.get(0).getTime_payer() + "/n"+
+//                listForSavePrayerTimes.get(1).getTime_payer() + "/n"
+//               + listForSavePrayerTimes.get(2).getTime_payer() + "/n"
+//                +listForSavePrayerTimes.get(3).getTime_payer() + "/n"
+//                +listForSavePrayerTimes.get(4).getTime_payer() + "/n"
+//                +listForSavePrayerTimes.get(5).getTime_payer() + "/n"
+//        );
     }
 
     private static void setTimePrayerWithText(List<ModelMessageNotification> modelMessageNotificationList,

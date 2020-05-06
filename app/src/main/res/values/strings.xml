@@ -217,7 +217,7 @@
     <string name="settings_by_department_value_every_day" translatable="false">AlarmManager.INTERVAL_DAY</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment">Hello</string>
     <string name="spectial_button">هذا الزر خاص</string>
     <string name="read_azkar">بقراءة الأذكار اليومية</string>
     <string name="sound_string">بالاستماع إلى القرآن عن طريق أكثر من 70 قارئ ويمكن تحميل اي سورة ثم تشغيلهابعد ذلك بدون الإنترنت</string>
@@ -284,4 +284,5 @@
     <string name="text_elhadeth">نص الحديث</string>
     <string name="description_elhadeth">شرح الحديث</string>
     <string name="translate_elhadeth">ترجمة الراوي</string>
+    <string name="save_data">تم حفظ البيانات بنجاح</string>
 </resources>

@@ -345,7 +345,10 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         if (requestCode == AppConstants.GPS_REQUEST) {
             Log.i("TAG Navigation drawaber", "Skipped");
             AzanFragment azanFragment = new AzanFragment();
+            Bundle bundle = new Bundle();
             HelperClass.replece(azanFragment, getSupportFragmentManager(), R.id.frameLayout);
+            bundle.putInt("bundle",resultCode);
+            azanFragment.setArguments(bundle);
             azanFragment.onActivityResult(requestCode, resultCode, data);
         } else if (requestCode == AzanFragment.LOCATION_PERMISSION_REQUEST_CODE) {
             Log.i("TAG", "LOCATION_PERMISSION_REQUEST_CODE");

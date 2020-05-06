@@ -24,7 +24,10 @@
 
             <ImageButton
                 android:id="@+id/IB_Refresh"
-                style="@style/style_text_view_fragment_azan"
+                android:layout_marginStart="@dimen/dimens_xl"
+                android:layout_width="@dimen/dimens_xxl"
+                android:layout_height="@dimen/dimens_xxl"
+                android:layout_gravity="end"
                 android:background="@drawable/ic_refresh" />
 
             <TextView
@@ -86,7 +89,6 @@
                 android:visibility="invisible" />
 
             <TextView
-
                 android:id="@+id/TV_Sunrise"
                 style="@style/style_text_view_fragment_azan_show_time"
                 tools:hint="@string/hello_blank_fragment" />
@@ -94,7 +96,6 @@
             <TextView
                 android:id="@+id/T_Sunrise"
                 style="@style/style_text_view_fragment_azan"
-
                 android:text="@string/Sunrise" />
         </LinearLayout>
 

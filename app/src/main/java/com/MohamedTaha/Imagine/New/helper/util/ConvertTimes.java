@@ -1,38 +1,56 @@
 package com.MohamedTaha.Imagine.New.helper.util;
 
-import android.icu.util.TimeUnit;
 import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class ConvertTimes {
     public static boolean getIsTrue() {
         return isTrue;
     }
 
-    private static boolean isTrue  ;
-    public static String convertDate(){
+    public static String convertDateToFormatArabic(String current_date) {
+        String formattedDate = null;
+        try {
+            Locale locale = new Locale("ar");
+            SimpleDateFormat input_format = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat output_format = new SimpleDateFormat("EEE dd MMM- yyy", locale);
+            Date currDate = input_format.parse(current_date);
+            formattedDate = output_format.format(currDate);
+            Log.d("TAG", formattedDate);
+        } catch (Exception e) {
+            Log.d("TAG","Error: "+  e.getMessage());
+        }
+        return formattedDate;
+    }
+
+    private static boolean isTrue;
+
+    public static String convertDate() {
         Date calendar = Calendar.getInstance().getTime();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         String DateString = simpleDateFormat.format(calendar);
         return DateString;
     }
-    public static String convertTimeToAM(String old_time){
+
+    public static String convertTimeToAM(String old_time) {
         String final_time = null;
         SimpleDateFormat _24Hours = new SimpleDateFormat("hh:mm");
         SimpleDateFormat _12Hours = new SimpleDateFormat("hh:mm a");
         try {
             Date _24HourDt = _24Hours.parse(old_time);
-            final_time= _12Hours.format(_24HourDt);
+            final_time = _12Hours.format(_24HourDt);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         return final_time;
     }
-    public static String compareTwoTimess(String time_compare_string){
+
+    public static String compareTwoTimess(String time_compare_string) {
         SimpleDateFormat format = new SimpleDateFormat("hh:mm aa");
         Date current_time_date = Calendar.getInstance().getTime();
         Date time_compare_date = null;
@@ -46,32 +64,31 @@ public class ConvertTimes {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        long mills = current_time_date_after_editing.getTime() - time_compare_date.getTime() ;
-        int hours =(int) mills / (1000 * 60 * 60);
-        int mins =(int) (mills / (1000 * 60 ))% 60;
+        long mills = current_time_date_after_editing.getTime() - time_compare_date.getTime();
+        int hours = (int) mills / (1000 * 60 * 60);
+        int mins = (int) (mills / (1000 * 60)) % 60;
         int seconds = (int) ((mills % (1000 * 60 * 60)) % (1000 * 60) / 1000);
 
 //        if (mins < 10){
 //            return " - 0 " +  mins + " " + second;
-      //  secondsString = "0" + seconds;
+        //  secondsString = "0" + seconds;
 
         //}
-        if (mills<-10 || mills == 0){
-            return String.format("%02d",mins) ;
-        }
-        else {
-            return String.format("+%02d",mins) ;
+        if (mills < -10 || mills == 0) {
+            return String.format("%02d", mins);
+        } else {
+            return String.format("+%02d", mins);
         }
 
         //compare(hours,mins);
         //return hours + " : " + mins ;
-      //  String minute = String.format("%02d",mins);
-      //  String secondd = String.format("%02d",seconds);
-      //  Log.d("TAG second", secondd);
+        //  String minute = String.format("%02d",mins);
+        //  String secondd = String.format("%02d",seconds);
+        //  Log.d("TAG second", secondd);
 
     }
 
-    public static boolean compareTwoTimes(String time_compare_string){
+    public static boolean compareTwoTimes(String time_compare_string) {
         SimpleDateFormat format = new SimpleDateFormat("hh:mm aa");
         Date current_time_date = Calendar.getInstance().getTime();
         Date time_compare_date = null;
@@ -85,23 +102,25 @@ public class ConvertTimes {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        long mills = current_time_date_after_editing.getTime() - time_compare_date.getTime() ;
-        int hours =(int) mills / (1000 * 60 * 60);
-        int mins =(int) (mills / (1000 * 60 ))% 60;
+        long mills = current_time_date_after_editing.getTime() - time_compare_date.getTime();
+        int hours = (int) mills / (1000 * 60 * 60);
+        int mins = (int) (mills / (1000 * 60)) % 60;
         //compare(hours,mins);
         //return hours + " : " + mins;
-        return compare(hours,mins);
+        return compare(hours, mins);
 
     }
-    private static boolean compare(int hour, int mins){
-        if (hour == 0 && mins <= 15 && mins >= -15){
-             isTrue = true;
-        }else {
+
+    private static boolean compare(int hour, int mins) {
+        if (hour == 0 && mins <= 15 && mins >= -15) {
+            isTrue = true;
+        } else {
             isTrue = false;
         }
         return isTrue;
     }
-    public static String convertFromMilliSecondsToTime(Long milliSeconds){
+
+    public static String convertFromMilliSecondsToTime(Long milliSeconds) {
         //Create a DateFormatter object for displaying date in specified format
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm aa");
 //Create a calender object that will convert the date and time value in millisecond to date.
