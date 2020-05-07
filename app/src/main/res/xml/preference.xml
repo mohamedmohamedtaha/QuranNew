@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-<ListPreference
-    android:defaultValue="@string/settings_Notification_default"
-    android:entries="@array/settings_by_Notification_label"
-    android:entryValues="@array/settings_by_Notification_value"
-    android:key="@string/settings_Notification_key"
-    android:title="@string/settings_Notification_label"
-    />
+    <ListPreference
+        android:defaultValue="@string/settings_Notification_default"
+        android:entries="@array/settings_by_Notification_label"
+        android:entryValues="@array/settings_by_Notification_value"
+        android:key="@string/settings_Notification_key"
+        android:title="@string/settings_Notification_label" />
+    <ListPreference
+        android:defaultValue="@string/settings_method_default"
+        android:entries="@array/settings_by_mothed_label"
+        android:entryValues="@array/settings_by_method_value"
+        android:key="@string/settings_method_key"
+        android:title="@string/settings_method_label" />
 </PreferenceScreen>

@@ -3,7 +3,7 @@ package com.MohamedTaha.Imagine.New.ui.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -26,8 +26,11 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Preference section = findPreference(getString(R.string.settings_Notification_key));
-        bindPreferenceSummaryToValue(section);
+        Preference section_notification = findPreference(getString(R.string.settings_Notification_key));
+        Preference section_method = findPreference(getString(R.string.settings_method_key));
+        bindPreferenceSummaryToValue(section_notification);
+        bindPreferenceSummaryToValue(section_method);
+
     }
 
     @Override

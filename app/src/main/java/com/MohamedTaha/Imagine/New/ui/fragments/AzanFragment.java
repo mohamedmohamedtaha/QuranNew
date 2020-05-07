@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -31,6 +32,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import com.MohamedTaha.Imagine.New.Adapter.AdapterAzanVP;
 import com.MohamedTaha.Imagine.New.AppConstants;
@@ -149,7 +151,8 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     private NoInternetReceiver noInternetReceiver = null;
     private boolean isRefresh = false;
     private Calendar getCalender;
-
+    SharedPreferences sharedPreferences ;
+    String repear ;
     public AzanFragment() {
         // Required empty public constructor
     }
@@ -165,6 +168,11 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         if (!language_name.equals("ar")) {
             HelperClass.change_language("ar", getActivity());
         }
+
+         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        //getString Retrieve a String value from the Preference
+         repear = sharedPreferences.getString(getString(R.string.settings_method_key),
+                getString(R.string.settings_method_default));
         bundle = getArguments();
         if (bundle != null){
             int bundle1 = bundle.getInt("bundle");
@@ -341,8 +349,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                 Log.i("TAG", "result no");
         }
     }
-
-    private void getPrayerTimesByCity(String city, String country, double  method, String city_name) {
+    private void getPrayerTimesByCity(String city, String country, int method, String city_name) {
         //24.788626, 46.777509
         Call<Azan> azanCall = apiServices.getPrayerTimesByCity(city, country, method);
         azanCall.enqueue(new Callback<Azan>() {
@@ -354,7 +361,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                         Log.d("TAG", azan.getData().get(0).getTimings().getFajr());
                         TimingsAppDatabase.getInstance(getActivity()).AddPrayerTimes(AzanFragment.this, azan, city_name);
                     } else {
-                        Toast.makeText(getActivity(), "NO", Toast.LENGTH_SHORT).show();
                         fragmentAzanBinding.progressBar.setVisibility(View.GONE);
                         fragmentAzanBinding.TVShowError.setVisibility(View.VISIBLE);
                         fragmentAzanBinding.TVShowError.setText(getActivity().getString(R.string.cant));
@@ -365,15 +371,13 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                     if (fragmentAzanBinding.progressBar != null) {
                         fragmentAzanBinding.progressBar.setVisibility(View.GONE);
                         clearFlagForInteractiveUser();
-                        //   Objects.requireNonNull(getActivity()).getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                     }
                 }
             }
-
             @Override
             public void onFailure(Call<Azan> call, Throwable t) {
                 Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.i("TAG", " Error " + t.getMessage());
+                Log.i("TAG", " onFailure " + t.getMessage());
                 if (fragmentAzanBinding.progressBar != null) {
                     fragmentAzanBinding.progressBar.setVisibility(View.GONE);
                     clearFlagForInteractiveUser();
@@ -381,10 +385,9 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
             }
         });
     }
-
     private void getPrayerTimes(double latitude, double longitude) {
         //24.788626, 46.777509
-        Call<Azan> azanCall = apiServices.getPrayerTimes(latitude, longitude, false,4);
+        Call<Azan> azanCall = apiServices.getPrayerTimes(latitude, longitude, false,Integer.valueOf(repear));
         azanCall.enqueue(new Callback<Azan>() {
             @Override
             public void onResponse(Call<Azan> call, Response<Azan> response) {
@@ -394,7 +397,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                         Log.d("TAG", azan.getData().get(0).getTimings().getFajr());
                         TimingsAppDatabase.getInstance(getActivity()).AddPrayerTimes(AzanFragment.this, azan, city_name);
                     } else {
-                        Toast.makeText(getActivity(), "NO", Toast.LENGTH_SHORT).show();
                         fragmentAzanBinding.progressBar.setVisibility(View.GONE);
                         fragmentAzanBinding.TVShowError.setVisibility(View.VISIBLE);
                         fragmentAzanBinding.TVShowError.setText(getActivity().getString(R.string.cant));
@@ -405,7 +407,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                     if (fragmentAzanBinding.progressBar != null) {
                         fragmentAzanBinding.progressBar.setVisibility(View.GONE);
                         clearFlagForInteractiveUser();
-                        //   Objects.requireNonNull(getActivity()).getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                     }
                 }
             }
@@ -439,7 +440,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                         Log.d("TAG", city.getCity() + " : " + city.getCountry());
                         city_name = getCityNameWithoutLocation(city.getLat(), city.getLon());
                         Log.d("TAG", "City name in arabic is : " + city_name);
-                        getPrayerTimesByCity(city.getCity(), city.getCountry(), 4, city_name);
+                        getPrayerTimesByCity(city.getCity(), city.getCountry(), Integer.valueOf(repear), city_name);
                     } else {
                         fragmentAzanBinding.progressBar.setVisibility(View.GONE);
                         fragmentAzanBinding.TVShowError.setVisibility(View.VISIBLE);

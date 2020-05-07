@@ -17976,4 +17976,34 @@
         <item>@string/settings_by_department_value_half_day</item>
         <item>@string/settings_by_department_value_every_day</item>
     </array>
+    <array name="settings_by_mothed_label">
+        <item>@string/settings_method_muslim_world_league_label</item>
+        <item>@string/settings_method_islamic_society_of_north_america_label</item>
+        <item>@string/settings_method_egyptian_general_authority_of_survey_label</item>
+        <item>@string/settings_method_umm_al_qura_university_makkah_label</item>
+        <item>@string/settings_method_university_of_islamic_sciences_karachi_label</item>
+        <item>@string/settings_method_institute_of_geophysics_university_of_tehran_label</item>
+        <item>@string/settings_method_gulf_region_label</item>
+        <item>@string/settings_method_kuwait_label</item>
+        <item>@string/settings_method_qatar_label</item>
+        <item>@string/settings_method_majlis_ugama_islam_singapura_singapore_label</item>
+        <item>@string/settings_method_union_organization_islamic_de_france_label</item>
+        <item>@string/settings_method_diyanet_işleri_başkanlığı_turkey_label</item>
+        <item>@string/settings_method_spiritual_administration_of_muslims_of_russia_label</item>
+  </array>
+    <array name="settings_by_method_value">
+        <item>@string/settings_method_muslim_world_league_value</item>
+        <item>@string/settings_method_islamic_society_of_north_america_value</item>
+        <item>@string/settings_method_egyptian_general_authority_of_survey_value</item>
+        <item>@string/settings_method_umm_al_qura_university_makkah_value</item>
+        <item>@string/settings_method_university_of_islamic_sciences_karachi_value</item>
+        <item>@string/settings_method_institute_of_geophysics_university_of_tehran_value</item>
+        <item>@string/settings_method_gulf_region_value</item>
+        <item>@string/settings_method_kuwait_value</item>
+        <item>@string/settings_method_qatar_value</item>
+        <item>@string/settings_method_majlis_ugama_islam_singapura_singapore_11</item>
+        <item>@string/settings_method_union_organization_islamic_de_france_value</item>
+        <item>@string/settings_method_diyanet_işleri_başkanlığı_turkey_value</item>
+        <item>@string/settings_method_spiritual_administration_of_muslims_of_russia_value</item>
+    </array>
 </resources>

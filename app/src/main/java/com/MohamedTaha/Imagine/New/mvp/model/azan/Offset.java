@@ -29,7 +29,7 @@ public class Offset {
     private Integer sunset;
     @SerializedName("Isha")
     @Expose
-    private Integer isha;
+    private String isha;
     @SerializedName("Midnight")
     @Expose
     private Integer midnight;
@@ -90,11 +90,11 @@ public class Offset {
         this.sunset = sunset;
     }
 
-    public Integer getIsha() {
+    public String getIsha() {
         return isha;
     }
 
-    public void setIsha(Integer isha) {
+    public void setIsha(String isha) {
         this.isha = isha;
     }
 
@@ -105,5 +105,4 @@ public class Offset {
     public void setMidnight(Integer midnight) {
         this.midnight = midnight;
     }
-
 }
