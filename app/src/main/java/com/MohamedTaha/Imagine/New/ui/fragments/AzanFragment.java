@@ -342,7 +342,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         }
     }
 
-    private void getPrayerTimesByCity(String city, String country, float  method, String city_name) {
+    private void getPrayerTimesByCity(String city, String country, double  method, String city_name) {
         //24.788626, 46.777509
         Call<Azan> azanCall = apiServices.getPrayerTimesByCity(city, country, method);
         azanCall.enqueue(new Callback<Azan>() {

@@ -8,25 +8,24 @@ public class Params {
 
     @SerializedName("Fajr")
     @Expose
-    private Integer fajr;
+    private Double fajr;
     @SerializedName("Isha")
     @Expose
-    private Integer isha;
+    private String isha;
 
-    public Integer getFajr() {
+    public Double getFajr() {
         return fajr;
     }
 
-    public void setFajr(Integer fajr) {
+    public void setFajr(Double fajr) {
         this.fajr = fajr;
     }
 
-    public Integer getIsha() {
+    public String getIsha() {
         return isha;
     }
 
-    public void setIsha(Integer isha) {
+    public void setIsha(String isha) {
         this.isha = isha;
     }
-
 }
