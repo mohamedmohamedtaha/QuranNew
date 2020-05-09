@@ -35,10 +35,10 @@
             style="@style/style_button_custom_show_dialog"
             android:layout_marginEnd="@dimen/dimens_6xl"
             android:text="@string/textNo" />
-
         <Button
             android:id="@+id/BT_Yes"
             style="@style/style_button_custom_show_dialog"
             android:text="@string/textYes" />
     </LinearLayout>
+
 </RelativeLayout>

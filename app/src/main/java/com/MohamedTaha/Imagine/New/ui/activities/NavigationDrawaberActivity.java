@@ -91,7 +91,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         if (!SharedPerefrenceHelper.getBooleanForWayUsing(getApplicationContext(), IS_FIRST_TIME_WAY_USING, false)) {
             ShowGuide showGuide = new ShowGuide(NavigationDrawaberActivity.this, activityNavigationDrawaberBinding.toobar,
                     activityNavigationDrawaberBinding.navView);
-            SharedPerefrenceHelper.putBooleanForWayUsing(getApplicationContext(), IS_FIRST_TIME_WAY_USING, true);
+//            SharedPerefrenceHelper.putBooleanForWayUsing(getApplicationContext(), IS_FIRST_TIME_WAY_USING, true);
         }
         //For open on the save pages immediately
         if (SharedPerefrenceHelper.getBoolean(getApplicationContext(), IS_TRUE, false)) {

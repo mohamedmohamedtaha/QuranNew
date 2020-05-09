@@ -92,7 +92,7 @@ public abstract class TimingsAppDatabase extends RoomDatabase {
 
                     @Override
                     public void onError(Throwable e) {
-                        databaseCallback.onPreayerTimesError();
+                        databaseCallback.onPrayerTimesError();
                     }
                 });
     }
@@ -116,8 +116,7 @@ public abstract class TimingsAppDatabase extends RoomDatabase {
 
                     @Override
                     public void onError(Throwable e) {
-                        databaseCallback.onPreayerTimesError();
-
+                        databaseCallback.onPrayerTimesError();
                     }
                 });
 

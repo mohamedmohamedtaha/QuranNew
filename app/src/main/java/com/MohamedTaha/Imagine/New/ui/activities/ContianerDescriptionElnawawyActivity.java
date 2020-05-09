@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.MohamedTaha.Imagine.New.Adapter.PagerAdapterElarbaoonElnawawy;
 import com.MohamedTaha.Imagine.New.R;
@@ -36,10 +37,8 @@ public class ContianerDescriptionElnawawyActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null){
             position_elhadeth = new Gson().fromJson(intent.getStringExtra(POSITION),ElarbaoonElnawawyModel.class);
-//            name_elhadeth = new Gson().fromJson(intent.getStringExtra(NAME_ELHADETH), String.class);
-//            number_elhadeth = new Gson().fromJson(intent.getStringExtra(NUMBER_ELHADETH), String.class);
-
         }
+
         DescriptionElarbaoonFragment descriptionElarbaoonFragment = new DescriptionElarbaoonFragment();
         Bundle bundle = new Bundle();
         bundle.putString(POSITION,new Gson().toJson(position_elhadeth));

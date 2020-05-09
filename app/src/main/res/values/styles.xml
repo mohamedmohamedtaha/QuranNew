@@ -198,7 +198,7 @@
     <style name="style_button_custom_show_dialog">
         <item name="android:layout_width">@dimen/dimens_seventy</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@color/colorAccent</item>
+        <item name="android:backgroundTint">@color/colorAccent</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">@dimen/txt_size_xl</item>
     </style>

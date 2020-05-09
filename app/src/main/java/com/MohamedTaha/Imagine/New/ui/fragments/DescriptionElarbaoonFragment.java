@@ -46,6 +46,13 @@ public class DescriptionElarbaoonFragment extends Fragment {
             fragmentDescriptionElarbaoonBinding.DescriptionElarbaoonFragmentTVNumberElhadeth.setText(position_elhadeth.getNumber_elhadeth()+"/" );
             fragmentDescriptionElarbaoonBinding.DescriptionElarbaoonFragmentTVNameElhadeth.setText(position_elhadeth.getName_elhadeth());
         }
+        fragmentDescriptionElarbaoonBinding.DescriptionElarbaoonFragmentViewPager.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(),"Click",Toast.LENGTH_LONG).show();
+
+            }
+        });
         PagerAdapterElarbaoonElnawawy pagerAdapterElarbaoonElnawawy = new PagerAdapterElarbaoonElnawawy(getActivity(), getChildFragmentManager(), position_elhadeth.getPosition());
         fragmentDescriptionElarbaoonBinding.DescriptionElarbaoonFragmentViewPager.setAdapter(pagerAdapterElarbaoonElnawawy);
         fragmentDescriptionElarbaoonBinding.DescriptionElarbaoonFragmentViewPager.setCurrentItem(2);

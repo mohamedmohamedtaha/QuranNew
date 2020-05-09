@@ -37,7 +37,6 @@ public class PagerAdapterElarbaoonElnawawy extends FragmentPagerAdapter {
                 TranslateElhadethFragment translateElhadethFragment = new TranslateElhadethFragment();
                 translateElhadethFragment.setArguments(bundle);
                 return translateElhadethFragment;
-
             case 1:
                 bundle.putString(POSITION,new Gson().toJson(position_elhadeth));
                 DescriptionElhaedthFragment descriptionElhaedthFragment = new DescriptionElhaedthFragment();

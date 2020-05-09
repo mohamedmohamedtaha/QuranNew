@@ -8,10 +8,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.MohamedTaha.Imagine.New.helper.SharedPerefrenceHelper;
 import com.MohamedTaha.Imagine.New.informationInrto.TapTarget;
 import com.MohamedTaha.Imagine.New.informationInrto.TapTargetSequence;
 import com.MohamedTaha.Imagine.New.informationInrto.TapTargetView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.IS_FIRST_TIME_WAY_USING;
 
 public class ShowGuide extends AppCompatActivity {
     private Activity context;
@@ -44,10 +47,10 @@ public class ShowGuide extends AppCompatActivity {
                     TapTarget.forView(dialog.getButton(DialogInterface.BUTTON_POSITIVE), context.getString(R.string.end), context.getString(R.string.description_string))
                             .cancelable(true)
                             .transparentTarget(true)
-                            .textColor(android.R.color.black)
+                            .titleTextColor(android.R.color.white)
                             .outerCircleColor(R.color.color_background_drawable)
                             .outerCircleAlpha(0.9f)
-                            .targetCircleColor(R.color.colorAccent)
+                      //      .targetCircleColor(R.color.colorAccent)
                             .tintTarget(false), new TapTargetView.Listener() {
                         @Override
                         public void onTargetClick(TapTargetView view) {
@@ -70,7 +73,7 @@ public class ShowGuide extends AppCompatActivity {
                 .transparentTarget(true)
                 .outerCircleColor(R.color.color_background_drawable)
                 .outerCircleAlpha(0.9f)
-                .textColor(android.R.color.black)
+                .textColor(android.R.color.white)
                 .targetCircleColor(R.color.colorAccent)
                 .titleTextSize(18)
                 .tintTarget(false);
@@ -85,8 +88,8 @@ public class ShowGuide extends AppCompatActivity {
                 .transparentTarget(true)
                 .outerCircleColor(R.color.color_background_drawable)
                 .outerCircleAlpha(0.9f)
-                .textColor(android.R.color.black)
-                .targetCircleColor(R.color.colorAccent)
+                .textColor(android.R.color.white)
+               // .targetCircleColor(R.color.colorAccent)
                 .tintTarget(false), listener);
     }
 
@@ -96,17 +99,20 @@ public class ShowGuide extends AppCompatActivity {
                 .targets(showInformationInToolbar(R.id.action_search, context.getString(R.string.spectial_button), context.getString(R.string.search_string)).id(1),
                         showInformationInToolbar(R.id.action_share, context.getString(R.string.spectial_button), context.getString(R.string.share_string)).id(2),
                         //This for R.id.spectial_button
-                        TapTarget.forToolbarOverflow(toolbar, "   هذا الزر خاص", "      ضبط زمن الأشعارات  " +
-                                "\n" +
-                                "      عرض طريقة الاستخدام مرة أخرى    "
-                                + "\n" +
-                                "      وتقييم التطبيق     " +
-                                "\n" +
-                                "      ومراسلتنا    ")
+                        TapTarget.forToolbarOverflow(toolbar, "   هذا الزر خاص",
+                                "      بالأربعون النووية  " +
+                                        "\n" +
+                                        "      ضبط زمن الأشعارات  " +
+                                        "\n" +
+                                        "      عرض طريقة الاستخدام مرة أخرى    "
+                                        + "\n" +
+                                        "      وتقييم التطبيق     " +
+                                        "\n" +
+                                        "      ومراسلتنا    ")
                                 .outerCircleColor(R.color.color_background_drawable)
                                 .outerCircleAlpha(0.9f)
-                                .textColor(android.R.color.black)
-                                .targetCircleColor(R.color.colorAccent)
+                                .textColor(android.R.color.white)
+                              //  .targetCircleColor(R.color.colorAccent)
                                 .transparentTarget(true)
                                 .tintTarget(false)
                 ).listener(listenerForEndInformation);
@@ -115,9 +121,7 @@ public class ShowGuide extends AppCompatActivity {
             @Override
             public void onTargetClick(TapTargetView view) {
                 super.onTargetClick(view);
-                // .. which evidently starts the sequence we defined earlier
-                //  sequence.start();
-                bottomNavigationView.setSelectedItemId(R.id.sound_quran);
+                bottomNavigationView.setSelectedItemId(R.id.read_parts);
                 setTwoShow();
             }
 
@@ -132,8 +136,6 @@ public class ShowGuide extends AppCompatActivity {
             }
         };
         customInfo(R.id.read_quran, R.string.spectial_button, R.string.read_string, listener);
-
-
     }
 
     private void setTwoShow() {
@@ -142,7 +144,7 @@ public class ShowGuide extends AppCompatActivity {
             public void onTargetClick(TapTargetView view) {
                 super.onTargetClick(view);
                 // .. which evidently starts the sequence we defined earlier
-                bottomNavigationView.setSelectedItemId(R.id.read_parts);
+                bottomNavigationView.setSelectedItemId(R.id.sound_quran);
                 setShowThreeItem();
             }
 
@@ -157,7 +159,7 @@ public class ShowGuide extends AppCompatActivity {
 
             }
         };
-        customInfo(R.id.sound_quran, R.string.spectial_button, R.string.sound_string, listener);
+        customInfo(R.id.read_parts, R.string.spectial_button, R.string.read_parts_string, listener);
 
     }
 
@@ -182,7 +184,7 @@ public class ShowGuide extends AppCompatActivity {
 
             }
         };
-        customInfo(R.id.read_parts, R.string.spectial_button, R.string.read_parts_string, listener);
+        customInfo(R.id.sound_quran, R.string.spectial_button, R.string.sound_string, listener);
     }
 
     private void setShowFourItem() {
@@ -190,8 +192,8 @@ public class ShowGuide extends AppCompatActivity {
             @Override
             public void onTargetClick(TapTargetView view) {
                 super.onTargetClick(view);
-                // .. which evidently starts the sequence we defined earlier
-                sequence.start();
+                bottomNavigationView.setSelectedItemId(R.id.prayer_times);
+                setShowFiveItem();
             }
 
             @Override
@@ -209,4 +211,30 @@ public class ShowGuide extends AppCompatActivity {
 
     }
 
+    private void setShowFiveItem() {
+        TapTargetView.Listener listener = new TapTargetView.Listener() {
+            @Override
+            public void onTargetClick(TapTargetView view) {
+                super.onTargetClick(view);
+                // .. which evidently starts the sequence we defined earlier
+                sequence.start();
+                getshowGuideTrue();
+            }
+
+            @Override
+            public void onOuterCircleClick(TapTargetView view) {
+                super.onOuterCircleClick(view);
+            }
+
+            @Override
+            public void onTargetDismissed(TapTargetView view, boolean userInitiated) {
+                Log.d("TapTargetViewSample", "You dismissed me :(");
+            }
+        };
+        customInfo(R.id.prayer_times, R.string.spectial_button, R.string.set_prayer_times, listener);
+
+    }
+    private void getshowGuideTrue (){
+        SharedPerefrenceHelper.putBooleanForWayUsing(context, IS_FIRST_TIME_WAY_USING, true);
+    }
 }
