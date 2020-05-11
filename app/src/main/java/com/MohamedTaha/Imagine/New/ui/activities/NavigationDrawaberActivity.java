@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,8 +29,6 @@ import com.MohamedTaha.Imagine.New.informationInrto.TapTargetSequence;
 import com.MohamedTaha.Imagine.New.mvp.interactor.NavigationDrawarInteractor;
 import com.MohamedTaha.Imagine.New.mvp.presenter.NavigationDrawarPresenter;
 import com.MohamedTaha.Imagine.New.mvp.view.NavigationDrawarView;
-import com.MohamedTaha.Imagine.New.notification.prayerTimes.AlarmBootRecevierPrayerTime;
-import com.MohamedTaha.Imagine.New.notification.quran.AlarmReceiver;
 import com.MohamedTaha.Imagine.New.notification.quran.NotificationHelper;
 import com.MohamedTaha.Imagine.New.receiver.GetPrayerTimesEveryDay;
 import com.MohamedTaha.Imagine.New.room.TimingsRepository;
@@ -54,8 +51,6 @@ import io.reactivex.schedulers.Schedulers;
 import static com.MohamedTaha.Imagine.New.helper.Images.IMAGES;
 import static com.MohamedTaha.Imagine.New.helper.Images.addImagesList;
 import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertDate;
-import static com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationHelperPrayerTime.enableBootRecieiver;
-import static com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationHelperPrayerTime.sendNotificationForPrayerTime;
 import static com.MohamedTaha.Imagine.New.ui.activities.SwipePagesActivity.IS_TRUE;
 import static com.MohamedTaha.Imagine.New.ui.fragments.SplashFragment.SAVE_ALL_IMAGES;
 import static com.MohamedTaha.Imagine.New.ui.fragments.SplashFragment.SAVE_PAGE;
@@ -72,7 +67,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     TapTargetSequence sequence;
     private TimingsViewModel timingsViewModel;
     public static int store_date_today = 0;
-    public static String store_city_name =null;
+    public static String store_city_name = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,7 +139,8 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 //        setupViewPager(NavigationDrawaberActivityVPager);
 //
     }
-    private void getDateTodayFromDatabase(){
+
+    private void getDateTodayFromDatabase() {
         // For get Date today
         timingsViewModel.getTimingsByDataToday(convertDate()).
                 subscribeOn(Schedulers.trampoline())
@@ -164,22 +160,23 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                 // Add RXAndroid2 for support with Room because still RXjava3 don't support Room
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(prayer_times -> {
-                    if (prayer_times.getDate_today().equals(convertDate())){
-                          Log.d("TAG","Time fagr is :" +prayer_times.getFajr());
+                    if (prayer_times.getDate_today().equals(convertDate())) {
+                        Log.d("TAG", "Time fagr is :" + prayer_times.getFajr());
 
                     }
                 }, e -> {
-                    Log.d("TAG",e.getMessage() );
+                    Log.d("TAG", e.getMessage());
                 });
     }
-    private void getCityName(){
+
+    private void getCityName() {
         timingsViewModel = new ViewModelProvider(this).get(TimingsViewModel.class);
         Flowable<String> getCityName = timingsViewModel.getCityName();
         getCityName.subscribeOn(Schedulers.io())
                 .subscribe(city_name -> {
                     store_city_name = city_name;
                     Log.d("TAG", "City name from database is :" + store_city_name);
-                },error -> {
+                }, error -> {
                     Log.d("TAG", "City name from database is :" + error.getMessage());
 
                 });
@@ -247,25 +244,25 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 
 //        sendNotificationForPrayerTime(getApplicationContext());
 //        enableBootRecieiver(getApplicationContext());
-        getPrayeeTimesEveryday(getApplicationContext());
+        getPrayerTimesEveryday(getApplicationContext());
     }
-    public static void getPrayeeTimesEveryday(Context context){
+
+    public static void getPrayerTimesEveryday(Context context) {
         int ALARM_TYPE_ELAPSED = 101;
         AlarmManager alarmManager;
         PendingIntent alarmPendingIntent;
         Intent intent = new Intent(context, GetPrayerTimesEveryDay.class);
         //  Intent intent = new Intent(context, ServiceForNotificationImage.class);
-        Log.d("TAG", "ServiceForNotificationImage ");
+        Log.d("TAG", "getPrayerTimesEveryday ");
         //Setting pending intent to respond to broadcast sent by AlarmManager every day at 8am
         alarmPendingIntent = PendingIntent.getBroadcast(context, ALARM_TYPE_ELAPSED, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Calendar setTime = Calendar.getInstance();
         setTime.setTimeInMillis(System.currentTimeMillis());
-        setTime.set(Calendar.HOUR_OF_DAY, 1);
-        setTime.set(Calendar.MINUTE, 05);
+        setTime.set(Calendar.HOUR_OF_DAY, 7);
+        setTime.set(Calendar.MINUTE, 56);
         alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
-                AlarmManager.INTERVAL_DAY,
-                setTime.getTimeInMillis(), alarmPendingIntent);
+                AlarmManager.INTERVAL_DAY, setTime.getTimeInMillis(), alarmPendingIntent);
     }
 
     @Override
@@ -347,7 +344,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
             AzanFragment azanFragment = new AzanFragment();
             Bundle bundle = new Bundle();
             HelperClass.replece(azanFragment, getSupportFragmentManager(), R.id.frameLayout);
-            bundle.putInt("bundle",resultCode);
+            bundle.putInt("bundle", resultCode);
             azanFragment.setArguments(bundle);
             azanFragment.onActivityResult(requestCode, resultCode, data);
         } else if (requestCode == AzanFragment.LOCATION_PERMISSION_REQUEST_CODE) {

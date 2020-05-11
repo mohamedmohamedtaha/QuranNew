@@ -1,5 +1,6 @@
 package com.MohamedTaha.Imagine.New.notification.prayerTimes;
 
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
@@ -16,36 +17,51 @@ import java.util.List;
 public class NotificationHelperPrayerTime {
     public static final String TEXT_NOTIFICATION = "text_notification";
     private static List<ModelMessageNotification> listForSavePrayerTimes;
+    private static AlarmManager alarmManager;
 
     public static void sendNotificationForPrayerTime(Context context, Timings prayer_times) {
+        Log.d("TAG", "NotificationHelperPrayerTime");
         listForSavePrayerTimes = new ArrayList<>();
         listForSavePrayerTimes.clear();
         PendingIntent pendingIntent = null;
         Calendar setTime = Calendar.getInstance();
         setTime.setTimeInMillis(System.currentTimeMillis());
-        Log.d("TAG", "Fire Alarm " + prayer_times.getDate_today());
 
-        setTimePrayerWithText(listForSavePrayerTimes, setTime, Integer.valueOf(prayer_times.getFajr().substring(0, 2)),
-                Integer.valueOf(prayer_times.getFajr().substring(3, 5)), "حان الأن موعد أذان الفجر");
-        setTimePrayerWithText(listForSavePrayerTimes, setTime, Integer.valueOf(prayer_times.getSunrise().substring(0, 2)),
-                Integer.valueOf(prayer_times.getSunrise().substring(3, 5)), "حان الأن موعد أذان الشروق");
-        setTimePrayerWithText(listForSavePrayerTimes, setTime, Integer.valueOf(prayer_times.getDhuhr().substring(0, 2)),
-                Integer.valueOf(prayer_times.getDhuhr().substring(3, 5)), "حان الأن موعد أذان الظهر");
-        setTimePrayerWithText(listForSavePrayerTimes, setTime, Integer.valueOf(prayer_times.getAsr().substring(0, 2)),
-                Integer.valueOf(prayer_times.getAsr().substring(3, 5)), "حان الأن موعد أذان العصر");
-        setTimePrayerWithText(listForSavePrayerTimes, setTime, Integer.valueOf(prayer_times.getMaghrib().substring(0, 2)),
-                Integer.valueOf(prayer_times.getMaghrib().substring(3, 5)), "حان الأن موعد أذان المغرب");
-        setTimePrayerWithText(listForSavePrayerTimes, setTime, Integer.valueOf(prayer_times.getIsha().substring(0, 2)),
-                Integer.valueOf(prayer_times.getIsha().substring(3, 5)), "حان الأن موعد أذان العشاء");
+//        setTimePrayerWithText(listForSavePrayerTimes, setTime, Integer.valueOf(prayer_times.getFajr().substring(0, 2)),
+//                Integer.valueOf(prayer_times.getFajr().substring(3, 5)), "حان الأن موعد أذان الفجر");
+//        setTimePrayerWithText(listForSavePrayerTimes, setTime, Integer.valueOf(prayer_times.getSunrise().substring(0, 2)),
+//                Integer.valueOf(prayer_times.getSunrise().substring(3, 5)), "حان الأن موعد أذان الشروق");
+//        setTimePrayerWithText(listForSavePrayerTimes, setTime, Integer.valueOf(prayer_times.getDhuhr().substring(0, 2)),
+//                Integer.valueOf(prayer_times.getDhuhr().substring(3, 5)), "حان الأن موعد أذان الظهر");
+//        setTimePrayerWithText(listForSavePrayerTimes, setTime, Integer.valueOf(prayer_times.getAsr().substring(0, 2)),
+//                Integer.valueOf(prayer_times.getAsr().substring(3, 5)), "حان الأن موعد أذان العصر");
+//        setTimePrayerWithText(listForSavePrayerTimes, setTime, Integer.valueOf(prayer_times.getMaghrib().substring(0, 2)),
+//                Integer.valueOf(prayer_times.getMaghrib().substring(3, 5)), "حان الأن موعد أذان المغرب");
+//        setTimePrayerWithText(listForSavePrayerTimes, setTime, Integer.valueOf(prayer_times.getIsha().substring(0, 2)),
+//                Integer.valueOf(prayer_times.getIsha().substring(3, 5)), "حان الأن موعد أذان العشاء");
+
+
+        setTimePrayerWithText(listForSavePrayerTimes, setTime, Integer.valueOf("19"),
+                Integer.valueOf("34"), "حان الأن موعد أذان الفجر");
+//        setTimePrayerWithText(listForSavePrayerTimes, setTime, Integer.valueOf("19"),
+//                Integer.valueOf("31"), "حان الأن موعد أذان الشروق");
+//        setTimePrayerWithText(listForSavePrayerTimes, setTime, Integer.valueOf("19"),
+//                Integer.valueOf("32"), "حان الأن موعد أذان الظهر");
+//        setTimePrayerWithText(listForSavePrayerTimes, setTime, Integer.valueOf("19"),
+//                Integer.valueOf("33"), "حان الأن موعد أذان العصر");
+//        setTimePrayerWithText(listForSavePrayerTimes, setTime, Integer.valueOf("19"),
+//                Integer.valueOf("34"), "حان الأن موعد أذان المغرب");
+//        setTimePrayerWithText(listForSavePrayerTimes, setTime, Integer.valueOf("19"),
+//                Integer.valueOf("35"), "حان الأن موعد أذان العشاء");
         Alarm alarm = new Alarm(context);
         alarm.setAlarm(pendingIntent, setTime, ServiceForPlayPrayerTimesNotification.class, listForSavePrayerTimes);
-//        Log.d("TAG", "Fire Alarm " + listForSavePrayerTimes.get(0).getTime_payer() + "/n"+
-//                listForSavePrayerTimes.get(1).getTime_payer() + "/n"
-//               + listForSavePrayerTimes.get(2).getTime_payer() + "/n"
-//                +listForSavePrayerTimes.get(3).getTime_payer() + "/n"
-//                +listForSavePrayerTimes.get(4).getTime_payer() + "/n"
-//                +listForSavePrayerTimes.get(5).getTime_payer() + "/n"
-//        );
+        Log.d("TAG", "Fire Alarm " + listForSavePrayerTimes.get(0).getTime_payer() + "/n" +
+                listForSavePrayerTimes.get(1).getTime_payer() + "/n"
+                + listForSavePrayerTimes.get(2).getTime_payer() + "/n"
+                + listForSavePrayerTimes.get(3).getTime_payer() + "/n"
+                + listForSavePrayerTimes.get(4).getTime_payer() + "/n"
+                + listForSavePrayerTimes.get(5).getTime_payer() + "/n"
+        );
     }
 
     private static void setTimePrayerWithText(List<ModelMessageNotification> modelMessageNotificationList,

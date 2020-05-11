@@ -76,9 +76,9 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
     private NoInternetReceiver noInternetReceiver = null;
     NotificationCompat.Builder notificationBuilder;
     private static Timer timer;
-    Integer totalDuration ;
-    Integer currentDuration ;
-    int progress ;
+    Integer totalDuration;
+    Integer currentDuration;
+    int progress;
 //
 //    @Override
 //    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -109,9 +109,9 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         @Override
         public void handleMessage(Message msg) {
             if (mediaPlayer != null) {
-                 totalDuration = mediaPlayer.getDuration();
-                 currentDuration = mediaPlayer.getCurrentPosition();
-                 progress = (utilities.getProgressPercentage(currentDuration, totalDuration));
+                totalDuration = mediaPlayer.getDuration();
+                currentDuration = mediaPlayer.getCurrentPosition();
+                progress = (utilities.getProgressPercentage(currentDuration, totalDuration));
                 Integer i[] = new Integer[4];
                 i[0] = currentDuration;
                 i[1] = totalDuration;
@@ -247,11 +247,10 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
             }
             //  buildNotification(PlaybackStatus.PLAYING);
         }
-
         //Handle Intent action from MediaSession.TransportControls
         handleIncomingActions(intent);
-    //    return super.onStartCommand(intent, flags, startId);
-        return  START_NOT_STICKY;
+            return super.onStartCommand(intent, flags, startId);
+        //return START_NOT_STICKY;
 
     }
 
@@ -484,8 +483,9 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         }
 
     }
+
     public void seekTo(int posiiotn) {
-        if (mediaPlayer != null){
+        if (mediaPlayer != null) {
             mediaPlayer.seekTo(posiiotn);
         }
 
@@ -503,7 +503,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         if (mediaPlayer == null) return;
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.stop();
-          //  mediaPlayer.release();
+            //  mediaPlayer.release();
             isPlaying = false;
             ListSoundReader.IsPlay = false;
         }
@@ -518,7 +518,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
             //updateProgressBar();
-         //   resumePosition = mediaPlayer.getCurrentPosition();
+            //   resumePosition = mediaPlayer.getCurrentPosition();
             isPlaying = false;
             buildNotification(PlaybackStatus.PAUSED);
             ListSoundReader.IsPlay = false;
@@ -619,7 +619,6 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
     private void initMediaSession() throws RemoteException {
 
         if (mediaSessionManager != null) return; //mediaSessionManager exists
-
         mediaSessionManager = (MediaSessionManager) getSystemService(Context.MEDIA_SESSION_SERVICE);
         //Create a new MediaSession
         mediaSession = new MediaSessionCompat(getApplicationContext(), SESIION_AUDIO_PLAYER);
@@ -630,7 +629,6 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         //indicate that the MediaSession handles transport control commands
         //through its MediaSessionCompat.Callback.
         mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
-
         //Set mediaSession'sMetaData
         updateMetaData();
         //Attach Callbackto receive MediaSession updates
@@ -919,26 +917,19 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         playbackAction = new Intent(this, MediaPlayerService.class);
         switch (actionNumber) {
             case 0:
-                // Play
                 playbackAction.setAction(ACTION_PLAY);
                 return PendingIntent.getService(this, actionNumber, playbackAction, 0);
             case 1:
-                // Pause
                 playbackAction.setAction(ACTION_PAUSE);
                 return PendingIntent.getService(this, actionNumber, playbackAction, 0);
             case 2:
-                // Next track
                 playbackAction.setAction(ACTION_NEXT);
                 return PendingIntent.getService(this, actionNumber, playbackAction, 0);
             case 3:
-                // Previous track
                 playbackAction.setAction(ACTION_PREVIOUS);
                 return PendingIntent.getService(this, actionNumber, playbackAction, 0);
             case 4:
-                // stop track
                 playbackAction.setAction(ACTION_STOP);
-                // Toast.makeText(this, "Stop", Toast.LENGTH_SHORT).show();
-                // stopSelf();
                 return PendingIntent.getService(this, actionNumber, playbackAction, 0);
             default:
                 break;

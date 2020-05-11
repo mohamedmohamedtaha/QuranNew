@@ -49,23 +49,12 @@ public class AlarmReceiver extends BroadcastReceiver {
         num = (int) System.currentTimeMillis();
         notificationId = setNotificationForShow(randomIndex);
         addImagesList();
-        //Get notification Manager to manage/send notification
-        //Intent to invoke app when click
-        // on notification
-        //In the sample, we want to start/launch this sample app when user clicks on notification
         Intent intentToRepeat = new Intent(context, SwipePagesActivity.class);
         intentToRepeat.putExtra(NOTIFICATION_ID, notificationId);
         intentToRepeat.putExtra(TIME_SEND, num);
-       // intentToRepeat.putIntegerArrayListExtra(SAVE_Position_Notification, (ArrayList<Integer>) IMAGES);
         intentToRepeat.putIntegerArrayListExtra(SAVE_Position_Notification, (ArrayList<Integer>) NotificationWithImage);
-
-        //intentToRepeat.putExtra(SAVE_Position_Notification, image);
         Log.d("TAG", "image:" + NotificationWithImage);
-        //set flag to restart /relaunch the app
         intentToRepeat.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        //Pending intent to handle launch of Activity in intent above
-//        PendingIntent openIntent = PendingIntent.getActivity(context, NotificationHelper.ALARM_TYPE_RTC,
-//                intentToRepeat, PendingIntent.FLAG_UPDATE_CURRENT);
         PendingIntent openIntent = PendingIntent.getActivity(context, num, intentToRepeat, PendingIntent.FLAG_UPDATE_CURRENT);
         //Build notification
         createNotification(context, openIntent, context.getString(R.string.app_name), toastMessages[randomIndex]);

@@ -6,7 +6,7 @@ import android.content.Intent;
 
 import com.MohamedTaha.Imagine.New.notification.quran.NotificationHelper;
 
-import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.getPrayeeTimesEveryday;
+import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.getPrayerTimesEveryday;
 
 public class AlarmBootRecevierPrayerTime extends BroadcastReceiver {
     @Override
@@ -14,7 +14,7 @@ public class AlarmBootRecevierPrayerTime extends BroadcastReceiver {
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
             //only enabling one type of notification
            // NotificationHelperPrayerTime.sendNotificationForPrayerTime(context,);
-            getPrayeeTimesEveryday(context);
+            getPrayerTimesEveryday(context);
 
         }
     }

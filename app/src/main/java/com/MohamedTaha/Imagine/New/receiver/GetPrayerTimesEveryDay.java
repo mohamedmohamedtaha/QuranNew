@@ -30,8 +30,7 @@ public class GetPrayerTimesEveryDay extends BroadcastReceiver {
                     if (prayer_times.getDate_today().equals(convertDate())){
                         sendNotificationForPrayerTime(context, prayer_times);
                         enableBootRecieiver(context);
-                        Log.d("TAG","Time fagr is :" +prayer_times.getFajr());
-
+                        Log.d("TAG","Time fajr is :" +prayer_times.getFajr());
                     }
                 }, e -> {
                     Log.d("TAG",e.getMessage() );

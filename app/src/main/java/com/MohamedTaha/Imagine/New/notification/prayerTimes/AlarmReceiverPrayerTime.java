@@ -24,6 +24,7 @@ import androidx.core.content.ContextCompat;
 
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity;
+import com.MohamedTaha.Imagine.New.ui.activities.SwipePagesActivity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -31,7 +32,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 
+import static com.MohamedTaha.Imagine.New.helper.Images.addImagesList;
 import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertFromMilliSecondsToTime;
 import static com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationHelperPrayerTime.TEXT_NOTIFICATION;
 
@@ -49,7 +52,8 @@ public class AlarmReceiverPrayerTime extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        minutes = new ArrayList<>();
+        Log.d("TAG", "onReceive");
+                minutes = new ArrayList<>();
         minutes.clear();
         if (intent != null) {
             Bundle bundle = intent.getExtras();
@@ -62,7 +66,7 @@ public class AlarmReceiverPrayerTime extends BroadcastReceiver {
             for (int i = 0; i < minutes.size(); i++) {
                 if (convertFromMilliSecondsToTime(calendar.getTimeInMillis())
                         .equals(convertFromMilliSecondsToTime(minutes.get(i).getTime_payer()))) {
-                    Log.d("TT", convertFromMilliSecondsToTime(minutes.get(i).getTime_payer()) + ":" +
+                    Log.d("TAG", convertFromMilliSecondsToTime(minutes.get(i).getTime_payer()) + ":" +
                             minutes.get(i).getText_notification());
                     /**This flag is generally used by activies that want to present a launcher style
                      behavior:they give the user  *a list of separete things* that can be done
@@ -71,14 +75,17 @@ public class AlarmReceiverPrayerTime extends BroadcastReceiver {
                     intent.putExtra(NOTIFICATION_ID_FOR_PRAYER_TIMES, notification_id_for_prayer_times);
                     intent.putExtra(SEND_TIME_FOR_SEINDING, num);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    PendingIntent openIntent = PendingIntent.getActivity(context, num, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                   // PendingIntent openIntent = PendingIntent.getActivity(context, num, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                     //Build notification
-              //      createNotification(context, openIntent, context.getString(R.string.app_name), minutes.get(i).getText_notification());
+                   createNotification(context, context.getString(R.string.app_name), minutes.get(i).getText_notification());
+                   //return;
                 } else {
+                    Log.d("TAG : error: ", convertFromMilliSecondsToTime(minutes.get(i).getTime_payer()) + ":" +
+                            convertFromMilliSecondsToTime(calendar.getTimeInMillis()));
                 }
             }
         }
-    }
+        }
 
     public static NotificationCompat.Builder createNotification(Context context, CharSequence ticker, CharSequence desribe) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
