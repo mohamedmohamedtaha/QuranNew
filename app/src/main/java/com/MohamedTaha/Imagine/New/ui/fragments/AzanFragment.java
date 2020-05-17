@@ -178,10 +178,8 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         //getString Retrieve a String value from the Preference
         repear = sharedPreferences.getString(getString(R.string.settings_method_key),
                 getString(R.string.settings_method_default));
-        compare_methods = SharedPerefrenceHelper.getStringCompareMethod(getActivity(), COMPARE_METHOD, null);
-        if (compare_methods != null && !compare_methods.equals(repear)) {
-            showDialogBoxForCompareMethod();
-        }
+        compare_methods = SharedPerefrenceHelper.getStringCompareMethod(getActivity(), COMPARE_METHOD, "4");
+
         bundle = getArguments();
         if (bundle != null) {
             int bundle1 = bundle.getInt("bundle");
@@ -252,6 +250,9 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
 
         //  for avoid start show way using
         if (SharedPerefrenceHelper.getBooleanForWayUsing(getActivity(), IS_FIRST_TIME_WAY_USING, false)) {
+            if ( !compare_methods.equals(repear)) {
+                showDialogBoxForCompareMethod();
+            }
             if (store_date_today <= 0) {
                 isNetworkConnected();
             }

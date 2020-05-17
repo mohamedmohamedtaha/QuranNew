@@ -250,7 +250,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         getPrayerTimesEveryday(getApplicationContext());
         enableBootRecieiver(getApplicationContext());
 
-        checkIsFragmentAzanIsOpen();
+   //     checkIsFragmentAzanIsOpen();
 
     }
     private void checkIsFragmentAzanIsOpen(){
@@ -298,6 +298,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                 break;
             case R.id.action_use_way:
                 SharedPerefrenceHelper.removeDataForWayUsing(this);
+               // SharedPerefrenceHelper.removeDataForCompareMethod(this);
                 HelperClass.startActivity(getApplicationContext(), SplashActivity.class);
                 break;
             case R.id.action_settings:

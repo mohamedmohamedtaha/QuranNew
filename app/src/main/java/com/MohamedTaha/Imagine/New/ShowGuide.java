@@ -225,7 +225,6 @@ public class ShowGuide extends AppCompatActivity {
                 // .. which evidently starts the sequence we defined earlier
                 sequence.start();
                 getshowGuideTrue();
-                getCompareMethod();
             }
 
             @Override
@@ -244,13 +243,5 @@ public class ShowGuide extends AppCompatActivity {
 
     private void getshowGuideTrue() {
         SharedPerefrenceHelper.putBooleanForWayUsing(context, IS_FIRST_TIME_WAY_USING, true);
-    }
-
-    private void getCompareMethod() {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        //getString Retrieve a String value from the Preference
-        repear = sharedPreferences.getString(getString(R.string.settings_method_key),
-                getString(R.string.settings_method_default));
-        SharedPerefrenceHelper.putStringCompareMethod(context, COMPARE_METHOD, repear);
     }
 }

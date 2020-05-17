@@ -67,4 +67,7 @@ public class SharedPerefrenceHelper {
     public static String getStringCompareMethod(Context context , String key, String defaultValue){
         return getSharedPrefrencesCompareMethod(context).getString(key,defaultValue);
     }
+    public static void removeDataForCompareMethod(Context context){
+        getSharedPrefrencesCompareMethod(context).edit().clear().commit();
+    }
 }
