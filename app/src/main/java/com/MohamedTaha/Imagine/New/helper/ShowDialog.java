@@ -25,7 +25,7 @@ import static com.MohamedTaha.Imagine.New.ui.fragments.AzkarFragment.SAVE_AZKAR;
 import static com.MohamedTaha.Imagine.New.ui.fragments.GridViewFragment.SAVE_IMAGES;
 
 public class ShowDialog {
-    public static void showDialog(Activity activity, ViewPager SwipePagesActivityVP, int position) {
+    public static void showDialogForRetrieveReadingSora(Activity activity, ViewPager SwipePagesActivityVP, int position) {
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
@@ -134,7 +134,7 @@ public class ShowDialog {
        dialog.show();
     }
 
-    public static void showDialogForAzkar(Activity activity, ViewPager SwipePagesActivityVP, int position) {
+    public static void showDialogForRetrieveAzkar(Activity activity, ViewPager SwipePagesActivityVP, int position) {
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);

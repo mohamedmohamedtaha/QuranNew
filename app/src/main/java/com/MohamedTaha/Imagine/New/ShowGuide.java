@@ -2,11 +2,13 @@ package com.MohamedTaha.Imagine.New;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceManager;
 
 import com.MohamedTaha.Imagine.New.helper.SharedPerefrenceHelper;
 import com.MohamedTaha.Imagine.New.informationInrto.TapTarget;
@@ -15,12 +17,16 @@ import com.MohamedTaha.Imagine.New.informationInrto.TapTargetView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.IS_FIRST_TIME_WAY_USING;
+import static com.MohamedTaha.Imagine.New.ui.fragments.AzanFragment.COMPARE_METHOD;
 
 public class ShowGuide extends AppCompatActivity {
     private Activity context;
-    TapTargetSequence sequence;
+    private TapTargetSequence sequence;
     private Toolbar toolbar;
-    BottomNavigationView bottomNavigationView;
+    private BottomNavigationView bottomNavigationView;
+    private SharedPreferences sharedPreferences;
+    private String repear;
+
 
     public ShowGuide(Activity context, Toolbar toolbar, BottomNavigationView bottomNavigationView) {
         this.context = context;
@@ -50,7 +56,7 @@ public class ShowGuide extends AppCompatActivity {
                             .titleTextColor(android.R.color.white)
                             .outerCircleColor(R.color.color_background_drawable)
                             .outerCircleAlpha(0.9f)
-                      //      .targetCircleColor(R.color.colorAccent)
+                            //      .targetCircleColor(R.color.colorAccent)
                             .tintTarget(false), new TapTargetView.Listener() {
                         @Override
                         public void onTargetClick(TapTargetView view) {
@@ -89,7 +95,7 @@ public class ShowGuide extends AppCompatActivity {
                 .outerCircleColor(R.color.color_background_drawable)
                 .outerCircleAlpha(0.9f)
                 .textColor(android.R.color.white)
-               // .targetCircleColor(R.color.colorAccent)
+                // .targetCircleColor(R.color.colorAccent)
                 .tintTarget(false), listener);
     }
 
@@ -112,7 +118,7 @@ public class ShowGuide extends AppCompatActivity {
                                 .outerCircleColor(R.color.color_background_drawable)
                                 .outerCircleAlpha(0.9f)
                                 .textColor(android.R.color.white)
-                              //  .targetCircleColor(R.color.colorAccent)
+                                //  .targetCircleColor(R.color.colorAccent)
                                 .transparentTarget(true)
                                 .tintTarget(false)
                 ).listener(listenerForEndInformation);
@@ -219,6 +225,7 @@ public class ShowGuide extends AppCompatActivity {
                 // .. which evidently starts the sequence we defined earlier
                 sequence.start();
                 getshowGuideTrue();
+                getCompareMethod();
             }
 
             @Override
@@ -234,7 +241,16 @@ public class ShowGuide extends AppCompatActivity {
         customInfo(R.id.prayer_times, R.string.spectial_button, R.string.set_prayer_times, listener);
 
     }
-    private void getshowGuideTrue (){
+
+    private void getshowGuideTrue() {
         SharedPerefrenceHelper.putBooleanForWayUsing(context, IS_FIRST_TIME_WAY_USING, true);
+    }
+
+    private void getCompareMethod() {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        //getString Retrieve a String value from the Preference
+        repear = sharedPreferences.getString(getString(R.string.settings_method_key),
+                getString(R.string.settings_method_default));
+        SharedPerefrenceHelper.putStringCompareMethod(context, COMPARE_METHOD, repear);
     }
 }

@@ -49,7 +49,6 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
         elarbaoonElnwawyPresenter.getAllData();
         elarbaoonElnwawyPresenter.setOnSearchView(activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivitySearchView);
         Log.d("TAG", "Elnawawy");
-
         GridLayoutManager linearLayoutManager = new GridLayoutManager(getApplicationContext(), 2) {
             @Override
             protected boolean isLayoutRTL() {

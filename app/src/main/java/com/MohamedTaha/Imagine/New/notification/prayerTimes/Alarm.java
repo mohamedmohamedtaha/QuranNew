@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.google.gson.Gson;
@@ -20,7 +21,7 @@ public class Alarm {
         this.context = context;
     }
 
-    public void setAlarm(PendingIntent pendingIntent, Calendar setTime, Class name_class,List<ModelMessageNotification> listForSavePrayerTimes) {
+    public void setAlarm(PendingIntent pendingIntent, Class name_class,List<ModelMessageNotification> listForSavePrayerTimes) {
         AlarmManager[] alarmManager = new AlarmManager[listForSavePrayerTimes.size()];
         Intent intent[] = new Intent[alarmManager.length];
         for (int i = 0; i < alarmManager.length; i++) {
@@ -34,6 +35,12 @@ public class Alarm {
             pendingIntent = PendingIntent.getService(context, i, intent[i], 0);
             alarmManager[i] = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             alarmManager[i].setExact(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
+
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                alarmManager[i].setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
+//            }else {
+//                alarmManager[i].setExact(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
+//            }
         }
     }
 

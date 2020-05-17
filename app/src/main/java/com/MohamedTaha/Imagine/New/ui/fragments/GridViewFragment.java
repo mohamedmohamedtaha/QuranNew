@@ -3,6 +3,7 @@ package com.MohamedTaha.Imagine.New.ui.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,6 +45,8 @@ public class GridViewFragment extends Fragment implements GridViewFragmentView {
     ProgressBar GridViewActivityProgressBar;
     public static final String SAVE_IMAGES = "save_images";
     public static final String SAVE_STATE = "save_state";
+    private static final String SAVE_STATE_FOR_ROTATION = "save_sate_for_rotation";
+    private int state_fragment = 0;
 
     Bundle bundle;
     private List<ModelSora> name_swar;
@@ -60,11 +64,22 @@ public class GridViewFragment extends Fragment implements GridViewFragmentView {
         View view = inflater.inflate(R.layout.activity_grid_view, container, false);
         ButterKnife.bind(this, view);
         getActivity().setTitle(getString(R.string.readswar));
+        setRetainInstance(true);
+        if (savedInstanceState == null){
+            state_fragment = 0;
+            Log.d("TAG", "Current fragment  four is :" + state_fragment);
+
+        }else {
+            state_fragment = savedInstanceState.getInt(SAVE_STATE_FOR_ROTATION);
+            Log.d("TAG", "Current fragment  four is :" + state_fragment);
+
+        }
         bundle = new Bundle();
         presenter = new GridViewFragmentInteractor(this, getActivity());
         presenter.getAllNameSour();
         presenter.getAllImages();
         presenter.setOnSearchView(searchView);
+
 
         GridLayoutManager linearLayoutManager = new GridLayoutManager(getActivity(), 2) {
             @Override
@@ -75,6 +90,12 @@ public class GridViewFragment extends Fragment implements GridViewFragmentView {
         GridViewActivityGVShowImages.setLayoutManager(linearLayoutManager);
 
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(SAVE_STATE_FOR_ROTATION,state_fragment);
     }
 
     @Override

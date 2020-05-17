@@ -13,17 +13,19 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -57,7 +59,10 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
@@ -97,6 +102,7 @@ import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivi
  */
 public class AzanFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener, DatabaseCallback {
+    public static final String COMPARE_METHOD = "compare_method";
     private TimingsViewModel timingsViewModel;
     GoogleApiClient googleApiClient;
     private LocationRequest locationRequest;
@@ -143,10 +149,15 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     private List<Timings> getAllData = new ArrayList<>();
     private ConnectivityReceiver connectivityReceiver = null;
     private NoInternetReceiver noInternetReceiver = null;
-    private boolean isRefresh = false;
+    private static boolean isRefresh = false;
     private Calendar getCalender;
     SharedPreferences sharedPreferences;
     String repear;
+    FusedLocationProviderClient fusedLocationProviderClient;
+    private LocationCallback locationCallback;
+    private boolean requestingLocationUpdates = true;
+    private String compare_methods = null;
+
 
     public AzanFragment() {
         // Required empty public constructor
@@ -163,16 +174,19 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         if (!language_name.equals("ar")) {
             HelperClass.change_language("ar", getActivity());
         }
-
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         //getString Retrieve a String value from the Preference
         repear = sharedPreferences.getString(getString(R.string.settings_method_key),
                 getString(R.string.settings_method_default));
+        compare_methods = SharedPerefrenceHelper.getStringCompareMethod(getActivity(), COMPARE_METHOD, null);
+        if (compare_methods != null && !compare_methods.equals(repear)) {
+            showDialogBoxForCompareMethod();
+        }
         bundle = getArguments();
         if (bundle != null) {
             int bundle1 = bundle.getInt("bundle");
             if (bundle1 == -1) {
-                getLocationTest();
+                turnGPSOnTest();
             } else {
                 showSettingsAlert();
             }
@@ -183,7 +197,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         registerNoInternet();
         apiServices = getRetrofit().create(APIServices.class);
         apiServicesForCity = getRetrofitForCity().create(APIServices.class);
-
         Log.i("TAG", "onCreateView");
 
         timingsViewModel = new ViewModelProvider(this).get(TimingsViewModel.class);
@@ -193,9 +206,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                 .subscribe(all_Data -> {
                     getAllData = all_Data;
                     Log.i("TAG", "Navigation Drawaer : " + store_date_today);
-
                     if (store_date_today > 0) {
-                        //conusme Timings prayer here which is a list of Timings
                         if (getAllData == null && getAllData.size() <= 0) {
                             //The data is null
                             fragmentAzanBinding.progressBar.setVisibility(View.GONE);
@@ -212,6 +223,12 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                             AdapterAzanVP adapterAzan = new AdapterAzanVP(getActivity(), new AdapterAzanVP.ClickListener() {
                                 @Override
                                 public void CheckCity() {
+//                                    locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+//                                    isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+//                                    if (isGPSEnabled) {
+//                                        getLocationTest();
+//                                        Log.i("TAG", "getLatitude" + getLatitude());
+//                                    }
                                     isRefresh = true;
                                     isNetworkConnected();
                                 }
@@ -232,11 +249,15 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                 }, e -> {
                     Log.i("TAG", "Error RXJava" + e.getMessage());
                 });
-        //for avoid start show way using
+
+        //  for avoid start show way using
         if (SharedPerefrenceHelper.getBooleanForWayUsing(getActivity(), IS_FIRST_TIME_WAY_USING, false)) {
-        if (store_date_today <= 0) {
-            isNetworkConnected();
-        }}
+            if (store_date_today <= 0) {
+                isNetworkConnected();
+            }
+        }
+
+
 //        if (GPSTracker.isServicesOk(getActivity())){
 //            GPSTracker gpsTracker = new GPSTracker(getContext(),getActivity());
 //
@@ -293,19 +314,51 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         if (isStoragePermissionGranted()) {
             if (checkGPS()) {
                 if (isRefresh) {
+                    Log.i("TAG", "isGPSEnabled is not :" + isGPSEnabled);
                     if (save_request_code_back_from_turn_gps == 1001) {
                         Log.i("TAG", "save_request_code" + save_request_code_back_from_turn_gps);
                         showSettingsAlert();
                     } else {
                         turnGPSOn();
+                        Log.i("TAG", "turnGPSOn");
                     }
-                } else {
-                    getCity();
                 }
             }
 
         }
     }
+
+    private void checkBeforeGetDataFromInternetTest() {
+        if (isStoragePermissionGranted()) {
+            if (checkGPS()) {
+                turnGPSOnTest();
+            }
+
+        }
+    }
+
+    private void checkBeforeGetData() {
+        if (isStoragePermissionGranted()) {
+            if (checkGPS()) {
+                if (isRefresh) {
+                    Log.i("TAG", "isGPSEnabled is not :" + isGPSEnabled);
+                    if (save_request_code_back_from_turn_gps == 1001) {
+                        Log.i("TAG", "save_request_code" + save_request_code_back_from_turn_gps);
+                        showSettingsAlert();
+                    } else {
+                        turnGPSOn();
+                        Log.i("TAG", "turnGPSOn");
+                    }
+                } else {
+                    getCity();
+                    Log.i("TAG", "getCity");
+
+                }
+            }
+
+        }
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -317,7 +370,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                 locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
                 isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
                 if (isGPSEnabled) {
-                    getLocationTest();
+                    turnGPSOnTest();
                 } else {
                     clearFlagForInteractiveUser();
                 }
@@ -340,14 +393,13 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     }
 
     private void getPrayerTimesByCity(String city, String country, int method, String city_name) {
-        Call<Azan> azanCall = apiServices.getPrayerTimesByCity(city, country, method);
+        Call<Azan> azanCall = apiServices.getPrayerTimesByCity(city, country, false, method);
         azanCall.enqueue(new Callback<Azan>() {
             @Override
             public void onResponse(Call<Azan> call, Response<Azan> response) {
                 Azan azan = response.body();
                 try {
                     if (azan.getStatus().equals("OK")) {
-                        Log.d("TAG", azan.getData().get(0).getTimings().getFajr());
                         TimingsAppDatabase.getInstance(getActivity()).AddPrayerTimes(AzanFragment.this, azan, city_name);
                     } else {
                         fragmentAzanBinding.progressBar.setVisibility(View.GONE);
@@ -384,7 +436,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                 Azan azan = response.body();
                 try {
                     if (azan.getStatus().equals("OK")) {
-                        Log.d("TAG", azan.getData().get(0).getTimings().getFajr());
                         TimingsAppDatabase.getInstance(getActivity()).AddPrayerTimes(AzanFragment.this, azan, city_name);
                     } else {
                         fragmentAzanBinding.progressBar.setVisibility(View.GONE);
@@ -575,22 +626,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
 
     }
 
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        Log.i("TAG", "onStatusChanged");
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-        Log.i("TAG", "onProviderEnabled");
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-        Log.i("TAG", "onProviderDisabled");
-    }
 
     public void showSettingsAlert() {
         if (getActivity() != null) {
@@ -617,8 +652,61 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                     clearFlagForInteractiveUser();
                 }
             });
+            AlertDialog dialogCreator = alertDialog.create();
+            dialogCreator.show();
+            Button neagtive_button = dialogCreator.getButton(DialogInterface.BUTTON_NEGATIVE);
+            Button positive_button = dialogCreator.getButton(DialogInterface.BUTTON_POSITIVE);
+            LinearLayout.LayoutParams params_for_space_between_buttons = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            params_for_space_between_buttons.setMargins(0, 0, 30, 0);
+            neagtive_button.setLayoutParams(params_for_space_between_buttons);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                positive_button.setBackgroundColor(getContext().getColor(R.color.colorAccent));
+                neagtive_button.setBackgroundColor(getContext().getColor(R.color.colorAccent));
+            } else {
+                positive_button.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                neagtive_button.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            }
+        } else {
+            Log.i("TAG", "Activity is null....");
+        }
+    }
 
-            alertDialog.show();
+    private void showDialogBoxForCompareMethod() {
+        if (getActivity() != null) {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+            alertDialog.setTitle(R.string.change_method);
+            alertDialog.setCancelable(false);
+            alertDialog.setMessage(R.string.is_want_new_data);
+            alertDialog.setPositiveButton(R.string.textYes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    isNetworkConnected();
+                }
+            });
+            alertDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog dialogCreator = alertDialog.create();
+            dialogCreator.show();
+            Button neagtive_button = dialogCreator.getButton(DialogInterface.BUTTON_NEGATIVE);
+            Button positive_button = dialogCreator.getButton(DialogInterface.BUTTON_POSITIVE);
+            LinearLayout.LayoutParams params_for_space_between_buttons = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            params_for_space_between_buttons.setMargins(0, 0, 30, 0);
+            neagtive_button.setLayoutParams(params_for_space_between_buttons);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                positive_button.setBackgroundColor(getContext().getColor(R.color.colorAccent));
+                neagtive_button.setBackgroundColor(getContext().getColor(R.color.colorAccent));
+            } else {
+                positive_button.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                neagtive_button.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            }
         } else {
             Log.i("TAG", "Activity is null....");
         }
@@ -648,38 +736,43 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
 
     private void getLocationTest() {
         disInteractiveUSer();
-        FusedLocationProviderClient fusedLocationProviderClient;
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
-        fusedLocationProviderClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                Log.i("TAG", "isRefresh : " + isRefresh);
-                location_user = location;
-                if (location != null) {
-                    updateGPSCoordinates();
-                    city_name = getCityName(location, getLatitude(), getLongitude());
-                    Log.i("TAG", ":City name is :" + city_name);
-                    //   if (isRefresh) {
-                    //     isRefresh = false;
-                    if (store_city_name.equals(city_name)) {
-                        fragmentAzanBinding.progressBar.setVisibility(View.GONE);
-                        Snackbar.make(getView(), "بالفعل انت في مدينة " + city_name, Snackbar.LENGTH_LONG).show();
-                        clearFlagForInteractiveUser();
-                        return;
-                    } else {
-                        TimingsAppDatabase.getInstance(getActivity()).DeletePrayerTimes(AzanFragment.this);
+        fusedLocationProviderClient.getLastLocation()
+                .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        Log.i("TAG", "isRefresh : " + isRefresh);
+                        if (location != null) {
+                            location_user = location;
+                            updateGPSCoordinates();
+                            Log.i("TAG", "location_user : " + getLongitude() + " : " + getLatitude());
+                            city_name = getCityName(location, getLatitude(), getLongitude());
+//                    Log.i("TAG", ":City name is :" + city_name);
+////                       if (isRefresh) {
+////                         isRefresh = false;
+//                    if (store_city_name.equals(city_name)) {
+//                        fragmentAzanBinding.progressBar.setVisibility(View.GONE);
+//                        Snackbar.make(getView(), "بالفعل انت في مدينة " + city_name, Snackbar.LENGTH_LONG).show();
+//                        clearFlagForInteractiveUser();
+//                        return;
+//                    } else {
+//                        Log.i("TAG", "TimingsAppDatabase.getInstance");
+//                //        TimingsAppDatabase.getInstance(getActivity()).DeletePrayerTimes(AzanFragment.this);
+//                        TimingsAppDatabase.getInstance(getActivity()).DeletePrayerTimesForGetDataWithLocation(AzanFragment.this);
+//
+//                    }
+                            //         }
+//                       else {
+//                           getPrayerTimes(location.getLatitude(), location.getLongitude());
+//                         }
+                            fragmentAzanBinding.progressBar.setVisibility(View.VISIBLE);
+                        } else {
+                            fragmentAzanBinding.progressBar.setVisibility(View.VISIBLE);
+                            getLocationTest();
+                            Log.d("TAG", "The location  null");
+                        }
                     }
-                    // } else {
-                    //       getPrayerTimes(location.getLatitude(), location.getLongitude());
-                    //     }
-                    //    fragmentAzanBinding.progressBar.setVisibility(View.VISIBLE);
-                } else {
-                    fragmentAzanBinding.progressBar.setVisibility(View.VISIBLE);
-                    getLocationTest();
-                    Log.d("TAG", "The location  null");
-                }
-            }
-        });
+
+                });
     }
 
     public void getLocation() {
@@ -772,8 +865,9 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(10 * 1000);
-        locationRequest.setFastestInterval(2 * 1000);
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
+        locationRequest.setFastestInterval(5 * 1000);
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(locationRequest);
         mLocationSettingsRequest = builder.build();
         builder.setAlwaysShow(true);
         builder.setNeedBle(true);
@@ -788,6 +882,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                         @SuppressLint("MissingPermission")
                         @Override
                         public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+
                             Log.i("TAG", "onSuccess.....");
                             fragmentAzanBinding.progressBar.setVisibility(View.VISIBLE);
                             getLocationTest();
@@ -816,6 +911,119 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                     }
                 }
             });
+        }
+    }
+
+    public void turnGPSOnTest() {
+        mSettingsClient = LocationServices.getSettingsClient(getActivity());
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(10 * 1000);
+        locationRequest.setFastestInterval(5 * 1000);
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    Log.d("TAG", "location is null ");
+
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    fragmentAzanBinding.progressBar.setVisibility(View.VISIBLE);
+                    //Update UI with location data
+                    Log.d("TAG", "location is locationCallback " + location.getLatitude() + " : " + location.getLongitude());
+                    location_user = location;
+                    updateGPSCoordinates();
+                    Log.i("TAG", "location_user : " + getLongitude() + " : " + getLatitude());
+                    city_name = getCityName(location, getLatitude(), getLongitude());
+                    Log.i("TAG", ":City name is :" + city_name);
+//                       if (isRefresh) {
+//                         isRefresh = false;
+                    if (store_city_name.equals(city_name)) {
+                        fragmentAzanBinding.progressBar.setVisibility(View.GONE);
+                        Snackbar.make(getView(), "بالفعل انت في مدينة " + city_name, Snackbar.LENGTH_LONG).show();
+                        clearFlagForInteractiveUser();
+                        stopLocationUpdtaes();
+                        return;
+                    } else {
+                        Log.i("TAG", "TimingsAppDatabase.getInstance");
+                        //        TimingsAppDatabase.getInstance(getActivity()).DeletePrayerTimes(AzanFragment.this);
+                        TimingsAppDatabase.getInstance(getActivity()).DeletePrayerTimesForGetDataWithLocation(AzanFragment.this);
+
+                    }
+//                       else {
+//                           getPrayerTimes(location.getLatitude(), location.getLongitude());
+//                         }
+                }
+            }
+        };
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(locationRequest);
+        mLocationSettingsRequest = builder.build();
+        builder.setAlwaysShow(true);
+        builder.setNeedBle(true);
+
+        mSettingsClient.checkLocationSettings(mLocationSettingsRequest)
+                .addOnSuccessListener(getActivity(), new OnSuccessListener<LocationSettingsResponse>() {
+                    @SuppressLint("MissingPermission")
+                    @Override
+                    public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+                        Log.i("TAG", "onSuccess.....");
+                        fragmentAzanBinding.progressBar.setVisibility(View.VISIBLE);
+                        startLocationUpdates();
+
+                        //   getLocationTest();
+                    }
+                }).addOnFailureListener(getActivity(), new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                if (e instanceof ResolvableApiException) {
+                    try {
+                        ResolvableApiException rae = (ResolvableApiException) e;
+                        Log.i("TAG", "not send.");
+                        rae.startResolutionForResult(getActivity(), AppConstants.GPS_REQUEST);
+                        Log.i("TAG", "Error." + rae.getMessage() + "\n" +
+                                rae.getStatusCode());
+                    } catch (IntentSender.SendIntentException sie) {
+                        Log.i("TAG", "PendingIntent unable to execute request.");
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //  if (requestingLocationUpdates){
+
+        //isNetworkConnected();
+
+        //  startLocationUpdates()
+
+        // }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        //  stopLocationUpdtaes();
+
+    }
+
+    private void startLocationUpdates() {
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
+    }
+
+    private void stopLocationUpdtaes() {
+        if (fusedLocationProviderClient != null) {
+            fusedLocationProviderClient.removeLocationUpdates(locationCallback);
         }
     }
 
@@ -870,7 +1078,9 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         if (fragmentAzanBinding.progressBar != null) {
             fragmentAzanBinding.progressBar.setVisibility(View.GONE);
             clearFlagForInteractiveUser();
+            stopLocationUpdtaes();
         }
+        SharedPerefrenceHelper.putStringCompareMethod(getActivity(), COMPARE_METHOD, repear);
     }
 
     @Override
@@ -879,7 +1089,20 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
             fragmentAzanBinding.progressBar.setVisibility(View.GONE);
             clearFlagForInteractiveUser();
         }
-        checkBeforeGetDataFromInternet();
+        checkBeforeGetData();
+        Log.d("TAG", "onPrayerTimesDeleted");
+
+    }
+
+    @Override
+    public void getDataFromLocationAfterDeleteData() {
+        if (fragmentAzanBinding.progressBar != null) {
+            fragmentAzanBinding.progressBar.setVisibility(View.GONE);
+            clearFlagForInteractiveUser();
+        }
+        getPrayerTimes(getLatitude(), getLongitude());
+        // checkBeforeGetDataFromInternet();
+        Log.d("TAG", "getDataFromLocationAfterDeleteData");
     }
 
     @Override
@@ -915,7 +1138,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                         clearFlagForInteractiveUser();
                     } else {
                         if (isRefresh) {
-                            checkBeforeGetDataFromInternet();
+                            checkBeforeGetDataFromInternetTest();
                         } else {
                             TimingsAppDatabase.getInstance(getActivity()).DeletePrayerTimes(AzanFragment.this);
                             Log.d("TAG", "City name is" + store_city_name);

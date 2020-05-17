@@ -29,12 +29,23 @@ public class GetPrayerTimesEveryDay extends BroadcastReceiver {
                 .subscribe(prayer_times -> {
                     if (prayer_times.getDate_today().equals(convertDate())){
                         sendNotificationForPrayerTime(context, prayer_times);
-                        enableBootRecieiver(context);
-                        Log.d("TAG","Time fajr is :" +prayer_times.getFajr());
+                     //   enableBootRecieiver(context);
+//                        Log.d("TAG","Time fajr is :" +Integer.valueOf(prayer_times.getFajr().substring(0, 2))
+//                                + "\n" + prayer_times.getSunrise().substring(0, 2)
+//                                + "\n" + prayer_times.getDhuhr().substring(0, 2)
+//                                + "\n" + prayer_times.getAsr().substring(0, 2)
+//                                + "\n" + prayer_times.getMaghrib().substring(0, 2)
+//                                + "\n" + prayer_times.getIsha().substring(0, 2)
+//                                +prayer_times.getFajr().substring(3, 5) + "\n" + prayer_times.getSunrise().substring(3, 5)
+//                                + "\n" + prayer_times.getDhuhr().substring(3, 5)
+//                                + "\n" + prayer_times.getAsr().substring(3, 5)
+//                                + "\n" + prayer_times.getMaghrib().substring(3, 5)
+//                                + "\n" + prayer_times.getIsha().substring(3, 5)
+//                        );
                     }
                 }, e -> {
-                    Log.d("TAG",e.getMessage() );
-                    Toast.makeText(context, "e : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("TAG", "GetPrayerTimesEveryDay e : " + e.getMessage() );
+                //    Toast.makeText(context, "e : " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
 }

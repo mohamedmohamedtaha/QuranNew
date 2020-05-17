@@ -25,13 +25,12 @@ import static com.MohamedTaha.Imagine.New.notification.prayerTimes.AlarmReceiver
 import static com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationHelperPrayerTime.TEXT_NOTIFICATION;
 
 public class ServiceForPlayPrayerTimesNotification extends Service implements MediaPlayer.OnCompletionListener
-        , MediaPlayer.OnErrorListener, MediaPlayer.OnPreparedListener {
+        , MediaPlayer.OnErrorListener {
     public static final String SEND_TIME_FOR_SEINDING = "time_send";
     private static final String NOTIFICATION_ID_FOR_PRAYER_TIMES = "notification_id_for_prayer_times";
     public static int num;
     private int notification_id_for_prayer_times;
     ArrayList<ModelMessageNotification> minutes;
-    //For play song
     private MediaPlayer mediaPlayer = null;
 
     @Nullable
@@ -49,17 +48,6 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("TAG", "onStartCommand");
-        // releaseMediaPlayer();
-
-        if (!mediaPlayer.isPlaying()) {
-            mediaPlayer.start();
-            Log.d("TAG", "!isPlaying");
-        } else {
-        //    releaseMediaPlayer();
-         //   initMediaPlayer();
-          //  mediaPlayer.start();
-            Log.d("TAG", "isPlaying");
-        }
         minutes = new ArrayList<>();
         minutes.clear();
         if (intent != null) {
@@ -75,17 +63,14 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
                         .equals(convertFromMilliSecondsToTime(minutes.get(i).getTime_payer()))) {
                     Log.d("TT", convertFromMilliSecondsToTime(minutes.get(i).getTime_payer()) + ":" +
                             minutes.get(i).getText_notification());
-                    /**This flag is generally used by activies that want to present a launcher style
-                     behavior:they give the user  *a list of separete things* that can be done
-                     ,which otherwise run completely independently of the acitivity launching them*/
                     intent = new Intent(this, NavigationDrawaberActivity.class);
                     intent.putExtra(NOTIFICATION_ID_FOR_PRAYER_TIMES, notification_id_for_prayer_times);
                     intent.putExtra(SEND_TIME_FOR_SEINDING, num);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    // PendingIntent openIntent = PendingIntent.getActivity(this, num, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                    //Build notification
                     createNotification(this, getString(R.string.app_name), minutes.get(i).getText_notification());
-
+                    if (!mediaPlayer.isPlaying()) {
+                        mediaPlayer.start();
+                    }
                 } else {
                     Log.d("TAG : error: ", convertFromMilliSecondsToTime(minutes.get(i).getTime_payer()) + ":" +
                             convertFromMilliSecondsToTime(calendar.getTimeInMillis()));
@@ -100,7 +85,6 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
         super.onDestroy();
         releaseMediaPlayer();
         Log.d("TAG", "onDestroy");
-
     }
 
 
@@ -108,14 +92,12 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
     public void onCompletion(MediaPlayer mp) {
         releaseMediaPlayer();
         Log.d("TAG", "onCompletion");
-
     }
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
         releaseMediaPlayer();
         Log.d("TAG", "onError");
-
         return false;
     }
 
@@ -129,17 +111,10 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
     }
 
     private void initMediaPlayer() {
-        if (mediaPlayer == null)
-        mediaPlayer = MediaPlayer.create(this, R.raw.azan_haram);
-        mediaPlayer.setOnCompletionListener(this);
-        mediaPlayer.setOnErrorListener(this);
-        mediaPlayer.setOnPreparedListener(this);
-    }
-
-
-    @Override
-    public void onPrepared(MediaPlayer mp) {
-        Log.d("TAG", "onPrepared");
-
+        if (mediaPlayer == null) {
+            mediaPlayer = MediaPlayer.create(this, R.raw.azan_haram);
+            mediaPlayer.setOnCompletionListener(this);
+            mediaPlayer.setOnErrorListener(this);
+        }
     }
 }

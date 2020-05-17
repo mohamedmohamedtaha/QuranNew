@@ -24,6 +24,7 @@ import java.util.Locale;
 
 public class HelperClass {
 
+
     public static void customToast(Activity activity, String ToastTitle) {
         LayoutInflater inflater = activity.getLayoutInflater();
         View layout = inflater.inflate(R.layout.custom_toast,
@@ -59,6 +60,16 @@ public class HelperClass {
         transaction.commitAllowingStateLoss();
 
     }
+    public static void replece(Fragment fragment, FragmentManager fragmentManager, int id,String tag) {
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(id, fragment,tag);
+        //transaction.commit();
+        // for change from commit() because don't happen Error
+        //   java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
+        transaction.commitAllowingStateLoss();
+
+    }
+
     //This method for Exit App
     public static void closeApp(Context context) {
         Intent exitAppIntent = new Intent(Intent.ACTION_MAIN);

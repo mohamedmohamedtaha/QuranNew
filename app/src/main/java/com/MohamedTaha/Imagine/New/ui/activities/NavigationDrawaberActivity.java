@@ -4,9 +4,11 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,7 +19,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import com.MohamedTaha.Imagine.New.AppConstants;
 import com.MohamedTaha.Imagine.New.R;
@@ -51,13 +56,17 @@ import io.reactivex.schedulers.Schedulers;
 import static com.MohamedTaha.Imagine.New.helper.Images.IMAGES;
 import static com.MohamedTaha.Imagine.New.helper.Images.addImagesList;
 import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertDate;
+import static com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationHelperPrayerTime.enableBootRecieiver;
 import static com.MohamedTaha.Imagine.New.ui.activities.SwipePagesActivity.IS_TRUE;
+import static com.MohamedTaha.Imagine.New.ui.fragments.AzanFragment.COMPARE_METHOD;
 import static com.MohamedTaha.Imagine.New.ui.fragments.SplashFragment.SAVE_ALL_IMAGES;
 import static com.MohamedTaha.Imagine.New.ui.fragments.SplashFragment.SAVE_PAGE;
 
 public class NavigationDrawaberActivity extends AppCompatActivity implements NavigationDrawarView {
     private static final String SAVE_STATE_VIEW_PAGER = "save_state_view_pager";
     public static final String IS_FIRST_TIME_WAY_USING = "way_sueing";
+    public static final String FOR_GET_FRAGMENT_AZAN = "fragemnt_azan";
+
     private ActivityNavigationDrawaberBinding activityNavigationDrawaberBinding;
     private int current_fragment;
     public static MaterialSearchView searchView;
@@ -68,6 +77,9 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     private TimingsViewModel timingsViewModel;
     public static int store_date_today = 0;
     public static String store_city_name = null;
+    private SharedPreferences sharedPreferences;
+    private String repear;
+    private String compare_methods = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +94,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         timingsViewModel = new ViewModelProvider(this).get(TimingsViewModel.class);
         getDateTodayFromDatabase();
         getCityName();
+
         //for show way using
         if (!SharedPerefrenceHelper.getBooleanForWayUsing(getApplicationContext(), IS_FIRST_TIME_WAY_USING, false)) {
             ShowGuide showGuide = new ShowGuide(NavigationDrawaberActivity.this, activityNavigationDrawaberBinding.toobar,
@@ -100,9 +113,13 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
         activityNavigationDrawaberBinding.navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         //navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        GridViewFragment gridViewFragment = (GridViewFragment)fragmentManager.findFragmentByTag("TAG_WORKER");
         if (savedInstanceState != null) {
-            int save = savedInstanceState.getInt(SAVE_STATE_VIEW_PAGER);
-            activityNavigationDrawaberBinding.navView.setSelectedItemId(save);
+            current_fragment = savedInstanceState.getInt(SAVE_STATE_VIEW_PAGER);
+            activityNavigationDrawaberBinding.navView.setSelectedItemId(current_fragment);
+            Log.d("TAG", "Current fragment  three is :" + current_fragment);
+
         } else {
             activityNavigationDrawaberBinding.navView.setSelectedItemId(R.id.read_quran);
         }
@@ -154,19 +171,6 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                     Toast.makeText(getApplicationContext(), "e : " + e.getMessage(), Toast.LENGTH_SHORT).show();
 
                 });
-        TimingsRepository timingsRepository = TimingsRepository.getInstance(this);
-        timingsRepository.getPrayerTimesForCurrentDate(convertDate()).
-                subscribeOn(Schedulers.trampoline())
-                // Add RXAndroid2 for support with Room because still RXjava3 don't support Room
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(prayer_times -> {
-                    if (prayer_times.getDate_today().equals(convertDate())) {
-                        Log.d("TAG", "Time fagr is :" + prayer_times.getFajr());
-
-                    }
-                }, e -> {
-                    Log.d("TAG", e.getMessage());
-                });
     }
 
     private void getCityName() {
@@ -184,7 +188,6 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             int id = item.getItemId();
@@ -213,10 +216,11 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                     break;
                 case R.id.prayer_times:
                     AzanFragment azanFragment = new AzanFragment();
-                    HelperClass.replece(azanFragment, getSupportFragmentManager(), R.id.frameLayout);
+                    HelperClass.replece(azanFragment, getSupportFragmentManager(), R.id.frameLayout,FOR_GET_FRAGMENT_AZAN);
                     break;
             }
             current_fragment = id;
+            Log.d("TAG", "Current fragment  two is :" + current_fragment);
             return true;
         }
     };
@@ -243,8 +247,27 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         NotificationHelper.enableBootRecieiver(getApplicationContext());
 
 //        sendNotificationForPrayerTime(getApplicationContext());
-//        enableBootRecieiver(getApplicationContext());
         getPrayerTimesEveryday(getApplicationContext());
+        enableBootRecieiver(getApplicationContext());
+
+        checkIsFragmentAzanIsOpen();
+
+    }
+    private void checkIsFragmentAzanIsOpen(){
+        AzanFragment azanFragment = (AzanFragment)getSupportFragmentManager().findFragmentByTag(FOR_GET_FRAGMENT_AZAN);
+        if (azanFragment != null && azanFragment.isVisible()){
+            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            //getString Retrieve a String value from the Preference
+            repear = sharedPreferences.getString(getString(R.string.settings_method_key),
+                    getString(R.string.settings_method_default));
+            compare_methods = SharedPerefrenceHelper.getStringCompareMethod(this, COMPARE_METHOD, null);
+
+            if (compare_methods != null && !compare_methods.equals(repear)) {
+                HelperClass.replece(azanFragment, getSupportFragmentManager(), R.id.frameLayout,FOR_GET_FRAGMENT_AZAN);
+            }{
+                Toast.makeText(this, "not " + repear + " : " + compare_methods , Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     public static void getPrayerTimesEveryday(Context context) {
@@ -258,11 +281,10 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         alarmPendingIntent = PendingIntent.getBroadcast(context, ALARM_TYPE_ELAPSED, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Calendar setTime = Calendar.getInstance();
         setTime.setTimeInMillis(System.currentTimeMillis());
-        setTime.set(Calendar.HOUR_OF_DAY, 7);
-        setTime.set(Calendar.MINUTE, 56);
+        setTime.set(Calendar.HOUR_OF_DAY, 1);
         alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
-                AlarmManager.INTERVAL_DAY, setTime.getTimeInMillis(), alarmPendingIntent);
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+                setTime.getTimeInMillis(),AlarmManager.INTERVAL_DAY, alarmPendingIntent);
     }
 
     @Override
@@ -289,6 +311,9 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                 break;
             case R.id.action_elarbaoon_elnawawy:
                 HelperClass.startActivity(getApplicationContext(), ElarbaoonElnawawyActivity.class);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                }
                 break;
             default:
         }
@@ -334,6 +359,9 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(SAVE_STATE_VIEW_PAGER, current_fragment);
+        Log.d("TAG", "Current fragment is :" + current_fragment);
+
+
     }
 
     @Override

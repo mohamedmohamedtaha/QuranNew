@@ -29,8 +29,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import static com.MohamedTaha.Imagine.New.ui.fragments.AzanFragment.LOCATION_PERMISSION_REQUEST_CODE;
 
 public class GpsUtils extends Activity {
-
-    // private Context context;
     private View view;
     private SettingsClient mSettingsClient;
     private LocationSettingsRequest mLocationSettingsRequest;

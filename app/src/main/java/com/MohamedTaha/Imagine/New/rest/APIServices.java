@@ -11,11 +11,13 @@ public interface APIServices {
     @GET("calendar")
     Call<Azan> getPrayerTimes(@Query("latitude") double latitude,
                               @Query("longitude") double longitude,
-                              @Query("annual") boolean annual, @Query("method") int  method);
+                              @Query("annual") boolean annual, @Query("method") int method);
+
     @GET("calendarByCity")
     Call<Azan> getPrayerTimesByCity(@Query("city") String city,
-                                     @Query("country") String country,
-                                     @Query("method") int  method);
+                                    @Query("country") String country, @Query("annual") boolean annual,
+                                    @Query("method") int method);
+
     @GET("json")
     Call<GetCity> getCity();
 }

@@ -1,6 +1,7 @@
 package com.MohamedTaha.Imagine.New.ui.activities;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,4 +18,13 @@ public class SettingsActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            super.onBackPressed();
+            return true;
+        }
+        return false;
+    }
+
 }

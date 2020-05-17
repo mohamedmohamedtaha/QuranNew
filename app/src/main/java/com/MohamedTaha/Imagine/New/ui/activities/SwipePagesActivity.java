@@ -112,7 +112,7 @@ public class SwipePagesActivity extends AppCompatActivity {
             });
             SwipePagesActivityVP.setAdapter(adapterForSwipe);
                 if (SharedPerefrenceHelper.getBoolean(this, IS_TRUE, false)) {
-                    ShowDialog.showDialog(this, SwipePagesActivityVP, position);
+                    ShowDialog.showDialogForRetrieveReadingSora(this, SwipePagesActivityVP, position);
                 } else {
                     SwipePagesActivityVP.setCurrentItem(position);
                 }
@@ -169,7 +169,7 @@ public class SwipePagesActivity extends AppCompatActivity {
             SwipePagesActivityVP.setAdapter(adapterForAzkarSwipe);
 
             if (SharedPerefrenceHelper.getBooleanForAzkar(this, IS_TRUE_AZKAR, false)) {
-                ShowDialog.showDialogForAzkar(this, SwipePagesActivityVP, position_azkar);
+                ShowDialog.showDialogForRetrieveAzkar(this, SwipePagesActivityVP, position_azkar);
             } else {
                 SwipePagesActivityVP.setCurrentItem(position_azkar);
             }

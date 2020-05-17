@@ -7,12 +7,15 @@ public class SharedPerefrenceHelper {
     private static final String SHARED_PREFRENCES_NAME = "save_path_images";
     private static final String SHARED_PREFRENCES_NAME_AZKAR = "save_path_azkar";
     private static final String SHARED_PREFRENCES_WAY_USING = "way_using";
+    private static final String SHARED_PREFRENCES_COMPARE_METHOD = "way_using";
+
     private static SharedPreferences getSharedPrefrencesForWayUsing(Context context){
         return context.getSharedPreferences(SHARED_PREFRENCES_WAY_USING,Context.MODE_PRIVATE);
     }
     private static SharedPreferences getSharedPrefrences(Context context){
         return context.getSharedPreferences(SHARED_PREFRENCES_NAME,Context.MODE_PRIVATE);
     }
+
     private static SharedPreferences getSharedPrefrencesForAzkar(Context context){
         return context.getSharedPreferences(SHARED_PREFRENCES_NAME_AZKAR,Context.MODE_PRIVATE);
     }
@@ -54,5 +57,14 @@ public class SharedPerefrenceHelper {
     }
     public static void removeData(Context context){
         getSharedPrefrences(context).edit().clear().commit();
+    }
+    private static SharedPreferences getSharedPrefrencesCompareMethod(Context context){
+        return context.getSharedPreferences(SHARED_PREFRENCES_COMPARE_METHOD,Context.MODE_PRIVATE);
+    }
+    public static void putStringCompareMethod(Context context,String key, String value){
+        getSharedPrefrencesCompareMethod(context).edit().putString(key,value).commit();
+    }
+    public static String getStringCompareMethod(Context context , String key, String defaultValue){
+        return getSharedPrefrencesCompareMethod(context).getString(key,defaultValue);
     }
 }

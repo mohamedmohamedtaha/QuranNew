@@ -2,11 +2,8 @@ package com.MohamedTaha.Imagine.New.room;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
@@ -121,6 +118,32 @@ public abstract class TimingsAppDatabase extends RoomDatabase {
                 });
 
     }
+    public void DeletePrayerTimesForGetDataWithLocation(DatabaseCallback databaseCallback){
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                timingsDao().deleteAllTimings();
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        databaseCallback.getDataFromLocationAfterDeleteData();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        databaseCallback.onPrayerTimesError();
+                    }
+                });
+
+    }
+
     //For migration after edit or add on the table
     static final Migration MIGRATION_1_2 = new Migration(1,2) {
         @Override

@@ -299,6 +299,7 @@
     <string name="hide_bottom_view_on_scroll_behavior">com.google.android.material.behavior.HideBottomViewOnScrollBehavior</string>
 
     <string name="is_open_gps">الذهاب لصفحة الإعدادات لفتح تحديد الموقع</string>
+    <string name="is_want_new_data">هل تريد جلب بيانات جديدة بناء على التوقيت الجديد</string>
 
 
     <string name="not_gps">للأسف لم تقم بفتح ال GPS بشكل صحيح</string>
@@ -315,6 +316,8 @@
     <string name="save_zkr_done">تم نسخ الذكر</string>
     <string name="search_hint">Search</string>
     <string name="settings_gps">GPS is settings</string>
+    <string name="change_method">تم تغيير الدالة الخاصة بالتوقيت </string>
+
     <string name="el_arbaoon_elnawawy">الأربعون النووية</string>
     <string name="text_elhadeth">نص الحديث</string>
     <string name="description_elhadeth">شرح الحديث</string>
