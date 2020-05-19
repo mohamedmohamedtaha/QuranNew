@@ -271,7 +271,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     }
 
     public static void getPrayerTimesEveryday(Context context) {
-        int ALARM_TYPE_ELAPSED = 101;
+        int ALARM_TYPE_ELAPSED = 10;
         AlarmManager alarmManager;
         PendingIntent alarmPendingIntent;
         Intent intent = new Intent(context, GetPrayerTimesEveryDay.class);
@@ -282,9 +282,19 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         Calendar setTime = Calendar.getInstance();
         setTime.setTimeInMillis(System.currentTimeMillis());
         setTime.set(Calendar.HOUR_OF_DAY, 1);
+     //   setTime.set(Calendar.SECOND, 21);
+
         alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
                 setTime.getTimeInMillis(),AlarmManager.INTERVAL_DAY, alarmPendingIntent);
+
+
+//        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
+//                setTime.getTimeInMillis(),AlarmManager.INTERVAL_FIFTEEN_MINUTES, alarmPendingIntent);
+
+//        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
+//                SystemClock.elapsedRealtime() + setAlarm(repear),
+//                setAlarm(repear), alarmPendingIntent);
     }
 
     @Override

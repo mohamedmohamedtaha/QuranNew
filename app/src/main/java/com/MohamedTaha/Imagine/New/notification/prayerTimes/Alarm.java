@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertFromMilliSecondsToTime;
 import static com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationHelperPrayerTime.TEXT_NOTIFICATION;
 
 public class Alarm {
@@ -21,21 +22,26 @@ public class Alarm {
         this.context = context;
     }
 
-    public void setAlarm(PendingIntent pendingIntent, Class name_class,List<ModelMessageNotification> listForSavePrayerTimes) {
+    public void setAlarm(PendingIntent pendingIntent, Class name_class, List<ModelMessageNotification> listForSavePrayerTimes) {
         AlarmManager[] alarmManager = new AlarmManager[listForSavePrayerTimes.size()];
         Intent intent[] = new Intent[alarmManager.length];
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
         for (int i = 0; i < alarmManager.length; i++) {
             intent[i] = new Intent(context, name_class);
             Bundle bundle = new Bundle();
             bundle.putString(TEXT_NOTIFICATION, new Gson().toJson(listForSavePrayerTimes));
             intent[i].putExtras(bundle);
-            /* Here is very important,when we set one alarm, pending intent id becomes zero
-            but if we want set multiple alarms pending intent id has to be unique so i counter
-            is enough to be unique for PendingIntent    */
-            pendingIntent = PendingIntent.getService(context, i, intent[i], 0);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                pendingIntent = PendingIntent.getForegroundService(context, i, intent[i], 0);
+            } else {
+                pendingIntent = PendingIntent.getService(context, i, intent[i], 0);
+            }
             alarmManager[i] = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            alarmManager[i].setExact(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
-
+          //  if (convertFromMilliSecondsToTime(calendar.getTimeInMillis())
+            //        .equals(convertFromMilliSecondsToTime(listForSavePrayerTimes.get(i).getTime_payer()))) {
+                alarmManager[i].setExact(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
+       //     }
 //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //                alarmManager[i].setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
 //            }else {
@@ -44,7 +50,7 @@ public class Alarm {
         }
     }
 
-    public void cancelAlarm(Class name_class,List<ModelMessageNotification> listForSavePrayerTimes) {
+    public void cancelAlarm(Class name_class, List<ModelMessageNotification> listForSavePrayerTimes) {
         AlarmManager alarmManager[] = new AlarmManager[listForSavePrayerTimes.size()];
         Intent intent[] = new Intent[listForSavePrayerTimes.size()];
         for (int i = 0; i < listForSavePrayerTimes.size(); i++) {
