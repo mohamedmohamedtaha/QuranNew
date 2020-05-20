@@ -187,6 +187,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                 turnGPSOnTest();
             } else {
                 showSettingsAlert();
+
             }
         }
         connectivityReceiver = new ConnectivityReceiver();
@@ -340,22 +341,24 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
 
     private void checkBeforeGetData() {
         if (isStoragePermissionGranted()) {
-            if (checkGPS()) {
-                if (isRefresh) {
-                    Log.i("TAG", "isGPSEnabled is not :" + isGPSEnabled);
-                    if (save_request_code_back_from_turn_gps == 1001) {
-                        Log.i("TAG", "save_request_code" + save_request_code_back_from_turn_gps);
-                        showSettingsAlert();
-                    } else {
-                        turnGPSOn();
-                        Log.i("TAG", "turnGPSOn");
-                    }
-                } else {
-                    getCity();
-                    Log.i("TAG", "getCity");
+            getCity();
 
-                }
-            }
+//            if (checkGPS()) {
+//                if (isRefresh) {
+//                    Log.i("TAG", "isGPSEnabled is not :" + isGPSEnabled);
+//                    if (save_request_code_back_from_turn_gps == 1001) {
+//                        Log.i("TAG", "save_request_code" + save_request_code_back_from_turn_gps);
+//                        showSettingsAlert();
+//                    } else {
+//                        turnGPSOn();
+//                        Log.i("TAG", "turnGPSOn");
+//                    }
+//                } else {
+//                    getCity();
+//                    Log.i("TAG", "getCity");
+//
+//                }
+//            }
 
         }
     }
@@ -579,7 +582,9 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
             case MY_PERMISSIONS_WRITE_STORAGE: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.i("TAG", " Grnted second");
-                    checkGPS();
+                    getCity();
+
+                    // checkGPS();
                 } else {
                     SnackbarPermissionStorage(getString(R.string.grand_permission), getString(R.string.allow));
                 }
@@ -587,11 +592,14 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
             }
             case MY_PERIMISSIONS_LOCATION: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    getCity();
-                    //     turnGPSOn();
+                 //   getCity();
+                    turnGPSOnTest();
+                      //  turnGPSOn();
                 } else {
                     Log.i("TAG", "Not Graunted Location");
                     SnackbarPermissionLocation(getString(R.string.grand_permission), getString(R.string.allow));
+                    fragmentAzanBinding.progressBar.setVisibility(View.GONE);
+                    clearFlagForInteractiveUser();
                 }
                 return;
             }
@@ -615,16 +623,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
 
     @Override
     public void onLocationChanged(Location location) {
-//        Log.i("TAG", "Location Changed is : " + location);
-//        if (location != null && data_today == 0) {
-//            city_name = getCityName(location, location.getLatitude(), location.getLongitude());
-//            Log.i("TAG", "City name : " + city_name);
-//            getPrayerTimes(location.getLatitude(), location.getLongitude());
-//        } else {
-//            Log.i("TAG", "onLocationChanged : " + location);
-//        }
         Log.i("TAG", "onLocationChanged : " + location);
-
     }
 
 
@@ -776,68 +775,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                 });
     }
 
-    public void getLocation() {
-        try {
-            locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
-            Log.i("TAG", "try location");
-            isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-            isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-            if (isGPSEnabled) {
-                this.isGPSTrackingEnabled = true;
-                Log.i("TAG", "isGPSEnabled");
-                provider_info = LocationManager.GPS_PROVIDER;
-            } else if (isNetworkEnabled) {
-                this.isGPSTrackingEnabled = true;
-                Log.i("TAG", "isNetworkEnabled");
-                provider_info = LocationManager.NETWORK_PROVIDER;
-            } else {
-                provider_info = null;
-                Log.i("TAG", "provider_info is null");
-            }
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                Log.i("TAG", "enter check ");
-//                if (ContextCompat.checkSelfPermission(getActivity(),
-//                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-//                        && ContextCompat.checkSelfPermission(getActivity(),
-//                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                    Log.i("TAG", "not Permission");
-//                    requestPermissions(new String[]{
-//                            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERIMISSIONS_LOCATION);
-//                    isGPSPermission = false;
-//                } else if (provider_info != null) {
-//                    Log.i("TAG", "provider_info");
-//                    locationManager.requestLocationUpdates(
-//                            provider_info,
-//                            MIN_TIME_BW_UPDATES,
-//                            MIN_DISTANCE_CHANGE_FOR_UPDATES,
-//                            this
-//                    );
-//                    if (locationManager != null) {
-//                        location = locationManager.getLastKnownLocation(provider_info);
-//                        updateGPSCoordinates();
-//                        city_name = getCityName(location, getLatitude(), getLongitude());
-//                        Log.i("TAG", ":location is :" + getLatitude() + "" + getLongitude() + ":City name is :" + city_name);
-//                        Log.i("TAG", ":City name is :" + city_name);
-//                        fragmentAzanBinding.progressBar.setVisibility(View.VISIBLE);
-//                    } else {
-//                        Log.i("TAG", "locationManager is null");
-//                    }
-//                } else {
-//                    if (save_request_code == 1001) {
-//                        Log.i("TAG", "save_request_code" + save_request_code);
-//                        showSettingsAlert();
-//                    } else {
-//                        turnGPSOn();
-//                    }
-//                }
-//            }
-
-
-        } catch (NullPointerException e) {
-            Log.e("TAG", "Impossible to connect to LocationManager", e);
-        }
-    }
-
     public void updateGPSCoordinates() {
         if (location_user != null) {
             latitude = location_user.getLatitude();
@@ -856,7 +793,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         if (location_user != null) {
             longitude = location_user.getLongitude();
         }
-
         return longitude;
     }
 
@@ -926,7 +862,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
             public void onLocationResult(LocationResult locationResult) {
                 if (locationResult == null) {
                     Log.d("TAG", "location is null ");
-
                     return;
                 }
                 for (Location location : locationResult.getLocations()) {
@@ -938,8 +873,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                     Log.i("TAG", "location_user : " + getLongitude() + " : " + getLatitude());
                     city_name = getCityName(location, getLatitude(), getLongitude());
                     Log.i("TAG", ":City name is :" + city_name);
-//                       if (isRefresh) {
-//                         isRefresh = false;
                     if (store_city_name.equals(city_name)) {
                         fragmentAzanBinding.progressBar.setVisibility(View.GONE);
                         Snackbar.make(getView(), "بالفعل انت في مدينة " + city_name, Snackbar.LENGTH_LONG).show();
@@ -948,13 +881,8 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                         return;
                     } else {
                         Log.i("TAG", "TimingsAppDatabase.getInstance");
-                        //        TimingsAppDatabase.getInstance(getActivity()).DeletePrayerTimes(AzanFragment.this);
                         TimingsAppDatabase.getInstance(getActivity()).DeletePrayerTimesForGetDataWithLocation(AzanFragment.this);
-
                     }
-//                       else {
-//                           getPrayerTimes(location.getLatitude(), location.getLongitude());
-//                         }
                 }
             }
         };
@@ -971,9 +899,8 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                     public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
                         Log.i("TAG", "onSuccess.....");
                         fragmentAzanBinding.progressBar.setVisibility(View.VISIBLE);
+                        disInteractiveUSer();
                         startLocationUpdates();
-
-                        //   getLocationTest();
                     }
                 }).addOnFailureListener(getActivity(), new OnFailureListener() {
             @Override
@@ -996,13 +923,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     @Override
     public void onResume() {
         super.onResume();
-        //  if (requestingLocationUpdates){
-
-        //isNetworkConnected();
-
-        //  startLocationUpdates()
-
-        // }
     }
 
     @Override
@@ -1013,8 +933,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        //  stopLocationUpdtaes();
-
     }
 
     private void startLocationUpdates() {

@@ -28,7 +28,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
-    private static final String CHANNEL_ID_FIREBASE  = "channel_id_notification_firebase";
+    private static final String CHANNEL_ID_FIREBASE  = "com.MohamedTaha.Imagine.Quran.notification.firebase";
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {

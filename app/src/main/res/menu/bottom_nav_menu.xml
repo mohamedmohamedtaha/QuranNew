@@ -14,11 +14,12 @@
         android:icon="@drawable/ic_speaker"
         android:title="@string/listen_swar" />
     <item
-        android:id="@+id/azkar"
-        android:icon="@drawable/ic_azkar"
-        android:title="@string/azkar" />
-    <item
         android:id="@+id/prayer_times"
         android:icon="@drawable/ic_azkar"
         android:title="@string/elslah" />
+    <item
+        android:id="@+id/azkar"
+        android:icon="@drawable/ic_azkar"
+        android:title="@string/azkar" />
+
 </menu>

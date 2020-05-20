@@ -175,7 +175,7 @@ public class ShowGuide extends AppCompatActivity {
             public void onTargetClick(TapTargetView view) {
                 super.onTargetClick(view);
                 // .. which evidently starts the sequence we defined earlier
-                bottomNavigationView.setSelectedItemId(R.id.azkar);
+                bottomNavigationView.setSelectedItemId(R.id.prayer_times);
                 setShowFourItem();
             }
 
@@ -198,7 +198,7 @@ public class ShowGuide extends AppCompatActivity {
             @Override
             public void onTargetClick(TapTargetView view) {
                 super.onTargetClick(view);
-                bottomNavigationView.setSelectedItemId(R.id.prayer_times);
+                bottomNavigationView.setSelectedItemId(R.id.azkar);
                 setShowFiveItem();
             }
 
@@ -213,7 +213,7 @@ public class ShowGuide extends AppCompatActivity {
 
             }
         };
-        customInfo(R.id.azkar, R.string.spectial_button, R.string.read_azkar, listener);
+        customInfo(R.id.prayer_times, R.string.spectial_button, R.string.set_prayer_times, listener);
 
     }
 
@@ -237,7 +237,7 @@ public class ShowGuide extends AppCompatActivity {
                 Log.d("TapTargetViewSample", "You dismissed me :(");
             }
         };
-        customInfo(R.id.prayer_times, R.string.spectial_button, R.string.set_prayer_times, listener);
+        customInfo(R.id.azkar, R.string.spectial_button, R.string.read_azkar, listener);
 
     }
 

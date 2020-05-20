@@ -42,7 +42,6 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
         , MediaPlayer.OnErrorListener {
     public static final String SEND_TIME_FOR_SEINDING = "time_send";
     private static final String CHANNEL_ID = "com.MohamedTaha.Imagine.Quran.notification.prayer.times";
-
     private static final String NOTIFICATION_ID_FOR_PRAYER_TIMES = "notification_id_for_prayer_times";
     public static int num;
     private static final int NOTIFICATION_ID_SERVICE = 11;
@@ -103,14 +102,14 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
                     intent.putExtra(SEND_TIME_FOR_SEINDING, num);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     createNotification(this, getString(R.string.app_name), minutes.get(i).getText_notification());
-                    if (!mediaPlayer.isPlaying()) {
+                    if (!mediaPlayer.isPlaying() && !minutes.get(i).getText_notification().equals(getString(R.string.sunrise_string))) {
                         mediaPlayer.start();
                     }
                 } else {
                     Log.d("TAG : error: ", convertFromMilliSecondsToTime(minutes.get(i).getTime_payer()) + ":" +
                             convertFromMilliSecondsToTime(calendar.getTimeInMillis()));
                     startForeground(NOTIFICATION_ID_SERVICE, builder.build());
-                       stopSelf();
+                    //   stopSelf();
                 }
             }
         }
@@ -199,9 +198,9 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
         //The id of the channel
         //for create Channel for notification for Android O
         //The user visible name of the channel
-        CharSequence name = "Quran Notification";
+        CharSequence name = "Prayer Times Notification";
         //The user visible description of the channel
-        String description = "Quran Notification controls";
+        String description = "Prayer Times Notification controls";
         int importance = NotificationManager.IMPORTANCE_HIGH;
         NotificationChannel notificationChannel2 = new NotificationChannel(CHANNEL_ID, name, importance);
         //Configure the channel's intial preference

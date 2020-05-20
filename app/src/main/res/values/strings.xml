@@ -255,7 +255,13 @@
     <string name="read_azkar">بقراءة الأذكار اليومية</string>
     <string name="sound_string">بالاستماع إلى القرآن عن طريق أكثر من 70 قارئ ويمكن تحميل اي سورة ثم تشغيلهابعد ذلك بدون الإنترنت</string>
     <string name="read_string">خاص بقراءة القرآن عن طريق السور</string>
-    <string name="set_prayer_times">خاص بمواقيت الصلاة</string>
+    <string name="set_prayer_times"> بمواقيت الصلاة</string>
+    <string name="fagr_string">حان الأن موعد أذان الفجر </string>
+    <string name="sunrise_string">حان الأن موعد أذان الشروق </string>
+    <string name="duhr_string"> حان الأن موعد أذان الظهر</string>
+    <string name="asr_string">حان الأن موعد أذان العصر </string>
+    <string name="magrib_string">حان الأن موعد أذان المغرب </string>
+    <string name="isha_string"> حان الأن موعد أذان العشاء</string>
 
     <string name="description_string">لقد قمت بإلغاء التعليمات التي تستعرض شرح التطبيق</string>
     <string name="end">إنتهاء</string>

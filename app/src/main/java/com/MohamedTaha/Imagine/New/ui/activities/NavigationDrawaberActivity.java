@@ -94,12 +94,10 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         timingsViewModel = new ViewModelProvider(this).get(TimingsViewModel.class);
         getDateTodayFromDatabase();
         getCityName();
-
         //for show way using
         if (!SharedPerefrenceHelper.getBooleanForWayUsing(getApplicationContext(), IS_FIRST_TIME_WAY_USING, false)) {
             ShowGuide showGuide = new ShowGuide(NavigationDrawaberActivity.this, activityNavigationDrawaberBinding.toobar,
                     activityNavigationDrawaberBinding.navView);
-//            SharedPerefrenceHelper.putBooleanForWayUsing(getApplicationContext(), IS_FIRST_TIME_WAY_USING, true);
         }
         //For open on the save pages immediately
         if (SharedPerefrenceHelper.getBoolean(getApplicationContext(), IS_TRUE, false)) {
@@ -283,7 +281,6 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         setTime.setTimeInMillis(System.currentTimeMillis());
         setTime.set(Calendar.HOUR_OF_DAY, 1);
      //   setTime.set(Calendar.SECOND, 21);
-
         alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
                 setTime.getTimeInMillis(),AlarmManager.INTERVAL_DAY, alarmPendingIntent);
