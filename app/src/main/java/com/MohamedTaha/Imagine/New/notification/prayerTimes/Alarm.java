@@ -22,7 +22,8 @@ public class Alarm {
         this.context = context;
     }
 
-    public void setAlarm(PendingIntent pendingIntent, Class name_class, List<ModelMessageNotification> listForSavePrayerTimes) {
+    public void setAlarm( Class name_class, List<ModelMessageNotification> listForSavePrayerTimes) {
+        PendingIntent pendingIntent = null;
         AlarmManager[] alarmManager = new AlarmManager[listForSavePrayerTimes.size()];
         Intent intent[] = new Intent[alarmManager.length];
         Calendar calendar = Calendar.getInstance();
@@ -40,13 +41,15 @@ public class Alarm {
             alarmManager[i] = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
           //  if (convertFromMilliSecondsToTime(calendar.getTimeInMillis())
             //        .equals(convertFromMilliSecondsToTime(listForSavePrayerTimes.get(i).getTime_payer()))) {
-                alarmManager[i].setExact(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
+            //    alarmManager[i].setExact(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
        //     }
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                alarmManager[i].setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
-//            }else {
-//                alarmManager[i].setExact(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
-//            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                alarmManager[i].setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
+            }else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                alarmManager[i].setExact(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
+            } else {
+                alarmManager[i].set(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
+            }
         }
     }
 

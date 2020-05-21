@@ -283,7 +283,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
      //   setTime.set(Calendar.SECOND, 21);
         alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
-                setTime.getTimeInMillis(),AlarmManager.INTERVAL_DAY, alarmPendingIntent);
+                setTime.getTimeInMillis() ,AlarmManager.INTERVAL_DAY, alarmPendingIntent);
 
 
 //        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,

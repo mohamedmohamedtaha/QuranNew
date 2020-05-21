@@ -67,7 +67,6 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
     @Override
     public void onCreate() {
         super.onCreate();
-        initMediaPlayer();
     }
 
     @Override
@@ -92,16 +91,19 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
             minutes = new Gson().fromJson(st, listType);
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(System.currentTimeMillis());
+
             for (int i = 0; i < minutes.size(); i++) {
-                if (convertFromMilliSecondsToTime(calendar.getTimeInMillis())
-                        .equals(convertFromMilliSecondsToTime(minutes.get(i).getTime_payer()))) {
+                if (convertFromMilliSecondsToTime(calendar.getTimeInMillis()).equals(convertFromMilliSecondsToTime(minutes.get(i).getTime_payer()))) {
                     Log.d("TT", convertFromMilliSecondsToTime(minutes.get(i).getTime_payer()) + ":" +
                             minutes.get(i).getText_notification());
+                    initMediaPlayer(i);
                     intent = new Intent(this, NavigationDrawaberActivity.class);
                     intent.putExtra(NOTIFICATION_ID_FOR_PRAYER_TIMES, notification_id_for_prayer_times);
                     intent.putExtra(SEND_TIME_FOR_SEINDING, num);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     createNotification(this, getString(R.string.app_name), minutes.get(i).getText_notification());
+                    Log.d("TAG : Right : ", convertFromMilliSecondsToTime(minutes.get(i).getTime_payer()) + ":" +
+                            convertFromMilliSecondsToTime(calendar.getTimeInMillis()));
                     if (!mediaPlayer.isPlaying() && !minutes.get(i).getText_notification().equals(getString(R.string.sunrise_string))) {
                         mediaPlayer.start();
                     }
@@ -109,18 +111,21 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
                     Log.d("TAG : error: ", convertFromMilliSecondsToTime(minutes.get(i).getTime_payer()) + ":" +
                             convertFromMilliSecondsToTime(calendar.getTimeInMillis()));
                     startForeground(NOTIFICATION_ID_SERVICE, builder.build());
-                    //   stopSelf();
+//                    if (!mediaPlayer.isPlaying() && !minutes.get(i).getText_notification().equals(getString(R.string.sunrise_string))){
+//                        stopSelf();
+//
+//                    }
                 }
             }
         }
-           return super.onStartCommand(intent, flags, startId);
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         releaseMediaPlayer();
-           Log.d("TAG", "onDestroy");
+        Log.d("TAG", "onDestroy");
     }
 
 
@@ -143,12 +148,20 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
         if (mediaPlayer.isPlaying() || mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.release();
+            mediaPlayer = null;
         }
     }
 
-    private void initMediaPlayer() {
+    private void initMediaPlayer(int postion) {
         if (mediaPlayer == null) {
-            mediaPlayer = MediaPlayer.create(this, R.raw.azan_haram);
+            if (!minutes.get(postion).getText_notification().equals(getString(R.string.fagr_string))){
+                mediaPlayer = MediaPlayer.create(this, R.raw.azan_haram);
+                Log.d("TAG", "azan_haram  " + minutes.get(postion).getText_notification());
+            }else{
+                mediaPlayer = MediaPlayer.create(this, R.raw.azan_haram_fajr);
+                Log.d("TAG", "azan_haram_fajr   " + minutes.get(postion).getText_notification());
+
+            }
             mediaPlayer.setOnCompletionListener(this);
             mediaPlayer.setOnErrorListener(this);
         }
@@ -191,7 +204,8 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.notify(NOTIFICATION_ID_SERVICE, builder.build());
         }
-   }
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     public void createChannel() {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

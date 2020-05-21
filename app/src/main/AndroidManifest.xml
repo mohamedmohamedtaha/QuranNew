@@ -82,16 +82,20 @@
         <receiver android:name=".receiver.GetPrayerTimesEveryDay"/>
         <receiver
             android:name=".notification.quran.AlarmBootRecevier"
-            android:enabled="true">
+            android:enabled="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+
             </intent-filter>
         </receiver>
         <receiver
             android:name=".notification.prayerTimes.AlarmBootRecevierPrayerTimeEveryDay"
-            android:enabled="true">
+            android:enabled="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+
             </intent-filter>
         </receiver>
 
