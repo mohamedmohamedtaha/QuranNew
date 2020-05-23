@@ -31,11 +31,14 @@ import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertDateTo
 import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertTimeToAM;
 
 public class AdapterAzanVP extends PagerAdapter {
+
     private Context context;
     private List<Timings> azanList = new ArrayList<>();
     private ClickListener checkCity;
     private Timer show_timer_every_second = new Timer();
     private static CountDownTimer show_timer_every_menutes;
+    private static CountDownTimer show_timer_for_text_view;
+
 
     public AdapterAzanVP(Context context, ClickListener checkCity) {
         this.context = context;
@@ -63,7 +66,7 @@ public class AdapterAzanVP extends PagerAdapter {
         RecyclerAzanViewHolder recyclerAzanViewHolder = new RecyclerAzanViewHolder(row);
         Timings azan = azanList.get(position);
         convertDateToFormatArabic(azan.getDate_today());
-        Log.d("TAG","Time fagr is :" +azan.getFajr());
+        Log.d("TAG", "Time fagr is :" + azan.getFajr());
         recyclerAzanViewHolder.TVFagr.setText(convertTimeToAM(azan.getFajr().substring(0, 5)));
         recyclerAzanViewHolder.TVSunrise.setText(convertTimeToAM(azan.getSunrise().substring(0, 5)));
         recyclerAzanViewHolder.TVDauhr.setText(convertTimeToAM(azan.getDhuhr().substring(0, 5)));
@@ -91,8 +94,8 @@ public class AdapterAzanVP extends PagerAdapter {
 //            }
 //        },0,1000);
 //        recyclerAzanViewHolder.TVShowTimeFagr.setText( " " + 2* 5 + "\n" + "5 + " + (2  *5)+ "\n" + " 5" + 2* 5);
-      //  recyclerAzanViewHolder.TVShowTimeFagr.setVisibility(View.VISIBLE);
-    //    showTimer(recyclerAzanViewHolder.TVShowTimeFagr, "19:55");
+        //  recyclerAzanViewHolder.TVShowTimeFagr.setVisibility(View.VISIBLE);
+        //    showTimer(recyclerAzanViewHolder.TVShowTimeFagr, "19:55");
         if (convertDate().equals(azan.getDate_today()) && compareTwoTimes(convertTimeToAM(azan.getFajr().substring(0, 5)))) {
             recyclerAzanViewHolder.TVFagr.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
             showTimer(recyclerAzanViewHolder.TVShowTimeFagr, azan.getFajr().substring(0, 5));
@@ -113,6 +116,8 @@ public class AdapterAzanVP extends PagerAdapter {
             showTimer(recyclerAzanViewHolder.TVShowTimeEsha, azan.getIsha().substring(0, 5));
         } else {
         }
+
+        showTimerForTextViewMethod(recyclerAzanViewHolder.TVShowMethod);
         container.addView(row);
         return row;
     }
@@ -132,10 +137,32 @@ public class AdapterAzanVP extends PagerAdapter {
         }.start();
     }
 
+    private void showTimerForTextViewMethod(TextView textView) {
+        show_timer_for_text_view = new CountDownTimer(5000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                textView.setVisibility(View.VISIBLE);
+              //  textView.setText(compareTwoTimess(convertTimeToAM(prayer_times)));
+            }
+
+            @Override
+            public void onFinish() {
+                textView.setVisibility(View.INVISIBLE);
+            }
+        }.start();
+    }
+
     public static void cancelTimer() {
         if (show_timer_every_menutes != null) {
             show_timer_every_menutes.cancel();
             show_timer_every_menutes = null;
+
+        }
+    }
+    public static void cancelTimerForTextView() {
+        if (show_timer_for_text_view != null) {
+            show_timer_for_text_view.cancel();
+            show_timer_for_text_view = null;
 
         }
     }
@@ -186,7 +213,8 @@ public class AdapterAzanVP extends PagerAdapter {
         TextView TVShowTimeMagrib;
         @BindView(R.id.TV_Show_Time_Esha)
         TextView TVShowTimeEsha;
-
+        @BindView(R.id.TV_Show_Method)
+        TextView TVShowMethod;
         public RecyclerAzanViewHolder(@NonNull View itemView) {
             super(itemView);
             this.view = itemView;

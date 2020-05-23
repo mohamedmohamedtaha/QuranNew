@@ -66,7 +66,7 @@ public class NavigationDrawarInteractor implements NavigationDrawarPresenter {
     public void sendUs() {
         Intent intentEmail = new Intent(Intent.ACTION_SEND);
         intentEmail.setData(Uri.parse("mailto:"));
-        intentEmail.setType("message/rfc822");
+        intentEmail.setType("message/rfc2822");
         intentEmail.putExtra(Intent.EXTRA_EMAIL, new String[]{NAME_EMAIL});
         intentEmail.putExtra(Intent.EXTRA_SUBJECT, "Subject");
         intentEmail.putExtra(Intent.EXTRA_TEXT, "Message Body");

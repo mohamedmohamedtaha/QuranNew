@@ -1,13 +1,18 @@
 package com.MohamedTaha.Imagine.New.ui.activities;
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
@@ -20,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
@@ -30,12 +36,19 @@ import com.MohamedTaha.Imagine.New.ShowGuide;
 import com.MohamedTaha.Imagine.New.databinding.ActivityNavigationDrawaberBinding;
 import com.MohamedTaha.Imagine.New.helper.HelperClass;
 import com.MohamedTaha.Imagine.New.helper.SharedPerefrenceHelper;
+import com.MohamedTaha.Imagine.New.helper.checkConnection.NetworkConnection;
+import com.MohamedTaha.Imagine.New.helper.checkConnection.NoInternetConnection;
 import com.MohamedTaha.Imagine.New.informationInrto.TapTargetSequence;
 import com.MohamedTaha.Imagine.New.mvp.interactor.NavigationDrawarInteractor;
+import com.MohamedTaha.Imagine.New.mvp.model.azan.Azan;
+import com.MohamedTaha.Imagine.New.mvp.model.getCity.GetCity;
 import com.MohamedTaha.Imagine.New.mvp.presenter.NavigationDrawarPresenter;
 import com.MohamedTaha.Imagine.New.mvp.view.NavigationDrawarView;
 import com.MohamedTaha.Imagine.New.notification.quran.NotificationHelper;
 import com.MohamedTaha.Imagine.New.receiver.GetPrayerTimesEveryDay;
+import com.MohamedTaha.Imagine.New.rest.APIServices;
+import com.MohamedTaha.Imagine.New.room.DatabaseCallback;
+import com.MohamedTaha.Imagine.New.room.TimingsAppDatabase;
 import com.MohamedTaha.Imagine.New.room.TimingsRepository;
 import com.MohamedTaha.Imagine.New.room.TimingsViewModel;
 import com.MohamedTaha.Imagine.New.ui.fragments.AzanFragment;
@@ -46,23 +59,35 @@ import com.MohamedTaha.Imagine.New.ui.fragments.PartsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.MohamedTaha.Imagine.New.helper.Images.IMAGES;
 import static com.MohamedTaha.Imagine.New.helper.Images.addImagesList;
+import static com.MohamedTaha.Imagine.New.helper.checkConnection.NoInternetConnection.isInternet;
 import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertDate;
 import static com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationHelperPrayerTime.enableBootRecieiver;
+import static com.MohamedTaha.Imagine.New.rest.RetrofitClient.getRetrofit;
+import static com.MohamedTaha.Imagine.New.rest.RetrofitClientCity.getRetrofitForCity;
+import static com.MohamedTaha.Imagine.New.service.MediaPlayerService.BROADCAST_NOT_CONNECTION;
+import static com.MohamedTaha.Imagine.New.service.MediaPlayerService.BROADCAST_NOT_INTERNET;
 import static com.MohamedTaha.Imagine.New.ui.activities.SwipePagesActivity.IS_TRUE;
 import static com.MohamedTaha.Imagine.New.ui.fragments.AzanFragment.COMPARE_METHOD;
+import static com.MohamedTaha.Imagine.New.ui.fragments.AzanFragment.MY_PERMISSIONS_WRITE_STORAGE;
 import static com.MohamedTaha.Imagine.New.ui.fragments.SplashFragment.SAVE_ALL_IMAGES;
 import static com.MohamedTaha.Imagine.New.ui.fragments.SplashFragment.SAVE_PAGE;
 
-public class NavigationDrawaberActivity extends AppCompatActivity implements NavigationDrawarView {
+public class NavigationDrawaberActivity extends AppCompatActivity implements NavigationDrawarView , DatabaseCallback {
     private static final String SAVE_STATE_VIEW_PAGER = "save_state_view_pager";
     public static final String IS_FIRST_TIME_WAY_USING = "way_sueing";
     public static final String FOR_GET_FRAGMENT_AZAN = "fragemnt_azan";
@@ -80,6 +105,11 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     private SharedPreferences sharedPreferences;
     private String repear;
     private String compare_methods = null;
+    APIServices apiServicesForCity;
+    String city_name = null;
+    int geocoderMaxResults = 1;
+    APIServices apiServices;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +117,15 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         activityNavigationDrawaberBinding = ActivityNavigationDrawaberBinding.inflate(getLayoutInflater());
         View view = activityNavigationDrawaberBinding.getRoot();
         setContentView(view);
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        //getString Retrieve a String value from the Preference
+        repear = sharedPreferences.getString(getString(R.string.settings_method_key),
+                getString(R.string.settings_method_default));
+
+
+        apiServicesForCity = getRetrofitForCity().create(APIServices.class);
+        apiServices = getRetrofit().create(APIServices.class);
 
         presenter = new NavigationDrawarInteractor(this);
         appPackageName = getPackageName();
@@ -108,6 +147,8 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
             startActivity(intent);
             overridePendingTransition(R.anim.item_anim_slide_from_top, R.anim.item_anim_no_thing);
         }
+
+
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
         activityNavigationDrawaberBinding.navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         //navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -164,6 +205,10 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                 .subscribe(date_today -> {
                     store_date_today = date_today;
                     Log.i("TAG", "date today from data base : " + store_date_today);
+                    //____________________________ Get prayer times from internet every month
+                    if (store_date_today <= 0) {
+                        isNetworkConnected(this);
+                    }
                     //  Toast.makeText(getActivity(), "date today is " + date_today, Toast.LENGTH_SHORT).show();
                 }, e -> {
                     Toast.makeText(getApplicationContext(), "e : " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -244,7 +289,6 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         NotificationHelper.sendNotificationEveryHalfDay(getApplicationContext());
         NotificationHelper.enableBootRecieiver(getApplicationContext());
 
-//        sendNotificationForPrayerTime(getApplicationContext());
         getPrayerTimesEveryday(getApplicationContext());
         enableBootRecieiver(getApplicationContext());
 
@@ -284,14 +328,6 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
                 setTime.getTimeInMillis() ,AlarmManager.INTERVAL_DAY, alarmPendingIntent);
-
-
-//        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
-//                setTime.getTimeInMillis(),AlarmManager.INTERVAL_FIFTEEN_MINUTES, alarmPendingIntent);
-
-//        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
-//                SystemClock.elapsedRealtime() + setAlarm(repear),
-//                setAlarm(repear), alarmPendingIntent);
     }
 
     @Override
@@ -399,4 +435,142 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 //        adapterForNavigation.addFragment(fragmentSound);
 //        viewPager.setAdapter(adapterForNavigation);
 //    }
+
+    private void isNetworkConnected(Context context) {
+        NoInternetConnection noInternetConnection = new NoInternetConnection();
+        noInternetConnection.execute("http://clients3.google.com/generate_204");
+        boolean isConnected = NetworkConnection.networkConnectivity(this);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (!isConnected) {
+
+                } else {
+                    if (!isInternet()) {
+
+                    } else {
+
+                            TimingsAppDatabase.getInstance(context).DeletePrayerTimes(NavigationDrawaberActivity.this);
+                    }
+                }
+            }
+        }, 1000);
+    }
+
+    @Override
+    public void onPrayerTimesAdded() {
+
+    }
+    private boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.i("TAG", " Granted fisrt");
+                return true;
+            } else {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_PERMISSIONS_WRITE_STORAGE);
+                Log.i("TAG", " not Grnted first ");
+                return false;
+            }
+        } else {
+            //permission is automatically granted on sdk<23 upon installation
+            return true;
+        }
+    }
+    private void getCity(Context context) {
+
+        Log.d("TAG", "getPrayerTimesByCity");
+        Call<GetCity> getCityCall = apiServicesForCity.getCity();
+        getCityCall.enqueue(new Callback<GetCity>() {
+            @Override
+            public void onResponse(Call<GetCity> call, Response<GetCity> response) {
+                GetCity city = response.body();
+                try {
+                    if (city.getStatus().equals("success")) {
+                        Log.d("TAG", city.getCity() + " : " + city.getCountry());
+                        if (city.getCity().equals("Riyadh")){
+
+                        }else if (city.getCity().equals("Riyadh")){
+
+                        }else {
+
+                        }
+                        city_name = getCityNameWithoutLocation(city.getLat(), city.getLon());
+                        Log.d("TAG", "City name in arabic getCity is : " + city_name);
+                        getPrayerTimesByCity(context,city.getCity(), city.getCountry(), Integer.valueOf(repear), city_name);
+                    }
+                } catch (Exception e) {
+                    Log.i("TAG", " Error getCity" + e.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetCity> call, Throwable t) {
+                Log.i("TAG", " onFailure " + t.getMessage());
+            }
+        });
+    }
+    private void getPrayerTimesByCity(Context context,String city, String country, int method, String city_name) {
+        Call<Azan> azanCall = apiServices.getPrayerTimesByCity(city, country, false, method);
+        azanCall.enqueue(new Callback<Azan>() {
+            @Override
+            public void onResponse(Call<Azan> call, Response<Azan> response) {
+                Azan azan = response.body();
+                try {
+                    if (azan.getStatus().equals("OK")) {
+
+                        TimingsAppDatabase.getInstance(context).AddPrayerTimesForMonth(NavigationDrawaberActivity.this, azan, city_name);
+                        }
+                } catch (Exception e) {
+                    Log.i("TAG", " Error getPrayerTimesByCity " + e.getMessage());
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Azan> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private String getCityNameWithoutLocation(double latitude, double longitude) {
+        String cityName = "";
+        Locale locale = new Locale("ar");
+        Geocoder geocoder = new Geocoder(this, locale);
+        try {
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, this.geocoderMaxResults);
+            if (addresses.size() > 0) {
+                for (Address adr : addresses) {
+                    if (adr.getLocality() != null && adr.getLocality().length() > 0) {
+                        cityName = adr.getLocality();
+                        break;
+                    }
+                }
+            }
+            return cityName;
+        } catch (IOException e) {
+        }
+        return null;
+    }
+
+    @Override
+    public void onPrayerTimesDeleted() {
+        if (isStoragePermissionGranted()) {
+            getCity(this);
+
+
+        }
+    }
+
+    @Override
+    public void getDataFromLocationAfterDeleteData() {
+
+    }
+
+    @Override
+    public void onPrayerTimesError() {
+
+    }
+
 }

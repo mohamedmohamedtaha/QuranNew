@@ -196,6 +196,7 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
         builder.setDefaults(Notification.DEFAULT_ALL);//Require VIBREATE permission
         builder.setStyle(new NotificationCompat.BigTextStyle().bigText(desribe));
         builder.setAutoCancel(false);
+        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
         // notificationManager.notify(num, builder.build());
         //Display the notification and place the service in the foreground
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
