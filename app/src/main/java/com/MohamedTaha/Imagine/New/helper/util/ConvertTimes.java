@@ -69,23 +69,11 @@ public class ConvertTimes {
         int mins = (int) (mills / (1000 * 60)) % 60;
         int seconds = (int) ((mills % (1000 * 60 * 60)) % (1000 * 60) / 1000);
 
-//        if (mins < 10){
-//            return " - 0 " +  mins + " " + second;
-        //  secondsString = "0" + seconds;
-
-        //}
         if (mills < -10 || mills == 0) {
             return String.format("%02d", mins);
         } else {
             return String.format("+%02d", mins);
         }
-
-        //compare(hours,mins);
-        //return hours + " : " + mins ;
-        //  String minute = String.format("%02d",mins);
-        //  String secondd = String.format("%02d",seconds);
-        //  Log.d("TAG second", secondd);
-
     }
 
     public static boolean compareTwoTimes(String time_compare_string) {
@@ -105,8 +93,6 @@ public class ConvertTimes {
         long mills = current_time_date_after_editing.getTime() - time_compare_date.getTime();
         int hours = (int) mills / (1000 * 60 * 60);
         int mins = (int) (mills / (1000 * 60)) % 60;
-        //compare(hours,mins);
-        //return hours + " : " + mins;
         return compare(hours, mins);
 
     }
@@ -123,6 +109,17 @@ public class ConvertTimes {
     public static String convertFromMilliSecondsToTime(Long milliSeconds) {
         //Create a DateFormatter object for displaying date in specified format
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm aa");
+//Create a calender object that will convert the date and time value in millisecond to date.
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(milliSeconds);
+        return simpleDateFormat.format(calendar.getTime());
+
+    }
+
+
+    public static String convertMilliSecondsToTime24Hours(Long milliSeconds) {
+        //Create a DateFormatter object for displaying date in specified format
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm");
 //Create a calender object that will convert the date and time value in millisecond to date.
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(milliSeconds);

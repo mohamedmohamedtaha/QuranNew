@@ -223,17 +223,32 @@
 
     <string name="settings_method_muslim_world_league_label">رابطة العالم الإسلامي</string>
     <string name="settings_method_islamic_society_of_north_america_label">الجمعية الإسلامية لأمريكا الشمالية</string>
-    <string name="settings_method_egyptian_general_authority_of_survey_label">الهيئة المصرية العامة للمساحة</string>
-    <string name="settings_method_umm_al_qura_university_makkah_label">جامعة أم القرى بمكة المكرمة</string>
+    <string name="settings_method_egyptian_general_authority_of_survey_label">مصر</string>
+    <string name="settings_method_umm_al_qura_university_makkah_label">جامعة أم القرى (بمكة المكرمة)</string>
     <string name="settings_method_university_of_islamic_sciences_karachi_label">جامعة العلوم الإسلامية ، كراتشي</string>
-    <string name="settings_method_institute_of_geophysics_university_of_tehran_label">معهد الجيوفيزياء ، جامعة طهران</string>
+    <string name="settings_method_institute_of_geophysics_university_of_tehran_label"> جامعة طهران</string>
     <string name="settings_method_gulf_region_label">منطقة الخليج</string>
     <string name="settings_method_kuwait_label">الكويت</string>
     <string name="settings_method_qatar_label">قطر</string>
-    <string name="settings_method_majlis_ugama_islam_singapura_singapore_label">مجلس أوغاما إسلام سينجابورا ، سنغافورة</string>
+    <string name="settings_method_majlis_ugama_islam_singapura_singapore_label">سنغافورة</string>
     <string name="settings_method_union_organization_islamic_de_france_label">منظمة الاتحاد الإسلامي الفرنسي</string>
-    <string name="settings_method_diyanet_işleri_başkanlığı_turkey_label">ديانت اسليري باشانليجي ، تركيا</string>
-    <string name="settings_method_spiritual_administration_of_muslims_of_russia_label">الإدارة الروحية لمسلمي روسيا</string>
+    <string name="settings_method_diyanet_işleri_başkanlığı_turkey_label"> تركيا</string>
+    <string name="settings_method_spiritual_administration_of_muslims_of_russia_label">روسيا</string>
+
+
+<!--    <string name="settings_method_muslim_world_league_label">رابطة العالم الإسلامي</string>-->
+<!--    <string name="settings_method_islamic_society_of_north_america_label">الجمعية الإسلامية لأمريكا الشمالية</string>-->
+<!--    <string name="settings_method_egyptian_general_authority_of_survey_label">الهيئة المصرية العامة للمساحة</string>-->
+<!--    <string name="settings_method_umm_al_qura_university_makkah_label">جامعة أم القرى بمكة المكرمة</string>-->
+<!--    <string name="settings_method_university_of_islamic_sciences_karachi_label">جامعة العلوم الإسلامية ، كراتشي</string>-->
+<!--    <string name="settings_method_institute_of_geophysics_university_of_tehran_label">معهد الجيوفيزياء ، جامعة طهران</string>-->
+<!--    <string name="settings_method_gulf_region_label">منطقة الخليج</string>-->
+<!--    <string name="settings_method_kuwait_label">الكويت</string>-->
+<!--    <string name="settings_method_qatar_label">قطر</string>-->
+<!--    <string name="settings_method_majlis_ugama_islam_singapura_singapore_label">مجلس أوغاما إسلام سينجابورا ، سنغافورة</string>-->
+<!--    <string name="settings_method_union_organization_islamic_de_france_label">منظمة الاتحاد الإسلامي الفرنسي</string>-->
+<!--    <string name="settings_method_diyanet_işleri_başkanlığı_turkey_label">ديانت اسليري باشانليجي ، تركيا</string>-->
+<!--    <string name="settings_method_spiritual_administration_of_muslims_of_russia_label">الإدارة الروحية لمسلمي روسيا</string>-->
 
     <string name="settings_method_muslim_world_league_value">1</string>
     <string name="settings_method_islamic_society_of_north_america_value">2</string>
@@ -305,6 +320,8 @@
     <string name="hide_bottom_view_on_scroll_behavior">com.google.android.material.behavior.HideBottomViewOnScrollBehavior</string>
 
     <string name="is_open_gps">الذهاب لصفحة الإعدادات لفتح تحديد الموقع</string>
+    <string name="get_permission">الذهاب لصفحة الإعدادات لفتح الأذن المطلوب</string>
+
     <string name="is_want_new_data">هل تريد جلب بيانات جديدة بناء على التوقيت الجديد</string>
 
 
@@ -322,6 +339,8 @@
     <string name="save_zkr_done">تم نسخ الذكر</string>
     <string name="search_hint">Search</string>
     <string name="settings_gps">GPS is settings</string>
+    <string name="go_settings">أذهب إلى الإعدادات</string>
+
     <string name="change_method">تم تغيير الدالة الخاصة بالتوقيت </string>
 
     <string name="el_arbaoon_elnawawy">الأربعون النووية</string>
@@ -409,6 +428,6 @@
             عن النبي ﷺ الكثير من الاحاديث وكان شديد الحذر في روايته عن الرسول ﷺ . توفي الصحابي
             الجليل عبد الله بن عمر بن الخطاب (أبو عبد الرحمن) سنة ٧۳ هجريا في مكة ودفن فيها .
 </string>
-    <string name="om_elqora">إذا كان التوقيت غير متوافق مع بلدك يمكنك تغيير التوقيت الحالي من الضبط  \n
-        علماً بأن التوقيت الإفتراضي هو توقيت ام القرى </string>
+    <string name="om_elqora">إذا كانت مواقيت الصلاه غير متوافقة مع بلدك\n يمكنك تغيير التوقيت الحالي من الضبط  \n
+        علماً بأن التوقيت الإفتراضي هو توقيت ام القرى(مكة المكرمة) </string>
 </resources>
