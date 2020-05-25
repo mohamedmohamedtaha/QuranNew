@@ -12,6 +12,8 @@ import com.MohamedTaha.Imagine.New.mvp.model.azan.Timings;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Maybe;
+import io.reactivex.Single;
 
 
 public class TimingsViewModel extends AndroidViewModel {
@@ -32,6 +34,9 @@ public class TimingsViewModel extends AndroidViewModel {
     }
     public Flowable<Integer>getTimingsByDataToday(String date_today){
         return timingsRepository.getTimingsByDataToday(date_today);
+    }
+    public Single<Integer> checkIsDateTodayFind(String date_today){
+        return timingsRepository.checkIsDateTodayFind(date_today);
     }
     public Flowable<String>getCityName(){
         return timingsRepository.getCityName();

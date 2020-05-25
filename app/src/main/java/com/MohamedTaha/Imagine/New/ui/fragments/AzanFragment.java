@@ -171,6 +171,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         fragmentAzanBinding = FragmentAzanBinding.inflate(inflater, container, false);
         View viewBuinding = fragmentAzanBinding.getRoot();
         language_name = Locale.getDefault().getLanguage();
+        getActivity().setTitle(getString(R.string.elslah));
         if (!language_name.equals("ar")) {
             HelperClass.change_language("ar", getActivity());
         }

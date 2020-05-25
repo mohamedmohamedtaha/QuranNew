@@ -12,9 +12,7 @@ public class AlarmBootRecevierPrayerTimeEveryDay extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
-            //only enabling one type of notification
             getPrayerTimesEveryday(context);
-
         }
     }
 }

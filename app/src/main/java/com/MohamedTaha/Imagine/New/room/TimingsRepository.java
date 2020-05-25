@@ -11,6 +11,8 @@ import com.MohamedTaha.Imagine.New.mvp.model.azan.Timings;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Maybe;
+import io.reactivex.Single;
 
 
 public class TimingsRepository {
@@ -18,6 +20,7 @@ public class TimingsRepository {
     private static TimingsDao timingsDao;
     private LiveData<List<Timings>> listLiveData;
     private Flowable<List<Timings>> listLiveDataRxjava;
+    private Single<Integer> row;
 
     TimingsRepository(Application application) {
         TimingsAppDatabase database = TimingsAppDatabase.getInstance(application);
@@ -56,6 +59,17 @@ public class TimingsRepository {
     }
     public   Flowable<Integer>getTimingsByDataToday(String date_today){
         return timingsDao.getTimingsByDataToday(date_today);
+    }
+    public Single<Integer> checkIsDateTodayFind(String date_today){
+        return timingsDao.checkIsDateTodayFind(date_today);
+//        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                row = timingsDao.checkIsDateTodayFind(date_today);;
+//            }
+//        });
+//        return row;
+
     }
     public   Flowable<String>getCityName(){
         return timingsDao.getCityName();

@@ -10,6 +10,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.MohamedTaha.Imagine.New.DatabaseCallbackEveryMonth;
 import com.MohamedTaha.Imagine.New.mvp.model.AzanSource.Data;
 import com.MohamedTaha.Imagine.New.mvp.model.AzanSource.DataTest;
 import com.MohamedTaha.Imagine.New.mvp.model.AzanSource.Date;
@@ -101,6 +102,42 @@ public abstract class TimingsAppDatabase extends RoomDatabase {
                     }
                 });
     }
+    public void AddPrayerTimesEveryMonth(DatabaseCallbackEveryMonth databaseCallbackEveryMonth, Azan azan, String city_name){
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                for (int i = 0; i < azan.getData().size(); i++) {
+                    Timings timingsOne = new Timings();
+                    timingsOne.setFajr(azan.getData().get(i).getTimings().getFajr());
+                    timingsOne.setSunrise(azan.getData().get(i).getTimings().getSunrise());
+                    timingsOne.setDhuhr(azan.getData().get(i).getTimings().getDhuhr());
+                    timingsOne.setAsr(azan.getData().get(i).getTimings().getAsr());
+                    timingsOne.setMaghrib(azan.getData().get(i).getTimings().getMaghrib());
+                    timingsOne.setIsha(azan.getData().get(i).getTimings().getIsha());
+                    timingsOne.setDate_today(azan.getData().get(i).getDate().getGregorian().getDate());
+                    timingsOne.setId_seq(i+1);
+                    timingsOne.setCity(city_name);
+                    timingsDao().insertTimings(timingsOne);
+                    Log.d("TAG","i :"+ i);
+                }
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        databaseCallbackEveryMonth.onPrayerTimesError();
+                    }
+                });
+    }
 
 //    public void AddPrayerTimesForYear(DatabaseCallback databaseCallback, com.MohamedTaha.Imagine.New.mvp.model.AzanSource.Azan azan, String city_name){
 //        Completable.fromAction(new Action() {
@@ -174,6 +211,32 @@ public abstract class TimingsAppDatabase extends RoomDatabase {
                 });
 
     }
+    public void DeletePrayerTimes(DatabaseCallbackEveryMonth databaseCallback){
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                timingsDao().deleteAllTimings();
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        databaseCallback.onPrayerTimesDeleted();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        databaseCallback.onPrayerTimesError();
+                    }
+                });
+
+    }
+
     public void DeletePrayerTimesForGetDataWithLocation(DatabaseCallback databaseCallback){
         Completable.fromAction(new Action() {
             @Override

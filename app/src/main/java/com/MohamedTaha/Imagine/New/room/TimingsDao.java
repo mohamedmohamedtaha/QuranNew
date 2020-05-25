@@ -12,6 +12,8 @@ import com.MohamedTaha.Imagine.New.mvp.model.azan.Timings;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Maybe;
+import io.reactivex.Single;
 
 
 @Dao
@@ -25,6 +27,9 @@ public interface TimingsDao {
 
     @Query("SELECT id_seq FROM prayer_time WHERE date_today = :date_today")
     Flowable<Integer> getTimingsByDataToday(String date_today);
+
+    @Query("SELECT id_seq FROM prayer_time WHERE date_today = :date_today")
+    Single<Integer> checkIsDateTodayFind(String date_today);
 
     @Query("SELECT * FROM prayer_time WHERE date_today = :date_today")
     Flowable<Timings> getPrayerTimesForCurrentDate(String date_today);
