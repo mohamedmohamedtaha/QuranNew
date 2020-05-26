@@ -39,7 +39,7 @@ import static com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationH
 
 public class AlarmReceiverPrayerTime extends BroadcastReceiver {
     private static final String CHANNEL_ID = "com.MohamedTaha.Imagine.Quran.notification.prayer.times";
-    public static final String SEND_TIME_FOR_SEINDING = "time_send";
+   // public static final String SEND_TIME_FOR_SEINDING = "time_send";
     private static final String NOTIFICATION_ID_FOR_PRAYER_TIMES = "notification_id_for_prayer_times";
     public static int num;
     private int notification_id_for_prayer_times;
@@ -65,7 +65,7 @@ public class AlarmReceiverPrayerTime extends BroadcastReceiver {
                             minutes.get(i).getText_notification());
                     intent = new Intent(context, NavigationDrawaberActivity.class);
                     intent.putExtra(NOTIFICATION_ID_FOR_PRAYER_TIMES, notification_id_for_prayer_times);
-                    intent.putExtra(SEND_TIME_FOR_SEINDING, num);
+                    //intent.putExtra(SEND_TIME_FOR_SEINDING, num);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     createNotification(context, context.getString(R.string.app_name), minutes.get(i).getText_notification());
                 } else {
@@ -83,7 +83,7 @@ public class AlarmReceiverPrayerTime extends BroadcastReceiver {
             createChannel(context);
         }
         Intent cancelNotification = new Intent(context, CancelNotificationPrayerTime.class);
-        cancelNotification.putExtra(SEND_TIME_FOR_SEINDING, num);
+   //     cancelNotification.putExtra(SEND_TIME_FOR_SEINDING, num);
         PendingIntent exitPending = PendingIntent.getBroadcast(context, num, cancelNotification, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Bitmap bitmap_icon = BitmapFactory.decodeResource(context.getResources(), R.mipmap.logo);

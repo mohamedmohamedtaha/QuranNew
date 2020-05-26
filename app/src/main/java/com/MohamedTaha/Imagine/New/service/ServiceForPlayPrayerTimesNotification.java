@@ -23,22 +23,27 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
-import com.MohamedTaha.Imagine.New.notification.prayerTimes.mediaPlayer.AudioFocusChange;
-import com.MohamedTaha.Imagine.New.notification.prayerTimes.mediaPlayer.MediaPlayerListener;
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.notification.prayerTimes.CancelNotificationPrayerTime;
+import com.MohamedTaha.Imagine.New.notification.prayerTimes.CancelNotificationWithSwipe;
+import com.MohamedTaha.Imagine.New.notification.prayerTimes.mediaPlayer.AudioFocusChange;
+import com.MohamedTaha.Imagine.New.notification.prayerTimes.mediaPlayer.MediaPlayerListener;
 
 import static com.MohamedTaha.Imagine.New.notification.prayerTimes.Alarm.TEXT_NAME_NOTIFICATION;
+import static com.MohamedTaha.Imagine.New.notification.prayerTimes.Alarm.TIME_NOTIFICATION;
 
 public class ServiceForPlayPrayerTimesNotification extends Service implements MediaPlayer.OnCompletionListener
         , MediaPlayer.OnErrorListener, MediaPlayerListener {
     public static final String SEND_TIME_FOR_SEINDING = "time_send";
+    public static final String SEND_TIME_FOR_SWIPE_NOTIFICATION = "time_send_for_swipe_notification";
+
     private static final String CHANNEL_ID = "com.MohamedTaha.Imagine.Quran.notification.prayer.times";
     public static int num;
     private static final int NOTIFICATION_ID_SERVICE = 11;
     private MediaPlayer mediaPlayer = null;
     private NotificationCompat.Builder builder;
     private AudioFocusChange audioFocusChange;
+    private boolean isPlaying = false;
 
     @Nullable
     @Override
@@ -58,18 +63,21 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
         audioFocusChange = new AudioFocusChange(this, this);
         if (intent != null) {
             Bundle bundle = intent.getExtras();
+            Long prayer_time = bundle.getLong(TIME_NOTIFICATION);
             String name_prayer_time = bundle.getString(TEXT_NAME_NOTIFICATION);
+            Log.d("TAG", "prayer_time is : " + prayer_time + "name_prayer_time is : " + name_prayer_time);
             initMediaPlayer(name_prayer_time);
-
             createNotification(this, getString(R.string.app_name), name_prayer_time);
             if (!mediaPlayer.isPlaying() && !name_prayer_time.equals(getString(R.string.sunrise_string))) {
                 mediaPlayer.start();
+                isPlaying = true;
             }
         } else {
             startForeground(NOTIFICATION_ID_SERVICE, builder.build());
             stopSelf();
         }
-        return super.onStartCommand(intent, flags, startId);
+        //return START_NOT_STICKY;
+          return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
@@ -77,6 +85,8 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
         super.onDestroy();
         releaseMediaPlayer();
         audioFocusChange.onDestroy();
+        Log.d("TAG", "onDestroy");
+
     }
 
     @Override
@@ -98,6 +108,7 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
             mediaPlayer.stop();
             mediaPlayer.release();
             mediaPlayer = null;
+            isPlaying = false;
         }
     }
 
@@ -120,6 +131,7 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
         }
         Intent cancelNotification = new Intent(context, CancelNotificationPrayerTime.class);
         cancelNotification.putExtra(SEND_TIME_FOR_SEINDING, num);
+
         PendingIntent exitPending = PendingIntent.getBroadcast(context, num, cancelNotification, PendingIntent.FLAG_UPDATE_CURRENT);
         Bitmap bitmap_icon = BitmapFactory.decodeResource(context.getResources(), R.mipmap.logo);
         builder.setSmallIcon(R.drawable.ic_notification);
@@ -136,7 +148,8 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
         builder.addAction(R.drawable.ic_close, context.getString(R.string.close), exitPending);
         builder.setDefaults(Notification.DEFAULT_ALL);//Require VIBREATE permission
         builder.setStyle(new NotificationCompat.BigTextStyle().bigText(desribe));
-        builder.setAutoCancel(false);
+        //builder.setAutoCancel(true);
+        //builder.setDeleteIntent(getDeleteIntent());
         builder.setPriority(NotificationCompat.PRIORITY_HIGH);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForeground(NOTIFICATION_ID_SERVICE, builder.build());
@@ -144,6 +157,13 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.notify(NOTIFICATION_ID_SERVICE, builder.build());
         }
+    }
+
+    private PendingIntent getDeleteIntent() {
+        Intent cancelNotificationWithSwipe = new Intent(this, CancelNotificationWithSwipe.class);
+        cancelNotificationWithSwipe.setAction(SEND_TIME_FOR_SWIPE_NOTIFICATION);
+        PendingIntent exitPending = PendingIntent.getBroadcast(this, 0, cancelNotificationWithSwipe, PendingIntent.FLAG_CANCEL_CURRENT);
+        return exitPending;
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -163,9 +183,10 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
     @Override
     public void playMedia() {
         if (mediaPlayer == null) return;
-        if (mediaPlayer != null) {
+        if (mediaPlayer != null && isPlaying) {
             if (!mediaPlayer.isPlaying()) {
                 mediaPlayer.start();
+
             }
             mediaPlayer.setVolume(1.0f, 1.0f);
         }
@@ -173,14 +194,17 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
 
     @Override
     public void stopMedia() {
-        if (mediaPlayer.isPlaying()){
-            stopSelf();
-        }
+        releaseMediaPlayer();
+        // if (mediaPlayer.isPlaying()){
+        //   mediaPlayer.stop();
+
+        // stopSelf();
+        //   }
     }
 
     @Override
     public void slowVolume() {
-        if (mediaPlayer.isPlaying()) mediaPlayer.setVolume(0.1f, 0.1f);
+        if (mediaPlayer.isPlaying() && isPlaying) mediaPlayer.setVolume(0.1f, 0.1f);
     }
 
     @Override

@@ -101,6 +101,14 @@
         <receiver
             android:name=".receiver.GetPrayerTimesEveryMonth" />
         <receiver
+            android:name=".notification.prayerTimes.CancelNotificationWithSwipe"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name= "time_send_for_swipe_notification" />
+
+            </intent-filter>
+        </receiver>
+        <receiver
             android:name=".receiver.AlarmBootRecevierPrayerTimeEveryMonth"
             android:enabled="false">
             <intent-filter>

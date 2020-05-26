@@ -7,7 +7,7 @@ import android.content.Intent;
 
 import com.MohamedTaha.Imagine.New.service.ServiceForPlayPrayerTimesNotification;
 
-import static com.MohamedTaha.Imagine.New.notification.prayerTimes.AlarmReceiverPrayerTime.SEND_TIME_FOR_SEINDING;
+import static com.MohamedTaha.Imagine.New.service.ServiceForPlayPrayerTimesNotification.SEND_TIME_FOR_SEINDING;
 
 /**
  * Created by MANASATT on 04/09/17.

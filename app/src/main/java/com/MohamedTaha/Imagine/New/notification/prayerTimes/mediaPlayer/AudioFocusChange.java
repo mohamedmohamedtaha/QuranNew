@@ -28,7 +28,6 @@ public class AudioFocusChange implements AudioManager.OnAudioFocusChangeListener
                 mediaPlayerListener.slowVolume();
             case AudioManager.AUDIOFOCUS_LOSS:
                 mediaPlayerListener.stopMedia();
-
                 break;
         }
     }

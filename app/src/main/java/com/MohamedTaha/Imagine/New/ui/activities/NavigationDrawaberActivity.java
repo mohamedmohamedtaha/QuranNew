@@ -214,6 +214,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 
                     @Override
                     public void onError(Throwable e) {
+                        Log.i("TAG", "  onError " + e);
                         if (e instanceof EmptyResultSetException) {
                            isNetworkConnected(context);
                         } else {
@@ -224,31 +225,26 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                 }
         );
 
-//        timingsViewModel.getTimingsByDataToday(convertDate()).
-//                subscribeOn(Schedulers.trampoline())
-//                // Add RXAndroid2 for support with Room because still RXjava3 don't support Room
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(date_today -> {
-//                    store_date_today = date_today;
-//                    Log.i("TAG", "date today from data base : " + store_date_today);
-//                    //____________________________ Get prayer times from internet every month
-//                    // if (store_date_today <= 0) {
-//                    getPrayerTimesEveryMonth(getApplicationContext());
-//                    enableBootReceiverEveryMonth(getApplicationContext());
-//                    Log.i("TAG", "store_date_today yes : " + store_date_today);
-//                    //    isNetworkConnected(this);
-//                    //    }
-//                }, e -> {
-//                    Log.i("TAG", "e yes : " + store_date_today);
-//
-//                    Toast.makeText(getApplicationContext(), "e : " + e.getMessage(), Toast.LENGTH_SHORT).show();
-//
-//                });
+        timingsViewModel.getTimingsByDataToday(convertDate()).
+                subscribeOn(Schedulers.trampoline())
+                // Add RXAndroid2 for support with Room because still RXjava3 don't support Room
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(date_today -> {
+                    store_date_today = date_today;
+                    Log.i("TAG", "date today from data base : " + store_date_today);
+                    //____________________________ Get prayer times from internet every month
+                    // if (store_date_today <= 0) {
+                    getPrayerTimesEveryMonth(getApplicationContext());
+                    enableBootReceiverEveryMonth(getApplicationContext());
+                    Log.i("TAG", "store_date_today yes : " + store_date_today);
+                    //    isNetworkConnected(this);
+                    //    }
+                }, e -> {
+                    Log.i("TAG", "e yes : " + store_date_today);
 
-//        if (store_date_today <= 0) {
-//            isNetworkConnected(this);
-//
-//        }
+                    Toast.makeText(getApplicationContext(), "e : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                });
     }
 
     private void getCityName() {
