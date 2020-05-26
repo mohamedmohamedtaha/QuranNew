@@ -148,8 +148,8 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
         builder.addAction(R.drawable.ic_close, context.getString(R.string.close), exitPending);
         builder.setDefaults(Notification.DEFAULT_ALL);//Require VIBREATE permission
         builder.setStyle(new NotificationCompat.BigTextStyle().bigText(desribe));
-        //builder.setAutoCancel(true);
-        //builder.setDeleteIntent(getDeleteIntent());
+       // builder.setAutoCancel(true);
+      //  builder.setDeleteIntent(exitPending);
         builder.setPriority(NotificationCompat.PRIORITY_HIGH);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForeground(NOTIFICATION_ID_SERVICE, builder.build());

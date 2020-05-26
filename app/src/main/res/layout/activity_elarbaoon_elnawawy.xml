@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/style_default_layout_match_parent"
-    tools:context=".ui.activities.ElarbaoonElnawawyActivity">
 
+    tools:context=".ui.activities.ElarbaoonElnawawyActivity">
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/ElarbaoonElnawawyActivity_TB"
         style="@style/style_toolbar" />
@@ -25,9 +25,9 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ElarbaoonElnawawyActivity_RecyclerView"
+        android:layout_centerInParent="true"
         style="@style/style_reycler_view_elnawawy"
         android:layout_below="@+id/ElarbaoonElnawawyActivity_TB"
-        android:layout_gravity="center_horizontal"
         android:clickable="true"
         android:focusable="true"
         android:layoutDirection="ltr" />

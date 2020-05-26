@@ -45,8 +45,8 @@ public class NotificationHelperPrayerTime {
 //                Integer.valueOf("43"), context.getString(R.string.asr_string));
 //        setTimePrayerWithText( Integer.valueOf("18"),
 //                Integer.valueOf("45"), context.getString(R.string.magrib_string));
-//        setTimePrayerWithText( Integer.valueOf("18"),
-//                Integer.valueOf("50"), context.getString(R.string.isha_string));
+//        setTimePrayerWithText( Integer.valueOf("20"),
+//                Integer.valueOf("40"), context.getString(R.string.isha_string));
 
         Alarm alarm = new Alarm(context);
         alarm.setAlarm(ServiceForPlayPrayerTimesNotification.class, listForSavePrayerTimes);

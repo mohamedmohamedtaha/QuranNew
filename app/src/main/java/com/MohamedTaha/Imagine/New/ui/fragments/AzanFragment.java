@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -22,6 +23,9 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -31,6 +35,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -94,6 +99,7 @@ import static com.MohamedTaha.Imagine.New.rest.RetrofitClientCity.getRetrofitFor
 import static com.MohamedTaha.Imagine.New.service.MediaPlayerService.BROADCAST_NOT_CONNECTION;
 import static com.MohamedTaha.Imagine.New.service.MediaPlayerService.BROADCAST_NOT_INTERNET;
 import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.IS_FIRST_TIME_WAY_USING;
+import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.searchView;
 import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.store_city_name;
 import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.store_date_today;
 
@@ -158,6 +164,8 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     private boolean requestingLocationUpdates = true;
     private String compare_methods = null;
     private Bundle bundle;
+    private Menu globalMenu;
+
 
 
     public AzanFragment() {
@@ -175,12 +183,14 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         if (!language_name.equals("ar")) {
             HelperClass.change_language("ar", getActivity());
         }
+        setHasOptionsMenu(true);
+
 //       sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 //       repear = sharedPreferences.getString(getString(R.string.settings_method_key),
 //                getString(R.string.settings_method_default));
 //
 //        compare_methods = SharedPerefrenceHelper.getStringCompareMethod(getActivity(), COMPARE_METHOD, "4");
-
+        //custom_toolbar();
         bundle = getArguments();
         if (bundle != null) {
             int bundle1 = bundle.getInt("bundle");
@@ -195,7 +205,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         registerNoConnection();
         registerNoInternet();
         apiServices = getRetrofit().create(APIServices.class);
-        apiServicesForCity = getRetrofitForCity().create(APIServices.class);
         Log.i("TAG", "onCreateView");
 
 //        getPrayerTimesByCityForYear("Riyadh","Saudi Arabia",4,"Riyadh");
@@ -252,6 +261,22 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         // }
         return viewBuinding;
     }
+
+public void custom_toolbar() {
+   // ((AppCompatActivity)getActivity()).setSupportActionBar(activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivityTB);
+    ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+    //for delete label for Activity
+    ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+}
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        MenuItem SearchItem = menu.findItem(R.id.action_search);
+        SearchItem.setVisible(false);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
 
     private void flowableGetAllPrayerTimingFromDatabase() {
         timingsViewModel = new ViewModelProvider(this).get(TimingsViewModel.class);
@@ -476,8 +501,9 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     }
 
     private void getCity() {
-        disInteractiveUSer();
+//        disInteractiveUSer();
         Log.d("TAG", "getPrayerTimesByCity");
+        apiServicesForCity = getRetrofitForCity().create(APIServices.class);
         Call<GetCity> getCityCall = apiServicesForCity.getCity();
         getCityCall.enqueue(new Callback<GetCity>() {
             @Override

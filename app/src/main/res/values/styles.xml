@@ -89,11 +89,23 @@
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">@dimen/dimens_xsl</item>
     </style>
+    <style name="style_text_view_fragment_azanXL" parent="@style/style_default_layout_wrap_content">
+        <item name="android:layout_marginEnd">@dimen/dimens_xl</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/dimens_xsl</item>
+    </style>
     <style name="style_text_view_fragment_azan_for_city_and_date" parent="@style/style_default_layout_wrap_content">
         <item name="android:layout_marginEnd">@dimen/dimens_xl</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">@dimen/dimens_l</item>
+    </style>
+    <style name="style_text_view_fragment_azan_for_city_and_dateXL" parent="@style/style_default_layout_wrap_content">
+        <item name="android:layout_marginEnd">@dimen/dimens_xl</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/dimens_xsl</item>
     </style>
     <style name="style_text_view_fragment_azan_show_time" parent="@style/style_default_layout_wrap_content">
         <item name="android:layout_marginEnd">@dimen/dimens_6xl</item>
@@ -102,12 +114,27 @@
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">@dimen/dimens_xsl</item>
     </style>
+    <style name="style_text_view_fragment_azan_show_timeXL" parent="@style/style_default_layout_wrap_content">
+        <item name="android:layout_marginEnd">@dimen/dimens_6xl</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/dimens_xl</item>
+    </style>
     <style name="style_text_view_fragment_azan_show_timer" parent="@style/style_default_layout_width_tweny">
         <item name="android:layout_marginEnd">@dimen/dimens_xl</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
        <item name="android:textColor">@color/colorAccent</item>
         <item name="android:textSize">@dimen/dimens_l</item>
+        <item name="android:background">@drawable/background_timer</item>
+    </style>
+    <style name="style_text_view_fragment_azan_show_timerXL" parent="@style/style_default_layout_width_tweny">
+        <item name="android:layout_marginEnd">@dimen/dimens_xl</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">@dimen/dimens_xl</item>
         <item name="android:background">@drawable/background_timer</item>
     </style>
     <style name="style_view_fragment_azan" parent="@style/style_default_layout_height_view">

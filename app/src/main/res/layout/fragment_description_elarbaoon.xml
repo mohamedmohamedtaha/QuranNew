@@ -12,10 +12,10 @@
         android:id="@+id/DescriptionElarbaoonFragment_TabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         app:tabBackground="@drawable/tab_layout_background"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:tabGravity="fill"
+        app:tabMaxWidth="0dp"
         app:tabTextAppearance="@style/CustomTabLAyoutText"
         app:tabMode="fixed"
         app:tabSelectedTextColor="@android:color/black" />
