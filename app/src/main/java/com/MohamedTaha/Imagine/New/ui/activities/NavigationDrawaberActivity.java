@@ -268,6 +268,9 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
             if (id == current_fragment) {
                 return false;
             }
+            if (searchView.isSearchOpen()) {
+                searchView.closeSearch();
+            }
             switch (id) {
                 case R.id.read_quran:
                     //NavigationDrawaberActivityVPager.setCurrentItem(0);
@@ -582,6 +585,8 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                 for (Address adr : addresses) {
                     if (adr.getLocality() != null && adr.getLocality().length() > 0) {
                         cityName = adr.getLocality();
+                        Log.d("TAG" , " cityName : " +  cityName);
+
                         break;
                     }
                 }

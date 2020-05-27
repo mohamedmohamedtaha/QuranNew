@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -73,7 +72,9 @@ public class AdapterAzanVP extends PagerAdapter {
         checkTimeForChangeColorTextView(recyclerAzanViewHolder, azan);
         showPrayerTimeForward(recyclerAzanViewHolder, azan);
         if (!IsFirstTime) {
-            showTimerForTextViewMethod(recyclerAzanViewHolder.TVShowMethod);
+            if (convertDate().equals(azan.getDate_today())) {
+                showTimerForTextViewMethod(recyclerAzanViewHolder.TVShowMethod);
+            }
         }
         container.addView(row);
         return row;
@@ -139,7 +140,7 @@ public class AdapterAzanVP extends PagerAdapter {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         if (convertDate().equals(azan.getDate_today())) {
-              if (calendar.getTimeInMillis() > getTimeMillisSecond(Integer.valueOf(azan.getIsha().substring(0, 2)), Integer.valueOf(azan.getIsha().substring(3, 5)))
+            if (calendar.getTimeInMillis() > getTimeMillisSecond(Integer.valueOf(azan.getIsha().substring(0, 2)), Integer.valueOf(azan.getIsha().substring(3, 5)))
                     && calendar.getTimeInMillis() < getTimeMillisSecond(Integer.valueOf(azan.getFajr().substring(0, 2)), Integer.valueOf(azan.getFajr().substring(3, 5)))) {
                 recyclerAzanViewHolder.TFagr.setTextColor(ContextCompat.getColor(context, R.color.colorOrange));
                 recyclerAzanViewHolder.TVFagr.setTextColor(ContextCompat.getColor(context, R.color.colorOrange));
@@ -164,7 +165,7 @@ public class AdapterAzanVP extends PagerAdapter {
                 recyclerAzanViewHolder.TVEsha.setTextColor(ContextCompat.getColor(context, R.color.colorOrange));
                 recyclerAzanViewHolder.TEsha.setTextColor(ContextCompat.getColor(context, R.color.colorOrange));
             } else {
-              }
+            }
         }
     }
 
@@ -274,6 +275,7 @@ public class AdapterAzanVP extends PagerAdapter {
         TextView TMAgrib;
         @BindView(R.id.T_Esha)
         TextView TEsha;
+
         public RecyclerAzanViewHolder(@NonNull View itemView) {
             super(itemView);
             this.view = itemView;

@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -69,6 +71,7 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
             initMediaPlayer(name_prayer_time);
             createNotification(this, getString(R.string.app_name), name_prayer_time);
             if (!mediaPlayer.isPlaying() && !name_prayer_time.equals(getString(R.string.sunrise_string))) {
+                Log.d("TAG", "mediaPlayer is : ");
                 mediaPlayer.start();
                 isPlaying = true;
             }
@@ -113,14 +116,23 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
     }
 
     private void initMediaPlayer(String name_prayer_time) {
+        Log.d("TAG", "initMediaPlayer");
+
         if (mediaPlayer == null) {
+            AudioManager audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,20,0);
             if (!name_prayer_time.equals(getString(R.string.fagr_string))) {
                 mediaPlayer = MediaPlayer.create(this, R.raw.azan_haram);
+                Log.d("TAG", "azan_haram");
+
             } else {
                 mediaPlayer = MediaPlayer.create(this, R.raw.azan_haram_fajr);
+                Log.d("TAG", "azan_haram_fajr");
+
             }
             mediaPlayer.setOnCompletionListener(this);
             mediaPlayer.setOnErrorListener(this);
+
         }
     }
 
@@ -186,7 +198,6 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
         if (mediaPlayer != null && isPlaying) {
             if (!mediaPlayer.isPlaying()) {
                 mediaPlayer.start();
-
             }
             mediaPlayer.setVolume(1.0f, 1.0f);
         }

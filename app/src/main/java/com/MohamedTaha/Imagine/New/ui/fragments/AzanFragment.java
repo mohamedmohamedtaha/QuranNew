@@ -40,6 +40,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
+import androidx.room.EmptyResultSetException;
 
 import com.MohamedTaha.Imagine.New.Adapter.AdapterAzanVP;
 import com.MohamedTaha.Imagine.New.AppConstants;
@@ -83,23 +84,26 @@ import java.util.List;
 import java.util.Locale;
 
 import io.reactivex.Flowable;
+import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.content.Context.LOCATION_SERVICE;
 import static com.MohamedTaha.Imagine.New.Adapter.AdapterAzanVP.cancelTimer;
 import static com.MohamedTaha.Imagine.New.Adapter.AdapterAzanVP.cancelTimerForTextView;
 import static com.MohamedTaha.Imagine.New.helper.checkConnection.NoInternetConnection.isInternet;
+import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertDate;
+import static com.MohamedTaha.Imagine.New.receiver.GetPrayerTimesEveryMonth.enableBootReceiverEveryMonth;
 import static com.MohamedTaha.Imagine.New.rest.RetrofitClient.getRetrofit;
 import static com.MohamedTaha.Imagine.New.rest.RetrofitClientCity.getRetrofitForCity;
 import static com.MohamedTaha.Imagine.New.service.MediaPlayerService.BROADCAST_NOT_CONNECTION;
 import static com.MohamedTaha.Imagine.New.service.MediaPlayerService.BROADCAST_NOT_INTERNET;
 import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.IS_FIRST_TIME_WAY_USING;
-import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.searchView;
+import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.getPrayerTimesEveryMonth;
 import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.store_city_name;
 import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.store_date_today;
 
@@ -167,7 +171,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     private Menu globalMenu;
 
 
-
     public AzanFragment() {
         // Required empty public constructor
     }
@@ -184,7 +187,8 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
             HelperClass.change_language("ar", getActivity());
         }
         setHasOptionsMenu(true);
-
+        timingsViewModel = new ViewModelProvider(this).get(TimingsViewModel.class);
+     //   getDateTodayFromDatabase(getActivity());
 //       sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 //       repear = sharedPreferences.getString(getString(R.string.settings_method_key),
 //                getString(R.string.settings_method_default));
@@ -214,6 +218,8 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         //  for avoid start show way using
         if (SharedPerefrenceHelper.getBooleanForWayUsing(getActivity(), IS_FIRST_TIME_WAY_USING, false)) {
             Log.d("TAG", "Repear is " + repear);
+            Log.i("TAG", "store_date_today is :" + store_date_today);
+
 //            if ( !compare_methods.equals(repear)) {
 //                showDialogBoxForCompareMethod();
 //            }
@@ -262,13 +268,13 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         return viewBuinding;
     }
 
-public void custom_toolbar() {
-   // ((AppCompatActivity)getActivity()).setSupportActionBar(activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivityTB);
-    ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-    //for delete label for Activity
-    ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
-}
+    public void custom_toolbar() {
+        // ((AppCompatActivity)getActivity()).setSupportActionBar(activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivityTB);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+        //for delete label for Activity
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+    }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -277,9 +283,54 @@ public void custom_toolbar() {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    private void getDateTodayFromDatabase(Context context) {
+        timingsViewModel.checkIsDateTodayFind(convertDate()).
+                subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(
+                new SingleObserver<Integer>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
+                    @Override
+                    public void onSuccess(Integer integer) {
+                        Log.i("TAG", " onSuccess " + integer);
+                        store_date_today = integer;
+                        getPrayerTimesEveryMonth(getActivity());
+                        enableBootReceiverEveryMonth(getActivity());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.i("TAG", "  onError " + e);
+                        if (e instanceof EmptyResultSetException) {
+                            isNetworkConnected();
+                        } else {
+                            Log.i("TAG", "  MonError " + e);
+                        }
+
+                    }
+                }
+        );
+        timingsViewModel.getTimingsByDataToday(convertDate()).
+                subscribeOn(Schedulers.trampoline())
+                // Add RXAndroid2 for support with Room because still RXjava3 don't support Room
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(date_today -> {
+                    store_date_today = date_today;
+                    Log.i("TAG", "date today from data base : " + store_date_today);
+                    //____________________________ Get prayer times from internet every month
+                    // if (store_date_today <= 0) {
+                    getPrayerTimesEveryMonth(getActivity());
+                    enableBootReceiverEveryMonth(getActivity());
+                    Log.i("TAG", "store_date_today yes : " + store_date_today);
+                    //    isNetworkConnected(this);
+                    //    }
+                }, e -> {
+                    Log.i("TAG", "e yes : " + store_date_today);
+               });
+    }
 
     private void flowableGetAllPrayerTimingFromDatabase() {
-        timingsViewModel = new ViewModelProvider(this).get(TimingsViewModel.class);
         Flowable<List<Timings>> flowableGetAllPrayerTimingFromDatabase = timingsViewModel.getAllTimingsRxjava();
         flowableGetAllPrayerTimingFromDatabase.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -358,18 +409,12 @@ public void custom_toolbar() {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case LOCATION_PERMISSION_REQUEST_CODE:
-                save_request_code_back_from_turn_gps = requestCode;
-                Log.i("TAG", "requestCode");
-                locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
-                isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-                if (isGPSEnabled) {
-                    Log.i("TAG", "isGPSEnabled: " + isGPSEnabled);
+                if (checkGPS()) {
                     turnGPS();
+                    Log.i("TAG", "LOCATION_PERMISSION_REQUEST_CODE OK");
                 } else {
-                    disInteractiveUSer();
-                    Log.i("TAG", "isGPSEnabled else :  " + isGPSEnabled);
-                    getCity();
-                    //  /
+                    Log.i("TAG", "LOCATION_PERMISSION_REQUEST_CODE CANCELED");
+                    showTextError();
                 }
                 break;
             case AppConstants.GPS_REQUEST:
@@ -384,13 +429,17 @@ public void custom_toolbar() {
                     default:
                         break;
                 }
+                break;
             case MY_PERMISSIONS_WRITE_STORAGE:
                 if (isStoragePermissionGranted()) {
-                    getCity();
+                    TimingsAppDatabase.getInstance(getActivity()).DeletePrayerTimes(AzanFragment.this);
+                    //  getCity();
                     Log.i("TAG", "MY_PERMISSIONS_WRITE_STORAGE OK");
                 } else {
                     Log.i("TAG", "MY_PERMISSIONS_WRITE_STORAGE CANCELED");
+                    showTextError();
                 }
+                break;
             default:
         }
     }
@@ -510,18 +559,23 @@ public void custom_toolbar() {
             public void onResponse(Call<GetCity> call, Response<GetCity> response) {
                 GetCity city = response.body();
                 try {
-                     if (city.getStatus().equals("success")) {
-                 //   if (city.getStatus().equals("succeccss")) {
+                    if (city.getStatus().equals("success")) {
+                        //   if (city.getStatus().equals("succeccss")) {
 
                         Log.d("TAG", city.getCity() + " : " + city.getCountry());
+                        //city_name = getCityNameTest(city.getLat(), city.getLon());
                         city_name = getCityNameWithoutLocation(city.getLat(), city.getLon());
                         //  getMethodPrefrences("Egypt");
                         Log.d("TAG", "City name in arabic is : " + city_name);
-                        getPrayerTimesByCity(city.getCity(), city.getCountry(), Integer.valueOf(repear), city_name);
+                        if (city_name != null ){
+                            getPrayerTimesByCity(city.getCity(), city.getCountry(), Integer.valueOf(repear), city_name);
+                        }
+                        else {
+                            getPrayerTimesByCity(city.getCity(), city.getCountry(), Integer.valueOf(repear), city.getCity());
+
+                        }
                     } else {
-                        //          fragmentAzanBinding.TVShowError.setVisibility(View.VISIBLE);
-                        //        fragmentAzanBinding.TVShowError.setText(getActivity().getString(R.string.cant));
-                        clearFlagForInteractiveUser();
+                           clearFlagForInteractiveUser();
                         Log.d("TAG", "checkBeforeGetDataFromInternetTest ");
                         if (checkGPS()) {
                             if (bundle == null) {
@@ -591,7 +645,7 @@ public void custom_toolbar() {
 
     private void SnackbarForTextPermission(String title) {
         Snackbar snackbar = Snackbar.make(getView(), title, Snackbar.LENGTH_LONG);
-        snackbar.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
+        // snackbar.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
         snackbar.show();
     }
 
@@ -615,7 +669,6 @@ public void custom_toolbar() {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.i("TAG", " Grnted second");
                     getCity();
-
                     // checkGPS();
                 } else {
                     if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -628,16 +681,13 @@ public void custom_toolbar() {
                     }
                     clearFlagForInteractiveUser();
                 }
-                return;
+                break;
             }
             case LOCATION_PERMISSION_REQUEST_CODE: {
                 // case MY_PERIMISSIONS_LOCATION: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //   getCity();
                     Log.i("TAG", "LOCATION_PERMISSION_REQUEST_CODE turnGPS ");
-
                     turnGPS();
-                    //  turnGPSOn();
                 } else {
                     if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
                         Log.i("TAG", "MY_PERIMISSIONS_LOCATION if");
@@ -649,8 +699,10 @@ public void custom_toolbar() {
                     Log.i("TAG", "Not Graunted Location");
                     clearFlagForInteractiveUser();
                 }
-                return;
+                break;
             }
+            default:
+                break;
         }
     }
 
@@ -722,19 +774,19 @@ public void custom_toolbar() {
     }
 
     public void openSettingsIfUserDenyNeverPermissionForStorage() {
-        customForOpenSettings(MY_PERMISSIONS_WRITE_STORAGE);
+        customForOpenSettings(MY_PERMISSIONS_WRITE_STORAGE, R.string.get_permission_storage);
     }
 
     public void openSettingsIfUserDenyNeverPermissionForLocation() {
-        customForOpenSettings(LOCATION_PERMISSION_REQUEST_CODE);
+        customForOpenSettings(LOCATION_PERMISSION_REQUEST_CODE, R.string.get_permission_location);
     }
 
-    private void customForOpenSettings(int type_permission) {
+    private void customForOpenSettings(int type_permission, int text_permision) {
         if (getActivity() != null) {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
             alertDialog.setTitle(R.string.go_settings);
             alertDialog.setCancelable(false);
-            alertDialog.setMessage(R.string.get_permission);
+            alertDialog.setMessage(text_permision);
             alertDialog.setPositiveButton(R.string.settings, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -787,7 +839,6 @@ public void custom_toolbar() {
             alertDialog.setPositiveButton(R.string.textYes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    //     isRefresh = true;
                     isNetworkConnected();
                 }
             });
@@ -884,10 +935,9 @@ public void custom_toolbar() {
                     location_user = location;
                     updateGPSCoordinates();
                     Log.i("TAG", "location_user : " + getLatitude() + " : " + getLongitude());
-                    city_name = getCityName(location, getLatitude(), getLongitude());
+                    city_name = getCityName(location);
                     Log.i("TAG", ":City name is :" + city_name);
                     // if (!store_city_name.equals(null) && store_city_name.equals(city_name)) {
-
                     if (store_city_name != null && store_city_name.equals(city_name)) {
                         Snackbar.make(getView(), "بالفعل انت في مدينة " + city_name, Snackbar.LENGTH_LONG).show();
                         clearFlagForInteractiveUser();
@@ -945,9 +995,6 @@ public void custom_toolbar() {
             if (!compare_methods.equals(repear)) {
                 showDialogBoxForCompareMethod();
             }
-//            if (store_date_today <= 0) {
-//                isNetworkConnected();
-//            }
         }
     }
 
@@ -976,7 +1023,7 @@ public void custom_toolbar() {
         }
     }
 
-    public String getCityName(Location location, double latitude, double longitude) {
+    public String getCityName(Location location) {
         String cityName = "";
         if (location != null) {
             Locale locale = new Locale("ar");
@@ -984,7 +1031,7 @@ public void custom_toolbar() {
             // Geocoder geocoder = new Geocoder(getActivity(), Locale.ENGLISH);
             Geocoder geocoder = new Geocoder(getActivity(), locale);
             try {
-                List<Address> addresses = geocoder.getFromLocation(latitude, longitude, this.geocoderMaxResults);
+                List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), this.geocoderMaxResults);
                 if (addresses.size() > 0) {
                     for (Address adr : addresses) {
                         if (adr.getLocality() != null && adr.getLocality().length() > 0) {
@@ -1011,11 +1058,29 @@ public void custom_toolbar() {
                 for (Address adr : addresses) {
                     if (adr.getLocality() != null && adr.getLocality().length() > 0) {
                         cityName = adr.getLocality();
+                        Log.d("TAG" , " cityName : " +  cityName);
+
                         break;
                     }
                 }
             }
             return cityName;
+        } catch (IOException e) {
+            Log.d("TAG" , " getCityNameWithoutLocation : " +  e.getMessage());
+        }
+        return null;
+    }
+    private String getCityNameTest(double latitude, double longitude) {
+        try {
+        Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+        List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+        String cityName = addresses.get(0).getAddressLine(0);
+        String stateName = addresses.get(0).getAddressLine(1);
+        String countryName = addresses.get(0).getAddressLine(2);
+            Log.d("TAG", "City name" +  cityName + " : " + stateName +" : " +  countryName);
+
+            return cityName + " : " + stateName +" : " +  countryName;
+
         } catch (IOException e) {
         }
         return null;

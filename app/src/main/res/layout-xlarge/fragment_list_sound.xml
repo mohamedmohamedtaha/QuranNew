@@ -95,28 +95,28 @@
                         android:gravity="center_horizontal"
                         android:orientation="horizontal">
 
-                        <Button
+                        <ImageButton
                             android:id="@+id/btnPrevious"
                             style="@style/style_button_details_sound_activity"
                             android:background="@drawable/ic_previous" />
 
-                        <Button
+                        <ImageButton
                             android:id="@+id/btnPlay"
                             style="@style/style_button_details_sound_activity"
                             android:background="@drawable/ic_play"
                             android:visibility="gone" />
 
-                        <Button
+                        <ImageButton
                             android:id="@+id/btnPause"
                             style="@style/style_button_details_sound_activity"
                             android:background="@drawable/ic_pause" />
 
-                        <Button
+                        <ImageButton
                             android:id="@+id/btnNext"
                             style="@style/style_button_details_sound_activity"
                             android:background="@drawable/ic_next" />
 
-                        <Button
+                        <ImageButton
                             android:id="@+id/btnStop"
                             style="@style/style_stop_button_details_sound_activity"
                             android:background="@drawable/ic_close"
