@@ -29,6 +29,7 @@ import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.Toast;
@@ -210,6 +211,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // MediaButtonReceiver.handleIntent(mediaSession, intent);
+        Log.d("TAG", "onStartCommand Media Player");
 
         //for start service when don't find the internet and don't throw Exception.
         //you only need to create  the cnannel on API 26+ devices
@@ -974,7 +976,9 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         notificationChannel.setShowBadge(false);
         //For mute sound
         notificationChannel.setSound(null, null);
-        notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+       // notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+        notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+
         manager.createNotificationChannel(notificationChannel);
     }
 }

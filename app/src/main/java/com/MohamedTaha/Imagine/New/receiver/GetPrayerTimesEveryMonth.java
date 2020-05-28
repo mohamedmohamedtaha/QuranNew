@@ -78,6 +78,8 @@ public class GetPrayerTimesEveryMonth extends BroadcastReceiver implements Datab
                     if (!isInternet()) {
 
                     } else {
+
+                        Log.i("TAG", "DeletePrayerTimes");
                         TimingsAppDatabase.getInstance(context).DeletePrayerTimes(GetPrayerTimesEveryMonth.this);
                     }
                 }

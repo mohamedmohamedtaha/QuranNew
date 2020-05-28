@@ -54,7 +54,8 @@ public class Alarm {
        //     }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 alarmManager[i].setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
-            }else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            }
+            else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 alarmManager[i].setExact(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
             } else {
                 alarmManager[i].set(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);

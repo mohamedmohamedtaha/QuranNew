@@ -13,6 +13,7 @@ import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -81,6 +82,7 @@ import static com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationH
 import static com.MohamedTaha.Imagine.New.receiver.GetPrayerTimesEveryMonth.enableBootReceiverEveryMonth;
 import static com.MohamedTaha.Imagine.New.rest.RetrofitClient.getRetrofit;
 import static com.MohamedTaha.Imagine.New.rest.RetrofitClientCity.getRetrofitForCity;
+import static com.MohamedTaha.Imagine.New.room.TimingsViewModel.store_date_today;
 import static com.MohamedTaha.Imagine.New.ui.activities.SwipePagesActivity.IS_TRUE;
 import static com.MohamedTaha.Imagine.New.ui.fragments.AzanFragment.COMPARE_METHOD;
 import static com.MohamedTaha.Imagine.New.ui.fragments.SplashFragment.SAVE_ALL_IMAGES;
@@ -100,7 +102,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     MenuItem prevMenuItem;
     TapTargetSequence sequence;
     private TimingsViewModel timingsViewModel;
-    public static int store_date_today = 0;
+    //public static int store_date_today = 0;
     public static String store_city_name = null;
     private SharedPreferences sharedPreferences;
     private String repear;
@@ -131,6 +133,12 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         appPackageName = getPackageName();
 
         timingsViewModel = new ViewModelProvider(this).get(TimingsViewModel.class);
+        if (timingsViewModel.isNewlyCreated && savedInstanceState != null){
+            timingsViewModel.restoreState(savedInstanceState);
+            Log.i("TAG", " onSuccess timingsViewModel navigation " + store_date_today);
+        }
+        timingsViewModel.isNewlyCreated = false;
+
         getDateTodayFromDatabase(this);
         getCityName();
         //for show way using
@@ -208,6 +216,9 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                     public void onSuccess(Integer integer) {
                         Log.i("TAG", " onSuccess " + integer);
                         store_date_today = integer;
+                        Log.i("TAG", " timingsViewModel.store_date_today onSuccess" + store_date_today);
+
+                 //       store_date_today = integer;
                         getPrayerTimesEveryMonth(getApplicationContext());
                         enableBootReceiverEveryMonth(getApplicationContext());
                     }
@@ -230,17 +241,19 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                 // Add RXAndroid2 for support with Room because still RXjava3 don't support Room
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(date_today -> {
+                   // store_date_today = date_today;
                     store_date_today = date_today;
-                    Log.i("TAG", "date today from data base : " + store_date_today);
+
+                   // Log.i("TAG", "date today from data base : " + store_date_today);
                     //____________________________ Get prayer times from internet every month
                     // if (store_date_today <= 0) {
                     getPrayerTimesEveryMonth(getApplicationContext());
                     enableBootReceiverEveryMonth(getApplicationContext());
-                    Log.i("TAG", "store_date_today yes : " + store_date_today);
+                   // Log.i("TAG", "store_date_today yes : " + store_date_today);
                     //    isNetworkConnected(this);
                     //    }
                 }, e -> {
-                    Log.i("TAG", "e yes : " + store_date_today);
+                   // Log.i("TAG", "e yes : " + store_date_today);
 
                     Toast.makeText(getApplicationContext(), "e : " + e.getMessage(), Toast.LENGTH_SHORT).show();
 
@@ -368,7 +381,8 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         PendingIntent alarmPendingIntent;
         Intent intent = new Intent(context, GetPrayerTimesEveryMonth.class);
         intent.putExtra(CHECKISDATAORNOTINDATABASE, store_date_today);
-        Log.d("TAG", "getPrayerTimesEveryMonth ");
+        //intent.putExtra(CHECKISDATAORNOTINDATABASE, store_date_today);
+        Log.d("TAG", "getPrayerTimesEveryMonth " + store_date_today);
         alarmPendingIntent = PendingIntent.getBroadcast(context, ALARM_TYPE_ELAPSED, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Calendar setTime = Calendar.getInstance();
         setTime.setTimeInMillis(System.currentTimeMillis());
@@ -452,6 +466,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(SAVE_STATE_VIEW_PAGER, current_fragment);
+        timingsViewModel.saveState(outState);
         Log.d("TAG", "Current fragment is :" + current_fragment);
 
 
@@ -498,7 +513,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                     if (!isInternet()) {
 
                     } else {
-                        Log.d("TAG", "TimingsAppDatabase");
+                        Log.d("TAG", "TimingsAppDatabase DeletePrayerTimes first");
                         TimingsAppDatabase.getInstance(context).DeletePrayerTimes(NavigationDrawaberActivity.this);
                     }
                 }

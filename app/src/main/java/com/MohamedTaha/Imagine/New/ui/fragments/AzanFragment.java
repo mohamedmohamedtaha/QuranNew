@@ -36,6 +36,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -100,12 +101,12 @@ import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertDate;
 import static com.MohamedTaha.Imagine.New.receiver.GetPrayerTimesEveryMonth.enableBootReceiverEveryMonth;
 import static com.MohamedTaha.Imagine.New.rest.RetrofitClient.getRetrofit;
 import static com.MohamedTaha.Imagine.New.rest.RetrofitClientCity.getRetrofitForCity;
+import static com.MohamedTaha.Imagine.New.room.TimingsViewModel.store_date_today;
 import static com.MohamedTaha.Imagine.New.service.MediaPlayerService.BROADCAST_NOT_CONNECTION;
 import static com.MohamedTaha.Imagine.New.service.MediaPlayerService.BROADCAST_NOT_INTERNET;
 import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.IS_FIRST_TIME_WAY_USING;
 import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.getPrayerTimesEveryMonth;
 import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.store_city_name;
-import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.store_date_today;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -188,13 +189,14 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         }
         setHasOptionsMenu(true);
         timingsViewModel = new ViewModelProvider(this).get(TimingsViewModel.class);
-     //   getDateTodayFromDatabase(getActivity());
-//       sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-//       repear = sharedPreferences.getString(getString(R.string.settings_method_key),
-//                getString(R.string.settings_method_default));
-//
-//        compare_methods = SharedPerefrenceHelper.getStringCompareMethod(getActivity(), COMPARE_METHOD, "4");
-        //custom_toolbar();
+
+        if (timingsViewModel.isNewlyCreated && savedInstanceState != null){
+            timingsViewModel.restoreState(savedInstanceState);
+            Log.i("TAG", " onSuccess timingsViewModel " + store_date_today);
+        }
+        timingsViewModel.isNewlyCreated = false;
+        getDateTodayFromDatabase(getActivity());
+
         bundle = getArguments();
         if (bundle != null) {
             int bundle1 = bundle.getInt("bundle");
@@ -218,12 +220,12 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         //  for avoid start show way using
         if (SharedPerefrenceHelper.getBooleanForWayUsing(getActivity(), IS_FIRST_TIME_WAY_USING, false)) {
             Log.d("TAG", "Repear is " + repear);
-            Log.i("TAG", "store_date_today is :" + store_date_today);
-
-//            if ( !compare_methods.equals(repear)) {
-//                showDialogBoxForCompareMethod();
+           // Log.i("TAG", "store_date_today is :" + store_date_today + " : " + timingsViewModel.store_date_today);
+//            if (store_date_today <= 0) {
+//                isNetworkConnected();
 //            }
             if (store_date_today <= 0) {
+                Log.i("TAG", "timingsViewModel.store_date_today if" + store_date_today);
                 isNetworkConnected();
             }
         }
@@ -295,6 +297,9 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                     public void onSuccess(Integer integer) {
                         Log.i("TAG", " onSuccess " + integer);
                         store_date_today = integer;
+                        Log.i("TAG", " timingsViewModel.store_date_today " + store_date_today);
+
+                        //store_date_today = integer;
                         getPrayerTimesEveryMonth(getActivity());
                         enableBootReceiverEveryMonth(getActivity());
                     }
@@ -316,18 +321,27 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                 // Add RXAndroid2 for support with Room because still RXjava3 don't support Room
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(date_today -> {
+                 //   store_date_today = date_today;
                     store_date_today = date_today;
-                    Log.i("TAG", "date today from data base : " + store_date_today);
+                 //   Log.i("TAG", "date today from data base : " + store_date_today);
                     //____________________________ Get prayer times from internet every month
                     // if (store_date_today <= 0) {
                     getPrayerTimesEveryMonth(getActivity());
                     enableBootReceiverEveryMonth(getActivity());
-                    Log.i("TAG", "store_date_today yes : " + store_date_today);
+                   // Log.i("TAG", "store_date_today yes : " + store_date_today);
                     //    isNetworkConnected(this);
                     //    }
                 }, e -> {
-                    Log.i("TAG", "e yes : " + store_date_today);
+                  //  Log.i("TAG", "e yes : " + store_date_today);
                });
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (outState != null){
+            timingsViewModel.saveState(outState);
+        }
     }
 
     private void flowableGetAllPrayerTimingFromDatabase() {
@@ -337,7 +351,8 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                 .subscribe(all_Data -> {
                     getAllData = all_Data;
                     Log.i("TAG", "Navigation Drawaber : " + store_date_today);
-                    if (store_date_today > 0) {
+                    if (store_date_today >0){
+                    //if (store_date_today > 0) {
                         if (getAllData == null && getAllData.size() <= 0) {
                             //The data is null
                             fragmentAzanBinding.TVShowError.setVisibility(View.VISIBLE);
@@ -351,7 +366,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                             AdapterAzanVP adapterAzan = new AdapterAzanVP(getActivity(), new AdapterAzanVP.ClickListener() {
                                 @Override
                                 public void CheckCity() {
-
                                     isRefresh = true;
                                     isNetworkConnected();
                                 }
@@ -359,6 +373,9 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                             adapterAzan.setAzanList(getAllData);
                             fragmentAzanBinding.AzanFragmentVP.setAdapter(adapterAzan);
                             fragmentAzanBinding.AzanFragmentVP.setCurrentItem(store_date_today - 1);
+                            Log.i("TAG", "setCurrentItem " + store_date_today);
+
+                            // fragmentAzanBinding.AzanFragmentVP.setCurrentItem(store_date_today - 1);
                             clearFlagForInteractiveUser();
                             Log.i("TAG", "all data " + getAllData.size());
                         }
@@ -431,6 +448,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                 }
                 break;
             case MY_PERMISSIONS_WRITE_STORAGE:
+                Log.i("TAG", "MY_PERMISSIONS_WRITE_STORAGE");
                 if (isStoragePermissionGranted()) {
                     TimingsAppDatabase.getInstance(getActivity()).DeletePrayerTimes(AzanFragment.this);
                     //  getCity();
@@ -477,7 +495,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
             }
         });
     }
-
 
     private void getPrayerTimesByCityForYear(String city, String country, int method, String city_name) {
         Call<com.MohamedTaha.Imagine.New.mvp.model.AzanSource.Azan> azanCall = apiServices.getPrayerTimesByCityForYear(city, country, true, method);
@@ -608,6 +625,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     }
 
     private boolean isStoragePermissionGranted() {
+        Log.i("TAG", " isStoragePermissionGranted");
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -636,6 +654,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                 .setAction(text_button, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Log.i("TAG", "isStoragePermissionGranted third");
                         isStoragePermissionGranted();
                     }
                 });
@@ -665,31 +684,30 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
-            case MY_PERMISSIONS_WRITE_STORAGE: {
+            case MY_PERMISSIONS_WRITE_STORAGE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.i("TAG", " Grnted second");
                     getCity();
                     // checkGPS();
-                } else {
+                }
+                else {
                     if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                         Log.i("TAG", "MY_PERMISSIONS_WRITE_STORAGE if");
                         SnackbarPermissionStorage(getString(R.string.grand_permission), getString(R.string.allow));
                     } else {
                         openSettingsIfUserDenyNeverPermissionForStorage();
                         Log.i("TAG", "MY_PERMISSIONS_WRITE_STORAGE else");
-
                     }
                     clearFlagForInteractiveUser();
                 }
                 break;
-            }
-            case LOCATION_PERMISSION_REQUEST_CODE: {
+            case LOCATION_PERMISSION_REQUEST_CODE:
                 // case MY_PERIMISSIONS_LOCATION: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.i("TAG", "LOCATION_PERMISSION_REQUEST_CODE turnGPS ");
                     turnGPS();
                 } else {
-                    if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),Manifest.permission.ACCESS_FINE_LOCATION)) {
                         Log.i("TAG", "MY_PERIMISSIONS_LOCATION if");
                         SnackbarPermissionLocation(getString(R.string.grand_permission), getString(R.string.allow));
                     } else {
@@ -698,7 +716,15 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                     }
                     Log.i("TAG", "Not Graunted Location");
                     clearFlagForInteractiveUser();
-                }
+//                    if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+//                        Log.i("TAG", "MY_PERIMISSIONS_LOCATION if");
+//                        SnackbarPermissionLocation(getString(R.string.grand_permission), getString(R.string.allow));
+//                    } else {
+//                        openSettingsIfUserDenyNeverPermissionForLocation();
+//                        Log.i("TAG", "MY_PERIMISSIONS_LOCATION else");
+//                    }
+//                    Log.i("TAG", "Not Graunted Location");
+//                    clearFlagForInteractiveUser();
                 break;
             }
             default:
@@ -1144,6 +1170,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                         if (isRefresh) {
                             checkBeforeGetDataFromInternetTest();
                         } else {
+                            Log.d("TAG", "TimingsAppDatabase DeletePrayerTimes second");
                             TimingsAppDatabase.getInstance(getActivity()).DeletePrayerTimes(AzanFragment.this);
                             Log.d("TAG", "City name is from store_city_name" + store_city_name);
                         }

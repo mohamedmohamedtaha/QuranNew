@@ -7,6 +7,7 @@ import android.content.Intent;
 
 import com.MohamedTaha.Imagine.New.service.ServiceForPlayPrayerTimesNotification;
 
+import static com.MohamedTaha.Imagine.New.service.ServiceForPlayPrayerTimesNotification.ACTION_STOP_NOTIFICATION;
 import static com.MohamedTaha.Imagine.New.service.ServiceForPlayPrayerTimesNotification.SEND_TIME_FOR_SEINDING;
 
 /**
@@ -18,9 +19,10 @@ public class CancelNotificationPrayerTime extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        if (intent.getAction().equals(ACTION_STOP_NOTIFICATION)){
         send_time = intent.getIntExtra(SEND_TIME_FOR_SEINDING, -1);
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(send_time);
         context.stopService(new Intent(context, ServiceForPlayPrayerTimesNotification.class));
-    }
+    }}
 }

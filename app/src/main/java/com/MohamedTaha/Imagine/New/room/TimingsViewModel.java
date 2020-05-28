@@ -2,6 +2,7 @@ package com.MohamedTaha.Imagine.New.room;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -17,11 +18,13 @@ import io.reactivex.Single;
 
 
 public class TimingsViewModel extends AndroidViewModel {
+    public static final String SAVE_INSTANCE_DATE_TODAY= "save_instance_date_today";
     private TimingsRepository timingsRepository;
     private LiveData<List<Timings>> getAllTimings;
     private Flowable<List<Timings>> getAllTimingsRxjava;
     private Context context;
-
+    public static int store_date_today = 0;
+    public boolean isNewlyCreated = true ;
     public TimingsViewModel(@NonNull Application application) {
         super(application);
         timingsRepository = TimingsRepository.getInstance(application);
@@ -52,5 +55,13 @@ public class TimingsViewModel extends AndroidViewModel {
     }
     public void deleteAll(Timings timings){
         timingsRepository.deleteAll();
+    }
+
+    public void saveState(Bundle outState) {
+
+        outState.putInt(SAVE_INSTANCE_DATE_TODAY,store_date_today);
+    }
+    public void restoreState(Bundle outState) {
+        store_date_today = outState.getInt(SAVE_INSTANCE_DATE_TODAY);
     }
 }

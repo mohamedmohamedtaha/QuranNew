@@ -79,8 +79,8 @@ public class Timings {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id_prayer_time")
     private int id;
-    private int id_seq;
 
+    private int id_seq;
     public int getId_seq() {
         return id_seq;
     }
