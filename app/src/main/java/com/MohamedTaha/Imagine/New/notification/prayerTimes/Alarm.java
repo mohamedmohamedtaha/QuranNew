@@ -66,15 +66,17 @@ public class Alarm {
         }
     }
 
-    public void cancelAlarm( List<ModelMessageNotification> listForSavePrayerTimes) {
+    public void cancelAlarm( List<ModelMessageNotification> listForSavePrayerTimes,String name_prayer_time) {
         AlarmManager alarmManager[] = new AlarmManager[listForSavePrayerTimes.size()];
         Intent intent[] = new Intent[listForSavePrayerTimes.size()];
         for (int i = 0; i < listForSavePrayerTimes.size(); i++) {
-            alarmManager[i] = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+          //  if (listForSavePrayerTimes.get(i).getText_notification().equals(name_prayer_time)){
+                alarmManager[i] = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             intent[i] = new Intent(context, ServiceForPlayPrayerTimesNotification.class);
             PendingIntent pendingIntent = PendingIntent.getService(context, i, intent[i], 0);
-            alarmManager[i].cancel(pendingIntent);
-            Log.d("TAG", " cancelAlarm " );
+                alarmManager[i].cancel(pendingIntent);
+                Log.d("TAG", " cancelAlarm " );
+          //  }
 
         }
     }

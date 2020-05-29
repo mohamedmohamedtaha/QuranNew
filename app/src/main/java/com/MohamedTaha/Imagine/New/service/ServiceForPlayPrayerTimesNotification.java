@@ -110,7 +110,8 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
                 stopSelf();
             }
         }
-        handleIncomingActions(intent);
+        num = (int) System.currentTimeMillis();
+        //handleIncomingActions(intent);
         if (intent != null) {
             bundle = intent.getExtras();
             prayer_time = bundle.getLong(TIME_NOTIFICATION);
@@ -153,6 +154,8 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
         releaseMediaPlayer();
+        audioFocusChange.onDestroy();
+
         Log.d("TAG", "onError");
         return false;
     }
@@ -185,6 +188,9 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
             mediaPlayer.setOnCompletionListener(this);
             mediaPlayer.setOnErrorListener(this);
 
+        }else {
+            Log.d("TAG", "initMediaPlayer not null");
+
         }
     }
 
@@ -194,8 +200,11 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
             createChannelForNotifiction();
         }
         Intent cancelNotification = new Intent(context, CancelNotificationPrayerTime.class);
-        cancelNotification.putExtra(SEND_TIME_FOR_SEINDING, num);
         cancelNotification.setAction(ACTION_STOP_NOTIFICATION);
+        cancelNotification.putExtra(SEND_TIME_FOR_SEINDING, num);
+      //  cancelNotification.putExtra(TEXT_NAME_NOTIFICATION,new Gson().toJson(prayer_time));
+
+        cancelNotification.putExtra(TEXT_NAME_NOTIFICATION,name_prayer_time);
         cancelNotification.putExtra(LIST_TIME__NOTIFICATION, new Gson().toJson(listForSavePrayerTimes));
 
         PendingIntent exitPending = PendingIntent.getBroadcast(context, num, cancelNotification, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -303,18 +312,23 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
 
     @Override
     public void playMedia() {
-        if (mediaPlayer == null) return;
-        if (mediaPlayer != null && isPlaying) {
-            if (!mediaPlayer.isPlaying()) {
-                mediaPlayer.start();
-            }
-            mediaPlayer.setVolume(1.0f, 1.0f);
-        }
+
+//        if (mediaPlayer == null) return;
+//        if (mediaPlayer != null && isPlaying) {
+//            if (!mediaPlayer.isPlaying()) {
+//                mediaPlayer.start();
+//            }
+//            mediaPlayer.setVolume(1.0f, 1.0f);
+//        }
+
     }
 
     @Override
     public void stopMedia() {
+        Log.d("TAG", "stopMedia");
         releaseMediaPlayer();
+        audioFocusChange.onDestroy();
+
         // if (mediaPlayer.isPlaying()){
         //   mediaPlayer.stop();
 
@@ -329,6 +343,8 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
 
     @Override
     public void stopService() {
+        Log.d("TAG", "stopService");
+
         stopSelf();
     }
 }
