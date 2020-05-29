@@ -73,10 +73,26 @@ public class RecycleViewReaderAdapter extends RecyclerView.Adapter<RecycleViewRe
         } else {
             holder.text_title.setTextColor(context.getResources().getColor(android.R.color.black));
             viewHolder.IVDownload.setVisibility(View.VISIBLE);
-
-
         }
         holder.text_title.setText(data.getName_sora());
+
+//        holder.IVDownload.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (data != null ){
+//                    holder.IVDownload.setVisibility(View.INVISIBLE);
+//                    Toast.makeText(context, "id is  : " + data, Toast.LENGTH_SHORT).show();
+//                    Log.d("TAG" , "id is  : " + holder.getAdapterPosition());
+//                }else {
+//                    Toast.makeText(context, "id is not : " +data, Toast.LENGTH_SHORT).show();
+//
+//                    Log.d("TAG" , "id is not : " + holder.getAdapterPosition());
+//
+//                }
+//
+//
+//            }
+//        });
     }
 
 
@@ -102,8 +118,6 @@ public class RecycleViewReaderAdapter extends RecyclerView.Adapter<RecycleViewRe
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     if (downloadMusic != null) downloadMusic.download(position);
-
-
                 }
             });
         }

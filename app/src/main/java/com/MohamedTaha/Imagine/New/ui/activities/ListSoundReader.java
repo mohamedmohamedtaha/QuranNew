@@ -20,6 +20,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,6 +30,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -61,6 +63,7 @@ import com.MohamedTaha.Imagine.New.viewmodel.SoundViewHolder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -378,6 +381,7 @@ public class ListSoundReader extends AppCompatActivity {
                                                           music_uri = Uri.parse(urlLink);
                                                           Music_DownloadId = DownloadData(music_uri, name_sora);
                                                           dialog.dismiss();
+
                                                       }
                                                   });
                                                   noButton.setOnClickListener(new View.OnClickListener() {
@@ -620,45 +624,73 @@ public class ListSoundReader extends AppCompatActivity {
                     downloadSora();
                 } else {
                     if (shouldShowRequestPermissionRationale(permissions[0])) {
-                        new AlertDialog.Builder(this)
-                                .setMessage(getString(R.string.something_error))
-                                .setPositiveButton(getString(R.string.allow), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        checkPermistion();
-                                    }
-                                })
-                                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                }).create().show();
+                        SnackbarPermissionStorage(getString(R.string.grand_permission), getString(R.string.allow));
                     } else {
-                        new AlertDialog.Builder(this)
-                                .setTitle(getString(R.string.error))
-                                .setMessage(getString(R.string.grand_permission))
-                                .setPositiveButton(getString(R.string.settings), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent intent = new Intent();
-                                        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                        Uri uri = Uri.fromParts(getString(R.string.package_string), getPackageName(), null);
-                                        intent.setData(uri);
-                                        startActivity(intent);
-                                    }
-                                })
-                                .setNegativeButton(getString(R.string.error), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                }).create().show();
+                        customForOpenSettings(MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE, R.string.get_permission_storage_save);
                     }
                 }
                 return;
             }
         }
+    }
+
+    private void customForOpenSettings(int type_permission, int text_permision) {
+        if (getApplicationContext() != null) {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            alertDialog.setTitle(R.string.go_settings);
+            alertDialog.setCancelable(false);
+            alertDialog.setMessage(text_permision);
+            alertDialog.setPositiveButton(R.string.settings, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    try {
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri uri = Uri.fromParts(getString(R.string.package_string), getPackageName(), null);
+                        intent.setData(uri);
+                        startActivityForResult(intent, type_permission);
+                    } catch (Exception e) {
+                        Log.i("TAG", "Activity e is :" + e.getMessage());
+                    }
+                }
+            });
+            alertDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog dialogCreator = alertDialog.create();
+            dialogCreator.show();
+            Button neagtive_button = dialogCreator.getButton(DialogInterface.BUTTON_NEGATIVE);
+            Button positive_button = dialogCreator.getButton(DialogInterface.BUTTON_POSITIVE);
+            LinearLayout.LayoutParams params_for_space_between_buttons = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            params_for_space_between_buttons.setMargins(0, 0, 30, 0);
+            neagtive_button.setLayoutParams(params_for_space_between_buttons);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                positive_button.setBackgroundColor(getColor(R.color.colorAccent));
+                neagtive_button.setBackgroundColor(getColor(R.color.colorAccent));
+            } else {
+                positive_button.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                neagtive_button.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            }
+        } else {
+            Log.i("TAG", "Activity is null....");
+        }
+    }
+
+    private void SnackbarPermissionStorage(String title, String text_button) {
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.RelativeLayout), title, Snackbar.LENGTH_LONG)
+                .setAction(text_button, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.i("TAG", "isStoragePermissionGranted third");
+                        checkPermistion();
+                    }
+                });
+        snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.colorAccent));
+        snackbar.show();
     }
 
     //For Delete those menus from that page

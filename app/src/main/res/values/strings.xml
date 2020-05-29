@@ -321,7 +321,8 @@
 
     <string name="is_open_gps">الذهاب لصفحة الإعدادات لفتح تحديد الموقع</string>
     <string name="get_permission_storage">يجب إعطاء الأذن للتطبيق حتى يقوم بتخزين أوقات الصلاة على جهازك</string>
-    <string name="get_permission_location">يجب إعطاء الأذن للتطبيق حتى يحظر بيانات دقيقة من الإنترنت</string>
+    <string name="get_permission_location">يجب إعطاء الأذن للتطبيق حتى يحضر بيانات دقيقة من الإنترنت</string>
+    <string name="get_permission_storage_save">يجب إعطاء الأذن للتطبيق حتى يتم حفظ الصوت على جهازك</string>
 
     <string name="is_want_new_data">هل تريد جلب بيانات جديدة بناء على التوقيت الجديد</string>
 

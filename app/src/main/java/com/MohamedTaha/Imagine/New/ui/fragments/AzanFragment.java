@@ -36,7 +36,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -190,12 +189,11 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         setHasOptionsMenu(true);
         timingsViewModel = new ViewModelProvider(this).get(TimingsViewModel.class);
 
-        if (timingsViewModel.isNewlyCreated && savedInstanceState != null){
+        if (timingsViewModel.isNewlyCreated && savedInstanceState != null) {
             timingsViewModel.restoreState(savedInstanceState);
             Log.i("TAG", " onSuccess timingsViewModel " + store_date_today);
         }
         timingsViewModel.isNewlyCreated = false;
-        getDateTodayFromDatabase(getActivity());
 
         bundle = getArguments();
         if (bundle != null) {
@@ -220,10 +218,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         //  for avoid start show way using
         if (SharedPerefrenceHelper.getBooleanForWayUsing(getActivity(), IS_FIRST_TIME_WAY_USING, false)) {
             Log.d("TAG", "Repear is " + repear);
-           // Log.i("TAG", "store_date_today is :" + store_date_today + " : " + timingsViewModel.store_date_today);
-//            if (store_date_today <= 0) {
-//                isNetworkConnected();
-//            }
+            getDateTodayFromDatabase(getActivity());
             if (store_date_today <= 0) {
                 Log.i("TAG", "timingsViewModel.store_date_today if" + store_date_today);
                 isNetworkConnected();
@@ -293,6 +288,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                     @Override
                     public void onSubscribe(Disposable d) {
                     }
+
                     @Override
                     public void onSuccess(Integer integer) {
                         Log.i("TAG", " onSuccess " + integer);
@@ -321,25 +317,25 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                 // Add RXAndroid2 for support with Room because still RXjava3 don't support Room
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(date_today -> {
-                 //   store_date_today = date_today;
+                    //   store_date_today = date_today;
                     store_date_today = date_today;
-                 //   Log.i("TAG", "date today from data base : " + store_date_today);
+                    //   Log.i("TAG", "date today from data base : " + store_date_today);
                     //____________________________ Get prayer times from internet every month
                     // if (store_date_today <= 0) {
                     getPrayerTimesEveryMonth(getActivity());
                     enableBootReceiverEveryMonth(getActivity());
-                   // Log.i("TAG", "store_date_today yes : " + store_date_today);
+                    // Log.i("TAG", "store_date_today yes : " + store_date_today);
                     //    isNetworkConnected(this);
                     //    }
                 }, e -> {
-                  //  Log.i("TAG", "e yes : " + store_date_today);
-               });
+                    //  Log.i("TAG", "e yes : " + store_date_today);
+                });
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (outState != null){
+        if (outState != null) {
             timingsViewModel.saveState(outState);
         }
     }
@@ -351,8 +347,8 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                 .subscribe(all_Data -> {
                     getAllData = all_Data;
                     Log.i("TAG", "Navigation Drawaber : " + store_date_today);
-                    if (store_date_today >0){
-                    //if (store_date_today > 0) {
+                    if (store_date_today > 0) {
+                        //if (store_date_today > 0) {
                         if (getAllData == null && getAllData.size() <= 0) {
                             //The data is null
                             fragmentAzanBinding.TVShowError.setVisibility(View.VISIBLE);
@@ -584,15 +580,14 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                         city_name = getCityNameWithoutLocation(city.getLat(), city.getLon());
                         //  getMethodPrefrences("Egypt");
                         Log.d("TAG", "City name in arabic is : " + city_name);
-                        if (city_name != null ){
+                        if (city_name != null) {
                             getPrayerTimesByCity(city.getCity(), city.getCountry(), Integer.valueOf(repear), city_name);
-                        }
-                        else {
+                        } else {
                             getPrayerTimesByCity(city.getCity(), city.getCountry(), Integer.valueOf(repear), city.getCity());
 
                         }
                     } else {
-                           clearFlagForInteractiveUser();
+                        clearFlagForInteractiveUser();
                         Log.d("TAG", "checkBeforeGetDataFromInternetTest ");
                         if (checkGPS()) {
                             if (bundle == null) {
@@ -689,9 +684,8 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                     Log.i("TAG", " Grnted second");
                     getCity();
                     // checkGPS();
-                }
-                else {
-                    if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                } else {
+                    if (shouldShowRequestPermissionRationale(permissions[0])) {
                         Log.i("TAG", "MY_PERMISSIONS_WRITE_STORAGE if");
                         SnackbarPermissionStorage(getString(R.string.grand_permission), getString(R.string.allow));
                     } else {
@@ -707,7 +701,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                     Log.i("TAG", "LOCATION_PERMISSION_REQUEST_CODE turnGPS ");
                     turnGPS();
                 } else {
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    if (shouldShowRequestPermissionRationale(permissions[0])) {
                         Log.i("TAG", "MY_PERIMISSIONS_LOCATION if");
                         SnackbarPermissionLocation(getString(R.string.grand_permission), getString(R.string.allow));
                     } else {
@@ -725,8 +719,8 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
 //                    }
 //                    Log.i("TAG", "Not Graunted Location");
 //                    clearFlagForInteractiveUser();
-                break;
-            }
+                    break;
+                }
             default:
                 break;
         }
@@ -818,7 +812,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                 public void onClick(DialogInterface dialog, int which) {
                     try {
                         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                        Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
+                        Uri uri = Uri.fromParts(getString(R.string.package_string), getActivity().getPackageName(), null);
                         intent.setData(uri);
                         startActivityForResult(intent, type_permission);
                     } catch (Exception e) {
@@ -854,7 +848,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
             Log.i("TAG", "Activity is null....");
         }
     }
-
 
     private void showDialogBoxForCompareMethod() {
         if (getActivity() != null) {
@@ -1084,7 +1077,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                 for (Address adr : addresses) {
                     if (adr.getLocality() != null && adr.getLocality().length() > 0) {
                         cityName = adr.getLocality();
-                        Log.d("TAG" , " cityName : " +  cityName);
+                        Log.d("TAG", " cityName : " + cityName);
 
                         break;
                     }
@@ -1092,20 +1085,21 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
             }
             return cityName;
         } catch (IOException e) {
-            Log.d("TAG" , " getCityNameWithoutLocation : " +  e.getMessage());
+            Log.d("TAG", " getCityNameWithoutLocation : " + e.getMessage());
         }
         return null;
     }
+
     private String getCityNameTest(double latitude, double longitude) {
         try {
-        Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
-        List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-        String cityName = addresses.get(0).getAddressLine(0);
-        String stateName = addresses.get(0).getAddressLine(1);
-        String countryName = addresses.get(0).getAddressLine(2);
-            Log.d("TAG", "City name" +  cityName + " : " + stateName +" : " +  countryName);
+            Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            String cityName = addresses.get(0).getAddressLine(0);
+            String stateName = addresses.get(0).getAddressLine(1);
+            String countryName = addresses.get(0).getAddressLine(2);
+            Log.d("TAG", "City name" + cityName + " : " + stateName + " : " + countryName);
 
-            return cityName + " : " + stateName +" : " +  countryName;
+            return cityName + " : " + stateName + " : " + countryName;
 
         } catch (IOException e) {
         }
