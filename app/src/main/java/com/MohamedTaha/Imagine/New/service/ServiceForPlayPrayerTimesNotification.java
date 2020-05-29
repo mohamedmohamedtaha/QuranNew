@@ -34,11 +34,20 @@ import androidx.media.session.MediaButtonReceiver;
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.notification.prayerTimes.CancelNotificationPrayerTime;
 import com.MohamedTaha.Imagine.New.notification.prayerTimes.CancelNotificationWithSwipe;
+import com.MohamedTaha.Imagine.New.notification.prayerTimes.ModelMessageNotification;
 import com.MohamedTaha.Imagine.New.notification.prayerTimes.mediaPlayer.AudioFocusChange;
 import com.MohamedTaha.Imagine.New.notification.prayerTimes.mediaPlayer.MediaPlayerListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.List;
+
+import static com.MohamedTaha.Imagine.New.notification.prayerTimes.Alarm.LIST_TIME__NOTIFICATION;
 import static com.MohamedTaha.Imagine.New.notification.prayerTimes.Alarm.TEXT_NAME_NOTIFICATION;
 import static com.MohamedTaha.Imagine.New.notification.prayerTimes.Alarm.TIME_NOTIFICATION;
+import static com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationHelperPrayerTime.TEXT_NOTIFICATION;
+
 public class ServiceForPlayPrayerTimesNotification extends Service implements MediaPlayer.OnCompletionListener
         , MediaPlayer.OnErrorListener, MediaPlayerListener {
     public static final String SEND_TIME_FOR_SEINDING = "time_send";
@@ -59,6 +68,7 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
     private Bundle bundle  ;
     private Long prayer_time ;
     private String name_prayer_time;
+    private List<ModelMessageNotification> listForSavePrayerTimes ;
 
     private void initMediaSession() throws RemoteException{
     if (mediaSessionManager != null) return; //mediaSessionManager exists
@@ -109,7 +119,11 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
               bundle = intent.getExtras();
              prayer_time = bundle.getLong(TIME_NOTIFICATION);
              name_prayer_time = bundle.getString(TEXT_NAME_NOTIFICATION);
-            Log.d("TAG", "prayer_time is : " + prayer_time + "name_prayer_time is : " + name_prayer_time);
+              Type listType = new TypeToken<List<ModelMessageNotification>>() {
+              }.getType();
+              String st = bundle.getString(LIST_TIME__NOTIFICATION);
+              listForSavePrayerTimes = new Gson().fromJson(st, listType);
+              Log.d("TAG", "prayer_time is : " + prayer_time + "name_prayer_time is : " + name_prayer_time);
             initMediaPlayer(name_prayer_time);
             createNotification(this, getString(R.string.app_name), name_prayer_time);
             if (!mediaPlayer.isPlaying() && !name_prayer_time.equals(getString(R.string.sunrise_string))) {
@@ -186,7 +200,7 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
         Intent cancelNotification = new Intent(context, CancelNotificationPrayerTime.class);
         cancelNotification.putExtra(SEND_TIME_FOR_SEINDING, num);
         cancelNotification.setAction(ACTION_STOP_NOTIFICATION);
-
+        cancelNotification.putExtra(LIST_TIME__NOTIFICATION, new Gson().toJson(listForSavePrayerTimes));
 
         PendingIntent exitPending = PendingIntent.getBroadcast(context, num, cancelNotification, PendingIntent.FLAG_UPDATE_CURRENT);
         Bitmap bitmap_icon = BitmapFactory.decodeResource(context.getResources(), R.mipmap.logo);
@@ -201,10 +215,10 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
 
                 //.setSubText(description.getDescription())
                 .setAutoCancel(false)
-                .setOngoing(true)// Cant cancel your notification (except NotificationManger.cancel();
+              //  .setOngoing(true)// Cant cancel your notification (except NotificationManger.cancel();
                 //Enable launching the player by clicking the notification
                 //Stop the service when the notification is swiped away
-                .setDeleteIntent(exitPending)
+               // .setDeleteIntent(exitPending)
                 .setChannelId(CHANNEL_ID)
                 // Make the transport controls visible on the lock screen
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -219,12 +233,13 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
                 //Set the Notification Media Style
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                       //  .setShowActionsInCompactView(0)
-                        .setShowCancelButton(true)
-                        .setCancelButtonIntent(
-                                MediaButtonReceiver.buildMediaButtonPendingIntent(
-                                        this, PlaybackStateCompat.ACTION_STOP)))
-                   .setDeleteIntent(MediaButtonReceiver.buildMediaButtonPendingIntent(this,
-                 PlaybackStateCompat.ACTION_STOP));
+//                        .setShowCancelButton(true)
+//                        .setCancelButtonIntent(
+//                                MediaButtonReceiver.buildMediaButtonPendingIntent(
+//                                        this, PlaybackStateCompat.ACTION_STOP)))
+//                   .setDeleteIntent(MediaButtonReceiver.buildMediaButtonPendingIntent(this,
+//                 PlaybackStateCompat.ACTION_STOP)
+                   );
         builder.addAction(R.drawable.ic_close, context.getString(R.string.close), exitPending);
 
 

@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.MohamedTaha.Imagine.New.service.ServiceForPlayPrayerTimesNotification;
 import com.google.gson.Gson;
 
 import java.util.Calendar;
@@ -17,8 +18,10 @@ import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertFromMi
 import static com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationHelperPrayerTime.TEXT_NOTIFICATION;
 public class Alarm {
     private Context context;
-    public static final String TIME_NOTIFICATION = "time_notification";
-    public static final String TEXT_NAME_NOTIFICATION = "text_name_notification";
+    public static final String TIME_NOTIFICATION = "com.MohamedTaha.Imagine.Quran.notification.time.notification";
+    public static final String LIST_TIME__NOTIFICATION = "com.MohamedTaha.Imagine.Quran.notification.list.time.notification";
+
+    public static final String TEXT_NAME_NOTIFICATION = "com.MohamedTaha.Imagine.Quran.notification.text.name.notification";
 
 
     public Alarm(Context context) {
@@ -36,11 +39,11 @@ public class Alarm {
             Bundle bundle = new Bundle();
             bundle.putLong(TIME_NOTIFICATION, listForSavePrayerTimes.get(i).getTime_payer());
             bundle.putString(TEXT_NAME_NOTIFICATION, listForSavePrayerTimes.get(i).getText_notification());
+            bundle.putString(LIST_TIME__NOTIFICATION, new Gson().toJson(listForSavePrayerTimes));
 
             Log.d("TAG", " TEXT_NOTIFICATION : " + listForSavePrayerTimes.get(i).getTime_payer() );
             Log.d("TAG", " TEXT_NOTIFICATION : " + listForSavePrayerTimes.get(i).getText_notification() );
 
-            // bundle.putString(TEXT_NOTIFICATION, new Gson().toJson(listForSavePrayerTimes));
             intent[i].putExtras(bundle);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 pendingIntent = PendingIntent.getForegroundService(context, i, intent[i], 0);
@@ -63,14 +66,16 @@ public class Alarm {
         }
     }
 
-    public void cancelAlarm(Class name_class, List<ModelMessageNotification> listForSavePrayerTimes) {
+    public void cancelAlarm( List<ModelMessageNotification> listForSavePrayerTimes) {
         AlarmManager alarmManager[] = new AlarmManager[listForSavePrayerTimes.size()];
         Intent intent[] = new Intent[listForSavePrayerTimes.size()];
         for (int i = 0; i < listForSavePrayerTimes.size(); i++) {
             alarmManager[i] = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            intent[i] = new Intent(context, name_class);
+            intent[i] = new Intent(context, ServiceForPlayPrayerTimesNotification.class);
             PendingIntent pendingIntent = PendingIntent.getService(context, i, intent[i], 0);
             alarmManager[i].cancel(pendingIntent);
+            Log.d("TAG", " cancelAlarm " );
+
         }
     }
 }
