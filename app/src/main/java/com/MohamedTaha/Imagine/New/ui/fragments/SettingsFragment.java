@@ -16,7 +16,7 @@ import com.MohamedTaha.Imagine.New.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
+public class SettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener  {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         // Indicate here the XML resource you created above that holds the preferences
@@ -30,7 +30,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
         Preference section_method = findPreference(getString(R.string.settings_method_key));
         bindPreferenceSummaryToValue(section_notification);
         bindPreferenceSummaryToValue(section_method);
-
     }
 
     @Override

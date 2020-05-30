@@ -36,6 +36,7 @@ public class Alarm {
         calendar.setTimeInMillis(System.currentTimeMillis());
         for (int i = 0; i < alarmManager.length; i++) {
             intent[i] = new Intent(context, name_class);
+            intent[i].setAction(" ");
             Bundle bundle = new Bundle();
             bundle.putLong(TIME_NOTIFICATION, listForSavePrayerTimes.get(i).getTime_payer());
             bundle.putString(TEXT_NAME_NOTIFICATION, listForSavePrayerTimes.get(i).getText_notification());
@@ -70,13 +71,13 @@ public class Alarm {
         AlarmManager alarmManager[] = new AlarmManager[listForSavePrayerTimes.size()];
         Intent intent[] = new Intent[listForSavePrayerTimes.size()];
         for (int i = 0; i < listForSavePrayerTimes.size(); i++) {
-          //  if (listForSavePrayerTimes.get(i).getText_notification().equals(name_prayer_time)){
+            if (listForSavePrayerTimes.get(i).getText_notification().equals(name_prayer_time)){
                 alarmManager[i] = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             intent[i] = new Intent(context, ServiceForPlayPrayerTimesNotification.class);
             PendingIntent pendingIntent = PendingIntent.getService(context, i, intent[i], 0);
                 alarmManager[i].cancel(pendingIntent);
                 Log.d("TAG", " cancelAlarm " );
-          //  }
+            }
 
         }
     }

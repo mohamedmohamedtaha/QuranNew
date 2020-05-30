@@ -218,8 +218,11 @@
     <string name="settings_by_department_value_every_day" translatable="false">AlarmManager.INTERVAL_DAY</string>
 
 
-    <string name="settings_method_key" translatable="false">@string/settings_method_umm_al_qura_university_makkah_value</string>
-    <string name="settings_method_default" translatable="false">@string/settings_method_umm_al_qura_university_makkah_value</string>
+<!--    <string name="settings_method_key" translatable="false">@string/settings_method_umm_al_qura_university_makkah_value</string>-->
+<!--    <string name="settings_method_default" translatable="false">@string/settings_method_umm_al_qura_university_makkah_value</string>-->
+
+    <string name="settings_method_key" translatable="false">@string/settings_method_egyptian_general_authority_of_survey_value</string>
+    <string name="settings_method_default" translatable="false">@string/settings_method_egyptian_general_authority_of_survey_value</string>
 
     <string name="settings_method_muslim_world_league_label">رابطة العالم الإسلامي</string>
     <string name="settings_method_islamic_society_of_north_america_label">الجمعية الإسلامية لأمريكا الشمالية</string>
@@ -263,6 +266,11 @@
     <string name="settings_method_union_organization_islamic_de_france_value">12</string>
     <string name="settings_method_diyanet_işleri_başkanlığı_turkey_value">13</string>
     <string name="settings_method_spiritual_administration_of_muslims_of_russia_value">14</string>
+    <string name="saudi_arabia">Saudi Arabia</string>
+    <string name="qatar">Qatar</string>
+    <string name="kuwait">Kuwait</string>
+    <string name="turkey">Turkey</string>
+    <string name="russia">Russia</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello</string>

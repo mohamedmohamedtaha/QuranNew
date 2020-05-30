@@ -91,6 +91,8 @@ import static com.MohamedTaha.Imagine.New.ui.fragments.SplashFragment.SAVE_PAGE;
 public class NavigationDrawaberActivity extends AppCompatActivity implements NavigationDrawarView, DatabaseCallback {
     private static final String SAVE_STATE_VIEW_PAGER = "save_state_view_pager";
     public static final String IS_FIRST_TIME_WAY_USING = "way_sueing";
+    public static final String IS_FIRST_TIME_PRAYER_TIME_EVERYDAY = "prayer_time_everyday";
+
     public static final String FOR_GET_FRAGMENT_AZAN = "fragemnt_azan";
     public static final String CHECKISDATAORNOTINDATABASE = "store_date_today";
 
@@ -119,7 +121,6 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         activityNavigationDrawaberBinding = ActivityNavigationDrawaberBinding.inflate(getLayoutInflater());
         View view = activityNavigationDrawaberBinding.getRoot();
         setContentView(view);
-
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         //getString Retrieve a String value from the Preference
         repear = sharedPreferences.getString(getString(R.string.settings_method_key),
@@ -335,8 +336,15 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         NotificationHelper.sendNotificationEveryHalfDay(getApplicationContext());
         NotificationHelper.enableBootRecieiver(getApplicationContext());
 
-        getPrayerTimesEveryday(getApplicationContext());
-        enableBootRecieiver(getApplicationContext());
+        if (!SharedPerefrenceHelper.getBooleanPrayerTimeEveryday(getApplicationContext(), IS_FIRST_TIME_PRAYER_TIME_EVERYDAY, false)) {
+            getPrayerTimesEveryday(getApplicationContext());
+            enableBootRecieiver(getApplicationContext());
+            SharedPerefrenceHelper.putBooleanPrayerTimeEveryday(getApplicationContext(), IS_FIRST_TIME_PRAYER_TIME_EVERYDAY, true);
+            Log.d("TAG", "getBooleanPrayerTimeEveryday if");
+        }else {
+            Log.d("TAG", "getBooleanPrayerTimeEveryday else");
+
+        }
     }
 
     private void checkIsFragmentAzanIsOpen() {
@@ -362,14 +370,11 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         AlarmManager alarmManager;
         PendingIntent alarmPendingIntent;
         Intent intent = new Intent(context, GetPrayerTimesEveryDay.class);
-        //  Intent intent = new Intent(context, ServiceForNotificationImage.class);
         Log.d("TAG", "getPrayerTimesEveryday ");
-        //Setting pending intent to respond to broadcast sent by AlarmManager every day at 8am
         alarmPendingIntent = PendingIntent.getBroadcast(context, ALARM_TYPE_ELAPSED, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Calendar setTime = Calendar.getInstance();
         setTime.setTimeInMillis(System.currentTimeMillis());
         setTime.set(Calendar.HOUR_OF_DAY, 1);
-        //   setTime.set(Calendar.SECOND, 21);
         alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
                 setTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmPendingIntent);

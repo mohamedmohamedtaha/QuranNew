@@ -51,7 +51,6 @@ import com.MohamedTaha.Imagine.New.helper.SharedPerefrenceHelper;
 import com.MohamedTaha.Imagine.New.helper.checkConnection.NetworkConnection;
 import com.MohamedTaha.Imagine.New.helper.checkConnection.NoInternetConnection;
 import com.MohamedTaha.Imagine.New.mvp.model.azan.Azan;
-import com.MohamedTaha.Imagine.New.mvp.model.azan.Datum;
 import com.MohamedTaha.Imagine.New.mvp.model.azan.Timings;
 import com.MohamedTaha.Imagine.New.mvp.model.getCity.GetCity;
 import com.MohamedTaha.Imagine.New.receiver.ConnectivityReceiver;
@@ -79,7 +78,6 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -114,7 +112,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         GoogleApiClient.OnConnectionFailedListener, LocationListener, DatabaseCallback {
     public static final String COMPARE_METHOD = "compare_method";
     private TimingsViewModel timingsViewModel;
-    GoogleApiClient googleApiClient;
     private LocationRequest locationRequest;
     private long UPDATE_INTERVAL = 15000; /* 15 secs */
     private long FASTER_INTERVAL = 5000;
@@ -148,8 +145,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     public static final int MY_PERMISSIONS_WRITE_STORAGE = 90;
     APIServices apiServices;
     APIServices apiServicesForCity;
-
-    List<Datum> datumList = new ArrayList<>();
     private SettingsClient mSettingsClient;
     private LocationSettingsRequest mLocationSettingsRequest;
     String language_name;
@@ -160,7 +155,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     private ConnectivityReceiver connectivityReceiver = null;
     private NoInternetReceiver noInternetReceiver = null;
     private static boolean isRefresh = false;
-    private Calendar getCalender;
     SharedPreferences sharedPreferences;
     String repear;
     FusedLocationProviderClient fusedLocationProviderClient;
@@ -168,7 +162,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     private boolean requestingLocationUpdates = true;
     private String compare_methods = null;
     private Bundle bundle;
-    private Menu globalMenu;
+    private boolean isValueForPrayerTimesChanged = false;
 
 
     public AzanFragment() {
@@ -188,6 +182,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         }
         setHasOptionsMenu(true);
         timingsViewModel = new ViewModelProvider(this).get(TimingsViewModel.class);
+
 
         if (timingsViewModel.isNewlyCreated && savedInstanceState != null) {
             timingsViewModel.restoreState(savedInstanceState);
@@ -528,6 +523,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     }
 
     private void getPrayerTimes(double latitude, double longitude) {
+        // if (getMethodPrefrences())
         Call<Azan> azanCall = apiServices.getPrayerTimes(latitude, longitude, false, Integer.valueOf(repear));
         azanCall.enqueue(new Callback<Azan>() {
             @Override
@@ -580,6 +576,9 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                         city_name = getCityNameWithoutLocation(city.getLat(), city.getLon());
                         //  getMethodPrefrences("Egypt");
                         Log.d("TAG", "City name in arabic is : " + city_name);
+                        if (!isValueForPrayerTimesChanged) {
+                            getMethodPreferences(city.getCountry());
+                        }
                         if (city_name != null) {
                             getPrayerTimesByCity(city.getCity(), city.getCountry(), Integer.valueOf(repear), city_name);
                         } else {
@@ -858,6 +857,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
             alertDialog.setPositiveButton(R.string.textYes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    isValueForPrayerTimesChanged = true;
                     isNetworkConnected();
                 }
             });
@@ -1008,7 +1008,8 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         repear = sharedPreferences.getString(getString(R.string.settings_method_key),
                 getString(R.string.settings_method_default));
-        compare_methods = SharedPerefrenceHelper.getStringCompareMethod(getActivity(), COMPARE_METHOD, "4");
+
+        compare_methods = SharedPerefrenceHelper.getStringCompareMethod(getActivity(), COMPARE_METHOD, "3");
         if (SharedPerefrenceHelper.getBooleanForWayUsing(getActivity(), IS_FIRST_TIME_WAY_USING, false)) {
             Log.d("TAG", "Repear is " + repear);
             if (!compare_methods.equals(repear)) {
@@ -1114,6 +1115,17 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
             stopLocationUpdtaes();
         }
         SharedPerefrenceHelper.putStringCompareMethod(getActivity(), COMPARE_METHOD, repear);
+        changeValueInListPreference();
+
+        Log.d("TAG", "SharedPerefrenceHelper.putStringCompareMethod : " + repear);
+
+    }
+
+    private void changeValueInListPreference() {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(getString(R.string.settings_method_key), repear);
+        editor.commit();
     }
 
     @Override
@@ -1198,21 +1210,30 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
 
     }
 
-    private void getMethodPrefrences(String country_name) {
-        if (country_name.equals("Egypt")) {
-            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            //getString Retrieve a String value from the Preference
-            repear = sharedPreferences.getString("3", "3");
-            Log.d("TAG", "sharedPreferences :  " + repear);
+    private String getMethodPreferences(String country_name) {
+        if (country_name.equals(getString(R.string.saudi_arabia))) {
+            customForPreferences(getString(R.string.settings_method_umm_al_qura_university_makkah_value),
+                    getString(R.string.settings_method_umm_al_qura_university_makkah_value));
+        } else if (country_name.equals(getString(R.string.qatar))) {
+            customForPreferences(getString(R.string.settings_method_qatar_value),getString(R.string.settings_method_qatar_value));
+        } else if (country_name.equals(getString(R.string.kuwait))) {
+            customForPreferences(getString(R.string.settings_method_kuwait_value), getString(R.string.settings_method_kuwait_value));
+        } else if (country_name.equals(getString(R.string.turkey))) {
+            customForPreferences(getString(R.string.settings_method_diyanet_işleri_başkanlığı_turkey_value),
+                    getString(R.string.settings_method_diyanet_işleri_başkanlığı_turkey_value));
+        } else if (country_name.equals(getString(R.string.russia))) {
+            customForPreferences(getString(R.string.settings_method_spiritual_administration_of_muslims_of_russia_value),
+                    getString(R.string.settings_method_spiritual_administration_of_muslims_of_russia_value));
         } else {
-            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            //getString Retrieve a String value from the Preference
-            repear = sharedPreferences.getString(getString(R.string.settings_method_key),
-                    getString(R.string.settings_method_default));
-            Log.d("TAG", "sharedPreferences :  " + repear);
-
+            customForPreferences(getString(R.string.settings_method_key),getString(R.string.settings_method_default));
         }
-
+        return repear;
     }
+    private String customForPreferences(String method_key, String method_default){
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        repear = sharedPreferences.getString(method_key,method_default);
+        return repear;
+    }
+
 }
 
