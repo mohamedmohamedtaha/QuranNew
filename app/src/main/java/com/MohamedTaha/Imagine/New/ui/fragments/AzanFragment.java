@@ -1212,26 +1212,24 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
 
     private String getMethodPreferences(String country_name) {
         if (country_name.equals(getString(R.string.saudi_arabia))) {
-            customForPreferences(getString(R.string.settings_method_umm_al_qura_university_makkah_value),
-                    getString(R.string.settings_method_umm_al_qura_university_makkah_value));
+            customForPreferences(getString(R.string.settings_method_umm_al_qura_university_makkah_value), getString(R.string.settings_method_umm_al_qura_university_makkah_value));
         } else if (country_name.equals(getString(R.string.qatar))) {
-            customForPreferences(getString(R.string.settings_method_qatar_value),getString(R.string.settings_method_qatar_value));
+            customForPreferences(getString(R.string.settings_method_qatar_value), getString(R.string.settings_method_qatar_value));
         } else if (country_name.equals(getString(R.string.kuwait))) {
             customForPreferences(getString(R.string.settings_method_kuwait_value), getString(R.string.settings_method_kuwait_value));
         } else if (country_name.equals(getString(R.string.turkey))) {
-            customForPreferences(getString(R.string.settings_method_diyanet_işleri_başkanlığı_turkey_value),
-                    getString(R.string.settings_method_diyanet_işleri_başkanlığı_turkey_value));
+            customForPreferences(getString(R.string.settings_method_diyanet_işleri_başkanlığı_turkey_value), getString(R.string.settings_method_diyanet_işleri_başkanlığı_turkey_value));
         } else if (country_name.equals(getString(R.string.russia))) {
-            customForPreferences(getString(R.string.settings_method_spiritual_administration_of_muslims_of_russia_value),
-                    getString(R.string.settings_method_spiritual_administration_of_muslims_of_russia_value));
+            customForPreferences(getString(R.string.settings_method_spiritual_administration_of_muslims_of_russia_value), getString(R.string.settings_method_spiritual_administration_of_muslims_of_russia_value));
         } else {
-            customForPreferences(getString(R.string.settings_method_key),getString(R.string.settings_method_default));
+            customForPreferences(getString(R.string.settings_method_key), getString(R.string.settings_method_default));
         }
         return repear;
     }
-    private String customForPreferences(String method_key, String method_default){
+
+    private String customForPreferences(String method_key, String method_default) {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        repear = sharedPreferences.getString(method_key,method_default);
+        repear = sharedPreferences.getString(method_key, method_default);
         return repear;
     }
 

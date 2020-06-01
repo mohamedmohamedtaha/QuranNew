@@ -167,7 +167,6 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
             current_fragment = savedInstanceState.getInt(SAVE_STATE_VIEW_PAGER);
             activityNavigationDrawaberBinding.navView.setSelectedItemId(current_fragment);
             Log.d("TAG", "Current fragment  three is :" + current_fragment);
-
         } else {
             activityNavigationDrawaberBinding.navView.setSelectedItemId(R.id.read_quran);
         }
@@ -336,15 +335,15 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         NotificationHelper.sendNotificationEveryHalfDay(getApplicationContext());
         NotificationHelper.enableBootRecieiver(getApplicationContext());
 
-        if (!SharedPerefrenceHelper.getBooleanPrayerTimeEveryday(getApplicationContext(), IS_FIRST_TIME_PRAYER_TIME_EVERYDAY, false)) {
+     //   if (!SharedPerefrenceHelper.getBooleanPrayerTimeEveryday(getApplicationContext(), IS_FIRST_TIME_PRAYER_TIME_EVERYDAY, false)) {
             getPrayerTimesEveryday(getApplicationContext());
             enableBootRecieiver(getApplicationContext());
             SharedPerefrenceHelper.putBooleanPrayerTimeEveryday(getApplicationContext(), IS_FIRST_TIME_PRAYER_TIME_EVERYDAY, true);
             Log.d("TAG", "getBooleanPrayerTimeEveryday if");
-        }else {
-            Log.d("TAG", "getBooleanPrayerTimeEveryday else");
-
-        }
+//        }else {
+//            Log.d("TAG", "getBooleanPrayerTimeEveryday else");
+//
+//        }
     }
 
     private void checkIsFragmentAzanIsOpen() {

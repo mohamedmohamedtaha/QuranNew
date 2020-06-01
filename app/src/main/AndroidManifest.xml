@@ -133,6 +133,9 @@
         <service android:name=".service.ServiceForPlayPrayerTimesNotification"
             android:enabled="true">
         </service>
+        <service android:name=".service.ServiceForPlayPrayerTimesCustomNotification"
+            android:enabled="true">
+        </service>
         <receiver android:name=".service.MediaPlayerService$DeleteNotification">
             <intent-filter>
                 <action android:name="tt" />

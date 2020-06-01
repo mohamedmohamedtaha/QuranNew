@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
+import com.MohamedTaha.Imagine.New.service.ServiceForPlayPrayerTimesCustomNotification;
 import com.MohamedTaha.Imagine.New.service.ServiceForPlayPrayerTimesNotification;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -53,9 +54,11 @@ public class CancelNotificationPrayerTime extends BroadcastReceiver {
 //            }else {
 //                PendingIntent.getService(context, 0, playbackAction, 0);
 //            }
-             context.stopService(new Intent(context, ServiceForPlayPrayerTimesNotification.class));
+      //       context.stopService(new Intent(context, ServiceForPlayPrayerTimesNotification.class));
+            context.stopService(new Intent(context, ServiceForPlayPrayerTimesCustomNotification.class));
 
-            }}
+
+        }}
 
     private PendingIntent playbackAction(Context context,int actionNumber) {
         Intent playbackAction;

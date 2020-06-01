@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.mvp.model.azan.Timings;
+import com.MohamedTaha.Imagine.New.service.ServiceForPlayPrayerTimesCustomNotification;
 import com.MohamedTaha.Imagine.New.service.ServiceForPlayPrayerTimesNotification;
 
 import java.util.ArrayList;
@@ -22,34 +23,35 @@ public class NotificationHelperPrayerTime {
         Log.d("TAG", "NotificationHelperPrayerTime");
         listForSavePrayerTimes = new ArrayList<>();
       //  listForSavePrayerTimes.clear();
-        setTimePrayerWithText(Integer.valueOf(prayer_times.getFajr().substring(0, 2)),
-                Integer.valueOf(prayer_times.getFajr().substring(3, 5)), context.getString(R.string.fagr_string));
-        setTimePrayerWithText(Integer.valueOf(prayer_times.getSunrise().substring(0, 2)),
-                Integer.valueOf(prayer_times.getSunrise().substring(3, 5)), context.getString(R.string.sunrise_string));
-        setTimePrayerWithText(Integer.valueOf(prayer_times.getDhuhr().substring(0, 2)),
-                Integer.valueOf(prayer_times.getDhuhr().substring(3, 5)), context.getString(R.string.duhr_string));
-        setTimePrayerWithText(Integer.valueOf(prayer_times.getAsr().substring(0, 2)),
-                Integer.valueOf(prayer_times.getAsr().substring(3, 5)), context.getString(R.string.asr_string));
-        setTimePrayerWithText(Integer.valueOf(prayer_times.getMaghrib().substring(0, 2)),
-                Integer.valueOf(prayer_times.getMaghrib().substring(3, 5)), context.getString(R.string.magrib_string));
-        setTimePrayerWithText(Integer.valueOf(prayer_times.getIsha().substring(0, 2)),
-                Integer.valueOf(prayer_times.getIsha().substring(3, 5)), context.getString(R.string.isha_string));
+//        setTimePrayerWithText(Integer.valueOf(prayer_times.getFajr().substring(0, 2)),
+//                Integer.valueOf(prayer_times.getFajr().substring(3, 5)), context.getString(R.string.fagr_string));
+//        setTimePrayerWithText(Integer.valueOf(prayer_times.getSunrise().substring(0, 2)),
+//                Integer.valueOf(prayer_times.getSunrise().substring(3, 5)), context.getString(R.string.sunrise_string));
+//        setTimePrayerWithText(Integer.valueOf(prayer_times.getDhuhr().substring(0, 2)),
+//                Integer.valueOf(prayer_times.getDhuhr().substring(3, 5)), context.getString(R.string.duhr_string));
+//        setTimePrayerWithText(Integer.valueOf(prayer_times.getAsr().substring(0, 2)),
+//                Integer.valueOf(prayer_times.getAsr().substring(3, 5)), context.getString(R.string.asr_string));
+//        setTimePrayerWithText(Integer.valueOf(prayer_times.getMaghrib().substring(0, 2)),
+//                Integer.valueOf(prayer_times.getMaghrib().substring(3, 5)), context.getString(R.string.magrib_string));
+//        setTimePrayerWithText(Integer.valueOf(prayer_times.getIsha().substring(0, 2)),
+//                Integer.valueOf(prayer_times.getIsha().substring(3, 5)), context.getString(R.string.isha_string));
 
-//        setTimePrayerWithText(Integer.valueOf("17"),
-//                Integer.valueOf("11"),  context.getString(R.string.fagr_string));
-//        setTimePrayerWithText( Integer.valueOf("17"),
-//                Integer.valueOf("15"), context.getString(R.string.sunrise_string));
-//        setTimePrayerWithText(Integer.valueOf("17"),
-//                Integer.valueOf("16"), context.getString(R.string.duhr_string));
-//        setTimePrayerWithText( Integer.valueOf("17"),
-//                Integer.valueOf("22"), context.getString(R.string.asr_string));
-//        setTimePrayerWithText( Integer.valueOf("17"),
-//                Integer.valueOf("27"), context.getString(R.string.magrib_string));
-//        setTimePrayerWithText( Integer.valueOf("17"),
-//                Integer.valueOf("35"), context.getString(R.string.isha_string));
+        setTimePrayerWithText(Integer.valueOf("22"),
+                Integer.valueOf("22"),  context.getString(R.string.fagr_string));
+        setTimePrayerWithText( Integer.valueOf("22"),
+                Integer.valueOf("23"), context.getString(R.string.sunrise_string));
+        setTimePrayerWithText(Integer.valueOf("22"),
+                Integer.valueOf("24"), context.getString(R.string.duhr_string));
+        setTimePrayerWithText( Integer.valueOf("22"),
+                Integer.valueOf("25"), context.getString(R.string.asr_string));
+        setTimePrayerWithText( Integer.valueOf("22"),
+                Integer.valueOf("26"), context.getString(R.string.magrib_string));
+        setTimePrayerWithText( Integer.valueOf("22"),
+                Integer.valueOf("27"), context.getString(R.string.isha_string));
 
         Alarm alarm = new Alarm(context);
-        alarm.setAlarm(ServiceForPlayPrayerTimesNotification.class, listForSavePrayerTimes);
+        alarm.setAlarm(ServiceForPlayPrayerTimesCustomNotification.class, listForSavePrayerTimes);
+        // alarm.setAlarm(ServiceForPlayPrayerTimesCustomNotification.class, listForSavePrayerTimes);
     }
 
     private static void setTimePrayerWithText(int value_hour, int value_secound, String name_prayer) {

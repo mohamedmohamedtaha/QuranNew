@@ -2,6 +2,7 @@ package com.MohamedTaha.Imagine.New.notification.prayerTimes.mediaPlayer;
 
 import android.content.Context;
 import android.media.AudioManager;
+import android.util.Log;
 
 public class AudioFocusChange implements AudioManager.OnAudioFocusChangeListener {
     private AudioManager audioManager;
@@ -13,6 +14,8 @@ public class AudioFocusChange implements AudioManager.OnAudioFocusChangeListener
         this.mediaPlayerListener = mediaPlayerListener;
         if (requestAduioFocus() == false) {
             mediaPlayerListener.stopService();
+            Log.d("TAG", " mediaPlayerListener : stopService");
+
         }
     }
 

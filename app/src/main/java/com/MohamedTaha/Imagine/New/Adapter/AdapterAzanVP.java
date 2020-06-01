@@ -71,11 +71,12 @@ public class AdapterAzanVP extends PagerAdapter {
         setData(recyclerAzanViewHolder, azan);
         checkTimeForChangeColorTextView(recyclerAzanViewHolder, azan);
         showPrayerTimeForward(recyclerAzanViewHolder, azan);
-        if (!IsFirstTime) {
-            if (convertDate().equals(azan.getDate_today())) {
-                showTimerForTextViewMethod(recyclerAzanViewHolder.TVShowMethod);
-            }
-        }
+
+//        if (!IsFirstTime) {
+//            if (convertDate().equals(azan.getDate_today())) {
+//                showTimerForTextViewMethod(recyclerAzanViewHolder.TVShowMethod);
+//            }
+//        }
         container.addView(row);
         return row;
     }
