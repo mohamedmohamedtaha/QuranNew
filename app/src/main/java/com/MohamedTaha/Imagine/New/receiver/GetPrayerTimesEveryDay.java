@@ -5,17 +5,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationHelperPrayerTime;
 import com.MohamedTaha.Imagine.New.room.TimingsRepository;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertDate;
-import static com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationHelperPrayerTime.sendNotificationForPrayerTime;
 
 public class GetPrayerTimesEveryDay extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
+        NotificationHelperPrayerTime notificationHelperPrayerTime = new NotificationHelperPrayerTime();
         TimingsRepository timingsRepository = TimingsRepository.getInstance(context);
         timingsRepository.getPrayerTimesForCurrentDate(convertDate()).
                 subscribeOn(Schedulers.trampoline())
@@ -23,7 +24,7 @@ public class GetPrayerTimesEveryDay extends BroadcastReceiver {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(prayer_times -> {
                     if (prayer_times.getDate_today().equals(convertDate())) {
-                        sendNotificationForPrayerTime(context, prayer_times);
+                        notificationHelperPrayerTime.sendNotificationForPrayerTime(context, prayer_times);
                         //   enableBootRecieiver(context);
                     }
                 }, e -> {

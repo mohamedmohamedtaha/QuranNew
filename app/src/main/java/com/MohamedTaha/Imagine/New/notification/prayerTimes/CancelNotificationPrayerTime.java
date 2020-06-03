@@ -17,7 +17,10 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import static com.MohamedTaha.Imagine.New.notification.prayerTimes.Alarm.LIST_TIME__NOTIFICATION;
+import static com.MohamedTaha.Imagine.New.notification.prayerTimes.Alarm.REQUEST_CODE_NOTIFICATION;
 import static com.MohamedTaha.Imagine.New.notification.prayerTimes.Alarm.TEXT_NAME_NOTIFICATION;
+import static com.MohamedTaha.Imagine.New.notification.prayerTimes.Alarm.TIME_NOTIFICATION;
+import static com.MohamedTaha.Imagine.New.service.ServiceForPlayPrayerTimesCustomNotification.NOTIFICATION_ID_SERVICE;
 import static com.MohamedTaha.Imagine.New.service.ServiceForPlayPrayerTimesNotification.ACTION_STOP_NOTIFICATION;
 import static com.MohamedTaha.Imagine.New.service.ServiceForPlayPrayerTimesNotification.SEND_TIME_FOR_SEINDING;
 
@@ -29,6 +32,8 @@ public class CancelNotificationPrayerTime extends BroadcastReceiver {
     private int send_time;
     private List<ModelMessageNotification> listForSavePrayerTimes ;
     private String name_prayer_time;
+    private String prayer_time;
+    private int request_code ;
 
 
     @Override
@@ -42,41 +47,15 @@ public class CancelNotificationPrayerTime extends BroadcastReceiver {
             send_time = intent.getIntExtra(SEND_TIME_FOR_SEINDING, -1);
          //   name_prayer_time = new Gson().fromJson(intent.getStringExtra(TEXT_NAME_NOTIFICATION), String.class);
            name_prayer_time = intent.getStringExtra(TEXT_NAME_NOTIFICATION);
-           NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            alarm.cancelAlarm(listForSavePrayerTimes,name_prayer_time);
-            Log.d("TAG", " CancelNotificationPrayerTime : " + listForSavePrayerTimes.size() +" : " + name_prayer_time +" : "+ send_time);
-          //  playbackAction(context,0);
-            manager.cancel(send_time);
-//            Intent playbackAction = new Intent(context, ServiceForPlayPrayerTimesNotification.class);
-//            playbackAction.setAction(ACTION_STOP_NOTIFICATION);
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                PendingIntent.getForegroundService(context, 0, playbackAction, 0);
-//            }else {
-//                PendingIntent.getService(context, 0, playbackAction, 0);
-//            }
-      //       context.stopService(new Intent(context, ServiceForPlayPrayerTimesNotification.class));
+            prayer_time = intent.getStringExtra(TIME_NOTIFICATION);
+            request_code = intent.getIntExtra(REQUEST_CODE_NOTIFICATION,-1);
+
+            NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+           alarm.cancelAlarm(listForSavePrayerTimes,name_prayer_time);
+           // alarm.customCancelAlarm(request_code);
+
+            Log.d("TAG", " CancelNotificationPrayerTime : " + name_prayer_time +" send_time : "+ send_time + "   " +"NOTIFICATION_ID_SERVICE : " + NOTIFICATION_ID_SERVICE + " prayer_time : " + prayer_time);
+            manager.cancel(NOTIFICATION_ID_SERVICE);
             context.stopService(new Intent(context, ServiceForPlayPrayerTimesCustomNotification.class));
-
-
         }}
-
-    private PendingIntent playbackAction(Context context,int actionNumber) {
-        Intent playbackAction;
-        playbackAction = new Intent(context, ServiceForPlayPrayerTimesNotification.class);
-        switch (actionNumber) {
-            case 0:
-                playbackAction.setAction(ACTION_STOP_NOTIFICATION);
-//                bundle.putLong(TIME_NOTIFICATION, prayer_time);
-//                bundle.putString(TEXT_NAME_NOTIFICATION, name_prayer_time);
-                //      playbackAction.putExtras(bundle);
-                //  stopService(new Intent(getApplicationContext(), ServiceForPlayPrayerTimesNotification.class));
-
-
-                return PendingIntent.getService(context, actionNumber, playbackAction, 0);
-            default:
-                break;
-        }
-        return null;
-    }
-
-}
+   }

@@ -129,6 +129,8 @@ public class GetPrayerTimesEveryMonth extends BroadcastReceiver implements Datab
                     if (city.getStatus().equals("success")) {
                         Log.d("TAG", city.getCity() + " : " + city.getCountry());
                         city_name = getCityNameWithoutLocation(city.getLat(), city.getLon());
+                        Log.i("TAG", " getPrayerTimesByCity Every Month" );
+
                         getPrayerTimesByCity(context, city.getCity(), city.getCountry(), Integer.valueOf(repear), city_name);
                     }
                 } catch (Exception e) {
@@ -151,7 +153,7 @@ public class GetPrayerTimesEveryMonth extends BroadcastReceiver implements Datab
                 Azan azan = response.body();
                 try {
                     if (azan.getStatus().equals("OK")) {
-
+                        Log.d("TAG", "TimingsAppDatabase DeletePrayerTimes AddPrayerTimesEveryMonth ");
                         TimingsAppDatabase.getInstance(context).AddPrayerTimesEveryMonth(GetPrayerTimesEveryMonth.this, azan, city_name);
                     }
                 } catch (Exception e) {

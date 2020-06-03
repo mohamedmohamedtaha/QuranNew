@@ -333,7 +333,6 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
 
     private void handleIncomingActions(Intent playbackAction) {
         int send_time;
-        Alarm alarm = new Alarm(this);
         if (playbackAction == null || playbackAction.getAction() == null) return;
         String actionString = playbackAction.getAction();
         if (actionString.equalsIgnoreCase(ACTION_STOP_NOTIFICATION)) {

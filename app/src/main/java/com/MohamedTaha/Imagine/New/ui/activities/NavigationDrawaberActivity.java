@@ -44,6 +44,7 @@ import com.MohamedTaha.Imagine.New.mvp.model.azan.Azan;
 import com.MohamedTaha.Imagine.New.mvp.model.getCity.GetCity;
 import com.MohamedTaha.Imagine.New.mvp.presenter.NavigationDrawarPresenter;
 import com.MohamedTaha.Imagine.New.mvp.view.NavigationDrawarView;
+import com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationHelperPrayerTime;
 import com.MohamedTaha.Imagine.New.notification.quran.NotificationHelper;
 import com.MohamedTaha.Imagine.New.receiver.GetPrayerTimesEveryDay;
 import com.MohamedTaha.Imagine.New.receiver.GetPrayerTimesEveryMonth;
@@ -78,7 +79,6 @@ import static com.MohamedTaha.Imagine.New.helper.Images.IMAGES;
 import static com.MohamedTaha.Imagine.New.helper.Images.addImagesList;
 import static com.MohamedTaha.Imagine.New.helper.checkConnection.NoInternetConnection.isInternet;
 import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertDate;
-import static com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationHelperPrayerTime.enableBootRecieiver;
 import static com.MohamedTaha.Imagine.New.receiver.GetPrayerTimesEveryMonth.enableBootReceiverEveryMonth;
 import static com.MohamedTaha.Imagine.New.rest.RetrofitClient.getRetrofit;
 import static com.MohamedTaha.Imagine.New.rest.RetrofitClientCity.getRetrofitForCity;
@@ -125,6 +125,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         //getString Retrieve a String value from the Preference
         repear = sharedPreferences.getString(getString(R.string.settings_method_key),
                 getString(R.string.settings_method_default));
+        //checkIsFragmentAzanIsOpen();
 
 
         apiServicesForCity = getRetrofitForCity().create(APIServices.class);
@@ -156,8 +157,6 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
             startActivity(intent);
             overridePendingTransition(R.anim.item_anim_slide_from_top, R.anim.item_anim_no_thing);
         }
-
-
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
         activityNavigationDrawaberBinding.navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         //navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -217,12 +216,9 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                         Log.i("TAG", " onSuccess " + integer);
                         store_date_today = integer;
                         Log.i("TAG", " timingsViewModel.store_date_today onSuccess" + store_date_today);
-
-                 //       store_date_today = integer;
                         getPrayerTimesEveryMonth(getApplicationContext());
                         enableBootReceiverEveryMonth(getApplicationContext());
                     }
-
                     @Override
                     public void onError(Throwable e) {
                         Log.i("TAG", "  onError " + e);
@@ -231,7 +227,6 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                         } else {
                             Log.i("TAG", "  MonError " + e);
                         }
-
                     }
                 }
         );
@@ -241,11 +236,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                 // Add RXAndroid2 for support with Room because still RXjava3 don't support Room
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(date_today -> {
-                   // store_date_today = date_today;
                     store_date_today = date_today;
-
-                   // Log.i("TAG", "date today from data base : " + store_date_today);
-                    //____________________________ Get prayer times from internet every month
                     // if (store_date_today <= 0) {
                     getPrayerTimesEveryMonth(getApplicationContext());
                     enableBootReceiverEveryMonth(getApplicationContext());
@@ -254,9 +245,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                     //    }
                 }, e -> {
                    // Log.i("TAG", "e yes : " + store_date_today);
-
                     Toast.makeText(getApplicationContext(), "e : " + e.getMessage(), Toast.LENGTH_SHORT).show();
-
                 });
     }
 
@@ -288,7 +277,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                 case R.id.read_quran:
                     //NavigationDrawaberActivityVPager.setCurrentItem(0);
                     GridViewFragment gridViewFragment = new GridViewFragment();
-                    HelperClass.replece(gridViewFragment, getSupportFragmentManager(), R.id.frameLayout);
+                    HelperClass.replece(gridViewFragment, getSupportFragmentManager(), R.id.frameLayout,FOR_GET_FRAGMENT_AZAN);
                     break;
                 case R.id.read_parts:
                     //  NavigationDrawaberActivityVPager.setCurrentItem(1);
@@ -306,7 +295,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                     break;
                 case R.id.prayer_times:
                     AzanFragment azanFragment = new AzanFragment();
-                    HelperClass.replece(azanFragment, getSupportFragmentManager(), R.id.frameLayout, FOR_GET_FRAGMENT_AZAN);
+                    HelperClass.replece(azanFragment, getSupportFragmentManager(), R.id.frameLayout);
                     break;
             }
             current_fragment = id;
@@ -331,13 +320,15 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 
     @Override
     protected void onResume() {
+        NotificationHelperPrayerTime notificationHelperPrayerTime = new NotificationHelperPrayerTime();
+
         super.onResume();
         NotificationHelper.sendNotificationEveryHalfDay(getApplicationContext());
         NotificationHelper.enableBootRecieiver(getApplicationContext());
 
      //   if (!SharedPerefrenceHelper.getBooleanPrayerTimeEveryday(getApplicationContext(), IS_FIRST_TIME_PRAYER_TIME_EVERYDAY, false)) {
             getPrayerTimesEveryday(getApplicationContext());
-            enableBootRecieiver(getApplicationContext());
+        notificationHelperPrayerTime.enableBootRecieiver(getApplicationContext());
             SharedPerefrenceHelper.putBooleanPrayerTimeEveryday(getApplicationContext(), IS_FIRST_TIME_PRAYER_TIME_EVERYDAY, true);
             Log.d("TAG", "getBooleanPrayerTimeEveryday if");
 //        }else {
@@ -347,20 +338,17 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     }
 
     private void checkIsFragmentAzanIsOpen() {
-        AzanFragment azanFragment = (AzanFragment) getSupportFragmentManager().findFragmentByTag(FOR_GET_FRAGMENT_AZAN);
-        if (azanFragment != null && azanFragment.isVisible()) {
-            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            //getString Retrieve a String value from the Preference
-            repear = sharedPreferences.getString(getString(R.string.settings_method_key),
-                    getString(R.string.settings_method_default));
-            compare_methods = SharedPerefrenceHelper.getStringCompareMethod(this, COMPARE_METHOD, null);
+        GridViewFragment azanFragment = (GridViewFragment) getSupportFragmentManager().findFragmentByTag(FOR_GET_FRAGMENT_AZAN);
+    //    AzanFragment azanFragment = (AzanFragment) getSupportFragmentManager().findFragmentByTag(FOR_GET_FRAGMENT_AZAN);
 
-            if (compare_methods != null && !compare_methods.equals(repear)) {
-                HelperClass.replece(azanFragment, getSupportFragmentManager(), R.id.frameLayout, FOR_GET_FRAGMENT_AZAN);
-            }
-            {
-                Toast.makeText(this, "not " + repear + " : " + compare_methods, Toast.LENGTH_SHORT).show();
-            }
+        if (azanFragment != null && azanFragment.isVisible()) {
+                Toast.makeText(this, "AzanFragment true " , Toast.LENGTH_SHORT).show();
+            Log.d("TAG", "AzanFragment true");
+
+        }else {
+            Toast.makeText(this, "AzanFragment not ", Toast.LENGTH_SHORT).show();
+            Log.d("TAG", "AzanFragment false");
+
         }
     }
 
@@ -517,7 +505,8 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                     if (!isInternet()) {
 
                     } else {
-                        Log.d("TAG", "TimingsAppDatabase DeletePrayerTimes first");
+                        Log.d("TAG", "TimingsAppDatabase DeletePrayerTimes AddPrayerTimes Every day ");
+
                         TimingsAppDatabase.getInstance(context).DeletePrayerTimes(NavigationDrawaberActivity.this);
                     }
                 }
@@ -545,6 +534,10 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     }
 
     private void getCity(Context context) {
+        Log.d("TAG", "getCity");
+
+       // checkIsFragmentAzanIsOpen();
+
         Log.d("TAG", "getPrayerTimesByCity");
         Call<GetCity> getCityCall = apiServicesForCity.getCity();
         getCityCall.enqueue(new Callback<GetCity>() {

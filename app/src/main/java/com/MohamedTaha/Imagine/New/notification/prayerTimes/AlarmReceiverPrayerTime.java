@@ -31,7 +31,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertFromMilliSecondsToTime;
-import static com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationHelperPrayerTime.TEXT_NOTIFICATION;
 
 /**
  * Created by MANASATT on 04/09/17.
@@ -39,7 +38,7 @@ import static com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationH
 
 public class AlarmReceiverPrayerTime extends BroadcastReceiver {
     private static final String CHANNEL_ID = "com.MohamedTaha.Imagine.Quran.notification.prayer.times";
-   // public static final String SEND_TIME_FOR_SEINDING = "time_send";
+    public static final String TEXT_NOTIFICATIONALRARM = "com.MohamedTaha.Imagine.Quran.notification.text.notification.alarm";
     private static final String NOTIFICATION_ID_FOR_PRAYER_TIMES = "notification_id_for_prayer_times";
     public static int num;
     private int notification_id_for_prayer_times;
@@ -54,7 +53,7 @@ public class AlarmReceiverPrayerTime extends BroadcastReceiver {
             Bundle bundle = intent.getExtras();
             Type listType = new TypeToken<List<ModelMessageNotification>>() {
             }.getType();
-            String st = bundle.getString(TEXT_NOTIFICATION);
+            String st = bundle.getString(TEXT_NOTIFICATIONALRARM);
             minutes = new Gson().fromJson(st, listType);
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(System.currentTimeMillis());
