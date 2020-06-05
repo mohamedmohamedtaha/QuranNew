@@ -559,7 +559,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     }
 
     private void getCity() {
-//        disInteractiveUSer();
+        disInteractiveUSer();
         Log.d("TAG", "getPrayerTimesByCity");
         apiServicesForCity = getRetrofitForCity().create(APIServices.class);
         Call<GetCity> getCityCall = apiServicesForCity.getCity();

@@ -25,7 +25,7 @@ public class NotificationHelper {
     private static AlarmManager alarmManager;
     private static PendingIntent alarmPendingIntent;
 
-    public static void sendNotificationEveryHalfDay(Context context) {
+    public  void sendNotificationEveryHalfDay(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         //getString Retrieve a String value from the Preference
         String repear = sharedPreferences.getString(context.getString(R.string.settings_Notification_key),
@@ -73,7 +73,7 @@ public class NotificationHelper {
     }
 
     //Enable boot receiver to persist alarms set for notification across device reboots
-    public static void enableBootRecieiver(Context context) {
+    public void enableBootRecieiver(Context context) {
         ComponentName receiver = new ComponentName(context, AlarmBootRecevier.class);
         PackageManager pm = context.getPackageManager();
         pm.setComponentEnabledSetting(receiver,

@@ -49,7 +49,6 @@ public class CancelNotificationPrayerTime extends BroadcastReceiver {
            name_prayer_time = intent.getStringExtra(TEXT_NAME_NOTIFICATION);
             prayer_time = intent.getStringExtra(TIME_NOTIFICATION);
             request_code = intent.getIntExtra(REQUEST_CODE_NOTIFICATION,-1);
-
             NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
            alarm.cancelAlarm(listForSavePrayerTimes,name_prayer_time);
            // alarm.customCancelAlarm(request_code);

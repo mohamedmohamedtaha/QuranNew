@@ -247,6 +247,16 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                    // Log.i("TAG", "e yes : " + store_date_today);
                     Toast.makeText(getApplicationContext(), "e : " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
+
+
+        NotificationHelperPrayerTime notificationHelperPrayerTime = new NotificationHelperPrayerTime();
+        NotificationHelper notificationHelper = new NotificationHelper();
+
+        notificationHelper.sendNotificationEveryHalfDay(getApplicationContext());
+        notificationHelper.enableBootRecieiver(getApplicationContext());
+
+        notificationHelperPrayerTime.getPrayerTimesEveryday(getApplicationContext());
+        notificationHelperPrayerTime.enableBootRecieiver(getApplicationContext());
     }
 
     private void getCityName() {
@@ -320,21 +330,22 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 
     @Override
     protected void onResume() {
-        NotificationHelperPrayerTime notificationHelperPrayerTime = new NotificationHelperPrayerTime();
 
         super.onResume();
-        NotificationHelper.sendNotificationEveryHalfDay(getApplicationContext());
-        NotificationHelper.enableBootRecieiver(getApplicationContext());
-
-     //   if (!SharedPerefrenceHelper.getBooleanPrayerTimeEveryday(getApplicationContext(), IS_FIRST_TIME_PRAYER_TIME_EVERYDAY, false)) {
-            getPrayerTimesEveryday(getApplicationContext());
-        notificationHelperPrayerTime.enableBootRecieiver(getApplicationContext());
-            SharedPerefrenceHelper.putBooleanPrayerTimeEveryday(getApplicationContext(), IS_FIRST_TIME_PRAYER_TIME_EVERYDAY, true);
-            Log.d("TAG", "getBooleanPrayerTimeEveryday if");
-//        }else {
-//            Log.d("TAG", "getBooleanPrayerTimeEveryday else");
+//        NotificationHelperPrayerTime notificationHelperPrayerTime = new NotificationHelperPrayerTime();
 //
-//        }
+//        NotificationHelper.sendNotificationEveryHalfDay(getApplicationContext());
+//        NotificationHelper.enableBootRecieiver(getApplicationContext());
+//
+//     //   if (!SharedPerefrenceHelper.getBooleanPrayerTimeEveryday(getApplicationContext(), IS_FIRST_TIME_PRAYER_TIME_EVERYDAY, false)) {
+//            getPrayerTimesEveryday(getApplicationContext());
+//        notificationHelperPrayerTime.enableBootRecieiver(getApplicationContext());
+//            SharedPerefrenceHelper.putBooleanPrayerTimeEveryday(getApplicationContext(), IS_FIRST_TIME_PRAYER_TIME_EVERYDAY, true);
+//            Log.d("TAG", "getBooleanPrayerTimeEveryday if");
+////        }else {
+////            Log.d("TAG", "getBooleanPrayerTimeEveryday else");
+////
+////        }
     }
 
     private void checkIsFragmentAzanIsOpen() {
@@ -352,20 +363,6 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         }
     }
 
-    public static void getPrayerTimesEveryday(Context context) {
-        int ALARM_TYPE_ELAPSED = 10;
-        AlarmManager alarmManager;
-        PendingIntent alarmPendingIntent;
-        Intent intent = new Intent(context, GetPrayerTimesEveryDay.class);
-        Log.d("TAG", "getPrayerTimesEveryday ");
-        alarmPendingIntent = PendingIntent.getBroadcast(context, ALARM_TYPE_ELAPSED, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        Calendar setTime = Calendar.getInstance();
-        setTime.setTimeInMillis(System.currentTimeMillis());
-        setTime.set(Calendar.HOUR_OF_DAY, 1);
-        alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
-                setTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmPendingIntent);
-    }
 
     public static void getPrayerTimesEveryMonth(Context context) {
         int ALARM_TYPE_ELAPSED = 11;
@@ -378,7 +375,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         alarmPendingIntent = PendingIntent.getBroadcast(context, ALARM_TYPE_ELAPSED, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Calendar setTime = Calendar.getInstance();
         setTime.setTimeInMillis(System.currentTimeMillis());
-        setTime.set(Calendar.HOUR_OF_DAY, 10);
+        setTime.set(Calendar.HOUR_OF_DAY, 1);
        // setTime.set(Calendar.MINUTE, 30);
         alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
