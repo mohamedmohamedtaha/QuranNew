@@ -1,13 +1,11 @@
 package com.MohamedTaha.Imagine.New.helper.util;
 
-import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.chrono.Chronology;
 import java.time.chrono.HijrahChronology;
 import java.time.chrono.HijrahDate;
 import java.util.Calendar;
@@ -25,37 +23,83 @@ public class ConvertTimes {
             Locale locale = new Locale("ar");
             SimpleDateFormat input_format = new SimpleDateFormat("dd-MM-yyyy");
             SimpleDateFormat output_format = new SimpleDateFormat("EEE d MMM yyy", locale);
-          //  SimpleDateFormat output_format = new SimpleDateFormat("EEE dd MMM- yyy", locale);
+            //  SimpleDateFormat output_format = new SimpleDateFormat("EEE dd MMM- yyy", locale);
             Date currDate = input_format.parse(current_date);
             formattedDate = output_format.format(currDate);
             Log.d("TAG", formattedDate);
         } catch (Exception e) {
-            Log.d("TAG","Error: "+  e.getMessage());
+            Log.d("TAG", "Error: " + e.getMessage());
         }
         return formattedDate;
     }
-    public static String convertDateToFormatArabicHegry(String current_date) {
-        String formattedDate = null;
-        try {
 
-//            Date date = new Date(); // Gregorian date
-//
-//            Calendar cl=Calendar.getInstance();
-//            cl.setTime(date);
-//            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                HijrahDate islamyDate = HijrahChronology.INSTANCE.
-//                        date(LocalDate.of(cl.get(Calendar.YEAR),cl.get(Calendar.MONTH)+1, cl.get(Calendar.DATE)));
-//            }
+    public static String convertDateToFormatArabicHegry(String current_date) {
+        String formattedDay = null;
+        String formattedMonth = null;
+        String formattedYear = null;
+        try {
             Locale locale = new Locale("ar");
             SimpleDateFormat input_format = new SimpleDateFormat("dd-MM-yyyy");
-            SimpleDateFormat output_format = new SimpleDateFormat(" dd /MM /yyy", locale);
+            SimpleDateFormat output_day = new SimpleDateFormat(" dd", locale);
+            SimpleDateFormat output_month = new SimpleDateFormat("M", Locale.getDefault());
+            SimpleDateFormat output_year = new SimpleDateFormat(" yyy", locale);
+
             Date currDate = input_format.parse(current_date);
-            formattedDate = output_format.format(currDate);
-            Log.d("TAG", formattedDate);
+             formattedDay = output_day.format(currDate);
+             formattedMonth = output_month.format(currDate);
+             formattedYear = output_year.format(currDate);
         } catch (Exception e) {
-            Log.d("TAG","Error: "+  e.getMessage());
+            Log.d("TAG", "Error: " + e.getMessage());
         }
-        return formattedDate;
+        return formattedDay + " " + getNameMonthHegry(formattedMonth) + " " + formattedYear;
+    }
+
+    private static String getNameMonthHegry(String month) {
+        String name_month = null;
+        switch (month) {
+            case "1":
+                name_month = "محرم";
+                break;
+            case "2":
+                name_month = "صفر";
+                break;
+            case "3":
+                name_month = "ربيع الأول";
+                break;
+            case "4":
+                name_month = "ربيع الآخر";
+                break;
+            case "5":
+                name_month = "جمادي الأولى";
+                break;
+            case "6":
+                name_month = "جمادي الآخره";
+                break;
+            case "7":
+                name_month = "رجب";
+                break;
+            case "8":
+                name_month = "شعبان";
+                break;
+            case "9":
+                name_month = "رمصان";
+
+                break;
+            case "10":
+                name_month = "شوال";
+
+                break;
+            case "11":
+                name_month = "ذو القعدة";
+                break;
+            case "12":
+                name_month = "ذي الحجة";
+                break;
+            default:
+                break;
+        }
+        return name_month;
+
     }
 
     private static boolean isTrue;

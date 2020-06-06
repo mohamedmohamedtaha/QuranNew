@@ -13,7 +13,6 @@ import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -46,7 +45,6 @@ import com.MohamedTaha.Imagine.New.mvp.presenter.NavigationDrawarPresenter;
 import com.MohamedTaha.Imagine.New.mvp.view.NavigationDrawarView;
 import com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationHelperPrayerTime;
 import com.MohamedTaha.Imagine.New.notification.quran.NotificationHelper;
-import com.MohamedTaha.Imagine.New.receiver.GetPrayerTimesEveryDay;
 import com.MohamedTaha.Imagine.New.receiver.GetPrayerTimesEveryMonth;
 import com.MohamedTaha.Imagine.New.rest.APIServices;
 import com.MohamedTaha.Imagine.New.room.DatabaseCallback;
@@ -59,6 +57,11 @@ import com.MohamedTaha.Imagine.New.ui.fragments.GridViewFragment;
 import com.MohamedTaha.Imagine.New.ui.fragments.PartsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+
+import org.joda.time.Chronology;
+import org.joda.time.LocalDate;
+import org.joda.time.chrono.ISOChronology;
+import org.joda.time.chrono.IslamicChronology;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -108,7 +111,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     public static String store_city_name = null;
     private SharedPreferences sharedPreferences;
     private String repear;
-  //  private String compare_methods = null;
+    //  private String compare_methods = null;
     APIServices apiServicesForCity;
     String city_name = null;
     int geocoderMaxResults = 1;
@@ -127,6 +130,12 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                 getString(R.string.settings_method_default));
         //checkIsFragmentAzanIsOpen();
 
+        Chronology iso = ISOChronology.getInstanceUTC();
+        Chronology hijri = IslamicChronology.getInstanceUTC();
+
+        LocalDate todayIso = new LocalDate(2020, 6, 6, iso);
+        LocalDate todayHijri = new LocalDate(todayIso.toDateTimeAtStartOfDay(), hijri);
+        Log.d("TAG", " Joda time is : " + todayHijri);
         apiServicesForCity = getRetrofitForCity().create(APIServices.class);
         apiServices = getRetrofit().create(APIServices.class);
 
@@ -134,7 +143,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         appPackageName = getPackageName();
 
         timingsViewModel = new ViewModelProvider(this).get(TimingsViewModel.class);
-        if (timingsViewModel.isNewlyCreated && savedInstanceState != null){
+        if (timingsViewModel.isNewlyCreated && savedInstanceState != null) {
             timingsViewModel.restoreState(savedInstanceState);
             Log.i("TAG", " onSuccess timingsViewModel navigation " + store_date_today);
         }
@@ -210,6 +219,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                     @Override
                     public void onSubscribe(Disposable d) {
                     }
+
                     @Override
                     public void onSuccess(Integer integer) {
                         Log.i("TAG", " onSuccess " + integer);
@@ -218,11 +228,12 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                         getPrayerTimesEveryMonth(getApplicationContext());
                         enableBootReceiverEveryMonth(getApplicationContext());
                     }
+
                     @Override
                     public void onError(Throwable e) {
                         Log.i("TAG", "  onError " + e);
                         if (e instanceof EmptyResultSetException) {
-                           isNetworkConnected(context);
+                            isNetworkConnected(context);
                         } else {
                             Log.i("TAG", "  MonError " + e);
                         }
@@ -239,11 +250,11 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                     // if (store_date_today <= 0) {
                     getPrayerTimesEveryMonth(getApplicationContext());
                     enableBootReceiverEveryMonth(getApplicationContext());
-                   // Log.i("TAG", "store_date_today yes : " + store_date_today);
+                    // Log.i("TAG", "store_date_today yes : " + store_date_today);
                     //    isNetworkConnected(this);
                     //    }
                 }, e -> {
-                   // Log.i("TAG", "e yes : " + store_date_today);
+                    // Log.i("TAG", "e yes : " + store_date_today);
                     Toast.makeText(getApplicationContext(), "e : " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
 
@@ -286,7 +297,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                 case R.id.read_quran:
                     //NavigationDrawaberActivityVPager.setCurrentItem(0);
                     GridViewFragment gridViewFragment = new GridViewFragment();
-                    HelperClass.replece(gridViewFragment, getSupportFragmentManager(), R.id.frameLayout,FOR_GET_FRAGMENT_AZAN);
+                    HelperClass.replece(gridViewFragment, getSupportFragmentManager(), R.id.frameLayout, FOR_GET_FRAGMENT_AZAN);
                     break;
                 case R.id.read_parts:
                     //  NavigationDrawaberActivityVPager.setCurrentItem(1);
@@ -349,13 +360,13 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 
     private void checkIsFragmentAzanIsOpen() {
         GridViewFragment azanFragment = (GridViewFragment) getSupportFragmentManager().findFragmentByTag(FOR_GET_FRAGMENT_AZAN);
-    //    AzanFragment azanFragment = (AzanFragment) getSupportFragmentManager().findFragmentByTag(FOR_GET_FRAGMENT_AZAN);
+        //    AzanFragment azanFragment = (AzanFragment) getSupportFragmentManager().findFragmentByTag(FOR_GET_FRAGMENT_AZAN);
 
         if (azanFragment != null && azanFragment.isVisible()) {
-                Toast.makeText(this, "AzanFragment true " , Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "AzanFragment true ", Toast.LENGTH_SHORT).show();
             Log.d("TAG", "AzanFragment true");
 
-        }else {
+        } else {
             Toast.makeText(this, "AzanFragment not ", Toast.LENGTH_SHORT).show();
             Log.d("TAG", "AzanFragment false");
 
@@ -375,7 +386,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         Calendar setTime = Calendar.getInstance();
         setTime.setTimeInMillis(System.currentTimeMillis());
         setTime.set(Calendar.HOUR_OF_DAY, 1);
-       // setTime.set(Calendar.MINUTE, 30);
+        // setTime.set(Calendar.MINUTE, 30);
         alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
                 setTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmPendingIntent);
@@ -533,7 +544,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 
     private void getCity(Context context) {
         Log.d("TAG", "getCity");
-       // checkIsFragmentAzanIsOpen();
+        // checkIsFragmentAzanIsOpen();
         Log.d("TAG", "getPrayerTimesByCity");
         Call<GetCity> getCityCall = apiServicesForCity.getCity();
         getCityCall.enqueue(new Callback<GetCity>() {
@@ -545,8 +556,8 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                         Log.d("TAG", city.getCity() + " : " + city.getCountry());
                         city_name = getCityNameWithoutLocation(city.getLat(), city.getLon());
                         Log.d("TAG", "City name in arabic getCity is : " + city_name);
-                            getMethodPreferences(city.getCountry());
-                            getPrayerTimesByCity(context, city.getCity(), city.getCountry(), Integer.valueOf(repear), city_name);
+                        getMethodPreferences(city.getCountry());
+                        getPrayerTimesByCity(context, city.getCity(), city.getCountry(), Integer.valueOf(repear), city_name);
                         Log.d("TAG", " repear is : " + repear);
 
                     }
@@ -585,6 +596,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
             }
         });
     }
+
     private String getMethodPreferences(String country_name) {
         if (country_name.equals(getString(R.string.saudi_arabia))) {
             customForPreferences(getString(R.string.settings_method_umm_al_qura_university_makkah_value), getString(R.string.settings_method_umm_al_qura_university_makkah_value));
@@ -614,6 +626,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         editor.putString(getString(R.string.settings_method_key), repear);
         editor.commit();
     }
+
     private String getCityNameWithoutLocation(double latitude, double longitude) {
         String cityName = "";
         Locale locale = new Locale("ar");
@@ -624,7 +637,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                 for (Address adr : addresses) {
                     if (adr.getLocality() != null && adr.getLocality().length() > 0) {
                         cityName = adr.getLocality();
-                        Log.d("TAG" , " cityName : " +  cityName);
+                        Log.d("TAG", " cityName : " + cityName);
 
                         break;
                     }

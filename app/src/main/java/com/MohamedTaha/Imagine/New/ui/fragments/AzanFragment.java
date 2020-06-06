@@ -959,9 +959,9 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                         stopLocationUpdtaes();
                         return;
                     } else {
-                    Log.i("TAG", "TimingsAppDatabase.getInstance");
-                    TimingsAppDatabase.getInstance(getActivity()).DeletePrayerTimesForGetDataWithLocation(AzanFragment.this);
-                       }
+                        Log.i("TAG", "TimingsAppDatabase.getInstance");
+                        TimingsAppDatabase.getInstance(getActivity()).DeletePrayerTimesForGetDataWithLocation(AzanFragment.this);
+                    }
                 }
             }
         };
@@ -1036,6 +1036,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         if (fusedLocationProviderClient != null) {
             fusedLocationProviderClient.removeLocationUpdates(locationCallback);
         }
+
     }
 
     public String getCityName(Location location) {
