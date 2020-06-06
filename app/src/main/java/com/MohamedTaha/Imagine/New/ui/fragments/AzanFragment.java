@@ -35,7 +35,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -181,7 +180,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
             HelperClass.change_language("ar", getActivity());
         }
         setHasOptionsMenu(true);
-      //  getActivity().invalidateOptionsMenu();
+        //  getActivity().invalidateOptionsMenu();
         timingsViewModel = new ViewModelProvider(this).get(TimingsViewModel.class);
         if (timingsViewModel.isNewlyCreated && savedInstanceState != null) {
             timingsViewModel.restoreState(savedInstanceState);
@@ -262,7 +261,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         MenuItem SearchItem = menu.findItem(R.id.action_search);
-       // SearchItem.setVisible(false);
+        // SearchItem.setVisible(false);
         SearchItem.setEnabled(false);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -565,7 +564,11 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
 
                         Log.d("TAG", city.getCity() + " : " + city.getCountry());
                         //city_name = getCityNameTest(city.getLat(), city.getLon());
-                        city_name = getCityNameWithoutLocation(city.getLat(), city.getLon());
+                        //     city_name = getCityNameWithoutLocation(city.getLat(), city.getLon());
+                        //        city_name = getCityNameWithoutLocation(27.9063452, 34.31876885);
+                        //    city_name = getCityNameTest(27.9063452, 34.31876885);
+                        city_name = getCityNameTest(city.getLat(), city.getLon());
+
                         //  getMethodPrefrences("Egypt");
                         Log.d("TAG", "City name in arabic is : " + city_name);
                         if (!isValueForPrayerTimesChanged) {
@@ -944,21 +947,21 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                     //Update UI with location data
                     Log.d("TAG", "location is locationCallback " + location.getLatitude() + " : " + location.getLongitude());
                     location_user = location;
-                    Toast.makeText(getActivity(), " " + location_user.getLongitude() + " :  " + location_user.getLatitude(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(), " " + location_user.getLongitude() + " :  " + location_user.getLatitude(), Toast.LENGTH_SHORT).show();
                     updateGPSCoordinates();
                     Log.i("TAG", "location_user : " + getLatitude() + " : " + getLongitude());
                     city_name = getCityName(location);
                     Log.i("TAG", ":City name is :" + city_name);
                     // if (!store_city_name.equals(null) && store_city_name.equals(city_name)) {
-//                    if (store_city_name != null && store_city_name.equals(city_name)) {
-//                        Snackbar.make(getView(), "بالفعل انت في مدينة " + city_name, Snackbar.LENGTH_LONG).show();
-//                        clearFlagForInteractiveUser();
-//                        stopLocationUpdtaes();
-//                        return;
-//                    } else {
-                        Log.i("TAG", "TimingsAppDatabase.getInstance");
-                        TimingsAppDatabase.getInstance(getActivity()).DeletePrayerTimesForGetDataWithLocation(AzanFragment.this);
-                 //   }
+                    if (store_city_name != null && store_city_name.equals(city_name)) {
+                        Snackbar.make(getView(), "بالفعل انت في مدينة " + city_name, Snackbar.LENGTH_LONG).show();
+                        clearFlagForInteractiveUser();
+                        stopLocationUpdtaes();
+                        return;
+                    } else {
+                    Log.i("TAG", "TimingsAppDatabase.getInstance");
+                    TimingsAppDatabase.getInstance(getActivity()).DeletePrayerTimesForGetDataWithLocation(AzanFragment.this);
+                       }
                 }
             }
         };
@@ -1001,8 +1004,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         repear = sharedPreferences.getString(getString(R.string.settings_method_key),
                 getString(R.string.settings_method_default));
-
-        compare_methods = SharedPerefrenceHelper.getStringCompareMethod(getActivity(), COMPARE_METHOD, "3");
+        compare_methods = SharedPerefrenceHelper.getStringCompareMethod(getActivity(), COMPARE_METHOD, "5");
         if (SharedPerefrenceHelper.getBooleanForWayUsing(getActivity(), IS_FIRST_TIME_WAY_USING, false)) {
             Log.d("TAG", "Repear is " + repear);
             if (!compare_methods.equals(repear)) {
@@ -1037,7 +1039,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     }
 
     public String getCityName(Location location) {
-        String cityName = "";
+        String cityName = null;
         if (location != null) {
             Locale locale = new Locale("ar");
             //For change language to English
@@ -1050,6 +1052,10 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                         if (adr.getLocality() != null && adr.getLocality().length() > 0) {
                             cityName = adr.getLocality();
                             break;
+                        } else {
+                            cityName = adr.getSubAdminArea();
+                            break;
+
                         }
                     }
                 }
@@ -1085,18 +1091,39 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     }
 
     private String getCityNameTest(double latitude, double longitude) {
+        String cityName = null;
+        //For change language to English
+        Locale locale = new Locale("ar");
+        Geocoder geocoder = new Geocoder(getActivity(), locale);
+
+        //  Geocoder geocoder = new Geocoder(getActivity(), Locale.ENGLISH);
+        //Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+        Log.d("TAG", " geocoder : " + geocoder);
+
         try {
-            Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
             List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            String cityName = addresses.get(0).getAddressLine(0);
-            String stateName = addresses.get(0).getAddressLine(1);
-            String countryName = addresses.get(0).getAddressLine(2);
-            Log.d("TAG", "City name" + cityName + " : " + stateName + " : " + countryName);
+            Log.d("TAG", " addresses : " + addresses);
 
-            return cityName + " : " + stateName + " : " + countryName;
+            if (addresses != null && addresses.size() > 0) {
+                for (Address adr : addresses) {
+                    Log.d("TAG", " adr.getSubAdminArea() : " + adr.getSubAdminArea() + " : " + adr.getAdminArea());
 
+                    if (adr.getLocality() != null && adr.getLocality().length() > 0) {
+                        cityName = adr.getLocality();
+                        Log.d("TAG", " cityName getCityNameTest : " + cityName);
+
+                        break;
+                    } else {
+                        cityName = adr.getSubAdminArea();
+                    }
+                }
+            }
+            return cityName;
         } catch (IOException e) {
+            Log.d("TAG", " E : " + e.getMessage());
+
         }
+
         return null;
     }
 
@@ -1179,7 +1206,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                                     Log.d("TAG", "City name is from store_city_name" + store_city_name);
                                 }
                             }).start();
-
 
 
                         }

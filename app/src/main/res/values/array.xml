@@ -17688,11 +17688,11 @@
         <item>@string/settings_by_department_value_every_day</item>
     </array>
     <array name="settings_by_mothed_label">
-        <item>@string/settings_method_muslim_world_league_label</item>
-        <item>@string/settings_method_islamic_society_of_north_america_label</item>
-        <item>@string/settings_method_egyptian_general_authority_of_survey_label</item>
-        <item>@string/settings_method_umm_al_qura_university_makkah_label</item>
         <item>@string/settings_method_university_of_islamic_sciences_karachi_label</item>
+        <item>@string/settings_method_islamic_society_of_north_america_label</item>
+        <item>@string/settings_method_muslim_world_league_label</item>
+        <item>@string/settings_method_umm_al_qura_university_makkah_label</item>
+        <item>@string/settings_method_egyptian_general_authority_of_survey_label</item>
         <item>@string/settings_method_institute_of_geophysics_university_of_tehran_label</item>
         <item>@string/settings_method_gulf_region_label</item>
         <item>@string/settings_method_kuwait_label</item>

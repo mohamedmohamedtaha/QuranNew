@@ -24,7 +24,7 @@ public class ConvertTimes {
         try {
             Locale locale = new Locale("ar");
             SimpleDateFormat input_format = new SimpleDateFormat("dd-MM-yyyy");
-            SimpleDateFormat output_format = new SimpleDateFormat("EEE dd MMM yyy", locale);
+            SimpleDateFormat output_format = new SimpleDateFormat("EEE d MMM yyy", locale);
           //  SimpleDateFormat output_format = new SimpleDateFormat("EEE dd MMM- yyy", locale);
             Date currDate = input_format.parse(current_date);
             formattedDate = output_format.format(currDate);

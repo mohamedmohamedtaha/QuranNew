@@ -143,8 +143,8 @@ public class AdapterAzanVP extends PagerAdapter {
         if (convertDate().equals(azan.getDate_today())) {
             if (calendar.getTimeInMillis() > getTimeMillisSecond(Integer.valueOf(azan.getIsha().substring(0, 2)), Integer.valueOf(azan.getIsha().substring(3, 5)))
                     && calendar.getTimeInMillis() < getTimeMillisSecond(Integer.valueOf(azan.getFajr().substring(0, 2)), Integer.valueOf(azan.getFajr().substring(3, 5)))) {
-                recyclerAzanViewHolder.TFagr.setTextColor(ContextCompat.getColor(context, R.color.colorOrange));
                 recyclerAzanViewHolder.TVFagr.setTextColor(ContextCompat.getColor(context, R.color.colorOrange));
+                recyclerAzanViewHolder.TFagr.setTextColor(ContextCompat.getColor(context, R.color.colorOrange));
             } else if (calendar.getTimeInMillis() > getTimeMillisSecond(Integer.valueOf(azan.getFajr().substring(0, 2)), Integer.valueOf(azan.getFajr().substring(3, 5)))
                     && calendar.getTimeInMillis() < getTimeMillisSecond(Integer.valueOf(azan.getSunrise().substring(0, 2)), Integer.valueOf(azan.getSunrise().substring(3, 5)))) {
                 recyclerAzanViewHolder.TVSunrise.setTextColor(ContextCompat.getColor(context, R.color.colorOrange));

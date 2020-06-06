@@ -108,7 +108,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     public static String store_city_name = null;
     private SharedPreferences sharedPreferences;
     private String repear;
-    private String compare_methods = null;
+  //  private String compare_methods = null;
     APIServices apiServicesForCity;
     String city_name = null;
     int geocoderMaxResults = 1;
@@ -512,6 +512,8 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 
     @Override
     public void onPrayerTimesAdded() {
+        SharedPerefrenceHelper.putStringCompareMethod(this, COMPARE_METHOD, repear);
+        changeValueInListPreference();
 
     }
 
@@ -531,9 +533,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 
     private void getCity(Context context) {
         Log.d("TAG", "getCity");
-
        // checkIsFragmentAzanIsOpen();
-
         Log.d("TAG", "getPrayerTimesByCity");
         Call<GetCity> getCityCall = apiServicesForCity.getCity();
         getCityCall.enqueue(new Callback<GetCity>() {
@@ -545,7 +545,10 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                         Log.d("TAG", city.getCity() + " : " + city.getCountry());
                         city_name = getCityNameWithoutLocation(city.getLat(), city.getLon());
                         Log.d("TAG", "City name in arabic getCity is : " + city_name);
-                        getPrayerTimesByCity(context, city.getCity(), city.getCountry(), Integer.valueOf(repear), city_name);
+                            getMethodPreferences(city.getCountry());
+                            getPrayerTimesByCity(context, city.getCity(), city.getCountry(), Integer.valueOf(repear), city_name);
+                        Log.d("TAG", " repear is : " + repear);
+
                     }
                 } catch (Exception e) {
                     Log.i("TAG", " Error getCity" + e.getMessage());
@@ -582,7 +585,35 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
             }
         });
     }
+    private String getMethodPreferences(String country_name) {
+        if (country_name.equals(getString(R.string.saudi_arabia))) {
+            customForPreferences(getString(R.string.settings_method_umm_al_qura_university_makkah_value), getString(R.string.settings_method_umm_al_qura_university_makkah_value));
+        } else if (country_name.equals(getString(R.string.qatar))) {
+            customForPreferences(getString(R.string.settings_method_qatar_value), getString(R.string.settings_method_qatar_value));
+        } else if (country_name.equals(getString(R.string.kuwait))) {
+            customForPreferences(getString(R.string.settings_method_kuwait_value), getString(R.string.settings_method_kuwait_value));
+        } else if (country_name.equals(getString(R.string.turkey))) {
+            customForPreferences(getString(R.string.settings_method_diyanet_işleri_başkanlığı_turkey_value), getString(R.string.settings_method_diyanet_işleri_başkanlığı_turkey_value));
+        } else if (country_name.equals(getString(R.string.russia))) {
+            customForPreferences(getString(R.string.settings_method_spiritual_administration_of_muslims_of_russia_value), getString(R.string.settings_method_spiritual_administration_of_muslims_of_russia_value));
+        } else {
+            customForPreferences(getString(R.string.settings_method_key), getString(R.string.settings_method_default));
+        }
+        return repear;
+    }
 
+    private String customForPreferences(String method_key, String method_default) {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        repear = sharedPreferences.getString(method_key, method_default);
+        return repear;
+    }
+
+    private void changeValueInListPreference() {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(getString(R.string.settings_method_key), repear);
+        editor.commit();
+    }
     private String getCityNameWithoutLocation(double latitude, double longitude) {
         String cityName = "";
         Locale locale = new Locale("ar");
