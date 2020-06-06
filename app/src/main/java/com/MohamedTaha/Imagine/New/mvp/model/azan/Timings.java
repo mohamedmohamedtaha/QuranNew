@@ -120,6 +120,16 @@ public class Timings {
     @Expose
     private String midnight;
 
+    public String getDay_today_hegry() {
+        return day_today_hegry;
+    }
+
+    public void setDay_today_hegry(String day_today_hegry) {
+        this.day_today_hegry = day_today_hegry;
+    }
+
+    private String day_today_hegry ;
+
     public String getFajr() {
         return fajr;
     }

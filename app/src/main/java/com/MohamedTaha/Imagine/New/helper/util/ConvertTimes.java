@@ -1,9 +1,15 @@
 package com.MohamedTaha.Imagine.New.helper.util;
 
+import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.chrono.Chronology;
+import java.time.chrono.HijrahChronology;
+import java.time.chrono.HijrahDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -18,7 +24,31 @@ public class ConvertTimes {
         try {
             Locale locale = new Locale("ar");
             SimpleDateFormat input_format = new SimpleDateFormat("dd-MM-yyyy");
-            SimpleDateFormat output_format = new SimpleDateFormat("EEE dd MMM- yyy", locale);
+            SimpleDateFormat output_format = new SimpleDateFormat("EEE dd MMM yyy", locale);
+          //  SimpleDateFormat output_format = new SimpleDateFormat("EEE dd MMM- yyy", locale);
+            Date currDate = input_format.parse(current_date);
+            formattedDate = output_format.format(currDate);
+            Log.d("TAG", formattedDate);
+        } catch (Exception e) {
+            Log.d("TAG","Error: "+  e.getMessage());
+        }
+        return formattedDate;
+    }
+    public static String convertDateToFormatArabicHegry(String current_date) {
+        String formattedDate = null;
+        try {
+
+//            Date date = new Date(); // Gregorian date
+//
+//            Calendar cl=Calendar.getInstance();
+//            cl.setTime(date);
+//            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                HijrahDate islamyDate = HijrahChronology.INSTANCE.
+//                        date(LocalDate.of(cl.get(Calendar.YEAR),cl.get(Calendar.MONTH)+1, cl.get(Calendar.DATE)));
+//            }
+            Locale locale = new Locale("ar");
+            SimpleDateFormat input_format = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat output_format = new SimpleDateFormat(" dd /MM /yyy", locale);
             Date currDate = input_format.parse(current_date);
             formattedDate = output_format.format(currDate);
             Log.d("TAG", formattedDate);

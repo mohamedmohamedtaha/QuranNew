@@ -181,15 +181,13 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
             HelperClass.change_language("ar", getActivity());
         }
         setHasOptionsMenu(true);
+      //  getActivity().invalidateOptionsMenu();
         timingsViewModel = new ViewModelProvider(this).get(TimingsViewModel.class);
-
-
         if (timingsViewModel.isNewlyCreated && savedInstanceState != null) {
             timingsViewModel.restoreState(savedInstanceState);
             Log.i("TAG", " onSuccess timingsViewModel " + store_date_today);
         }
         timingsViewModel.isNewlyCreated = false;
-
         bundle = getArguments();
         if (bundle != null) {
             int bundle1 = bundle.getInt("bundle");
@@ -213,7 +211,8 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         //  for avoid start show way using
         if (SharedPerefrenceHelper.getBooleanForWayUsing(getActivity(), IS_FIRST_TIME_WAY_USING, false)) {
             Log.d("TAG", "Repear is " + repear);
-            getDateTodayFromDatabase(getActivity());
+
+
             if (store_date_today <= 0) {
                 Log.i("TAG", "timingsViewModel.store_date_today if" + store_date_today);
                 isNetworkConnected();
@@ -260,18 +259,11 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         return viewBuinding;
     }
 
-    public void custom_toolbar() {
-        // ((AppCompatActivity)getActivity()).setSupportActionBar(activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivityTB);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-        //for delete label for Activity
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
-    }
-
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         MenuItem SearchItem = menu.findItem(R.id.action_search);
-        SearchItem.setVisible(false);
+       // SearchItem.setVisible(false);
+        SearchItem.setEnabled(false);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -952,20 +944,21 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                     //Update UI with location data
                     Log.d("TAG", "location is locationCallback " + location.getLatitude() + " : " + location.getLongitude());
                     location_user = location;
+                    Toast.makeText(getActivity(), " " + location_user.getLongitude() + " :  " + location_user.getLatitude(), Toast.LENGTH_SHORT).show();
                     updateGPSCoordinates();
                     Log.i("TAG", "location_user : " + getLatitude() + " : " + getLongitude());
                     city_name = getCityName(location);
                     Log.i("TAG", ":City name is :" + city_name);
                     // if (!store_city_name.equals(null) && store_city_name.equals(city_name)) {
-                    if (store_city_name != null && store_city_name.equals(city_name)) {
-                        Snackbar.make(getView(), "بالفعل انت في مدينة " + city_name, Snackbar.LENGTH_LONG).show();
-                        clearFlagForInteractiveUser();
-                        stopLocationUpdtaes();
-                        return;
-                    } else {
+//                    if (store_city_name != null && store_city_name.equals(city_name)) {
+//                        Snackbar.make(getView(), "بالفعل انت في مدينة " + city_name, Snackbar.LENGTH_LONG).show();
+//                        clearFlagForInteractiveUser();
+//                        stopLocationUpdtaes();
+//                        return;
+//                    } else {
                         Log.i("TAG", "TimingsAppDatabase.getInstance");
                         TimingsAppDatabase.getInstance(getActivity()).DeletePrayerTimesForGetDataWithLocation(AzanFragment.this);
-                    }
+                 //   }
                 }
             }
         };
@@ -1177,8 +1170,18 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                             checkBeforeGetDataFromInternetTest();
                         } else {
                             Log.d("TAG", "TimingsAppDatabase DeletePrayerTimes second");
-                            TimingsAppDatabase.getInstance(getActivity()).DeletePrayerTimes(AzanFragment.this);
-                            Log.d("TAG", "City name is from store_city_name" + store_city_name);
+
+                            new Thread(new Runnable() {
+                                public void run() {
+                                    // a potentially time consuming task
+
+                                    TimingsAppDatabase.getInstance(getActivity()).DeletePrayerTimes(AzanFragment.this);
+                                    Log.d("TAG", "City name is from store_city_name" + store_city_name);
+                                }
+                            }).start();
+
+
+
                         }
                     }
                 }

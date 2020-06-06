@@ -28,11 +28,10 @@ import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.compareTwoTim
 import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.compareTwoTimess;
 import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertDate;
 import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertDateToFormatArabic;
+import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertDateToFormatArabicHegry;
 import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertTimeToAM;
 
 public class AdapterAzanVP extends PagerAdapter {
-
-
     private Context context;
     private List<Timings> azanList = new ArrayList<>();
     private ClickListener checkCity;
@@ -90,6 +89,7 @@ public class AdapterAzanVP extends PagerAdapter {
         recyclerAzanViewHolder.TVEsha.setText(convertTimeToAM(azan.getIsha().substring(0, 5)));
         recyclerAzanViewHolder.TVDateToday.setText(convertDateToFormatArabic(azan.getDate_today()));
         recyclerAzanViewHolder.TVCity.setText(azan.getCity());
+        recyclerAzanViewHolder.TVDateTodayHegry.setText(convertDateToFormatArabicHegry(azan.getDay_today_hegry()));
         recyclerAzanViewHolder.IBRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -276,7 +276,8 @@ public class AdapterAzanVP extends PagerAdapter {
         TextView TMAgrib;
         @BindView(R.id.T_Esha)
         TextView TEsha;
-
+        @BindView(R.id.TV_Date_Today_Hegry)
+        TextView TVDateTodayHegry;
         public RecyclerAzanViewHolder(@NonNull View itemView) {
             super(itemView);
             this.view = itemView;

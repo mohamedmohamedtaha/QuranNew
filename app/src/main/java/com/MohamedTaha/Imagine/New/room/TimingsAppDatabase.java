@@ -28,7 +28,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 
-@Database(entities = {Timings.class},version = 2,exportSchema = false)
+@Database(entities = {Timings.class},version = 3,exportSchema = false)
 public abstract class TimingsAppDatabase extends RoomDatabase {
     private static final String TAG = TimingsAppDatabase.class.getSimpleName();
     private static final Object LOCK = new Object();
@@ -78,6 +78,7 @@ public abstract class TimingsAppDatabase extends RoomDatabase {
                     timingsOne.setMaghrib(azan.getData().get(i).getTimings().getMaghrib());
                     timingsOne.setIsha(azan.getData().get(i).getTimings().getIsha());
                     timingsOne.setDate_today(azan.getData().get(i).getDate().getGregorian().getDate());
+                    timingsOne.setDay_today_hegry(azan.getData().get(i).getDate().getHijri().getDate());
                     timingsOne.setId_seq(i+1);
                     timingsOne.setCity(city_name);
                     timingsDao().insertTimings(timingsOne);
@@ -115,6 +116,7 @@ public abstract class TimingsAppDatabase extends RoomDatabase {
                     timingsOne.setMaghrib(azan.getData().get(i).getTimings().getMaghrib());
                     timingsOne.setIsha(azan.getData().get(i).getTimings().getIsha());
                     timingsOne.setDate_today(azan.getData().get(i).getDate().getGregorian().getDate());
+                    timingsOne.setDay_today_hegry(azan.getData().get(i).getDate().getHijri().getDate());
                     timingsOne.setId_seq(i+1);
                     timingsOne.setCity(city_name);
                     timingsDao().insertTimings(timingsOne);

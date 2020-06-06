@@ -60,12 +60,14 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
 
     @Override
     public void showDataAfterQueryText(List<ElarbaoonElnawawyModel> stringList) {
+        elnawawyModelList = stringList;
         adapterElarbaoonElnawawy = new AdapterElarbaoonElnawawy(stringList, new AdapterElarbaoonElnawawy.ClickListener() {
             @Override
             public void onClick(int position) {
-                elnawawyModel.setPosition(position);
-                elnawawyModel.setName_elhadeth(stringList.get(position).getName_elhadeth());
-                elnawawyModel.setNumber_elhadeth(stringList.get(position).getNumber_elhadeth());
+           //     odelAzkar.get(position).getPosition()
+                elnawawyModel.setPosition(elnawawyModelList.get(position).getPosition());
+                elnawawyModel.setName_elhadeth(elnawawyModelList.get(position).getName_elhadeth());
+                elnawawyModel.setNumber_elhadeth(elnawawyModelList.get(position).getNumber_elhadeth());
                 openFragmentElnawary(elnawawyModel);
             }
         });

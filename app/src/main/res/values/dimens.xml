@@ -9,6 +9,7 @@
     <dimen name="dimens_mm">12dp</dimen>
     <dimen name="dimens_l">16dp</dimen>
     <dimen name="dimens_xsl">20dp</dimen>
+    <dimen name="dimens_xml">22dp</dimen>
 
     <dimen name="dimens_xl">24dp</dimen>
     <dimen name="dimens_xxl">32dp</dimen>

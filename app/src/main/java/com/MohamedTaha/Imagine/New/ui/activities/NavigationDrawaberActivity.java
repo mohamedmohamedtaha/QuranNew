@@ -127,7 +127,6 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                 getString(R.string.settings_method_default));
         //checkIsFragmentAzanIsOpen();
 
-
         apiServicesForCity = getRetrofitForCity().create(APIServices.class);
         apiServices = getRetrofit().create(APIServices.class);
 

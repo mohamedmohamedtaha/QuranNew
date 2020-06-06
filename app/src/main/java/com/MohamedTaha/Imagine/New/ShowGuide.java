@@ -100,28 +100,6 @@ public class ShowGuide extends AppCompatActivity {
     }
 
     public void showInformation() {
-        toolbar.inflateMenu(R.menu.menu);
-        sequence = new TapTargetSequence(context)
-                .targets(showInformationInToolbar(R.id.action_search, context.getString(R.string.spectial_button), context.getString(R.string.search_string)).id(1),
-                        showInformationInToolbar(R.id.action_share, context.getString(R.string.spectial_button), context.getString(R.string.share_string)).id(2),
-                        //This for R.id.spectial_button
-                        TapTarget.forToolbarOverflow(toolbar, "   هذا الزر خاص",
-                                "      بالأربعون النووية  " +
-                                        "\n" +
-                                        "      ضبط زمن الأشعارات  " +
-                                        "\n" +
-                                        "      عرض طريقة الاستخدام مرة أخرى    "
-                                        + "\n" +
-                                        "      وتقييم التطبيق     " +
-                                        "\n" +
-                                        "      ومراسلتنا    ")
-                                .outerCircleColor(R.color.color_background_drawable)
-                                .outerCircleAlpha(0.9f)
-                                .textColor(android.R.color.white)
-                                //  .targetCircleColor(R.color.colorAccent)
-                                .transparentTarget(true)
-                                .tintTarget(false)
-                ).listener(listenerForEndInformation);
         // You don't always need a sequence, and for that there's a single time tap target
         TapTargetView.Listener listener = new TapTargetView.Listener() {
             @Override
@@ -142,6 +120,58 @@ public class ShowGuide extends AppCompatActivity {
             }
         };
         customInfo(R.id.read_quran, R.string.spectial_button, R.string.read_string, listener);
+        setInformation();
+
+//        toolbar.inflateMenu(R.menu.menu);
+//        sequence = new TapTargetSequence(context)
+//                .targets(
+//                        showInformationInToolbar(R.id.action_search, context.getString(R.string.spectial_button), context.getString(R.string.search_string)).id(1),
+//                        showInformationInToolbar(R.id.action_share, context.getString(R.string.spectial_button), context.getString(R.string.share_string)).id(2),
+//                        //This for R.id.spectial_button
+//                        TapTarget.forToolbarOverflow(toolbar, "   هذا الزر خاص",
+//                                "      بالأربعون النووية  " +
+//                                        "\n" +
+//                                        "      ضبط زمن الأشعارات  " +
+//                                        "\n" +
+//                                        "      عرض طريقة الاستخدام مرة أخرى    "
+//                                        + "\n" +
+//                                        "      وتقييم التطبيق     " +
+//                                        "\n" +
+//                                        "      ومراسلتنا    ")
+//                                .outerCircleColor(R.color.color_background_drawable)
+//                                .outerCircleAlpha(0.9f)
+//                                .textColor(android.R.color.white)
+//                                //  .targetCircleColor(R.color.colorAccent)
+//                                .transparentTarget(true)
+//                                .tintTarget(false)
+//                ).listener(listenerForEndInformation);
+
+
+    }
+    private void setInformation(){
+        toolbar.inflateMenu(R.menu.menu);
+        sequence = new TapTargetSequence(context);
+        sequence.targets(
+                        showInformationInToolbar(R.id.action_search, context.getString(R.string.spectial_button), context.getString(R.string.search_string)).id(0),
+                        showInformationInToolbar(R.id.action_share, context.getString(R.string.spectial_button), context.getString(R.string.share_string)).id(1),
+                        //This for R.id.spectial_button
+                        TapTarget.forToolbarOverflow(toolbar, "   هذا الزر خاص",
+                                "      بالأربعون النووية  " +
+                                        "\n" +
+                                        "      ضبط زمن الأشعارات  " +
+                                        "\n" +
+                                        "      عرض طريقة الاستخدام مرة أخرى    "
+                                        + "\n" +
+                                        "      وتقييم التطبيق     " +
+                                        "\n" +
+                                        "      ومراسلتنا    ")
+                                .outerCircleColor(R.color.color_background_drawable)
+                                .outerCircleAlpha(0.9f)
+                                .textColor(android.R.color.white)
+                                //  .targetCircleColor(R.color.colorAccent)
+                                .transparentTarget(true)
+                                .tintTarget(false)
+                ).listener(listenerForEndInformation);
     }
 
     private void setTwoShow() {
@@ -224,7 +254,9 @@ public class ShowGuide extends AppCompatActivity {
                 super.onTargetClick(view);
                 // .. which evidently starts the sequence we defined earlier
                 sequence.start();
+             //   setInformation();
                 getshowGuideTrue();
+
             }
 
             @Override
