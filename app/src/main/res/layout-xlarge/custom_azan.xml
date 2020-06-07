@@ -23,9 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginStart="@dimen/dimens_l"
-        android:layout_marginTop="@dimen/dimens_xxl"
         android:layout_marginEnd="@dimen/dimens_l"
-        android:layout_marginBottom="@dimen/dimens_xxl"
         android:background="@drawable/background_timer">
 
         <TextView
@@ -222,6 +220,8 @@
             style="@style/style_text_view_fragment_azanXL"
             android:layout_below="@+id/View_magrib"
             android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/dimens_l"
+
             android:text="@string/elesha" />
     </RelativeLayout>
 </RelativeLayout>
