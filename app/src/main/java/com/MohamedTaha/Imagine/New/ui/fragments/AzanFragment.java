@@ -101,6 +101,7 @@ import static com.MohamedTaha.Imagine.New.room.TimingsViewModel.store_date_today
 import static com.MohamedTaha.Imagine.New.service.MediaPlayerService.BROADCAST_NOT_CONNECTION;
 import static com.MohamedTaha.Imagine.New.service.MediaPlayerService.BROADCAST_NOT_INTERNET;
 import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.IS_FIRST_TIME_WAY_USING;
+import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.checkIsGetData;
 import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.getPrayerTimesEveryMonth;
 import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.store_city_name;
 
@@ -208,15 +209,15 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         flowableGetAllPrayerTimingFromDatabase();
 //
         //  for avoid start show way using
-        if (SharedPerefrenceHelper.getBooleanForWayUsing(getActivity(), IS_FIRST_TIME_WAY_USING, false)) {
-            Log.d("TAG", "Repear is " + repear);
+//        if (SharedPerefrenceHelper.getBooleanForWayUsing(getActivity(), IS_FIRST_TIME_WAY_USING, false)) {
+//            Log.d("TAG", "Repear is " + repear);
 
 
-            if (store_date_today <= 0) {
-                Log.i("TAG", "timingsViewModel.store_date_today if" + store_date_today);
-                isNetworkConnected();
-            }
+        if (store_date_today <= 0) {
+            Log.i("TAG", "timingsViewModel.store_date_today if" + store_date_today);
+            isNetworkConnected();
         }
+        //}
 
 
 //        if (GPSTracker.isServicesOk(getActivity())){
@@ -1001,6 +1002,9 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     @Override
     public void onResume() {
         super.onResume();
+
+        // GetMethodPreferences getMethodPreferences =new GetMethodPreferences(getActivity());
+
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         repear = sharedPreferences.getString(getString(R.string.settings_method_key),
                 getString(R.string.settings_method_default));
@@ -1202,13 +1206,13 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                             new Thread(new Runnable() {
                                 public void run() {
                                     // a potentially time consuming task
-
-                                    TimingsAppDatabase.getInstance(getActivity()).DeletePrayerTimes(AzanFragment.this);
-                                    Log.d("TAG", "City name is from store_city_name" + store_city_name);
+                                    if (!checkIsGetData) {
+                                        TimingsAppDatabase.getInstance(getActivity()).DeletePrayerTimes(AzanFragment.this);
+                                        Log.d("TAG", "City name is from store_city_name" + store_city_name);
+                                        Log.d("TAG", "isDataTrue " + checkIsGetData);
+                                    }
                                 }
                             }).start();
-
-
                         }
                     }
                 }

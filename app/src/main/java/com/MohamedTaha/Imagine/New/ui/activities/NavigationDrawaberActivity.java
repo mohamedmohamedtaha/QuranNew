@@ -31,7 +31,6 @@ import androidx.room.EmptyResultSetException;
 
 import com.MohamedTaha.Imagine.New.AppConstants;
 import com.MohamedTaha.Imagine.New.R;
-import com.MohamedTaha.Imagine.New.ShowGuide;
 import com.MohamedTaha.Imagine.New.databinding.ActivityNavigationDrawaberBinding;
 import com.MohamedTaha.Imagine.New.helper.HelperClass;
 import com.MohamedTaha.Imagine.New.helper.SharedPerefrenceHelper;
@@ -115,7 +114,8 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     APIServices apiServicesForCity;
     String city_name = null;
     int geocoderMaxResults = 1;
-    APIServices apiServices;
+    private APIServices apiServices;
+    public static boolean checkIsGetData = false;
 
 
     @Override
@@ -152,10 +152,10 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         getDateTodayFromDatabase(this);
         getCityName();
         //for show way using
-        if (!SharedPerefrenceHelper.getBooleanForWayUsing(getApplicationContext(), IS_FIRST_TIME_WAY_USING, false)) {
-            ShowGuide showGuide = new ShowGuide(NavigationDrawaberActivity.this, activityNavigationDrawaberBinding.toobar,
-                    activityNavigationDrawaberBinding.navView);
-        }
+//        if (!SharedPerefrenceHelper.getBooleanForWayUsing(getApplicationContext(), IS_FIRST_TIME_WAY_USING, false)) {
+//            ShowGuide showGuide = new ShowGuide(NavigationDrawaberActivity.this, activityNavigationDrawaberBinding.toobar,
+//                    activityNavigationDrawaberBinding.navView);
+//        }
         //For open on the save pages immediately
         if (SharedPerefrenceHelper.getBoolean(getApplicationContext(), IS_TRUE, false)) {
             addImagesList();
@@ -513,7 +513,6 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 
                     } else {
                         Log.d("TAG", "TimingsAppDatabase DeletePrayerTimes AddPrayerTimes Every day ");
-
                         TimingsAppDatabase.getInstance(context).DeletePrayerTimes(NavigationDrawaberActivity.this);
                     }
                 }
@@ -653,6 +652,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     public void onPrayerTimesDeleted() {
         if (isStoragePermissionGranted()) {
             Log.d("TAG", "onPrayerTimesDeleted");
+            checkIsGetData = true;
             getCity(this);
         }
     }
