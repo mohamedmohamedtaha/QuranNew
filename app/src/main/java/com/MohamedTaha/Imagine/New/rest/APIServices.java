@@ -18,12 +18,6 @@ public interface APIServices {
                                     @Query("country") String country, @Query("annual") boolean annual,
                                     @Query("method") int method);
 
-    @GET("calendarByCity")
-    Call<com.MohamedTaha.Imagine.New.mvp.model.AzanSource.Azan> getPrayerTimesByCityForYear(@Query("city") String city,
-                                    @Query("country") String country, @Query("annual") boolean annual,
-                                    @Query("method") int method);
-
-
     @GET("json")
     Call<GetCity> getCity();
 }

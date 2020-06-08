@@ -31,6 +31,7 @@ import androidx.room.EmptyResultSetException;
 
 import com.MohamedTaha.Imagine.New.AppConstants;
 import com.MohamedTaha.Imagine.New.R;
+import com.MohamedTaha.Imagine.New.ShowGuide;
 import com.MohamedTaha.Imagine.New.databinding.ActivityNavigationDrawaberBinding;
 import com.MohamedTaha.Imagine.New.helper.HelperClass;
 import com.MohamedTaha.Imagine.New.helper.SharedPerefrenceHelper;
@@ -56,12 +57,6 @@ import com.MohamedTaha.Imagine.New.ui.fragments.GridViewFragment;
 import com.MohamedTaha.Imagine.New.ui.fragments.PartsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
-
-import org.joda.time.Chronology;
-import org.joda.time.LocalDate;
-import org.joda.time.chrono.ISOChronology;
-import org.joda.time.chrono.IslamicChronology;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -129,13 +124,6 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         repear = sharedPreferences.getString(getString(R.string.settings_method_key),
                 getString(R.string.settings_method_default));
         //checkIsFragmentAzanIsOpen();
-
-        Chronology iso = ISOChronology.getInstanceUTC();
-        Chronology hijri = IslamicChronology.getInstanceUTC();
-
-        LocalDate todayIso = new LocalDate(2020, 6, 6, iso);
-        LocalDate todayHijri = new LocalDate(todayIso.toDateTimeAtStartOfDay(), hijri);
-        Log.d("TAG", " Joda time is : " + todayHijri);
         apiServicesForCity = getRetrofitForCity().create(APIServices.class);
         apiServices = getRetrofit().create(APIServices.class);
 
@@ -152,10 +140,10 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         getDateTodayFromDatabase(this);
         getCityName();
         //for show way using
-//        if (!SharedPerefrenceHelper.getBooleanForWayUsing(getApplicationContext(), IS_FIRST_TIME_WAY_USING, false)) {
-//            ShowGuide showGuide = new ShowGuide(NavigationDrawaberActivity.this, activityNavigationDrawaberBinding.toobar,
-//                    activityNavigationDrawaberBinding.navView);
-//        }
+        if (!SharedPerefrenceHelper.getBooleanForWayUsing(getApplicationContext(), IS_FIRST_TIME_WAY_USING, false)) {
+            ShowGuide showGuide = new ShowGuide(NavigationDrawaberActivity.this, activityNavigationDrawaberBinding.toobar,
+                    activityNavigationDrawaberBinding.navView);
+        }
         //For open on the save pages immediately
         if (SharedPerefrenceHelper.getBoolean(getApplicationContext(), IS_TRUE, false)) {
             addImagesList();
@@ -663,8 +651,9 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     }
 
     @Override
-    public void onPrayerTimesError() {
+    public void onPrayerTimesError(Throwable e) {
 
     }
+
 
 }

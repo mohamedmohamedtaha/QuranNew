@@ -29,7 +29,6 @@
                 style="@style/style_default_layout_wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/dimens_mm"
-                android:layout_toLeftOf="@+id/imageView"
                 android:textSize="@dimen/txt_size_xxl"
                 android:textStyle="bold"
                 tools:text="@string/mohamed_gebrer" />

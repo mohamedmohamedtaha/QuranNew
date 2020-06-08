@@ -12,38 +12,6 @@ import com.google.gson.annotations.SerializedName;
 public class Timings {
     public Timings() {
     }
-    @Ignore
-    public Timings(String date_today, String city, String note, String fajr, String sunrise, String dhuhr, String asr, String sunset, String maghrib, String isha, String imsak, String midnight) {
-        this.date_today = date_today;
-        this.city = city;
-        this.note = note;
-        this.fajr = fajr;
-        this.sunrise = sunrise;
-        this.dhuhr = dhuhr;
-        this.asr = asr;
-        this.sunset = sunset;
-        this.maghrib = maghrib;
-        this.isha = isha;
-        this.imsak = imsak;
-        this.midnight = midnight;
-    }
-@Ignore
-    public Timings(int id, String date_today, String city, String note, String fajr, String sunrise, String dhuhr, String asr, String sunset, String maghrib, String isha, String imsak, String midnight) {
-        this.id = id;
-        this.date_today = date_today;
-        this.city = city;
-        this.note = note;
-        this.fajr = fajr;
-        this.sunrise = sunrise;
-        this.dhuhr = dhuhr;
-        this.asr = asr;
-        this.sunset = sunset;
-        this.maghrib = maghrib;
-        this.isha = isha;
-        this.imsak = imsak;
-        this.midnight = midnight;
-    }
-
     public int getId() {
         return id;
     }
@@ -80,14 +48,6 @@ public class Timings {
     @ColumnInfo(name = "id_prayer_time")
     private int id;
 
-    private int id_seq;
-    public int getId_seq() {
-        return id_seq;
-    }
-
-    public void setId_seq(int id_seq) {
-        this.id_seq = id_seq;
-    }
 
     private String date_today;
     private String city;
@@ -119,6 +79,14 @@ public class Timings {
     @SerializedName("Midnight")
     @Expose
     private String midnight;
+    private int id_seq;
+    public int getId_seq() {
+        return id_seq;
+    }
+
+    public void setId_seq(int id_seq) {
+        this.id_seq = id_seq;
+    }
 
     public String getDay_today_hegry() {
         return day_today_hegry;

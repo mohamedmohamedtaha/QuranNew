@@ -4,5 +4,5 @@ public interface DatabaseCallback {
     void onPrayerTimesAdded();
     void onPrayerTimesDeleted();
     void getDataFromLocationAfterDeleteData();
-    void onPrayerTimesError();
+    void onPrayerTimesError(Throwable e);
 }

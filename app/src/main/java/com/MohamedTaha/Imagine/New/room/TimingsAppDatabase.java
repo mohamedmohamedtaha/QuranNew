@@ -11,15 +11,8 @@ import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.MohamedTaha.Imagine.New.DatabaseCallbackEveryMonth;
-import com.MohamedTaha.Imagine.New.mvp.model.AzanSource.Data;
-import com.MohamedTaha.Imagine.New.mvp.model.AzanSource.DataTest;
-import com.MohamedTaha.Imagine.New.mvp.model.AzanSource.Date;
 import com.MohamedTaha.Imagine.New.mvp.model.azan.Azan;
 import com.MohamedTaha.Imagine.New.mvp.model.azan.Timings;
-import com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
@@ -28,13 +21,12 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 
-@Database(entities = {Timings.class},version = 3,exportSchema = false)
+@Database(entities = {Timings.class},version = 5,exportSchema = false)
 public abstract class TimingsAppDatabase extends RoomDatabase {
     private static final String TAG = TimingsAppDatabase.class.getSimpleName();
     private static final Object LOCK = new Object();
     private static final String DATABASE_NAME = "timingsdb";
     private static TimingsAppDatabase mInstance;
-
     public abstract TimingsDao timingsDao();
     public static TimingsAppDatabase getInstance(Context context){
         if (mInstance == null){
@@ -45,6 +37,7 @@ public abstract class TimingsAppDatabase extends RoomDatabase {
                 mInstance = Room.databaseBuilder(context.getApplicationContext(),
                         TimingsAppDatabase.class,
                         TimingsAppDatabase.DATABASE_NAME)
+                       // .addCallback(mRoomDatabaseCallback)
                         .fallbackToDestructiveMigration().build();
             }}
             Log.d(TAG,"getInstance :  Getting the database instance, no need to recreated it.");
@@ -63,7 +56,7 @@ public abstract class TimingsAppDatabase extends RoomDatabase {
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
-        }
+            }
     };
     public void AddPrayerTimesForMonth(DatabaseCallback databaseCallback, Azan azan, String city_name){
         Completable.fromAction(new Action() {
@@ -99,7 +92,7 @@ public abstract class TimingsAppDatabase extends RoomDatabase {
 
                     @Override
                     public void onError(Throwable e) {
-                        databaseCallback.onPrayerTimesError();
+                        databaseCallback.onPrayerTimesError(e);
                     }
                 });
     }
@@ -141,53 +134,6 @@ public abstract class TimingsAppDatabase extends RoomDatabase {
                 });
     }
 
-//    public void AddPrayerTimesForYear(DatabaseCallback databaseCallback, com.MohamedTaha.Imagine.New.mvp.model.AzanSource.Azan azan, String city_name){
-//        Completable.fromAction(new Action() {
-//            @Override
-//            public void run() throws Exception {
-//               Data data = azan.getData();
-//                DataTest[] dataTests = data.getDataTests();
-//                Data data1 = data.get1();
-//                for (int i = 1; i < 12; i++) {
-//                    for (int y= 0;y< 30;y++) {
-//                        Timings timingsOne = new Timings();
-//                        timingsOne.setFajr(dataTests[y].getTimings().getFajr());
-//                        timingsOne.setSunrise(dataTests[y].getTimings().getSunrise());
-//                        timingsOne.setDhuhr(dataTests[y].getTimings().getDhuhr());
-//                        timingsOne.setAsr(dataTests[y].getTimings().getAsr());
-//                        timingsOne.setMaghrib(dataTests[y].getTimings().getMaghrib());
-//                        timingsOne.setIsha(dataTests[y].getTimings().getIsha());
-//                        timingsOne.setDate_today(dataTests[y].getDate().getGregorian().getDate());
-//                        timingsOne.setId_seq(i + 1);
-//                        timingsOne.setCity(city_name);
-//                        timingsDao().insertTimings(timingsOne);
-//                        Log.d("TAG", "y :" + y);
-//                        Log.d("TAG", "date :" +timingsOne.getDate_today());
-//
-//                    }
-//                    Log.d("TAG", "i :" + i);
-//
-//               }
-//            }
-//        }).observeOn(AndroidSchedulers.mainThread())
-//                .subscribeOn(Schedulers.io())
-//                .subscribe(new CompletableObserver() {
-//                    @Override
-//                    public void onSubscribe(Disposable d) {
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//                        databaseCallback.onPrayerTimesAdded();
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        databaseCallback.onPrayerTimesError();
-//                    }
-//                });
-//    }
-
     public void DeletePrayerTimes(DatabaseCallback databaseCallback){
         Completable.fromAction(new Action() {
             @Override
@@ -208,7 +154,7 @@ public abstract class TimingsAppDatabase extends RoomDatabase {
 
                     @Override
                     public void onError(Throwable e) {
-                        databaseCallback.onPrayerTimesError();
+                        databaseCallback.onPrayerTimesError(e);
                     }
                 });
 
@@ -250,6 +196,7 @@ public abstract class TimingsAppDatabase extends RoomDatabase {
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
+
                     }
 
                     @Override
@@ -259,7 +206,7 @@ public abstract class TimingsAppDatabase extends RoomDatabase {
 
                     @Override
                     public void onError(Throwable e) {
-                        databaseCallback.onPrayerTimesError();
+                        databaseCallback.onPrayerTimesError(e);
                     }
                 });
 

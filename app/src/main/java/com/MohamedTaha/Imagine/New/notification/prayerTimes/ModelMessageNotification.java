@@ -1,8 +1,4 @@
 package com.MohamedTaha.Imagine.New.notification.prayerTimes;
-
-import org.parceler.Parcel;
-
-@Parcel
 public class ModelMessageNotification {
     Long time_payer;
     String text_notification;

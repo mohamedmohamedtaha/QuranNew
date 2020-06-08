@@ -116,9 +116,9 @@ public class AddDataInDatabase extends Activity implements  DatabaseCallback {
     }
 
     @Override
-    public void onPrayerTimesError() {
-
+    public void onPrayerTimesError(Throwable e) {
     }
+
     private void checkBeforeGetData() {
         if (isStoragePermissionGranted()) {
             getCity();

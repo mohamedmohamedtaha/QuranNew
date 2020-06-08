@@ -608,16 +608,6 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         registerReceiver(noInternetReceiver, filter);
     }
 
-    public class DeleteNotification extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (action.equals("tt")) {
-                Toast.makeText(context, "Delete action", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
     private void initMediaSession() throws RemoteException {
 
         if (mediaSessionManager != null) return; //mediaSessionManager exists
@@ -846,9 +836,9 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         }
 
 //For Delete Notification
-        Intent cancelNotification = new Intent(this, DeleteNotification.class);
-        cancelNotification.setAction("tt");
-        PendingIntent exitPending = PendingIntent.getBroadcast(this, 0, cancelNotification, PendingIntent.FLAG_CANCEL_CURRENT);
+      //  Intent cancelNotification = new Intent(this, DeleteNotification.class);
+       // cancelNotification.setAction("tt");
+        //PendingIntent exitPending = PendingIntent.getBroadcast(this, 0, cancelNotification, PendingIntent.FLAG_CANCEL_CURRENT);
         // The PendingIntent to launch our activity if the user selects this notification
         //Create an explicit intent for an Activity in your app
         Intent intent = new Intent(getApplicationContext(), DetailsSoundActivity.class);
@@ -881,7 +871,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
                 //Enable launching the player by clicking the notification
                 .setContentIntent(contentIntent)
                 //Stop the service when the notification is swiped away
-                .setDeleteIntent(exitPending)
+//                .setDeleteIntent(exitPending)
                 .setChannelId(CHANNEL_ID)
                 // Make the transport controls visible on the lock screen
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)

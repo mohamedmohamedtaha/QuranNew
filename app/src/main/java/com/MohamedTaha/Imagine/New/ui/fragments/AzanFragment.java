@@ -209,15 +209,15 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         flowableGetAllPrayerTimingFromDatabase();
 //
         //  for avoid start show way using
-//        if (SharedPerefrenceHelper.getBooleanForWayUsing(getActivity(), IS_FIRST_TIME_WAY_USING, false)) {
-//            Log.d("TAG", "Repear is " + repear);
+        if (SharedPerefrenceHelper.getBooleanForWayUsing(getActivity(), IS_FIRST_TIME_WAY_USING, false)) {
+            Log.d("TAG", "Repear is " + repear);
 
 
         if (store_date_today <= 0) {
             Log.i("TAG", "timingsViewModel.store_date_today if" + store_date_today);
             isNetworkConnected();
         }
-        //}
+        }
 
 
 //        if (GPSTracker.isServicesOk(getActivity())){
@@ -470,41 +470,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
 
             @Override
             public void onFailure(Call<Azan> call, Throwable t) {
-                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.i("TAG", " onFailure " + t.getMessage());
-                if (fragmentAzanBinding.progressBar != null) {
-                    clearFlagForInteractiveUser();
-                }
-            }
-        });
-    }
-
-    private void getPrayerTimesByCityForYear(String city, String country, int method, String city_name) {
-        Call<com.MohamedTaha.Imagine.New.mvp.model.AzanSource.Azan> azanCall = apiServices.getPrayerTimesByCityForYear(city, country, true, method);
-        azanCall.enqueue(new Callback<com.MohamedTaha.Imagine.New.mvp.model.AzanSource.Azan>() {
-            @Override
-            public void onResponse(Call<com.MohamedTaha.Imagine.New.mvp.model.AzanSource.Azan> call, Response<com.MohamedTaha.Imagine.New.mvp.model.AzanSource.Azan> response) {
-                com.MohamedTaha.Imagine.New.mvp.model.AzanSource.Azan azan = response.body();
-                try {
-                    if (azan.getStatus().equals("OK")) {
-                        Log.i("TAG", " OK ");
-
-                        //         TimingsAppDatabase.getInstance(getActivity()).AddPrayerTimesForYear(AzanFragment.this, azan, city_name);
-                    } else {
-                        fragmentAzanBinding.TVShowError.setVisibility(View.VISIBLE);
-                        fragmentAzanBinding.TVShowError.setText(getActivity().getString(R.string.cant));
-                        clearFlagForInteractiveUser();
-                    }
-                } catch (Exception e) {
-                    Log.i("TAG", " Error " + e.getMessage());
-                    if (fragmentAzanBinding.progressBar != null) {
-                        clearFlagForInteractiveUser();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<com.MohamedTaha.Imagine.New.mvp.model.AzanSource.Azan> call, Throwable t) {
                 Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.i("TAG", " onFailure " + t.getMessage());
                 if (fragmentAzanBinding.progressBar != null) {
@@ -1171,9 +1136,10 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     }
 
     @Override
-    public void onPrayerTimesError() {
+    public void onPrayerTimesError(Throwable e) {
         if (fragmentAzanBinding.progressBar != null) {
             clearFlagForInteractiveUser();
+            Toast.makeText(getActivity(), "Eror is : " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
