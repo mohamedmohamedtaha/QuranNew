@@ -1,12 +1,12 @@
 package com.MohamedTaha.Imagine.New.ui.activities;
 
 import android.app.NotificationManager;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
@@ -16,7 +16,6 @@ import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.helper.HelperClass;
 import com.MohamedTaha.Imagine.New.helper.SharedPerefrenceHelper;
 import com.MohamedTaha.Imagine.New.helper.ShowDialog;
-import com.MohamedTaha.Imagine.New.helper.Utilities;
 import com.MohamedTaha.Imagine.New.mvp.model.ModelAzkar;
 import com.booking.rtlviewpager.RtlViewPager;
 import com.google.gson.Gson;
@@ -58,8 +57,8 @@ public class SwipePagesActivity extends AppCompatActivity {
     private int position = 1;
     private int position_azkar = 0;
     Bundle bundle;
-    int notificationId =-1;
-    String language_name ;
+    int notificationId = -1;
+    String language_name;
 
 
     @Override
@@ -75,27 +74,26 @@ public class SwipePagesActivity extends AppCompatActivity {
         }
         //for close Notification
         notificationId = getIntent().getIntExtra(NOTIFICATION_ID, -1);
-        int timeSend  = getIntent().getIntExtra(TIME_SEND,-1);
+        int timeSend = getIntent().getIntExtra(TIME_SEND, -1);
         if (notificationId >= 0) {
             getArgemnetsNotification();
             createImageNotification();
             AdapterForSwipe adapterForSwipe = new AdapterForSwipe(this, imagesNotification);
             SwipePagesActivityVP.setAdapter(adapterForSwipe);
             SwipePagesActivityVP.setCurrentItem(notificationId);
-            Log.d("TAG" , " " + notificationId);
-
+            Log.d("TAG", " " + notificationId);
             NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            notificationManager.cancel(timeSend);
+            if (notificationManager != null) {
+                notificationManager.cancel(timeSend);
+
+            }
 
         } else if (bundle.getBoolean(SAVE_STATE)) {
             getArgemnets();
             createImage();
-            AdapterForSwipe adapterForSwipe = new AdapterForSwipe(this, images, new AdapterForSwipe.showDetail() {
-                @Override
-                public void showDetails(int positon) {
-                    ShowDialog.showDialog(SwipePagesActivity.this, save_position, getString(R.string.save_position));
-                }
-            });
+            AdapterForSwipe adapterForSwipe = new AdapterForSwipe(this, images, postiopn ->
+                    ShowDialog.showDialog(SwipePagesActivity.this, save_position, getString(R.string.save_position)));
+
             SwipePagesActivityVP.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -111,20 +109,16 @@ public class SwipePagesActivity extends AppCompatActivity {
                 }
             });
             SwipePagesActivityVP.setAdapter(adapterForSwipe);
-                if (SharedPerefrenceHelper.getBoolean(this, IS_TRUE, false)) {
-                    ShowDialog.showDialogForRetrieveReadingSora(this, SwipePagesActivityVP, position);
-                } else {
-                    SwipePagesActivityVP.setCurrentItem(position);
-                }
-        } else if (bundle.getBoolean(SAVE_PAGE)){
+            if (SharedPerefrenceHelper.getBoolean(this, IS_TRUE, false)) {
+                ShowDialog.showDialogForRetrieveReadingSora(this, SwipePagesActivityVP, position);
+            } else {
+                SwipePagesActivityVP.setCurrentItem(position);
+            }
+        } else if (bundle.getBoolean(SAVE_PAGE)) {
             getImagesFirst();
             createImagesFirst();
-            AdapterForSwipe adapterForSwipe = new AdapterForSwipe(this, imagesFirst, new AdapterForSwipe.showDetail() {
-                @Override
-                public void showDetails(int positon) {
-                    ShowDialog.showDialog(SwipePagesActivity.this, save_position, getString(R.string.save_position));
-                }
-            });
+            AdapterForSwipe adapterForSwipe = new AdapterForSwipe(this, imagesFirst, positon ->
+                    ShowDialog.showDialog(SwipePagesActivity.this, save_position, getString(R.string.save_position)));
             SwipePagesActivityVP.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -142,16 +136,10 @@ public class SwipePagesActivity extends AppCompatActivity {
             SwipePagesActivityVP.setAdapter(adapterForSwipe);
             int position = SharedPerefrenceHelper.getInt(getApplicationContext(), SAVE_IMAGES, 0);
             SwipePagesActivityVP.setCurrentItem(position);
-        }
-
-            else {
+        } else {
             getArgemnetsForAzkar();
-            AdapterForAzkarSwipe adapterForAzkarSwipe = new AdapterForAzkarSwipe(SwipePagesActivity.this, modelAzkarList, new AdapterForAzkarSwipe.showDetail() {
-                @Override
-                public void showDetails(ModelAzkar modelAzkar) {
-                    ShowDialog.showDialogAzkar(SwipePagesActivity.this, save_position_azkar, getString(R.string.save_position_alzekr),modelAzkar);
-                }
-            });
+            AdapterForAzkarSwipe adapterForAzkarSwipe = new AdapterForAzkarSwipe(SwipePagesActivity.this, modelAzkarList, modelAzkar ->
+                    ShowDialog.showDialogAzkar(SwipePagesActivity.this, save_position_azkar, getString(R.string.save_position_alzekr), modelAzkar));
             SwipePagesActivityVP.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -182,6 +170,7 @@ public class SwipePagesActivity extends AppCompatActivity {
             position = bundle.getInt(SAVE_POSITION);
         }
     }
+
     private void createImage() {
         for (int i = 0; i < images.size(); i++) {
             bundle.putInt(SAVE_IMAGES, images.get(i));
@@ -193,26 +182,29 @@ public class SwipePagesActivity extends AppCompatActivity {
     private void getArgemnetsNotification() {
         if (bundle != null) {
             imagesNotification = bundle.getIntegerArrayList(SAVE_Position_Notification);
-            Log.d("TAG" , " " + imagesNotification);
+            Log.d("TAG", " " + imagesNotification);
         }
     }
+
     private void createImageNotification() {
         if (imagesNotification != null) {
             for (int i = 0; i < imagesNotification.size(); i++) {
                 bundle.putInt(SAVE_Position_Notification, imagesNotification.get(i));
-                    }
-                          //  bundle.putInt(SAVE_Position_Notification, imagesNotification);
-        Log.d("TAG" , " " + imagesNotification);
+            }
+            //  bundle.putInt(SAVE_Position_Notification, imagesNotification);
+            Log.d("TAG", " " + imagesNotification);
 
 
-        SwipePagesActivityPB.setVisibility(View.GONE);
+            SwipePagesActivityPB.setVisibility(View.GONE);
         }
     }
+
     private void getImagesFirst() {
         if (bundle != null) {
             imagesFirst = bundle.getIntegerArrayList(SAVE_ALL_IMAGES);
         }
     }
+
     private void createImagesFirst() {
         if (imagesFirst != null) {
             for (int i = 0; i < imagesFirst.size(); i++) {
@@ -234,14 +226,14 @@ public class SwipePagesActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         SharedPerefrenceHelper.putInt(this, SAVE_IMAGES, save_position);
         SharedPerefrenceHelper.putInt(this, SAVE_AZKAR, save_position_azkar);
         super.onSaveInstanceState(outState);
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         save_position = savedInstanceState.getInt(SAVE_IMAGES);
         save_position_azkar = savedInstanceState.getInt(SAVE_AZKAR);
@@ -251,7 +243,7 @@ public class SwipePagesActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 //        imagesNotification.clear();
-  //      images.clear();
+        //      images.clear();
     }
 
     @Override
@@ -267,8 +259,8 @@ public class SwipePagesActivity extends AppCompatActivity {
 //            startActivity(intent);
 //            overridePendingTransition(R.anim.item_anim_no_thing, R.anim.item_anim_slide_from_bottom);
 //        }else {
-            overridePendingTransition(R.anim.item_anim_no_thing, R.anim.item_anim_slide_from_bottom);
+        overridePendingTransition(R.anim.item_anim_no_thing, R.anim.item_anim_slide_from_bottom);
 
-      //  }
+        //  }
     }
 }

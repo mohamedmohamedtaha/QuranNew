@@ -3,22 +3,18 @@ package com.MohamedTaha.Imagine.New.notification.prayerTimes;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.MohamedTaha.Imagine.New.service.ServiceForPlayPrayerTimesCustomNotification;
 import com.MohamedTaha.Imagine.New.service.ServiceForPlayPrayerTimesNotification;
 import com.google.gson.Gson;
 
 import java.util.Calendar;
 import java.util.List;
-
-import static com.MohamedTaha.Imagine.New.service.ServiceForPlayPrayerTimesCustomNotification.NOTIFICATION_ID_SERVICE;
 
 public class Alarm {
     private Context context;
@@ -67,7 +63,7 @@ public class Alarm {
         //    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
           //      alarmManager[i].setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
            // } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                alarmManager[i].setExact(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
+                alarmManager[i].setInexactRepeating(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(),AlarmManager.INTERVAL_DAY, pendingIntent);
            // } else {
              //   alarmManager[i].set(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
            // }
@@ -89,7 +85,7 @@ public class Alarm {
         PendingIntent pendingIntent = null;
         AlarmManager alarmManager;
         Intent intent;
-        intent = new Intent(context, ServiceForPlayPrayerTimesCustomNotification.class);
+        intent = new Intent(context, ServiceForPlayPrayerTimesNotification.class);
         intent.setAction(" ");
         Bundle bundle = new Bundle();
         bundle.putLong(TIME_NOTIFICATION, setTime.getTimeInMillis());
@@ -117,30 +113,6 @@ public class Alarm {
         }
     }
 
-    public void cancelAlarmBoot() {
-            for (int i = 0; i < 5; i++) {
-                notificationManagers[i] =(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                alarmManager[i] = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-                    intent[i] = new Intent(context, ServiceForPlayPrayerTimesNotification.class);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        pendingIntent = PendingIntent.getForegroundService(context, i, intent[i], PendingIntent.FLAG_NO_CREATE);
-                    } else {
-                        pendingIntent = PendingIntent.getService(context, i, intent[i], PendingIntent.FLAG_NO_CREATE);
-                    }
-                  //  if (pendingIntent != null && alarmManager != null){
-                        alarmManager[i].cancel(pendingIntent);
-                        notificationManagers[i].cancel(NOTIFICATION_ID_SERVICE);
-                        // Disable BootReceiver so that alarm won't start again if device is rebooted
-                        ComponentName receiver = new ComponentName(context, AlarmBootRecevierPrayerTimeEveryDay.class);
-                        PackageManager pm = context.getPackageManager();
-                        pm.setComponentEnabledSetting(receiver,
-                                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                                PackageManager.DONT_KILL_APP);
-
-                   // }
-                    Log.d("TAG", " cancelAlarm :" + i);
-
-            }}
     public void cancelAlarm(List<ModelMessageNotification> listForSavePrayerTimes, String name_prayer_time) {
         if (listForSavePrayerTimes.size() >0){
              alarmManager = new AlarmManager[listForSavePrayerTimes.size()];
@@ -161,22 +133,18 @@ public class Alarm {
                 }
             }}
     }
-
-    public void customCancelAlarm(List<ModelMessageNotification> listForSavePrayerTimes) {
-        if (alarmManager != null) {
-            for (int i = 0; i < listForSavePrayerTimes.size(); i++) {
-                //  if (listForSavePrayerTimes.get(i).getText_notification().equals(name_prayer_time)){
-                alarmManager[i] = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-                intent[i] = new Intent(context, ServiceForPlayPrayerTimesNotification.class);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    pendingIntent = PendingIntent.getForegroundService(context, i, intent[i], 0);
-                } else {
-                    pendingIntent = PendingIntent.getService(context, i, intent[i], 0);
-                }
-                alarmManager[i].cancel(pendingIntent);
-                Log.d("TAG", " customCancelAlarm :");
-                // }
+    public void cancelAlarmBeforeSetNotification() {
+          AlarmManager  alarmManager = null;
+           Intent intent = new Intent();
+                    alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                    intent = new Intent(context, ServiceForPlayPrayerTimesNotification.class);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        pendingIntent = PendingIntent.getForegroundService(context, 0, intent, PendingIntent.FLAG_NO_CREATE);
+                    } else {
+                        pendingIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_NO_CREATE);
+                    }
+                    if (pendingIntent != null && alarmManager != null){
+                        alarmManager.cancel(pendingIntent);
+                    }
             }
-        }
-    }
 }

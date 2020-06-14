@@ -212,7 +212,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         if (SharedPerefrenceHelper.getBooleanForWayUsing(getActivity(), IS_FIRST_TIME_WAY_USING, false)) {
             Log.d("TAG", "Repear is " + repear);
 
-
+            Log.i("TAG", "timingsViewModel.store_date_today before" + store_date_today);
         if (store_date_today <= 0) {
             Log.i("TAG", "timingsViewModel.store_date_today if" + store_date_today);
             isNetworkConnected();
@@ -267,7 +267,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    private void getDateTodayFromDatabase(Context context) {
+    private void getDateTodayFromDatabase() {
         timingsViewModel.checkIsDateTodayFind(convertDate()).
                 subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(
@@ -333,7 +333,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(all_Data -> {
                     getAllData = all_Data;
-                    Log.i("TAG", "Navigation Drawaber : " + store_date_today);
+                    Log.i("TAG", "Azan fragment Navigation Drawaber : " + store_date_today);
                     if (store_date_today > 0) {
                         //if (store_date_today > 0) {
                         if (getAllData == null && getAllData.size() <= 0) {
@@ -562,7 +562,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
 
             @Override
             public void onFailure(Call<GetCity> call, Throwable t) {
-                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.i("TAG", " onFailure " + t.getMessage());
                 checkBeforeGetDataFromInternetTest();
 

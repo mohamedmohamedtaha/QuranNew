@@ -22,7 +22,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.os.RemoteException;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
@@ -47,6 +46,7 @@ import com.MohamedTaha.Imagine.New.helper.util.PlaybackStatus;
 import com.MohamedTaha.Imagine.New.helper.util.PlayerConstants;
 import com.MohamedTaha.Imagine.New.helper.util.StorageUtil;
 import com.MohamedTaha.Imagine.New.mvp.model.ImageModel;
+import com.MohamedTaha.Imagine.New.notification.CancelNotificationMediaPlayer;
 import com.MohamedTaha.Imagine.New.receiver.ConnectivityReceiver;
 import com.MohamedTaha.Imagine.New.receiver.NoInternetReceiver;
 import com.MohamedTaha.Imagine.New.ui.activities.DetailsSoundActivity;
@@ -65,14 +65,12 @@ import static com.MohamedTaha.Imagine.New.ui.activities.DetailsSoundActivity.isD
 import static com.MohamedTaha.Imagine.New.ui.activities.ListSoundReader.FragmentListSoundLLControlMedia;
 import static com.MohamedTaha.Imagine.New.ui.activities.ListSoundReader.ListSoundReaderLoadingIndicator;
 import static com.MohamedTaha.Imagine.New.ui.activities.ListSoundReader.isServiceRunning;
-//import static com.MohamedTaha.Imagine.Quran.ui.activities.ListSoundReader.seekBar;
 
 public class MediaPlayerService extends Service implements MediaPlayer.OnCompletionListener,
         MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener,
         MediaPlayer.OnInfoListener, MediaPlayer.OnBufferingUpdateListener, AudioManager.OnAudioFocusChangeListener {
     public static final String BROADCAST_NOT_CONNECTION = "com.example.createmediaplayer.no.connection";
     public static final String BROADCAST_NOT_INTERNET = "com.example.createmediaplayer.no.internet";
-    public static final String Broadcast_SILENT_DEVICE = "com.example.createmediaplayer.silent.device";
     private ConnectivityReceiver connectivityReceiver = null;
     private NoInternetReceiver noInternetReceiver = null;
     NotificationCompat.Builder notificationBuilder;
@@ -80,24 +78,6 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
     Integer totalDuration;
     Integer currentDuration;
     int progress;
-//
-//    @Override
-//    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//
-//    }
-//
-//    @Override
-//    public void onStartTrackingTouch(SeekBar seekBar) {
-//
-//    }
-//
-//    @Override
-//    public void onStopTrackingTouch(SeekBar seekBar) {
-//        int currentPosition = utilities.progressToTimer(seekBar.getProgress(),totalDuration);
-//        mediaPlayer.seekTo(currentPosition);
-//
-//    }
-
 
     private class MainTask extends TimerTask {
         @Override
@@ -144,16 +124,12 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
     private MediaDescriptionCompat description;
 
     //AudioPlayer notification ID
-    private static final int NOTIFICATION_ID_SERVICE = 10;
+    public static final int NOTIFICATION_ID_SERVICE = 10;
     private String FILENAME = null;
 
     public static MediaPlayer mediaPlayer;
     //path to the audio file
     private String mediaFile;
-
-    //Used to ic_pause/resume MediaPlayer
-//    private int resumePosition;
-
     private AudioManager audioManager;
 
     //Handle incoming phone calls
@@ -235,7 +211,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
             stopSelf();
         }
         //Request audio focus
-        if (requestAduioFocus() == false) {
+        if (!requestAduioFocus()) {
             //Could not gain focus
             stopSelf();
         }
@@ -243,7 +219,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
             try {
                 initMediaSession();
                 initMediaPlayer();
-            } catch (RemoteException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 stopSelf();
             }
@@ -251,7 +227,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         }
         //Handle Intent action from MediaSession.TransportControls
         handleIncomingActions(intent);
-            return super.onStartCommand(intent, flags, startId);
+        return super.onStartCommand(intent, flags, startId);
         //return START_NOT_STICKY;
 
     }
@@ -483,14 +459,6 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         if (IS_OPEN) {
             DetailsSoundActivity.updateUI();
         }
-
-    }
-
-    public void seekTo(int posiiotn) {
-        if (mediaPlayer != null) {
-            mediaPlayer.seekTo(posiiotn);
-        }
-
     }
 
     private void playMedia() {
@@ -608,7 +576,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         registerReceiver(noInternetReceiver, filter);
     }
 
-    private void initMediaSession() throws RemoteException {
+    private void initMediaSession() {
 
         if (mediaSessionManager != null) return; //mediaSessionManager exists
         mediaSessionManager = (MediaSessionManager) getSystemService(Context.MEDIA_SESSION_SERVICE);
@@ -692,8 +660,6 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
                 super.onSeekTo(pos);
             }
         });
-
-
     }
 
     //check Internet
@@ -707,55 +673,51 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         if (isDetailsActivityTrue) {
             DetailsSoundActivity_loading_indicator.setVisibility(View.VISIBLE);
         }
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ListSoundReaderLoadingIndicator.setVisibility(View.GONE);
-                if (isDetailsActivityTrue) {
-                    DetailsSoundActivity_loading_indicator.setVisibility(View.GONE);
-                }
-                if (exStore != null && exStore.exists()) {
-                    playAyaFromEnternal(exStore);
+        new Handler().postDelayed(() -> {
+            ListSoundReaderLoadingIndicator.setVisibility(View.GONE);
+            if (isDetailsActivityTrue) {
+                DetailsSoundActivity_loading_indicator.setVisibility(View.GONE);
+            }
+            if ( exStore.exists()) {
+                playAyaFromEnternal(exStore);
+            } else {
+                if (!isConnected) {
+                    //send BroadcastReceiver to the Service -> Not Connection
+                    Intent broadcastIntent = new Intent(BROADCAST_NOT_CONNECTION);
+                    sendBroadcast(broadcastIntent);
+                    startForeground(NOTIFICATION_ID_SERVICE, notificationBuilder.build());
+                    stopMedia();
+                    removeNotification();
+                    stopSelf();
+                    FragmentListSoundLLControlMedia.setVisibility(View.GONE);
                 } else {
-                    if (!isConnected) {
-                        //send BroadcastReceiver to the Service -> Not Connection
-                        Intent broadcastIntent = new Intent(BROADCAST_NOT_CONNECTION);
+                    if (!isInternet()) {
+                        //send BroadcastReceiver to the Service -> Not Internet
+                        Intent broadcastIntent = new Intent(BROADCAST_NOT_INTERNET);
                         sendBroadcast(broadcastIntent);
                         startForeground(NOTIFICATION_ID_SERVICE, notificationBuilder.build());
                         stopMedia();
-                        removeNotification();
                         stopSelf();
+                        removeNotification();
                         FragmentListSoundLLControlMedia.setVisibility(View.GONE);
-
                     } else {
-                        if (!isInternet()) {
-                            //send BroadcastReceiver to the Service -> Not Internet
-                            Intent broadcastIntent = new Intent(BROADCAST_NOT_INTERNET);
-                            sendBroadcast(broadcastIntent);
+                        if (URLUtil.isValidUrl(activeAudio.getSora_link())) {
+                            try {
+                                mediaPlayer.setDataSource(activeAudio.getSora_link());
+                                mediaPlayer.prepareAsync();
+                                buildNotification(PlaybackStatus.PLAYING);
+                                FragmentListSoundLLControlMedia.setVisibility(View.VISIBLE);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                        } else {
+                            Toast.makeText(getApplicationContext(), R.string.text_fiald, Toast.LENGTH_LONG).show();
                             startForeground(NOTIFICATION_ID_SERVICE, notificationBuilder.build());
                             stopMedia();
                             stopSelf();
                             removeNotification();
                             FragmentListSoundLLControlMedia.setVisibility(View.GONE);
-                        } else {
-                            if (URLUtil.isValidUrl(activeAudio.getSora_link())) {
-                                try {
-                                    mediaPlayer.setDataSource(activeAudio.getSora_link());
-                                    mediaPlayer.prepareAsync();
-                                    buildNotification(PlaybackStatus.PLAYING);
-                                    FragmentListSoundLLControlMedia.setVisibility(View.VISIBLE);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-
-                            } else {
-                                Toast.makeText(getApplicationContext(), R.string.text_fiald, Toast.LENGTH_LONG).show();
-                                startForeground(NOTIFICATION_ID_SERVICE, notificationBuilder.build());
-                                stopMedia();
-                                stopSelf();
-                                removeNotification();
-                                FragmentListSoundLLControlMedia.setVisibility(View.GONE);
-                            }
                         }
                     }
                 }
@@ -835,18 +797,12 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
             createChannel();
         }
 
-//For Delete Notification
-      //  Intent cancelNotification = new Intent(this, DeleteNotification.class);
-       // cancelNotification.setAction("tt");
-        //PendingIntent exitPending = PendingIntent.getBroadcast(this, 0, cancelNotification, PendingIntent.FLAG_CANCEL_CURRENT);
-        // The PendingIntent to launch our activity if the user selects this notification
-        //Create an explicit intent for an Activity in your app
-        Intent intent = new Intent(getApplicationContext(), DetailsSoundActivity.class);
-        //  intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, 0);
-        // Given a media session and its context (usually the component containing the session)
-        // Create a NotificationCompat.Builder
+        Intent cancelNotification = new Intent(this, CancelNotificationMediaPlayer.class);
+        cancelNotification.setAction(ACTION_STOP);
+        PendingIntent exitPending = PendingIntent.getBroadcast(this, 1, cancelNotification, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        Intent intent = new Intent(getApplicationContext(), DetailsSoundActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, 0);
         // Get the session's metadata
         controller = mediaSession.getController();
         mediaMetadata = controller.getMetadata();
@@ -883,7 +839,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
                 .addAction(android.R.drawable.ic_media_previous, "previous", playbackAction(3))
                 .addAction(notificationAction, "ic_pause", play_pauseAction)
                 .addAction(android.R.drawable.ic_media_next, "changeTextToNext", playbackAction(2))
-                .addAction(R.drawable.ic_exit, "close", playbackAction(4))
+                .addAction(R.drawable.ic_exit, "close", exitPending)
                 //Set the Notification Media Style
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                         //Attach our MediaSession token
@@ -966,7 +922,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         notificationChannel.setShowBadge(false);
         //For mute sound
         notificationChannel.setSound(null, null);
-       // notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+        // notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
         notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
 
         manager.createNotificationChannel(notificationChannel);

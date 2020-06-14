@@ -88,11 +88,15 @@ public abstract class TimingsAppDatabase extends RoomDatabase {
                     @Override
                     public void onComplete() {
                        databaseCallback.onPrayerTimesAdded();
+                        Log.d("TAG","onComplete");
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         databaseCallback.onPrayerTimesError(e);
+                        Log.d("TAG","onError : " + e.getMessage());
+
                     }
                 });
     }

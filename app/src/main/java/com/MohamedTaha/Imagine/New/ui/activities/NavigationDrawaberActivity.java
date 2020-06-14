@@ -57,6 +57,7 @@ import com.MohamedTaha.Imagine.New.ui.fragments.GridViewFragment;
 import com.MohamedTaha.Imagine.New.ui.fragments.PartsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -136,8 +137,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
             Log.i("TAG", " onSuccess timingsViewModel navigation " + store_date_today);
         }
         timingsViewModel.isNewlyCreated = false;
-
-        getDateTodayFromDatabase(this);
+        getDateTodayFromDatabase();
         getCityName();
         //for show way using
         if (!SharedPerefrenceHelper.getBooleanForWayUsing(getApplicationContext(), IS_FIRST_TIME_WAY_USING, false)) {
@@ -199,7 +199,12 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 //
     }
 
-    private void getDateTodayFromDatabase(Context context) {
+    private void getDateTodayFromDatabase() {
+        Log.i("TAG", " getDateTodayFromDatabase");
+        String date = convertDate();
+        Log.d("TAG", " date " + date);
+
+
         timingsViewModel.checkIsDateTodayFind(convertDate()).
                 subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(
@@ -221,7 +226,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                     public void onError(Throwable e) {
                         Log.i("TAG", "  onError " + e);
                         if (e instanceof EmptyResultSetException) {
-                            isNetworkConnected(context);
+                            isNetworkConnected(getApplicationContext());
                         } else {
                             Log.i("TAG", "  MonError " + e);
                         }
@@ -235,6 +240,8 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(date_today -> {
                     store_date_today = date_today;
+                    Log.i("TAG", " timingsViewModel.store_date_today second method" + store_date_today);
+
                     // if (store_date_today <= 0) {
                     getPrayerTimesEveryMonth(getApplicationContext());
                     enableBootReceiverEveryMonth(getApplicationContext());

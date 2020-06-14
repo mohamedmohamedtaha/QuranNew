@@ -58,41 +58,51 @@ public class ConvertTimes {
         String name_month = null;
         switch (month) {
             case "1":
+            case "١":
                 name_month = "محرم";
                 break;
             case "2":
+            case "٢":
                 name_month = "صفر";
                 break;
             case "3":
+            case "٣":
                 name_month = "ربيع الأول";
                 break;
             case "4":
+            case "٤":
                 name_month = "ربيع الآخر";
                 break;
             case "5":
+            case "٥":
                 name_month = "جمادي الأولى";
                 break;
             case "6":
+            case "٦" :
                 name_month = "جمادي الآخره";
                 break;
             case "7":
+            case " ٧":
                 name_month = "رجب";
                 break;
             case "8":
+            case "٨":
                 name_month = "شعبان";
                 break;
             case "9":
+            case "٩":
                 name_month = "رمصان";
-
                 break;
             case "10":
+            case "١٠":
                 name_month = "شوال";
-
                 break;
             case "11":
+            case "١١":
                 name_month = "ذو القعدة";
                 break;
             case "12":
+            case "١٢":
                 name_month = "ذي الحجة";
                 break;
             default:
@@ -106,7 +116,7 @@ public class ConvertTimes {
 
     public static String convertDate() {
         Date calendar = Calendar.getInstance().getTime();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy",Locale.US);
         String DateString = simpleDateFormat.format(calendar);
         return DateString;
     }
