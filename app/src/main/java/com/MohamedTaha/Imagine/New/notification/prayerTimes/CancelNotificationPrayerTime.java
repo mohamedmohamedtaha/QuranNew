@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.MohamedTaha.Imagine.New.helper.Utilities;
+import com.MohamedTaha.Imagine.New.service.MediaPlayerService;
 import com.MohamedTaha.Imagine.New.service.ServiceForPlayPrayerTimesNotification;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -31,10 +33,12 @@ public class CancelNotificationPrayerTime extends BroadcastReceiver {
     private String name_prayer_time;
     private Long prayer_time;
     private int request_code;
+    private boolean isServiceRunning;
 
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        isServiceRunning = Utilities.isServiceRunning(ServiceForPlayPrayerTimesNotification.class.getName(), context);
         Alarm alarm = new Alarm(context);
         if (intent.getAction().equals(ACTION_STOP_NOTIFICATION)) {
             Type listType = new TypeToken<List<ModelMessageNotification>>() {
@@ -50,7 +54,9 @@ public class CancelNotificationPrayerTime extends BroadcastReceiver {
             alarm.cancelAlarm(listForSavePrayerTimes, name_prayer_time);
             Log.d("TAG", " CancelNotificationPrayerTime : " + name_prayer_time + " send_time : " + send_time + "   " + "NOTIFICATION_ID_SERVICE : " + NOTIFICATION_ID_SERVICE + " prayer_time : " + prayer_time);
             manager.cancel(NOTIFICATION_ID_SERVICE);
-            context.stopService(new Intent(context, ServiceForPlayPrayerTimesNotification.class));
+            if (isServiceRunning){
+                context.stopService(new Intent(context, ServiceForPlayPrayerTimesNotification.class));
+            }
         }
     }
 }

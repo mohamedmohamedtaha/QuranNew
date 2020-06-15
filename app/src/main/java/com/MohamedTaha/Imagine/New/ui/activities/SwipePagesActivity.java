@@ -1,13 +1,16 @@
 package com.MohamedTaha.Imagine.New.ui.activities;
 
 import android.app.NotificationManager;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.MohamedTaha.Imagine.New.Adapter.AdapterForAzkarSwipe;
@@ -58,8 +61,9 @@ public class SwipePagesActivity extends AppCompatActivity {
     private int position_azkar = 0;
     Bundle bundle;
     int notificationId = -1;
-    String language_name;
-
+    private String language_name;
+    private SharedPreferences sharedPreferences;
+    private boolean screenOn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +76,9 @@ public class SwipePagesActivity extends AppCompatActivity {
         if (!language_name.equals("ar")) {
             HelperClass.change_language("ar", this);
         }
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        screenOn = sharedPreferences.getBoolean(getString(R.string.switch_key),true);
+        getScreenOn(screenOn);
         //for close Notification
         notificationId = getIntent().getIntExtra(NOTIFICATION_ID, -1);
         int timeSend = getIntent().getIntExtra(TIME_SEND, -1);
@@ -161,6 +168,14 @@ public class SwipePagesActivity extends AppCompatActivity {
             } else {
                 SwipePagesActivityVP.setCurrentItem(position_azkar);
             }
+        }
+    }
+
+    private void getScreenOn(boolean isScreenOn) {
+        if (isScreenOn) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        } else {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
     }
 

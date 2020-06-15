@@ -7,26 +7,25 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.media.session.MediaSessionManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
-import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
-import androidx.media.session.MediaButtonReceiver;
+import androidx.preference.PreferenceManager;
 
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.notification.prayerTimes.CancelNotificationPrayerTime;
@@ -64,6 +63,7 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
     private Long prayer_time = 0L;
     private String name_prayer_time = null;
     private List<ModelMessageNotification> listForSavePrayerTimes = null;
+    private String name_elmoazen = null;
 
     private void initMediaSession() throws RemoteException {
         if (mediaSessionManager != null) return; //mediaSessionManager exists
@@ -94,6 +94,10 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("TAG", "onStartCommand");
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        //getString Retrieve a String value from the Preference
+        name_elmoazen = sharedPreferences.getString(getString(R.string.settings_azan_key),
+                getString(R.string.settings_azan_default));
         builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID);
         audioFocusChange = new AudioFocusChange(this, this);
         //you only need to create  the cnannel on API 26+ devices
@@ -126,26 +130,91 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
             String st = bundle.getString(LIST_TIME__NOTIFICATION);
             listForSavePrayerTimes = new Gson().fromJson(st, listType);
             Log.d("TAG", "prayer_time is : " + prayer_time + "name_prayer_time is : " + name_prayer_time);
-            initMediaPlayer(name_prayer_time);
+            //initMediaPlayer(name_prayer_time);
             createNotification(name_prayer_time);
             if (!name_prayer_time.equals(getString(R.string.sunrise_string))) {
+                getNameShekh();
                 if (name_prayer_time != null) {
                     Log.d("TAG", "mediaPlayer is : ");
                     mediaPlayer.start();
                     isPlaying = true;
                 }
+            } else {
+            //    mediaSessionManager = null ;
+                Log.d("TAG", "mediaSessionManager = null is : " + mediaSessionManager );
+
             }
-//                else {
-//                Log.d("TAG", "NOTIFICATION_ID_SERVICE One ");
-//                startForeground(NOTIFICATION_ID_SERVICE, builder.build());
-//                     stopSelf();
-//            }
         } else {
             Log.d("TAG", "NOTIFICATION_ID_SERVICE two ");
             startForeground(NOTIFICATION_ID_SERVICE, builder.build());
             stopSelf();
         }
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    private void setAzanSound(int elfagr_Azan, int other_prayer_times) {
+        if (mediaPlayer == null) {
+            setMediaPlayerForSound(elfagr_Azan, other_prayer_times);
+            Log.d("TAG", "mediaPlayer == null");
+        } else if (mediaPlayer.isPlaying()) {
+            mediaPlayer.stop();
+            isPlaying = false;
+            mediaPlayer = null;
+            setMediaPlayerForSound(elfagr_Azan, other_prayer_times);
+            Log.d("TAG", "isPlaying");
+        } else {
+            isPlaying = false;
+            mediaPlayer = null;
+            setMediaPlayerForSound(elfagr_Azan, other_prayer_times);
+            Log.d("TAG", " not isPlaying");
+
+        }
+        mediaPlayer.setOnCompletionListener(this);
+        mediaPlayer.setOnErrorListener(this);
+    }
+
+    private void setMediaPlayerForSound(int elfagr_Azan, int other_prayer_times) {
+        if (name_prayer_time.equals(getString(R.string.fagr_string))) {
+            mediaPlayer = MediaPlayer.create(this, elfagr_Azan);
+            Log.d("TAG", "azan_haram_fajr");
+        }
+//        else if (name_prayer_time.equals(getString(R.string.sunrise_string))) {
+//            releaseMediaPlayer();
+//            audioFocusChange.onDestroy();
+//        //    return;
+//        }
+        else {
+            mediaPlayer = MediaPlayer.create(this, other_prayer_times);
+            Log.d("TAG", "azan_haram");
+        }
+    }
+
+    private void getNameShekh() {
+        if (name_elmoazen.equals(getString(R.string.settings_azan_eldosary_value))) {
+            setAzanSound(R.raw.yaser_eldosary_elfagr, R.raw.yaser_eldosary);
+            Log.d("TAG", "yaser_eldosary");
+
+        } else if (name_elmoazen.equals(getString(R.string.settings_azan_elharam_elmaky_value))) {
+            setAzanSound(R.raw.azan_haram_fajr, R.raw.azan_haram);
+            Log.d("TAG", "azan_haram");
+
+        } else if (name_elmoazen.equals(getString(R.string.settings_azan_elharam_elmadany_value))) {
+            setAzanSound(R.raw.elmadena_elfagr, R.raw.elmadena);
+            Log.d("TAG", "elmadena");
+
+        } else if (name_elmoazen.equals(getString(R.string.settings_azan_abdelbaset_value))) {
+            setAzanSound(R.raw.egypt_masr, R.raw.abdelbaset);
+            Log.d("TAG", "abdelbaset");
+
+        } else if (name_elmoazen.equals(getString(R.string.settings_azan_elmenshawy_value))) {
+            setAzanSound(R.raw.egypt_masr, R.raw.elmenshawy);
+            Log.d("TAG", "elmenshawy");
+
+        } else {
+            setAzanSound(R.raw.mshary_rashed_elfagr, R.raw.mshary_rashed_elfagr);
+            Log.d("TAG", "mshary_rashed_elfagr");
+
+        }
     }
 
     @Override
@@ -180,34 +249,6 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
             mediaPlayer.release();
             mediaPlayer = null;
             isPlaying = false;
-        }
-    }
-
-    private void initMediaPlayer(String name_prayer_time) {
-        Log.d("TAG", "initMediaPlayer");
-        if (mediaPlayer == null) {
-            if (name_prayer_time.equals(getString(R.string.fagr_string))) {
-                mediaPlayer = MediaPlayer.create(this, R.raw.azan_haram_fajr);
-                Log.d("TAG", "azan_haram_fajr");
-            } else if (name_prayer_time.equals(getString(R.string.sunrise_string))) {
-                releaseMediaPlayer();
-                audioFocusChange.onDestroy();
-                return;
-            } else {
-                mediaPlayer = MediaPlayer.create(this,R.raw.azan_haram);
-                Log.d("TAG", "azan_haram");
-            }
-            mediaPlayer.setOnCompletionListener(this);
-            mediaPlayer.setOnErrorListener(this);
-        } else {
-            Log.d("TAG", "initMediaPlayer not null");
-            if (mediaPlayer == null) return;
-            if (mediaPlayer.isPlaying()) {
-                mediaPlayer.stop();
-                isPlaying = false;
-                mediaPlayer = null;
-            }
-            initMediaPlayer(name_prayer_time);
         }
     }
 
@@ -273,6 +314,8 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
 
     @Override
     public void playMedia() {
+        Log.d("TAG", "playMedia");
+
 
 //        if (mediaPlayer == null) return;
 //        if (mediaPlayer != null && isPlaying) {

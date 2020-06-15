@@ -7,7 +7,8 @@
 
     <com.booking.rtlviewpager.RtlViewPager
         android:id="@+id/SwipePagesActivity_VP"
-        style="@style/style_default_layout_match_parent"></com.booking.rtlviewpager.RtlViewPager>
+        style="@style/style_default_layout_match_parent">
+    </com.booking.rtlviewpager.RtlViewPager>
 
     <ProgressBar
         android:id="@+id/SwipePagesActivity_PB"

@@ -30,7 +30,7 @@ public class AudioFocusChange implements AudioManager.OnAudioFocusChangeListener
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
                 mediaPlayerListener.slowVolume();
             case AudioManager.AUDIOFOCUS_LOSS:
-                mediaPlayerListener.stopMedia();
+                //mediaPlayerListener.stopMedia();
                 break;
         }
     }

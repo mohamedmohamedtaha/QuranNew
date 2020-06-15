@@ -106,12 +106,14 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     public static String store_city_name = null;
     private SharedPreferences sharedPreferences;
     private String repear;
+    private String number_azan_default = "0";
     //  private String compare_methods = null;
     APIServices apiServicesForCity;
     String city_name = null;
     int geocoderMaxResults = 1;
     private APIServices apiServices;
     public static boolean checkIsGetData = false;
+    public static final String AZAN_DEFUALT = "azan_defualt";
 
 
     @Override
@@ -335,47 +337,23 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 
     @Override
     protected void onResume() {
-
         super.onResume();
 //        NotificationHelperPrayerTime notificationHelperPrayerTime = new NotificationHelperPrayerTime();
+//        NotificationHelper notificationHelper = new NotificationHelper();
 //
-//        NotificationHelper.sendNotificationEveryHalfDay(getApplicationContext());
-//        NotificationHelper.enableBootRecieiver(getApplicationContext());
+//        notificationHelper.sendNotificationEveryHalfDay(getApplicationContext());
+//        notificationHelper.enableBootRecieiver(getApplicationContext());
 //
-//     //   if (!SharedPerefrenceHelper.getBooleanPrayerTimeEveryday(getApplicationContext(), IS_FIRST_TIME_PRAYER_TIME_EVERYDAY, false)) {
-//            getPrayerTimesEveryday(getApplicationContext());
+//        notificationHelperPrayerTime.getPrayerTimesEveryday(getApplicationContext());
 //        notificationHelperPrayerTime.enableBootRecieiver(getApplicationContext());
-//            SharedPerefrenceHelper.putBooleanPrayerTimeEveryday(getApplicationContext(), IS_FIRST_TIME_PRAYER_TIME_EVERYDAY, true);
-//            Log.d("TAG", "getBooleanPrayerTimeEveryday if");
-////        }else {
-////            Log.d("TAG", "getBooleanPrayerTimeEveryday else");
-////
-////        }
     }
 
-    private void checkIsFragmentAzanIsOpen() {
-        GridViewFragment azanFragment = (GridViewFragment) getSupportFragmentManager().findFragmentByTag(FOR_GET_FRAGMENT_AZAN);
-        //    AzanFragment azanFragment = (AzanFragment) getSupportFragmentManager().findFragmentByTag(FOR_GET_FRAGMENT_AZAN);
-
-        if (azanFragment != null && azanFragment.isVisible()) {
-            Toast.makeText(this, "AzanFragment true ", Toast.LENGTH_SHORT).show();
-            Log.d("TAG", "AzanFragment true");
-
-        } else {
-            Toast.makeText(this, "AzanFragment not ", Toast.LENGTH_SHORT).show();
-            Log.d("TAG", "AzanFragment false");
-
-        }
-    }
-
-
-    public static void getPrayerTimesEveryMonth(Context context) {
+     public static void getPrayerTimesEveryMonth(Context context) {
         int ALARM_TYPE_ELAPSED = 11;
         AlarmManager alarmManager;
         PendingIntent alarmPendingIntent;
         Intent intent = new Intent(context, GetPrayerTimesEveryMonth.class);
         intent.putExtra(CHECKISDATAORNOTINDATABASE, store_date_today);
-        //intent.putExtra(CHECKISDATAORNOTINDATABASE, store_date_today);
         Log.d("TAG", "getPrayerTimesEveryMonth " + store_date_today);
         alarmPendingIntent = PendingIntent.getBroadcast(context, ALARM_TYPE_ELAPSED, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Calendar setTime = Calendar.getInstance();
@@ -518,7 +496,9 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     @Override
     public void onPrayerTimesAdded() {
         SharedPerefrenceHelper.putStringCompareMethod(this, COMPARE_METHOD, repear);
+        SharedPerefrenceHelper.putStringAzan(this, AZAN_DEFUALT, number_azan_default);
         changeValueInListPreference();
+        changeValueInListPreferenceForAzan();
 
     }
 
@@ -594,16 +574,22 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     private String getMethodPreferences(String country_name) {
         if (country_name.equals(getString(R.string.saudi_arabia))) {
             customForPreferences(getString(R.string.settings_method_umm_al_qura_university_makkah_value), getString(R.string.settings_method_umm_al_qura_university_makkah_value));
+            customForPreferencesAzan(getString(R.string.settings_azan_elharam_elmaky_value), getString(R.string.settings_azan_elharam_elmaky_value));
         } else if (country_name.equals(getString(R.string.qatar))) {
             customForPreferences(getString(R.string.settings_method_qatar_value), getString(R.string.settings_method_qatar_value));
+            customForPreferencesAzan(getString(R.string.settings_azan_elharam_elmaky_value), getString(R.string.settings_azan_elharam_elmaky_value));
         } else if (country_name.equals(getString(R.string.kuwait))) {
             customForPreferences(getString(R.string.settings_method_kuwait_value), getString(R.string.settings_method_kuwait_value));
+            customForPreferencesAzan(getString(R.string.settings_azan_elharam_elmaky_value), getString(R.string.settings_azan_elharam_elmaky_value));
         } else if (country_name.equals(getString(R.string.turkey))) {
             customForPreferences(getString(R.string.settings_method_diyanet_işleri_başkanlığı_turkey_value), getString(R.string.settings_method_diyanet_işleri_başkanlığı_turkey_value));
+            customForPreferencesAzan(getString(R.string.settings_azan_elharam_elmaky_value), getString(R.string.settings_azan_elharam_elmaky_value));
         } else if (country_name.equals(getString(R.string.russia))) {
             customForPreferences(getString(R.string.settings_method_spiritual_administration_of_muslims_of_russia_value), getString(R.string.settings_method_spiritual_administration_of_muslims_of_russia_value));
+            customForPreferencesAzan(getString(R.string.settings_azan_elharam_elmaky_value), getString(R.string.settings_azan_elharam_elmaky_value));
         } else {
             customForPreferences(getString(R.string.settings_method_key), getString(R.string.settings_method_default));
+            customForPreferencesAzan(getString(R.string.settings_azan_abdelbaset_value), getString(R.string.settings_azan_abdelbaset_value));
         }
         return repear;
     }
@@ -611,7 +597,13 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     private String customForPreferences(String method_key, String method_default) {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         repear = sharedPreferences.getString(method_key, method_default);
-        return repear;
+        return number_azan_default;
+    }
+
+    private String customForPreferencesAzan(String method_key, String method_default) {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        number_azan_default = sharedPreferences.getString(method_key, method_default);
+        return number_azan_default;
     }
 
     private void changeValueInListPreference() {
@@ -620,7 +612,12 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         editor.putString(getString(R.string.settings_method_key), repear);
         editor.commit();
     }
-
+    private void changeValueInListPreferenceForAzan() {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(getString(R.string.settings_azan_key), number_azan_default);
+        editor.commit();
+    }
     private String getCityNameWithoutLocation(double latitude, double longitude) {
         String cityName = "";
         Locale locale = new Locale("ar");

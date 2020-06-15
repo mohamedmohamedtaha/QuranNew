@@ -5,12 +5,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.fragments.AzanFragment">
-
-
     <com.booking.rtlviewpager.RtlViewPager
         android:id="@+id/AzanFragment_VP"
         android:visibility="gone"
-        style="@style/style_default_layout_match_parent"></com.booking.rtlviewpager.RtlViewPager>
+        style="@style/style_default_layout_match_parent">
+    </com.booking.rtlviewpager.RtlViewPager>
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleLarge"

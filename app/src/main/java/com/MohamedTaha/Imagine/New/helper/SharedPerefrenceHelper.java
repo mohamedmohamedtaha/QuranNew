@@ -9,6 +9,7 @@ public class SharedPerefrenceHelper {
     private static final String SHARED_PREFRENCES_WAY_USING = "way_using";
     private static final String SHARED_PREFRENCES_COMPARE_METHOD = "way_using";
     private static final String SHARED_PREFRENCES_PREAYER_TIME_EVERYDAY = "get_prayer_time_everyday";
+    private static final String SHARED_PREFRENCES_AZAN = "shared_preference_azan";
 
     private static SharedPreferences getSharedPrefrencesForWayUsing(Context context){
         return context.getSharedPreferences(SHARED_PREFRENCES_WAY_USING,Context.MODE_PRIVATE);
@@ -68,20 +69,13 @@ public class SharedPerefrenceHelper {
     public static String getStringCompareMethod(Context context , String key, String defaultValue){
         return getSharedPrefrencesCompareMethod(context).getString(key,defaultValue);
     }
-    public static void removeDataForCompareMethod(Context context){
-        getSharedPrefrencesCompareMethod(context).edit().clear().commit();
+
+    private static SharedPreferences getSharedPreferencesListPreferenceAzan(Context context){
+        return context.getSharedPreferences(SHARED_PREFRENCES_AZAN,Context.MODE_PRIVATE);
+    }
+    public static void putStringAzan(Context context,String key, String value){
+        getSharedPreferencesListPreferenceAzan(context).edit().putString(key,value).commit();
     }
 
-    private static SharedPreferences getSharedPreferencesPrayerTimeEveryday(Context context){
-        return context.getSharedPreferences(SHARED_PREFRENCES_PREAYER_TIME_EVERYDAY,Context.MODE_PRIVATE);
-    }
-    public static void putBooleanPrayerTimeEveryday(Context context,String key, boolean value){
-        getSharedPreferencesPrayerTimeEveryday(context).edit().putBoolean(key,value).commit();
-    }
-    public static boolean getBooleanPrayerTimeEveryday(Context context , String key, boolean defaultValue){
-        return getSharedPreferencesPrayerTimeEveryday(context).getBoolean(key,defaultValue);
-    }
-    public static void removeDataForPrayerTimeEveryday(Context context){
-        getSharedPreferencesPrayerTimeEveryday(context).edit().clear().commit();
-    }
 }
+

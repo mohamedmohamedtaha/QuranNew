@@ -17703,11 +17703,13 @@
         <item>@string/settings_method_spiritual_administration_of_muslims_of_russia_label</item>
     </array>
     <array name="settings_by_method_value">
-        <item>@string/settings_method_muslim_world_league_value</item>
-        <item>@string/settings_method_islamic_society_of_north_america_value</item>
-        <item>@string/settings_method_egyptian_general_authority_of_survey_value</item>
-        <item>@string/settings_method_umm_al_qura_university_makkah_value</item>
         <item>@string/settings_method_university_of_islamic_sciences_karachi_value</item>
+        <item>@string/settings_method_islamic_society_of_north_america_value</item>
+        <item>@string/settings_method_muslim_world_league_value</item>
+
+        <item>@string/settings_method_umm_al_qura_university_makkah_value</item>
+        <item>@string/settings_method_egyptian_general_authority_of_survey_value</item>
+
         <item>@string/settings_method_institute_of_geophysics_university_of_tehran_value</item>
         <item>@string/settings_method_gulf_region_value</item>
         <item>@string/settings_method_kuwait_value</item>
@@ -17716,5 +17718,22 @@
         <item>@string/settings_method_union_organization_islamic_de_france_value</item>
         <item>@string/settings_method_diyanet_işleri_başkanlığı_turkey_value</item>
         <item>@string/settings_method_spiritual_administration_of_muslims_of_russia_value</item>
+    </array>
+
+    <array name="settings_by_azan_label">
+        <item>@string/settings_azan_eldosary_label</item>
+        <item>@string/settings_azan_elharam_elmaky_label</item>
+        <item>@string/settings_azan_elharam_elmadany_label</item>
+        <item>@string/settings_azan_abdelbaset_label</item>
+        <item>@string/settings_azan_elmenshawy_label</item>
+        <item>@string/settings_azan_mashary_label</item>
+    </array>
+    <array name="settings_by_azan_value">
+        <item>@string/settings_azan_eldosary_value</item>
+        <item>@string/settings_azan_elharam_elmaky_value</item>
+        <item>@string/settings_azan_elharam_elmadany_value</item>
+        <item>@string/settings_azan_abdelbaset_value</item>
+        <item>@string/settings_azan_elmenshawy_value</item>
+        <item>@string/settings_azan_mashary_value</item>
     </array>
 </resources>

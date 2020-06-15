@@ -206,6 +206,7 @@
     <string name="settings_Notification_label">الإشعارات</string>
     <string name="no_google_services">هذا الجوال لا يدعم خدمات جوجل</string>
     <string name="settings_method_label">تغيير التوقيت</string>
+    <string name="settings_moazen_label">تغيير صوت المؤذن</string>
 
 
     <string name="settings_Notification_key" translatable="false">AlarmManager.INTERVAL_HALF_DAY</string>
@@ -274,6 +275,25 @@
     <string name="kuwait">Kuwait</string>
     <string name="turkey">Turkey</string>
     <string name="russia">Russia</string>
+
+
+    <string name="settings_azan_key" translatable="false">@string/settings_azan_abdelbaset_value</string>
+    <string name="settings_azan_default" translatable="false">@string/settings_azan_abdelbaset_value</string>
+
+    <string name="settings_azan_eldosary_value">1</string>
+    <string name="settings_azan_elharam_elmaky_value">2</string>
+    <string name="settings_azan_elharam_elmadany_value">3</string>
+    <string name="settings_azan_abdelbaset_value">4</string>
+    <string name="settings_azan_elmenshawy_value">5</string>
+    <string name="settings_azan_mashary_value">6</string>
+
+    <string name="settings_azan_eldosary_label">الشيخ ياسر الدوسري</string>
+    <string name="settings_azan_elharam_elmaky_label">الحرم المكي</string>
+    <string name="settings_azan_elharam_elmadany_label">الحرم المدني</string>
+    <string name="settings_azan_abdelbaset_label">الشيخ عبدالباسط</string>
+    <string name="settings_azan_elmenshawy_label">الشيخ محمد صديق المنشاوي</string>
+    <string name="settings_azan_mashary_label">الشيخ مشاري راشد</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello</string>
@@ -443,4 +463,9 @@
 </string>
     <string name="om_elqora">إذا كانت مواقيت الصلاه غير متوافقة مع بلدك\n يمكنك تغيير التوقيت الحالي من الضبط  \n
         علماً بأن التوقيت الإفتراضي هو توقيت ام القرى(مكة المكرمة) </string>
+    <string name="screenTitle">إضائة الشاشة دائماً عند قراءة القرأن</string>
+    <string name="screenOff">قفل إضاة الشاشة</string>
+    <string name="screenOn">فتح إضاة الشاشة</string>
+    <string name="switch_key">switch_key</string>
+
 </resources>
