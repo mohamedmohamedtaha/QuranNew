@@ -25,7 +25,6 @@ public class GetPrayerTimesEveryDay extends BroadcastReceiver {
                 .subscribe(prayer_times -> {
                     if (prayer_times.getDate_today().equals(convertDate())) {
                         notificationHelperPrayerTime.sendNotificationForPrayerTime(context, prayer_times);
-                        //   enableBootRecieiver(context);
                     }
                 }, e -> {
                     Log.d("TAG", "GetPrayerTimesEveryDay e : " + e.getMessage());

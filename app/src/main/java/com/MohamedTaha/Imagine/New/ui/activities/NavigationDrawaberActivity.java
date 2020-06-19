@@ -43,6 +43,7 @@ import com.MohamedTaha.Imagine.New.mvp.model.azan.Azan;
 import com.MohamedTaha.Imagine.New.mvp.model.getCity.GetCity;
 import com.MohamedTaha.Imagine.New.mvp.presenter.NavigationDrawarPresenter;
 import com.MohamedTaha.Imagine.New.mvp.view.NavigationDrawarView;
+import com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarNotificationHelper;
 import com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationHelperPrayerTime;
 import com.MohamedTaha.Imagine.New.notification.quran.NotificationHelper;
 import com.MohamedTaha.Imagine.New.receiver.GetPrayerTimesEveryMonth;
@@ -264,6 +265,12 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 
         notificationHelperPrayerTime.getPrayerTimesEveryday(getApplicationContext());
         notificationHelperPrayerTime.enableBootRecieiver(getApplicationContext());
+
+        MorningAzkarNotificationHelper morningAzkarNotificationHelper = new MorningAzkarNotificationHelper(getApplicationContext());
+        morningAzkarNotificationHelper.morningAzkar();
+        morningAzkarNotificationHelper.nightAzkar();
+
+        morningAzkarNotificationHelper.enableBootRecieiver(getApplicationContext());
     }
 
     private void getCityName() {

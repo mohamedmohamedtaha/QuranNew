@@ -211,7 +211,7 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
             Log.d("TAG", "elmenshawy");
 
         } else {
-            setAzanSound(R.raw.mshary_rashed_elfagr, R.raw.mshary_rashed_elfagr);
+            setAzanSound(R.raw.mshary_rashed_elfagr, R.raw.mshary_rashed);
             Log.d("TAG", "mshary_rashed_elfagr");
 
         }

@@ -39,32 +39,25 @@ public class NotificationHelperPrayerTime {
                 Integer.valueOf(prayer_times.getMaghrib().substring(3, 5)), context.getString(R.string.magrib_string));
         setTimePrayerWithText(Integer.valueOf(prayer_times.getIsha().substring(0, 2)),
                 Integer.valueOf(prayer_times.getIsha().substring(3, 5)), context.getString(R.string.isha_string));
-        // Alarm alarm = new Alarm(context);
 
-        //  alarm.cancelAlarm();
-
-        //  alarm.customCancelAlarm(listForSavePrayerTimes);
-
-//        setTimePrayerWithText(Integer.valueOf("23"),
-//                Integer.valueOf("06"), context.getString(R.string.fagr_string));
-//        setTimePrayerWithText(Integer.valueOf("23"),
-//                Integer.valueOf("07"), context.getString(R.string.sunrise_string));
-//        setTimePrayerWithText(Integer.valueOf("23"),
-//                Integer.valueOf("12"), context.getString(R.string.duhr_string));
-//        setTimePrayerWithText(Integer.valueOf("23"),
-//                Integer.valueOf("17"), context.getString(R.string.asr_string));
-//        setTimePrayerWithText(Integer.valueOf("23"),
-//                Integer.valueOf("20"), context.getString(R.string.magrib_string));
-//        setTimePrayerWithText(Integer.valueOf("23"),
-//                Integer.valueOf("25"), context.getString(R.string.isha_string));
-
+//        setTimePrayerWithText(Integer.valueOf("14"),
+//                Integer.valueOf("41"), context.getString(R.string.fagr_string));
+//        setTimePrayerWithText(Integer.valueOf("14"),
+//                Integer.valueOf("42"), context.getString(R.string.sunrise_string));
+//        setTimePrayerWithText(Integer.valueOf("14"),
+//                Integer.valueOf("43"), context.getString(R.string.duhr_string));
+//        setTimePrayerWithText(Integer.valueOf("14"),
+//                Integer.valueOf("44"), context.getString(R.string.asr_string));
+//        setTimePrayerWithText(Integer.valueOf("14"),
+//                Integer.valueOf("45"), context.getString(R.string.magrib_string));
+//        setTimePrayerWithText(Integer.valueOf("14"),
+//                Integer.valueOf("46"), context.getString(R.string.isha_string));
         alarm.setAlarm(context, ServiceForPlayPrayerTimesNotification.class, listForSavePrayerTimes);
     }
 
     private void setTimePrayerWithText(int value_hour, int value_secound, String name_prayer) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-
         Calendar setTime = Calendar.getInstance();
         setTime.setTimeInMillis(System.currentTimeMillis());
         setTime.set(Calendar.HOUR_OF_DAY, value_hour);

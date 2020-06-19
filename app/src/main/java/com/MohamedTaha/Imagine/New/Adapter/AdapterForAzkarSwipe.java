@@ -33,6 +33,10 @@ public class AdapterForAzkarSwipe extends PagerAdapter {
         this.modelAzkarList = modelAzkarList;
         this.lisenter = lisenter;
     }
+    public AdapterForAzkarSwipe(Context context, List<ModelAzkar> modelAzkarList) {
+        this.context = context;
+        this.modelAzkarList = modelAzkarList;
+    }
 
     @Override
     public int getCount() {

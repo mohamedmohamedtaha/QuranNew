@@ -64,7 +64,6 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
         adapterElarbaoonElnawawy = new AdapterElarbaoonElnawawy(stringList, new AdapterElarbaoonElnawawy.ClickListener() {
             @Override
             public void onClick(int position) {
-           //     odelAzkar.get(position).getPosition()
                 elnawawyModel.setPosition(elnawawyModelList.get(position).getPosition());
                 elnawawyModel.setName_elhadeth(elnawawyModelList.get(position).getName_elhadeth());
                 elnawawyModel.setNumber_elhadeth(elnawawyModelList.get(position).getNumber_elhadeth());

@@ -20,7 +20,6 @@ import static android.content.Context.ALARM_SERVICE;
  */
 
 public class NotificationHelper {
-    public static int ALARM_TYPE_RTC = 100;
     public static int ALARM_TYPE_ELAPSED = 101;
     private static AlarmManager alarmManager;
     private static PendingIntent alarmPendingIntent;
@@ -36,12 +35,8 @@ public class NotificationHelper {
         Log.d("TAG", "ServiceForNotificationImage ");
         //Setting pending intent to respond to broadcast sent by AlarmManager every day at 8am
         alarmPendingIntent = PendingIntent.getBroadcast(context, ALARM_TYPE_ELAPSED, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        //getting instance of AlarmManager service
         alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        //Inexact alarm everyday since device is booted up. This is a better choise and
-        //scales well when device time preference/locale is changed
-        //we are setting alarm to fire notification after 15 minutes , and every 15 minutes there on
-        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
+             alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
                 SystemClock.elapsedRealtime() + setAlarm(repear),
                 setAlarm(repear), alarmPendingIntent);
 //        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,

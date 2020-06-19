@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +34,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.MohamedTaha.Imagine.New.helper.Images.SAVE_POSITION;
+import static com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarAlarmReceiver.NOTIFICATION_ID_MORNING_AZKAR;
+import static com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarAlarmReceiver.SAVE_POSITION_MORNING_AZKAR;
+import static com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarAlarmReceiver.TIME_SEND_MORNING_AZKAR;
 import static com.MohamedTaha.Imagine.New.notification.quran.AlarmReceiver.NOTIFICATION_ID;
 import static com.MohamedTaha.Imagine.New.notification.quran.AlarmReceiver.SAVE_Position_Notification;
 import static com.MohamedTaha.Imagine.New.notification.quran.AlarmReceiver.TIME_SEND;
@@ -47,6 +51,8 @@ public class SwipePagesActivity extends AppCompatActivity {
     ArrayList<Integer> images = new ArrayList<>();
     ArrayList<Integer> imagesNotification = new ArrayList<>();
     ArrayList<Integer> imagesFirst = new ArrayList<>();
+    ArrayList<String> AzkarNotification = new ArrayList<>();
+
 
     public static final String IS_TRUE = "is_true";
     public static final String IS_TRUE_AZKAR = "is_true_azkar";
@@ -61,9 +67,11 @@ public class SwipePagesActivity extends AppCompatActivity {
     private int position_azkar = 0;
     Bundle bundle;
     int notificationId = -1;
+    int notification_id_morning_azkar = -1;
     private String language_name;
     private SharedPreferences sharedPreferences;
     private boolean screenOn;
+    private ModelAzkar position_azkar_notification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,12 +84,15 @@ public class SwipePagesActivity extends AppCompatActivity {
         if (!language_name.equals("ar")) {
             HelperClass.change_language("ar", this);
         }
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        screenOn = sharedPreferences.getBoolean(getString(R.string.switch_key),true);
+        screenOn = sharedPreferences.getBoolean(getString(R.string.switch_key), true);
         getScreenOn(screenOn);
         //for close Notification
         notificationId = getIntent().getIntExtra(NOTIFICATION_ID, -1);
+        notification_id_morning_azkar = getIntent().getIntExtra(NOTIFICATION_ID_MORNING_AZKAR, -1);
         int timeSend = getIntent().getIntExtra(TIME_SEND, -1);
+        int time_send_morning_azkar = getIntent().getIntExtra(TIME_SEND_MORNING_AZKAR, -1);
         if (notificationId >= 0) {
             getArgemnetsNotification();
             createImageNotification();
@@ -89,12 +100,24 @@ public class SwipePagesActivity extends AppCompatActivity {
             SwipePagesActivityVP.setAdapter(adapterForSwipe);
             SwipePagesActivityVP.setCurrentItem(notificationId);
             Log.d("TAG", " " + notificationId);
-            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             if (notificationManager != null) {
                 notificationManager.cancel(timeSend);
-
             }
+        } else if (notification_id_morning_azkar >= 0) {
+            getArgemnetsForNotificationAzkar();
+//            position_azkar_notification = new Gson().fromJson(getIntent().getStringExtra(SAVE_POSITION_MORNING_AZKAR), ModelAzkar.class);
+            AdapterForAzkarSwipe adapterForAzkarSwipe = new AdapterForAzkarSwipe(SwipePagesActivity.this, modelAzkarList);
+            if (notification_id_morning_azkar == 27) {
+                SwipePagesActivityVP.setAdapter(adapterForAzkarSwipe);
+                SwipePagesActivityVP.setCurrentItem(notification_id_morning_azkar);
 
+            } else {
+                SwipePagesActivityVP.setAdapter(adapterForAzkarSwipe);
+                SwipePagesActivityVP.setCurrentItem(notification_id_morning_azkar);
+            }
+            if (notificationManager != null) {
+                notificationManager.cancel(time_send_morning_azkar);
+            }
         } else if (bundle.getBoolean(SAVE_STATE)) {
             getArgemnets();
             createImage();
@@ -214,6 +237,26 @@ public class SwipePagesActivity extends AppCompatActivity {
         }
     }
 
+    private void getAzkarNotification() {
+        if (bundle != null) {
+            imagesNotification = bundle.getIntegerArrayList(SAVE_Position_Notification);
+            Log.d("TAG", " " + imagesNotification);
+        }
+    }
+
+    private void createAzkarNotification() {
+        if (imagesNotification != null) {
+            for (int i = 0; i < imagesNotification.size(); i++) {
+                bundle.putInt(SAVE_Position_Notification, imagesNotification.get(i));
+            }
+            //  bundle.putInt(SAVE_Position_Notification, imagesNotification);
+            Log.d("TAG", " " + imagesNotification);
+
+
+            SwipePagesActivityPB.setVisibility(View.GONE);
+        }
+    }
+
     private void getImagesFirst() {
         if (bundle != null) {
             imagesFirst = bundle.getIntegerArrayList(SAVE_ALL_IMAGES);
@@ -236,6 +279,16 @@ public class SwipePagesActivity extends AppCompatActivity {
             String st = bundle.getString(SAVE_AZKAR);
             modelAzkarList = new Gson().fromJson(st, listType);
             position_azkar = bundle.getInt(SAVE_POTION_AZKAR);
+        }
+        SwipePagesActivityPB.setVisibility(View.GONE);
+    }
+    private void getArgemnetsForNotificationAzkar() {
+        if (bundle != null) {
+            Type listType = new TypeToken<List<ModelAzkar>>() {
+            }.getType();
+            String st = bundle.getString(SAVE_POSITION_MORNING_AZKAR);
+            modelAzkarList = new Gson().fromJson(st, listType);
+            position_azkar = bundle.getInt(NOTIFICATION_ID_MORNING_AZKAR);
         }
         SwipePagesActivityPB.setVisibility(View.GONE);
     }

@@ -4,14 +4,12 @@
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/ic_action_action_search"
-        android:orderInCategory="100"
         android:title="search"
         app:showAsAction="always" />
     <item
-        android:id="@+id/action_share"
-        android:icon="@drawable/ic_share"
-        android:orderInCategory="100"
-        android:title="@string/shareApp"
+        android:id="@+id/action_settings"
+        android:title="@string/settings"
+        android:icon="@drawable/ic_action_settings"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_elarbaoon_elnawawy"
@@ -19,9 +17,11 @@
         android:title="@string/el_arbaoon_elnawawy"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_settings"
-        android:title="@string/settings"
-        app:showAsAction="never" />
+        android:id="@+id/action_share"
+        android:icon="@drawable/ic_share"
+        android:title="@string/shareApp"
+        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/action_use_way"
         android:title="@string/use_way"

@@ -32,11 +32,22 @@
         android:theme="@style/FullScreenWindow"
         tools:targetApi="n">
         <activity
+            android:name=".MainDrawableActivity"
+            android:label="@string/title_activity_main_drawable"
+            android:theme="@style/FullScreenWindow.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".ui.activities.ContianerDescriptionElnawawyActivity"
             android:launchMode="singleTop" />
         <activity
             android:name=".ui.activities.ElarbaoonElnawawyActivity"
             android:launchMode="singleTop" />
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -80,18 +91,26 @@
 
         <receiver android:name=".notification.quran.CancelNotification" />
         <receiver android:name=".notification.quran.AlarmReceiver" />
-        <receiver android:name="com.MohamedTaha.Imagine.New.notification.prayerTimes.AlarmReceiverPrayerTime" />
+        <receiver android:name=".notification.prayerTimes.AlarmReceiverPrayerTime" />
         <receiver android:name=".notification.prayerTimes.CancelNotificationPrayerTime" />
         <receiver android:name=".notification.CancelNotificationMediaPlayer" />
-
+        <receiver android:name=".notification.morningAzkar.MorningAzkarAlarmReceiver" />
         <receiver android:name=".receiver.GetPrayerTimesEveryDay" />
+        <receiver android:name=".notification.morningAzkar.CancelMorningAzkarNotification" />
+        <receiver
+            android:name=".notification.morningAzkar.MorningAzkarAlarmBootRecevier"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
         <receiver
             android:name=".notification.quran.AlarmBootRecevier"
             android:enabled="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-
             </intent-filter>
         </receiver>
         <receiver
@@ -100,7 +119,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-
             </intent-filter>
         </receiver>
         <receiver android:name=".receiver.GetPrayerTimesEveryMonth" />
@@ -110,7 +128,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-
             </intent-filter>
         </receiver>
 
@@ -129,8 +146,7 @@
         </service>
         <service
             android:name=".service.ServiceForPlayPrayerTimesNotification"
-            android:enabled="true"/>
-
+            android:enabled="true" />
     </application>
 
 </manifest>

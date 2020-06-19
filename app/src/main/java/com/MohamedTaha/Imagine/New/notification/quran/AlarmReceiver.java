@@ -48,7 +48,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         int randomIndex = new Random().nextInt(toastMessages.length - 1);
         num = (int) System.currentTimeMillis();
         notificationId = setNotificationForShow(randomIndex);
-        addImagesList();
+        //addImagesList();
         Intent intentToRepeat = new Intent(context, SwipePagesActivity.class);
         intentToRepeat.putExtra(NOTIFICATION_ID, notificationId);
         intentToRepeat.putExtra(TIME_SEND, num);

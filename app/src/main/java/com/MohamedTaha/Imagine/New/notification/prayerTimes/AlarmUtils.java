@@ -35,14 +35,12 @@ public class AlarmUtils {
         } else {
             alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
         }
-
         saveAlarmId(context, notificationId);
     }
 
     public void setAlarm(Context context, Class name_class, List<ModelMessageNotification> listForSavePrayerTimes) {
         PendingIntent pendingIntent = null;
         AlarmManager[] alarmManager = new AlarmManager[listForSavePrayerTimes.size()];
-
         Intent[] intent = new Intent[alarmManager.length];
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
@@ -50,39 +48,25 @@ public class AlarmUtils {
             intent[i] = new Intent(context, name_class);
             intent[i].putExtra(TEXT_NAME_NOTIFICATION, listForSavePrayerTimes.get(i).getText_notification());
             intent[i].putExtra(LIST_TIME__NOTIFICATION, new Gson().toJson(listForSavePrayerTimes));
-            //   intent[i].setAction(" ");
-//            Bundle bundle = new Bundle();
-//            bundle.putLong(TIME_NOTIFICATION, listForSavePrayerTimes.get(i).getTime_payer());
-//            bundle.putString(TEXT_NAME_NOTIFICATION, listForSavePrayerTimes.get(i).getText_notification());
-//            bundle.putString(LIST_TIME__NOTIFICATION, new Gson().toJson(listForSavePrayerTimes));
             Log.d("TAG", " TEXT_NOTIFICATION : " + listForSavePrayerTimes.get(i).getTime_payer()
                     + " : " + " TEXT_NOTIFICATION : " + listForSavePrayerTimes.get(i).getText_notification());
-            // intent[i].putExtras(bundle);
-
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 pendingIntent = PendingIntent.getForegroundService(context, i, intent[i], 0);
             } else {
                 pendingIntent = PendingIntent.getService(context, i, intent[i], 0);
             }
             alarmManager[i] = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-             alarmManager[i].setInexactRepeating(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(),AlarmManager.INTERVAL_DAY, pendingIntent);
+            //  alarmManager[i].setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(),AlarmManager.INTERVAL_DAY, pendingIntent);
 
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                alarmManager[i].setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
-//            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//                alarmManager[i].setExact(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
-//            } else {
-//                alarmManager[i].set(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
-//            }
+            //      alarmManager[i].setInexactRepeating(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(),AlarmManager.INTERVAL_DAY, pendingIntent);
 
-
-            //    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            //      alarmManager[i].setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
-            // } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            //    alarmManager[i].setInexactRepeating(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(),AlarmManager.INTERVAL_DAY, pendingIntent);
-            // } else {
-            //   alarmManager[i].set(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
-            // }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                alarmManager[i].setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                alarmManager[i].setExact(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
+            } else {
+                alarmManager[i].set(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
+            }
             saveAlarmId(context, i);
         }
     }
@@ -154,15 +138,12 @@ public class AlarmUtils {
         try {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             JSONArray jsonArray2 = new JSONArray(prefs.getString(context.getPackageName() + sTagAlarms, "[]"));
-
             for (int i = 0; i < jsonArray2.length(); i++) {
                 ids.add(jsonArray2.getInt(i));
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return ids;
     }
 
