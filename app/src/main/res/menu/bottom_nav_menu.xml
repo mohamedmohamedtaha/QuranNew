@@ -15,11 +15,10 @@
         android:title="@string/listen_swar" />
     <item
         android:id="@+id/prayer_times"
-        android:icon="@drawable/ic_azkar"
+        android:icon="@drawable/ic_baseline_museum_24"
         android:title="@string/elslah" />
     <item
         android:id="@+id/azkar"
-        android:icon="@drawable/ic_azkar"
+        android:icon="@drawable/ic_baseline_access_alarm_24"
         android:title="@string/azkar" />
-
 </menu>

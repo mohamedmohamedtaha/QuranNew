@@ -120,7 +120,7 @@ public class ShowGuide extends AppCompatActivity {
             }
         };
         customInfo(R.id.read_quran, R.string.spectial_button, R.string.read_string, listener);
-        setInformation();
+       // setInformation();
 
 //        toolbar.inflateMenu(R.menu.menu);
 //        sequence = new TapTargetSequence(context)
@@ -152,7 +152,7 @@ public class ShowGuide extends AppCompatActivity {
         toolbar.inflateMenu(R.menu.menu);
         sequence = new TapTargetSequence(context);
         sequence.targets(
-                        showInformationInToolbar(R.id.action_search, context.getString(R.string.spectial_button), context.getString(R.string.search_string)).id(0),
+                      //  showInformationInToolbar(R.id.action_search, context.getString(R.string.spectial_button), context.getString(R.string.search_string)).id(0),
                         showInformationInToolbar(R.id.action_share, context.getString(R.string.spectial_button), context.getString(R.string.share_string)).id(1),
                         //This for R.id.spectial_button
                         TapTarget.forToolbarOverflow(toolbar, "   هذا الزر خاص",
@@ -253,7 +253,7 @@ public class ShowGuide extends AppCompatActivity {
             public void onTargetClick(TapTargetView view) {
                 super.onTargetClick(view);
                 // .. which evidently starts the sequence we defined earlier
-                sequence.start();
+//                sequence.start();
              //   setInformation();
                 getshowGuideTrue();
 

@@ -85,6 +85,7 @@ public class NotificationHelperPrayerTime {
         }
     }
 
+
     //Enable boot receiver to persist alarms set for notification across device reboots
     public void enableBootRecieiver(Context context) {
         ComponentName receiver = new ComponentName(context, AlarmBootRecevierPrayerTimeEveryDay.class);

@@ -3,35 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_search"
-        android:icon="@drawable/ic_action_action_search"
+        android:icon="@drawable/ic_baseline_youtube_searched_for_24"
         android:title="search"
         app:showAsAction="always" />
-    <item
-        android:id="@+id/action_settings"
-        android:title="@string/settings"
-        android:icon="@drawable/ic_action_settings"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/action_elarbaoon_elnawawy"
-        android:icon="@drawable/ic_share"
-        android:title="@string/el_arbaoon_elnawawy"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_share"
-        android:icon="@drawable/ic_share"
-        android:title="@string/shareApp"
-        app:showAsAction="ifRoom" />
 
-    <item
-        android:id="@+id/action_use_way"
-        android:title="@string/use_way"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_rate"
-        android:title="@string/labelEvaluation"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_send_us"
-        android:title="@string/labelSend"
-        app:showAsAction="never" />
+<!--    <item-->
+<!--        android:id="@+id/el_arbaoon_elnawawy"-->
+<!--        android:title="@string/el_arbaoon_elnawawy"-->
+<!--        app:showAsAction="never" />-->
+<!--    <item-->
+<!--        android:id="@+id/action_share"-->
+<!--        android:icon="@drawable/ic_share"-->
+<!--        android:title="@string/shareApp"-->
+<!--        app:showAsAction="ifRoom" />-->
+
+<!--    <item-->
+<!--        android:id="@+id/use_way"-->
+<!--        android:title="@string/use_way"-->
+<!--        app:showAsAction="never" />-->
+<!--    <item-->
+<!--        android:id="@+id/action_rate"-->
+<!--        android:title="@string/labelEvaluation"-->
+<!--        app:showAsAction="never" />-->
+<!--    <item-->
+<!--        android:id="@+id/action_send_us"-->
+<!--        android:title="@string/labelSend"-->
+<!--        app:showAsAction="never" />-->
 </menu>

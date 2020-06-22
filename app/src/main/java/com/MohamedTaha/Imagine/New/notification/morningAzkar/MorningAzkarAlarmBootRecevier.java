@@ -13,8 +13,7 @@ public class MorningAzkarAlarmBootRecevier extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
             MorningAzkarNotificationHelper morningAzkarNotificationHelper = new MorningAzkarNotificationHelper(context);
-            morningAzkarNotificationHelper.morningAzkar();
-            morningAzkarNotificationHelper.nightAzkar();
+            morningAzkarNotificationHelper.getAzkarTimesEveryday(context);
         }
     }
 }

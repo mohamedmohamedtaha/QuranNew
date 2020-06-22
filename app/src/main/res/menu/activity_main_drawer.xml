@@ -2,19 +2,42 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
+    <group
+        android:id="@+id/primary"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/el_arbaoon_elnawawy"
+            android:icon="@drawable/ic_baseline_chrome_reader_mode_24"
+            android:title="@string/el_arbaoon_elnawawy" />
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
     </group>
+    <group
+        android:id="@+id/second"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/use_way"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/use_way" />
+        <item
+            android:id="@+id/action_share"
+            android:icon="@drawable/ic_baseline_share_24"
+            android:title="@string/shareApp" />
+        <item
+            android:id="@+id/action_rate"
+            android:icon="@drawable/ic_baseline_grade_24"
+            android:title="@string/labelEvaluation" />
+        <item
+            android:id="@+id/action_send_us"
+            android:icon="@drawable/ic_baseline_email_24"
+            android:title="@string/labelSend" />
+    </group>
+    <group
+        android:id="@+id/third"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/action_settings"
+            android:icon="@drawable/ic_baseline_settings_24"
+            android:title="@string/settings" />
+    </group>
+
 </menu>

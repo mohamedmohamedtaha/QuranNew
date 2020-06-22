@@ -1,0 +1,16 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Preference
+        app:fragment="com.MohamedTaha.Imagine.New.ui.activities.SettingsActivity2$GeneralFragment"
+        app:icon="@drawable/ic_baseline_info_24"
+        app:key="@string/key_general_header"
+        app:title="@string/general_header" />
+
+    <Preference
+        app:fragment="com.MohamedTaha.Imagine.New.ui.activities.SettingsActivity2$NotificationFragment"
+        app:icon="@drawable/ic_baseline_notifications_24"
+        app:key="@string/key_notification_header"
+        app:title="@string/settings_Notification_label" />
+
+</PreferenceScreen>

@@ -170,18 +170,18 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
         return false;
     }
 
-    //For Delete those menus from that page
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        globalMenu = menu;
-        globalMenu.findItem(R.id.action_send_us).setVisible(false);
-        globalMenu.findItem(R.id.action_share).setVisible(false);
-        globalMenu.findItem(R.id.action_use_way).setVisible(false);
-        globalMenu.findItem(R.id.action_settings).setVisible(false);
-        globalMenu.findItem(R.id.action_rate).setVisible(false);
-        globalMenu.findItem(R.id.action_elarbaoon_elnawawy).setVisible(false);
-        return super.onPrepareOptionsMenu(globalMenu);
-    }
+//    //For Delete those menus from that page
+//    @Override
+//    public boolean onPrepareOptionsMenu(Menu menu) {
+//        globalMenu = menu;
+//        globalMenu.findItem(R.id.action_send_us).setVisible(false);
+//        globalMenu.findItem(R.id.action_share).setVisible(false);
+//        globalMenu.findItem(R.id.action_rate).setVisible(false);
+//        globalMenu.findItem(R.id.action_settings).setVisible(false);
+//        globalMenu.findItem(R.id.use_way).setVisible(false);
+//        globalMenu.findItem(R.id.el_arbaoon_elnawawy).setVisible(false);
+//        return super.onPrepareOptionsMenu(globalMenu);
+//    }
 
     private void openFragmentElnawary(ElarbaoonElnawawyModel elnawawyModel) {
         Intent startActivity = new Intent(getApplicationContext(), ContianerDescriptionElnawawyActivity.class);

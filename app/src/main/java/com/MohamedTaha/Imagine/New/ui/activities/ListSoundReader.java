@@ -699,10 +699,10 @@ public class ListSoundReader extends AppCompatActivity {
         globalMenu = menu;
         globalMenu.findItem(R.id.action_send_us).setVisible(false);
         globalMenu.findItem(R.id.action_share).setVisible(false);
-        globalMenu.findItem(R.id.action_use_way).setVisible(false);
+        globalMenu.findItem(R.id.action_rate).setVisible(false);
         globalMenu.findItem(R.id.action_settings).setVisible(false);
         globalMenu.findItem(R.id.action_rate).setVisible(false);
-        globalMenu.findItem(R.id.action_elarbaoon_elnawawy).setVisible(false);
+        globalMenu.findItem(R.id.shareApp).setVisible(false);
         return super.onPrepareOptionsMenu(globalMenu);
     }
 

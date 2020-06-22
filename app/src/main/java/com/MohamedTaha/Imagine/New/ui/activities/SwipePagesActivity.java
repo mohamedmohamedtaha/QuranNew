@@ -34,7 +34,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.MohamedTaha.Imagine.New.helper.Images.SAVE_POSITION;
-import static com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarAlarmReceiver.NOTIFICATION_ID_MORNING_AZKAR;
+import static com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarAlarmReceiver.NOTIFICATION_ID_AZKAR;
 import static com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarAlarmReceiver.SAVE_POSITION_MORNING_AZKAR;
 import static com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarAlarmReceiver.TIME_SEND_MORNING_AZKAR;
 import static com.MohamedTaha.Imagine.New.notification.quran.AlarmReceiver.NOTIFICATION_ID;
@@ -90,7 +90,7 @@ public class SwipePagesActivity extends AppCompatActivity {
         getScreenOn(screenOn);
         //for close Notification
         notificationId = getIntent().getIntExtra(NOTIFICATION_ID, -1);
-        notification_id_morning_azkar = getIntent().getIntExtra(NOTIFICATION_ID_MORNING_AZKAR, -1);
+        notification_id_morning_azkar = getIntent().getIntExtra(NOTIFICATION_ID_AZKAR, -1);
         int timeSend = getIntent().getIntExtra(TIME_SEND, -1);
         int time_send_morning_azkar = getIntent().getIntExtra(TIME_SEND_MORNING_AZKAR, -1);
         if (notificationId >= 0) {
@@ -288,7 +288,7 @@ public class SwipePagesActivity extends AppCompatActivity {
             }.getType();
             String st = bundle.getString(SAVE_POSITION_MORNING_AZKAR);
             modelAzkarList = new Gson().fromJson(st, listType);
-            position_azkar = bundle.getInt(NOTIFICATION_ID_MORNING_AZKAR);
+            position_azkar = bundle.getInt(NOTIFICATION_ID_AZKAR);
         }
         SwipePagesActivityPB.setVisibility(View.GONE);
     }

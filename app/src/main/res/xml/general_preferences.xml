@@ -1,0 +1,21 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <SwitchPreference
+        app:key="@string/switch_key"
+        app:defaultValue="true"
+        app:summaryOff="@string/screenOff"
+        app:summaryOn="@string/screenOn"
+        app:switchTextOff="@string/screenOff"
+        app:switchTextOn="@string/screenOn"
+        app:title="@string/screenTitle" />
+<!--    <SwitchPreferenceCompat-->
+<!--        app:key="sync"-->
+<!--        app:title="@string/sync_title" />-->
+
+<!--    <SwitchPreferenceCompat-->
+<!--        app:dependency="sync"-->
+<!--        app:key="attachment"-->
+<!--        app:summaryOff="@string/attachment_summary_off"-->
+<!--        app:summaryOn="@string/attachment_summary_on"-->
+<!--        app:title="@string/attachment_title" />-->
+
+</PreferenceScreen>

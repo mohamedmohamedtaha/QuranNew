@@ -38,24 +38,30 @@ import static com.MohamedTaha.Imagine.New.ui.activities.ElarbaoonElnawawyActivit
 
 public class MorningAzkarAlarmReceiver extends BroadcastReceiver {
     private static final String CHANNEL_ID_MORNING_AZKAR = "com.MohamedTaha.Imagine.Quran.notification.CHANNEL_ID_MORNING_AZKAR";
-    public static final String NOTIFICATION_ID_MORNING_AZKAR = "com.MohamedTaha.Imagine.Quran.notification.NOTIFICATION_ID_MORNING_AZKAR";
+    public static final String NOTIFICATION_ID_AZKAR = "com.MohamedTaha.Imagine.Quran.notification.NOTIFICATION_ID_MORNING_AZKAR";
+    public static final String NOTIFICATION_ID_TEXT_AZKAR = "com.MohamedTaha.Imagine.Quran.notification.NOTIFICATION_ID_TEXT_AZKAR";
+
     public static final String TIME_SEND_MORNING_AZKAR = "com.MohamedTaha.Imagine.Quran.notification.TIME_SEND_MORNING_AZKAR";
     public static final String SAVE_POSITION_MORNING_AZKAR = "com.MohamedTaha.Imagine.Quran.notification.SAVE_POSITION_MORNING_AZKAR";
     private static int num;
     private List<ModelAzkar> modelAzkar;
     private int position_azkar;
+    private String text_azkar ;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         num = (int) System.currentTimeMillis();
-        position_azkar = intent.getIntExtra(NOTIFICATION_ID_MORNING_AZKAR ,-1 );
+        position_azkar = intent.getIntExtra(NOTIFICATION_ID_AZKAR ,-1 );
+        text_azkar = intent.getStringExtra(NOTIFICATION_ID_TEXT_AZKAR);
         Intent intentToRepeat = new Intent(context, SwipePagesActivity.class);
-        intentToRepeat.putExtra(NOTIFICATION_ID_MORNING_AZKAR, position_azkar);
+        intentToRepeat.putExtra(NOTIFICATION_ID_AZKAR, position_azkar);
         intentToRepeat.putExtra(TIME_SEND_MORNING_AZKAR, num);
         intentToRepeat.putExtra(SAVE_POSITION_MORNING_AZKAR,new Gson().toJson(getAzkar(context,position_azkar)));
         intentToRepeat.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent openIntent = PendingIntent.getActivity(context, num, intentToRepeat, PendingIntent.FLAG_UPDATE_CURRENT);
+      //  createNotification(context, openIntent, context.getString(R.string.app_name), text_azkar);
         createNotification(context, openIntent, context.getString(R.string.app_name), modelAzkar.get(0).getName_azkar());
+
     }
     private List<ModelAzkar> getAzkar(Context context,int number_zakr){
         modelAzkar = new ArrayList<>();

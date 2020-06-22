@@ -266,8 +266,8 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         MenuItem SearchItem = menu.findItem(R.id.action_search);
-        // SearchItem.setVisible(false);
-        SearchItem.setEnabled(false);
+         SearchItem.setVisible(false);
+        //SearchItem.setEnabled(false);
         super.onCreateOptionsMenu(menu, inflater);
     }
 

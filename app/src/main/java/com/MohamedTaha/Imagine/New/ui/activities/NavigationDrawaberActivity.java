@@ -17,13 +17,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
@@ -32,7 +35,6 @@ import androidx.room.EmptyResultSetException;
 import com.MohamedTaha.Imagine.New.AppConstants;
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.ShowGuide;
-import com.MohamedTaha.Imagine.New.databinding.ActivityNavigationDrawaberBinding;
 import com.MohamedTaha.Imagine.New.helper.HelperClass;
 import com.MohamedTaha.Imagine.New.helper.SharedPerefrenceHelper;
 import com.MohamedTaha.Imagine.New.helper.checkConnection.NetworkConnection;
@@ -57,6 +59,7 @@ import com.MohamedTaha.Imagine.New.ui.fragments.FragmentSound;
 import com.MohamedTaha.Imagine.New.ui.fragments.GridViewFragment;
 import com.MohamedTaha.Imagine.New.ui.fragments.PartsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.io.IOException;
@@ -87,7 +90,7 @@ import static com.MohamedTaha.Imagine.New.ui.fragments.AzanFragment.COMPARE_METH
 import static com.MohamedTaha.Imagine.New.ui.fragments.SplashFragment.SAVE_ALL_IMAGES;
 import static com.MohamedTaha.Imagine.New.ui.fragments.SplashFragment.SAVE_PAGE;
 
-public class NavigationDrawaberActivity extends AppCompatActivity implements NavigationDrawarView, DatabaseCallback {
+public class NavigationDrawaberActivity extends AppCompatActivity implements NavigationDrawarView, DatabaseCallback, NavigationView.OnNavigationItemSelectedListener {
     private static final String SAVE_STATE_VIEW_PAGER = "save_state_view_pager";
     public static final String IS_FIRST_TIME_WAY_USING = "way_sueing";
     public static final String IS_FIRST_TIME_PRAYER_TIME_EVERYDAY = "prayer_time_everyday";
@@ -95,7 +98,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     public static final String FOR_GET_FRAGMENT_AZAN = "fragemnt_azan";
     public static final String CHECKISDATAORNOTINDATABASE = "store_date_today";
 
-    private ActivityNavigationDrawaberBinding activityNavigationDrawaberBinding;
+    // private ActivityNavigationDrawaberBinding activityNavigationDrawaberBinding;
     private int current_fragment;
     public static MaterialSearchView searchView;
     String appPackageName;
@@ -115,14 +118,20 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     private APIServices apiServices;
     public static boolean checkIsGetData = false;
     public static final String AZAN_DEFUALT = "azan_defualt";
+    Toolbar toobar;
+    BottomNavigationView navView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activityNavigationDrawaberBinding = ActivityNavigationDrawaberBinding.inflate(getLayoutInflater());
-        View view = activityNavigationDrawaberBinding.getRoot();
-        setContentView(view);
+        setContentView(R.layout.activity_main_drawable);
+        searchView = (MaterialSearchView) findViewById(R.id.search_view);
+        toobar = findViewById(R.id.toobar);
+        navView = findViewById(R.id.nav_view);
+        //   activityNavigationDrawaberBinding = ActivityNavigationDrawaberBinding.inflate(getLayoutInflater());
+        // View view = activityNavigationDrawaberBinding.getRoot();
+        //setContentView(view);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         //getString Retrieve a String value from the Preference
         repear = sharedPreferences.getString(getString(R.string.settings_method_key),
@@ -139,13 +148,13 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
             timingsViewModel.restoreState(savedInstanceState);
             Log.i("TAG", " onSuccess timingsViewModel navigation " + store_date_today);
         }
+
         timingsViewModel.isNewlyCreated = false;
         getDateTodayFromDatabase();
         getCityName();
         //for show way using
         if (!SharedPerefrenceHelper.getBooleanForWayUsing(getApplicationContext(), IS_FIRST_TIME_WAY_USING, false)) {
-            ShowGuide showGuide = new ShowGuide(NavigationDrawaberActivity.this, activityNavigationDrawaberBinding.toobar,
-                    activityNavigationDrawaberBinding.navView);
+            ShowGuide showGuide = new ShowGuide(NavigationDrawaberActivity.this, toobar, navView);
         }
         //For open on the save pages immediately
         if (SharedPerefrenceHelper.getBoolean(getApplicationContext(), IS_TRUE, false)) {
@@ -156,22 +165,31 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
             startActivity(intent);
             overridePendingTransition(R.anim.item_anim_slide_from_top, R.anim.item_anim_no_thing);
         }
-        searchView = (MaterialSearchView) findViewById(R.id.search_view);
-        activityNavigationDrawaberBinding.navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         //navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         FragmentManager fragmentManager = getSupportFragmentManager();
         GridViewFragment gridViewFragment = (GridViewFragment) fragmentManager.findFragmentByTag("TAG_WORKER");
         if (savedInstanceState != null) {
             current_fragment = savedInstanceState.getInt(SAVE_STATE_VIEW_PAGER);
-            activityNavigationDrawaberBinding.navView.setSelectedItemId(current_fragment);
+            navView.setSelectedItemId(current_fragment);
             Log.d("TAG", "Current fragment  three is :" + current_fragment);
         } else {
-            activityNavigationDrawaberBinding.navView.setSelectedItemId(R.id.read_quran);
+            navView.setSelectedItemId(R.id.read_quran);
         }
-        setSupportActionBar(activityNavigationDrawaberBinding.toobar);
+        setSupportActionBar(toobar);
         //for change color text toolbar
-        activityNavigationDrawaberBinding.toobar.setTitleTextColor(Color.parseColor("#FFFFFF"));
+        toobar.setTitleTextColor(Color.parseColor("#FFFFFF"));
 
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view_header);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toobar, R.string.open_drawer
+                , R.string.close_drawer);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
 //        NavigationDrawaberActivityVPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 //            @Override
 //            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -267,10 +285,10 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         notificationHelperPrayerTime.enableBootRecieiver(getApplicationContext());
 
         MorningAzkarNotificationHelper morningAzkarNotificationHelper = new MorningAzkarNotificationHelper(getApplicationContext());
-        morningAzkarNotificationHelper.morningAzkar();
-        morningAzkarNotificationHelper.nightAzkar();
-
+        morningAzkarNotificationHelper.getAzkarTimesEveryday(getApplicationContext());
         morningAzkarNotificationHelper.enableBootRecieiver(getApplicationContext());
+
+
     }
 
     private void getCityName() {
@@ -330,7 +348,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 
     @Override
     public void onBackPressed() {
-        presenter.exitApp(searchView, activityNavigationDrawaberBinding.navView);
+        presenter.exitApp(searchView, navView);
     }
 
     @Override
@@ -355,7 +373,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 //        notificationHelperPrayerTime.enableBootRecieiver(getApplicationContext());
     }
 
-     public static void getPrayerTimesEveryMonth(Context context) {
+    public static void getPrayerTimesEveryMonth(Context context) {
         int ALARM_TYPE_ELAPSED = 11;
         AlarmManager alarmManager;
         PendingIntent alarmPendingIntent;
@@ -375,32 +393,32 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_share:
-                presenter.shareApp(getString(R.string.about), appPackageName);
-                break;
-            case R.id.action_send_us:
-                presenter.sendUs();
-                break;
-            case R.id.action_use_way:
-                SharedPerefrenceHelper.removeDataForWayUsing(this);
-                // SharedPerefrenceHelper.removeDataForCompareMethod(this);
-                HelperClass.startActivity(getApplicationContext(), SplashActivity.class);
-                break;
-            case R.id.action_settings:
-                HelperClass.startActivity(getApplicationContext(), SettingsActivity.class);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                }
-                break;
-            case R.id.action_rate:
-                presenter.actionRate(appPackageName);
-                break;
-            case R.id.action_elarbaoon_elnawawy:
-                HelperClass.startActivity(getApplicationContext(), ElarbaoonElnawawyActivity.class);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                }
-                break;
+//            case R.id.action_share:
+//                presenter.shareApp(getString(R.string.about), appPackageName);
+//                break;
+//            case R.id.action_send_us:
+//                presenter.sendUs();
+//                break;
+//            case R.id.use_way:
+//                SharedPerefrenceHelper.removeDataForWayUsing(this);
+//                // SharedPerefrenceHelper.removeDataForCompareMethod(this);
+//                HelperClass.startActivity(getApplicationContext(), SplashActivity.class);
+//                break;
+//            case R.id.action_settings:
+//                HelperClass.startActivity(getApplicationContext(), SettingsActivity.class);
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+//                }
+//                break;
+//            case R.id.action_rate:
+//                presenter.actionRate(appPackageName);
+//                break;
+//            case R.id.el_arbaoon_elnawawy:
+//                HelperClass.startActivity(getApplicationContext(), ElarbaoonElnawawyActivity.class);
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+//                }
+//                break;
             default:
         }
         return super.onOptionsItemSelected(item);
@@ -619,12 +637,14 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         editor.putString(getString(R.string.settings_method_key), repear);
         editor.commit();
     }
+
     private void changeValueInListPreferenceForAzan() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(getString(R.string.settings_azan_key), number_azan_default);
         editor.commit();
     }
+
     private String getCityNameWithoutLocation(double latitude, double longitude) {
         String cityName = "";
         Locale locale = new Locale("ar");
@@ -666,5 +686,39 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 
     }
 
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.el_arbaoon_elnawawy) {
+            HelperClass.startActivity(getApplicationContext(), ElarbaoonElnawawyActivity.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            }} else if (id == R.id.use_way) {
+                SharedPerefrenceHelper.removeDataForWayUsing(this);
+                HelperClass.startActivity(getApplicationContext(), SplashActivity.class);
+            }else if (id == R.id.action_share) {
+                presenter.shareApp(getString(R.string.about), appPackageName);
+            }else if (id == R.id.action_rate) {
+                presenter.actionRate(appPackageName);
+
+            }else if (id == R.id.action_send_us) {
+                presenter.sendUs();
+            }else if (id == R.id.action_settings) {
+                HelperClass.startActivity(getApplicationContext(), SettingsActivity2.class);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                }
+             }
+
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+    private void selectedNavigationMenu(int id) {
+        NavigationView navigationView = findViewById(R.id.nav_view_header);
+        Menu menu = navigationView.getMenu();
+        menu.findItem(id).setChecked(true);
+    }
 
 }

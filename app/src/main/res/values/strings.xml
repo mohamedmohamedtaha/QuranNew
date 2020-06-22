@@ -204,11 +204,11 @@
     <string name="next">التالي</string>
     <string name="use_way">طريقة الإستخدام</string>
     <string name="settings_Notification_label">الإشعارات</string>
+    <string name="repeat_Notification">تكرار الإشعار</string>
+
     <string name="no_google_services">هذا الجوال لا يدعم خدمات جوجل</string>
     <string name="settings_method_label">تغيير التوقيت</string>
     <string name="settings_moazen_label">تغيير صوت المؤذن</string>
-
-
     <string name="settings_Notification_key" translatable="false">AlarmManager.INTERVAL_HALF_DAY</string>
     <string name="settings_Notification_default" translatable="false">@string/settings_by_department_value_half_day</string>
     <string name="settings_by_Notification_every_square_hour">كل ربع ساعة</string>
@@ -612,7 +612,6 @@
     <string name="title_activity_main_drawable">MainDrawableActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
@@ -621,4 +620,24 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
 
+    <string name="open_drawer">open navigation drawer</string>
+    <string name="close_drawer">close navigation drawer</string>
+    <string name="title_activity_settings2">SettingsActivity2</string>
+
+    <!-- Preference Titles -->
+    <string name="key_notification_header">Notification</string>
+
+    <string name="general_header">عام</string>
+    <string name="key_general_header">General</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 </resources>

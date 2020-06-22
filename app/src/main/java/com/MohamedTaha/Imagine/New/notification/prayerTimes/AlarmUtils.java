@@ -10,6 +10,7 @@ import android.util.Log;
 
 import androidx.preference.PreferenceManager;
 
+import com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarAlarmReceiver;
 import com.MohamedTaha.Imagine.New.service.ServiceForPlayPrayerTimesNotification;
 import com.google.gson.Gson;
 
@@ -19,11 +20,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarAlarmReceiver.NOTIFICATION_ID_AZKAR;
+import static com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarAlarmReceiver.NOTIFICATION_ID_TEXT_AZKAR;
 import static com.MohamedTaha.Imagine.New.notification.prayerTimes.Alarm.LIST_TIME__NOTIFICATION;
 import static com.MohamedTaha.Imagine.New.notification.prayerTimes.Alarm.TEXT_NAME_NOTIFICATION;
 
 public class AlarmUtils {
     private static final String sTagAlarms = ":alarms";
+    private static final String TagAlarmsForBroadcast = "com.MohamedTaha.Imagine.New.notification.prayerTimes.broadcast";
+
 
     public static void addAlarm(Context context, Intent intent, int notificationId, Calendar calendar) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -70,6 +75,38 @@ public class AlarmUtils {
             saveAlarmId(context, i);
         }
     }
+    public void setAlarmForBroadcast(Context context,List<ModelMessageNotification> listForSavePrayerTimes) {
+        PendingIntent pendingIntent = null;
+        AlarmManager[] alarmManager = new AlarmManager[listForSavePrayerTimes.size()];
+        Intent[] intent = new Intent[alarmManager.length];
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        for (int i = 0; i < alarmManager.length; i++) {
+            intent[i] = new Intent(context, MorningAzkarAlarmReceiver.class);
+            intent[i].putExtra(NOTIFICATION_ID_AZKAR, listForSavePrayerTimes.get(i).getNumber_azkar());
+            intent[i].putExtra(NOTIFICATION_ID_TEXT_AZKAR, listForSavePrayerTimes.get(i).getText_notification());
+           // intent[i].putExtra(LIST_TIME__NOTIFICATION, new Gson().toJson(listForSavePrayerTimes));
+            Log.d("TAG", " TEXT_NOTIFICATION : " + listForSavePrayerTimes.get(i).getTime_payer()
+                    + " : " + " TEXT_NOTIFICATION : " + listForSavePrayerTimes.get(i).getText_notification());
+                pendingIntent = PendingIntent.getBroadcast(context, i, intent[i], 0);
+            alarmManager[i] = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            //  alarmManager[i].setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(),AlarmManager.INTERVAL_DAY, pendingIntent);
+
+            //      alarmManager[i].setInexactRepeating(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(),AlarmManager.INTERVAL_DAY, pendingIntent);
+        //    if (setTimeMow.getTimeInMillis() < listForSavePrayerTimes.get(i).getTime_payer()) {
+            alarmManager[i].setInexactRepeating(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(),
+                    AlarmManager.INTERVAL_DAY, pendingIntent);
+    //    }
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                alarmManager[i].setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
+//            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//                alarmManager[i].setExact(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
+//            } else {
+//                alarmManager[i].set(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
+//            }
+            saveAlarmIdForBroadcast(context, i);
+        }
+    }
 
     public static void cancelAlarm(Context context, Intent intent, int notificationId) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -77,6 +114,14 @@ public class AlarmUtils {
         alarmManager.cancel(pendingIntent);
         pendingIntent.cancel();
         removeAlarmId(context, notificationId);
+    }
+
+    public static void cancelAlarmForBroadcastAzkar(Context context, Intent intent, int notificationId) {
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        alarmManager.cancel(pendingIntent);
+        pendingIntent.cancel();
+        removeAlarmIdForBroadcastAzkar(context, notificationId);
     }
 
     public void cancelAllAlarm(Context context) {
@@ -96,6 +141,24 @@ public class AlarmUtils {
                     alarmManager[i].cancel(pendingIntent);
                     pendingIntent.cancel();
                     removeAlarmId(context, i);
+                }
+                Log.d("TAG", " cancelAlarm :" + i);
+            }
+        }
+    }
+    public void cancelAllAlarmForBroadcastAzkar(Context context) {
+        if (2 > 0) {
+            PendingIntent pendingIntent;
+            AlarmManager[] alarmManager = new AlarmManager[2];
+            Intent[] intent = new Intent[2];
+            for (int i = 0; i < 2; i++) {
+                alarmManager[i] = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                intent[i] = new Intent(context, ServiceForPlayPrayerTimesNotification.class);
+                    pendingIntent = PendingIntent.getBroadcast(context, i, intent[i], PendingIntent.FLAG_NO_CREATE);
+                if (pendingIntent != null && alarmManager != null) {
+                    alarmManager[i].cancel(pendingIntent);
+                    pendingIntent.cancel();
+                    removeAlarmIdForBroadcastAzkar(context, i);
                 }
                 Log.d("TAG", " cancelAlarm :" + i);
             }
@@ -123,6 +186,17 @@ public class AlarmUtils {
         saveIdsInPreferences(context, idsAlarms);
     }
 
+    private static void saveAlarmIdForBroadcast(Context context, int id) {
+        List<Integer> idsAlarms = getAlarmIdsForBroadcast(context);
+        if (idsAlarms.contains(id)) {
+            return;
+        }
+
+        idsAlarms.add(id);
+
+        saveIdsInPreferencesForBroadcast(context, idsAlarms);
+    }
+
     private static void removeAlarmId(Context context, int id) {
         List<Integer> idsAlarms = getAlarmIds(context);
         for (int i = 0; i < idsAlarms.size(); i++) {
@@ -131,6 +205,15 @@ public class AlarmUtils {
         }
 
         saveIdsInPreferences(context, idsAlarms);
+    }
+    private static void removeAlarmIdForBroadcastAzkar(Context context, int id) {
+        List<Integer> idsAlarms = getAlarmIdsForBroadcast(context);
+        for (int i = 0; i < idsAlarms.size(); i++) {
+            if (idsAlarms.get(i) == id)
+                idsAlarms.remove(i);
+        }
+
+        saveIdsInPreferencesForBroadcast(context, idsAlarms);
     }
 
     private static List<Integer> getAlarmIds(Context context) {
@@ -147,6 +230,7 @@ public class AlarmUtils {
         return ids;
     }
 
+
     private static void saveIdsInPreferences(Context context, List<Integer> lstIds) {
         JSONArray jsonArray = new JSONArray();
         for (Integer idAlarm : lstIds) {
@@ -156,6 +240,31 @@ public class AlarmUtils {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(context.getPackageName() + sTagAlarms, jsonArray.toString());
+
+        editor.apply();
+    }
+    private static List<Integer> getAlarmIdsForBroadcast(Context context) {
+        List<Integer> ids = new ArrayList<>();
+        try {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+            JSONArray jsonArray2 = new JSONArray(prefs.getString(context.getPackageName() + TagAlarmsForBroadcast, "[]"));
+            for (int i = 0; i < jsonArray2.length(); i++) {
+                ids.add(jsonArray2.getInt(i));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ids;
+    }
+    private static void saveIdsInPreferencesForBroadcast(Context context, List<Integer> lstIds) {
+        JSONArray jsonArray = new JSONArray();
+        for (Integer idAlarm : lstIds) {
+            jsonArray.put(idAlarm);
+        }
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(context.getPackageName() + TagAlarmsForBroadcast, jsonArray.toString());
 
         editor.apply();
     }

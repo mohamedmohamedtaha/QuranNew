@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarNotificationHelper;
 import com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationHelperPrayerTime;
 import com.MohamedTaha.Imagine.New.room.TimingsRepository;
 
@@ -29,5 +30,11 @@ public class GetPrayerTimesEveryDay extends BroadcastReceiver {
                 }, e -> {
                     Log.d("TAG", "GetPrayerTimesEveryDay e : " + e.getMessage());
                 });
+
+//        MorningAzkarNotificationHelper morningAzkarNotificationHelper = new MorningAzkarNotificationHelper(context);
+//        morningAzkarNotificationHelper.morningAzkar();
+//        morningAzkarNotificationHelper.nightAzkar();
+//        morningAzkarNotificationHelper.enableBootRecieiver(context);
+
     }
 }
