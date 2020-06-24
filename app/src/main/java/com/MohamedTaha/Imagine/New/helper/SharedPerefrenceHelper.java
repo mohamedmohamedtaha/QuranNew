@@ -4,12 +4,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class SharedPerefrenceHelper {
-    private static final String SHARED_PREFRENCES_NAME = "save_path_images";
-    private static final String SHARED_PREFRENCES_NAME_AZKAR = "save_path_azkar";
-    private static final String SHARED_PREFRENCES_WAY_USING = "way_using";
-    private static final String SHARED_PREFRENCES_COMPARE_METHOD = "way_using";
-    private static final String SHARED_PREFRENCES_PREAYER_TIME_EVERYDAY = "get_prayer_time_everyday";
-    private static final String SHARED_PREFRENCES_AZAN = "shared_preference_azan";
+    private static final String SHARED_PREFRENCES_NAME = "com.MohamedTaha.Imagine.New.helper.save_path_images";
+    private static final String SHARED_PREFRENCES_NAME_AZKAR = "com.MohamedTaha.Imagine.New.helper.save_path_azkar";
+    private static final String SHARED_PREFRENCES_WAY_USING = "com.MohamedTaha.Imagine.New.helper.way_using";
+    private static final String SHARED_PREFRENCES_COMPARE_METHOD = "com.MohamedTaha.Imagine.New.helper.compare_method";
+    private static final String SHARED_PREFRENCES_AZAN = "com.MohamedTaha.Imagine.New.helper.shared_preference_azan";
 
     private static SharedPreferences getSharedPrefrencesForWayUsing(Context context){
         return context.getSharedPreferences(SHARED_PREFRENCES_WAY_USING,Context.MODE_PRIVATE);

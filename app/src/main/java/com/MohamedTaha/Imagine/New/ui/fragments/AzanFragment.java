@@ -101,7 +101,6 @@ import static com.MohamedTaha.Imagine.New.rest.RetrofitClientCity.getRetrofitFor
 import static com.MohamedTaha.Imagine.New.room.TimingsViewModel.store_date_today;
 import static com.MohamedTaha.Imagine.New.service.MediaPlayerService.BROADCAST_NOT_CONNECTION;
 import static com.MohamedTaha.Imagine.New.service.MediaPlayerService.BROADCAST_NOT_INTERNET;
-import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.AZAN_DEFUALT;
 import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.IS_FIRST_TIME_WAY_USING;
 import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.checkIsGetData;
 import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.getPrayerTimesEveryMonth;
@@ -113,6 +112,7 @@ import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivi
 public class AzanFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener, DatabaseCallback {
     public static final String COMPARE_METHOD = "compare_method";
+    public static final String AZAN_DEFUALT = "azan_defualt";
     private TimingsViewModel timingsViewModel;
     private LocationRequest locationRequest;
     private long UPDATE_INTERVAL = 15000; /* 15 secs */
@@ -158,12 +158,12 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     private NoInternetReceiver noInternetReceiver = null;
     private static boolean isRefresh = false;
     SharedPreferences sharedPreferences;
-    String repear;
+    private String repear;
     FusedLocationProviderClient fusedLocationProviderClient;
     private LocationCallback locationCallback;
     private boolean requestingLocationUpdates = true;
     private String compare_methods = null;
-    private String number_azan_default = "";
+    private String number_azan_default = null;
 
     private Bundle bundle;
     private boolean isValueForPrayerTimesChanged = false;
@@ -267,7 +267,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         MenuItem SearchItem = menu.findItem(R.id.action_search);
          SearchItem.setVisible(false);
-        //SearchItem.setEnabled(false);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -530,16 +529,9 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                 GetCity city = response.body();
                 try {
                     if (city.getStatus().equals("success")) {
-                        //   if (city.getStatus().equals("succeccss")) {
 
                         Log.d("TAG", city.getCity() + " : " + city.getCountry());
-                        //city_name = getCityNameTest(city.getLat(), city.getLon());
-                        //     city_name = getCityNameWithoutLocation(city.getLat(), city.getLon());
-                        //        city_name = getCityNameWithoutLocation(27.9063452, 34.31876885);
-                        //    city_name = getCityNameTest(27.9063452, 34.31876885);
                         city_name = getCityNameTest(city.getLat(), city.getLon());
-
-                        //  getMethodPrefrences("Egypt");
                         Log.d("TAG", "City name in arabic is : " + city_name);
                         if (!isValueForPrayerTimesChanged) {
                             getMethodPreferences(city.getCountry());
@@ -971,12 +963,11 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     @Override
     public void onResume() {
         super.onResume();
-
-        // GetMethodPreferences getMethodPreferences =new GetMethodPreferences(getActivity());
-
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         repear = sharedPreferences.getString(getString(R.string.settings_method_key),
                 getString(R.string.settings_method_default));
+        number_azan_default = sharedPreferences.getString(getString(R.string.settings_azan_key),
+                getString(R.string.settings_azan_default));
         compare_methods = SharedPerefrenceHelper.getStringCompareMethod(getActivity(), COMPARE_METHOD, "5");
         if (SharedPerefrenceHelper.getBooleanForWayUsing(getActivity(), IS_FIRST_TIME_WAY_USING, false)) {
             Log.d("TAG", "Repear is " + repear);
@@ -1123,7 +1114,6 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
         changeValueInListPreference();
         SharedPerefrenceHelper.putStringAzan(getActivity(), AZAN_DEFUALT, number_azan_default);
         changeValueInListPreferenceForAzan();
-
         Log.d("TAG", "SharedPerefrenceHelper.putStringCompareMethod : " + repear + "number_azan_default : "+ number_azan_default);
 
     }

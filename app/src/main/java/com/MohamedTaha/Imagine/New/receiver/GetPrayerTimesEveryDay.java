@@ -30,11 +30,5 @@ public class GetPrayerTimesEveryDay extends BroadcastReceiver {
                 }, e -> {
                     Log.d("TAG", "GetPrayerTimesEveryDay e : " + e.getMessage());
                 });
-
-//        MorningAzkarNotificationHelper morningAzkarNotificationHelper = new MorningAzkarNotificationHelper(context);
-//        morningAzkarNotificationHelper.morningAzkar();
-//        morningAzkarNotificationHelper.nightAzkar();
-//        morningAzkarNotificationHelper.enableBootRecieiver(context);
-
     }
 }

@@ -20,8 +20,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarAlarmReceiver.NOTIFICATION_ID_AZKAR;
+import static com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarAlarmReceiver.NOTIFICATION_ID_NUMBER_AZKAR;
+import static com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarAlarmReceiver.NOTIFICATION_ID_LIST_AZKAR;
 import static com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarAlarmReceiver.NOTIFICATION_ID_TEXT_AZKAR;
+import static com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarAlarmReceiver.NOTIFICATION_ID_TIME_AZKAR;
 import static com.MohamedTaha.Imagine.New.notification.prayerTimes.Alarm.LIST_TIME__NOTIFICATION;
 import static com.MohamedTaha.Imagine.New.notification.prayerTimes.Alarm.TEXT_NAME_NOTIFICATION;
 
@@ -75,7 +77,8 @@ public class AlarmUtils {
             saveAlarmId(context, i);
         }
     }
-    public void setAlarmForBroadcast(Context context,List<ModelMessageNotification> listForSavePrayerTimes) {
+
+    public void setAlarmForBroadcast(Context context, List<ModelMessageNotification> listForSavePrayerTimes) {
         PendingIntent pendingIntent = null;
         AlarmManager[] alarmManager = new AlarmManager[listForSavePrayerTimes.size()];
         Intent[] intent = new Intent[alarmManager.length];
@@ -83,27 +86,22 @@ public class AlarmUtils {
         calendar.setTimeInMillis(System.currentTimeMillis());
         for (int i = 0; i < alarmManager.length; i++) {
             intent[i] = new Intent(context, MorningAzkarAlarmReceiver.class);
-            intent[i].putExtra(NOTIFICATION_ID_AZKAR, listForSavePrayerTimes.get(i).getNumber_azkar());
+            intent[i].putExtra(NOTIFICATION_ID_NUMBER_AZKAR, listForSavePrayerTimes.get(i).getNumber_azkar());
             intent[i].putExtra(NOTIFICATION_ID_TEXT_AZKAR, listForSavePrayerTimes.get(i).getText_notification());
-           // intent[i].putExtra(LIST_TIME__NOTIFICATION, new Gson().toJson(listForSavePrayerTimes));
+            intent[i].putExtra(NOTIFICATION_ID_TIME_AZKAR, listForSavePrayerTimes.get(i).getTime_payer());
+            intent[i].putExtra(NOTIFICATION_ID_LIST_AZKAR, new Gson().toJson(listForSavePrayerTimes));
+
             Log.d("TAG", " TEXT_NOTIFICATION : " + listForSavePrayerTimes.get(i).getTime_payer()
                     + " : " + " TEXT_NOTIFICATION : " + listForSavePrayerTimes.get(i).getText_notification());
-                pendingIntent = PendingIntent.getBroadcast(context, i, intent[i], 0);
+            pendingIntent = PendingIntent.getBroadcast(context, i, intent[i], 0);
             alarmManager[i] = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            //  alarmManager[i].setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(),AlarmManager.INTERVAL_DAY, pendingIntent);
-
-            //      alarmManager[i].setInexactRepeating(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(),AlarmManager.INTERVAL_DAY, pendingIntent);
-        //    if (setTimeMow.getTimeInMillis() < listForSavePrayerTimes.get(i).getTime_payer()) {
-            alarmManager[i].setInexactRepeating(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(),
-                    AlarmManager.INTERVAL_DAY, pendingIntent);
-    //    }
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                alarmManager[i].setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
-//            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//                alarmManager[i].setExact(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
-//            } else {
-//                alarmManager[i].set(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
-//            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                alarmManager[i].setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                alarmManager[i].setExact(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
+            } else {
+                alarmManager[i].set(AlarmManager.RTC_WAKEUP, listForSavePrayerTimes.get(i).getTime_payer(), pendingIntent);
+            }
             saveAlarmIdForBroadcast(context, i);
         }
     }
@@ -116,19 +114,11 @@ public class AlarmUtils {
         removeAlarmId(context, notificationId);
     }
 
-    public static void cancelAlarmForBroadcastAzkar(Context context, Intent intent, int notificationId) {
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        alarmManager.cancel(pendingIntent);
-        pendingIntent.cancel();
-        removeAlarmIdForBroadcastAzkar(context, notificationId);
-    }
-
     public void cancelAllAlarm(Context context) {
         if (6 > 0) {
             PendingIntent pendingIntent;
             AlarmManager[] alarmManager = new AlarmManager[6];
-            Intent[] intent = new Intent[6];
+            Intent[] intent = new Intent[alarmManager.length];
             for (int i = 0; i < 6; i++) {
                 alarmManager[i] = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
                 intent[i] = new Intent(context, ServiceForPlayPrayerTimesNotification.class);
@@ -146,15 +136,16 @@ public class AlarmUtils {
             }
         }
     }
+
     public void cancelAllAlarmForBroadcastAzkar(Context context) {
         if (2 > 0) {
             PendingIntent pendingIntent;
             AlarmManager[] alarmManager = new AlarmManager[2];
-            Intent[] intent = new Intent[2];
+            Intent[] intent = new Intent[alarmManager.length];
             for (int i = 0; i < 2; i++) {
                 alarmManager[i] = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-                intent[i] = new Intent(context, ServiceForPlayPrayerTimesNotification.class);
-                    pendingIntent = PendingIntent.getBroadcast(context, i, intent[i], PendingIntent.FLAG_NO_CREATE);
+                intent[i] = new Intent(context, MorningAzkarAlarmReceiver.class);
+                pendingIntent = PendingIntent.getBroadcast(context, i, intent[i], PendingIntent.FLAG_NO_CREATE);
                 if (pendingIntent != null && alarmManager != null) {
                     alarmManager[i].cancel(pendingIntent);
                     pendingIntent.cancel();
@@ -162,6 +153,25 @@ public class AlarmUtils {
                 }
                 Log.d("TAG", " cancelAlarm :" + i);
             }
+        }
+    }
+    public void cancelCustomAlarmForBroadcastAzkar(Context context,List<ModelMessageNotification> listForSavePrayerTimes,String name_azkar) {
+        if (listForSavePrayerTimes.size() > 0) {
+            PendingIntent pendingIntent;
+            AlarmManager[] alarmManager = new AlarmManager[listForSavePrayerTimes.size()];
+            Intent[] intent = new Intent[alarmManager.length];
+            for (int i = 0; i < listForSavePrayerTimes.size(); i++) {
+                if (listForSavePrayerTimes.get(i).getText_notification().equals(name_azkar)){
+                    alarmManager[i] = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                intent[i] = new Intent(context, ServiceForPlayPrayerTimesNotification.class);
+                pendingIntent = PendingIntent.getBroadcast(context, i, intent[i], PendingIntent.FLAG_NO_CREATE);
+                if (pendingIntent != null && alarmManager != null) {
+                    alarmManager[i].cancel(pendingIntent);
+                    pendingIntent.cancel();
+                    removeAlarmIdForBroadcastAzkar(context, i);
+                }
+                Log.d("TAG", " cancelAlarm :" + i);
+            }}
         }
     }
 
@@ -206,6 +216,7 @@ public class AlarmUtils {
 
         saveIdsInPreferences(context, idsAlarms);
     }
+
     private static void removeAlarmIdForBroadcastAzkar(Context context, int id) {
         List<Integer> idsAlarms = getAlarmIdsForBroadcast(context);
         for (int i = 0; i < idsAlarms.size(); i++) {
@@ -243,6 +254,7 @@ public class AlarmUtils {
 
         editor.apply();
     }
+
     private static List<Integer> getAlarmIdsForBroadcast(Context context) {
         List<Integer> ids = new ArrayList<>();
         try {
@@ -256,16 +268,15 @@ public class AlarmUtils {
         }
         return ids;
     }
+
     private static void saveIdsInPreferencesForBroadcast(Context context, List<Integer> lstIds) {
         JSONArray jsonArray = new JSONArray();
         for (Integer idAlarm : lstIds) {
             jsonArray.put(idAlarm);
         }
-
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(context.getPackageName() + TagAlarmsForBroadcast, jsonArray.toString());
-
         editor.apply();
     }
 }

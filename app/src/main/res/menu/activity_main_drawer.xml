@@ -18,6 +18,12 @@
             android:id="@+id/use_way"
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/use_way" />
+
+    </group>
+    <group
+        android:id="@+id/third"
+        android:checkableBehavior="single">
+
         <item
             android:id="@+id/action_share"
             android:icon="@drawable/ic_baseline_share_24"
@@ -31,8 +37,9 @@
             android:icon="@drawable/ic_baseline_email_24"
             android:title="@string/labelSend" />
     </group>
+
     <group
-        android:id="@+id/third"
+        android:id="@+id/four"
         android:checkableBehavior="single">
         <item
             android:id="@+id/action_settings"

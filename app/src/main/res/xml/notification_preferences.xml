@@ -20,4 +20,13 @@
         app:key="@string/settings_azan_key"
         app:title="@string/settings_moazen_label"
         app:useSimpleSummaryProvider="true" />
+
+    <SwitchPreference
+        app:key="@string/azkar_key"
+        app:defaultValue="true"
+        app:summaryOff="@string/alarmOff_azkar"
+        app:summaryOn="@string/alarmOn_azkar"
+        app:switchTextOff="@string/alarmOff_azkar"
+        app:switchTextOn="@string/alarmOn_azkar"
+        app:title="@string/azkar_title" />
 </PreferenceScreen>

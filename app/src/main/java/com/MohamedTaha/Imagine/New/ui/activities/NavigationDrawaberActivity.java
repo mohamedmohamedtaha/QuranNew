@@ -39,13 +39,13 @@ import com.MohamedTaha.Imagine.New.helper.HelperClass;
 import com.MohamedTaha.Imagine.New.helper.SharedPerefrenceHelper;
 import com.MohamedTaha.Imagine.New.helper.checkConnection.NetworkConnection;
 import com.MohamedTaha.Imagine.New.helper.checkConnection.NoInternetConnection;
-import com.MohamedTaha.Imagine.New.informationInrto.TapTargetSequence;
 import com.MohamedTaha.Imagine.New.mvp.interactor.NavigationDrawarInteractor;
 import com.MohamedTaha.Imagine.New.mvp.model.azan.Azan;
 import com.MohamedTaha.Imagine.New.mvp.model.getCity.GetCity;
 import com.MohamedTaha.Imagine.New.mvp.presenter.NavigationDrawarPresenter;
 import com.MohamedTaha.Imagine.New.mvp.view.NavigationDrawarView;
 import com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarNotificationHelper;
+import com.MohamedTaha.Imagine.New.notification.prayerTimes.AlarmUtils;
 import com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationHelperPrayerTime;
 import com.MohamedTaha.Imagine.New.notification.quran.NotificationHelper;
 import com.MohamedTaha.Imagine.New.receiver.GetPrayerTimesEveryMonth;
@@ -86,6 +86,7 @@ import static com.MohamedTaha.Imagine.New.rest.RetrofitClient.getRetrofit;
 import static com.MohamedTaha.Imagine.New.rest.RetrofitClientCity.getRetrofitForCity;
 import static com.MohamedTaha.Imagine.New.room.TimingsViewModel.store_date_today;
 import static com.MohamedTaha.Imagine.New.ui.activities.SwipePagesActivity.IS_TRUE;
+import static com.MohamedTaha.Imagine.New.ui.fragments.AzanFragment.AZAN_DEFUALT;
 import static com.MohamedTaha.Imagine.New.ui.fragments.AzanFragment.COMPARE_METHOD;
 import static com.MohamedTaha.Imagine.New.ui.fragments.SplashFragment.SAVE_ALL_IMAGES;
 import static com.MohamedTaha.Imagine.New.ui.fragments.SplashFragment.SAVE_PAGE;
@@ -103,24 +104,20 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     public static MaterialSearchView searchView;
     String appPackageName;
     private NavigationDrawarPresenter presenter;
-    MenuItem prevMenuItem;
-    TapTargetSequence sequence;
     private TimingsViewModel timingsViewModel;
-    //public static int store_date_today = 0;
     public static String store_city_name = null;
     private SharedPreferences sharedPreferences;
     private String repear;
-    private String number_azan_default = "0";
-    //  private String compare_methods = null;
+    private String number_azan_default;
     APIServices apiServicesForCity;
     String city_name = null;
     int geocoderMaxResults = 1;
     private APIServices apiServices;
     public static boolean checkIsGetData = false;
-    public static final String AZAN_DEFUALT = "azan_defualt";
     Toolbar toobar;
-    BottomNavigationView navView;
-
+    private DrawerLayout drawer;
+    private BottomNavigationView navView;
+    private Boolean isAzkarTrue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,7 +179,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         toobar.setTitleTextColor(Color.parseColor("#FFFFFF"));
 
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view_header);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toobar, R.string.open_drawer
@@ -224,8 +221,6 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         Log.i("TAG", " getDateTodayFromDatabase");
         String date = convertDate();
         Log.d("TAG", " date " + date);
-
-
         timingsViewModel.checkIsDateTodayFind(convertDate()).
                 subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(
@@ -275,18 +270,13 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                 });
 
 
-        NotificationHelperPrayerTime notificationHelperPrayerTime = new NotificationHelperPrayerTime();
         NotificationHelper notificationHelper = new NotificationHelper();
-
         notificationHelper.sendNotificationEveryHalfDay(getApplicationContext());
         notificationHelper.enableBootRecieiver(getApplicationContext());
 
+        NotificationHelperPrayerTime notificationHelperPrayerTime = new NotificationHelperPrayerTime();
         notificationHelperPrayerTime.getPrayerTimesEveryday(getApplicationContext());
         notificationHelperPrayerTime.enableBootRecieiver(getApplicationContext());
-
-        MorningAzkarNotificationHelper morningAzkarNotificationHelper = new MorningAzkarNotificationHelper(getApplicationContext());
-        morningAzkarNotificationHelper.getAzkarTimesEveryday(getApplicationContext());
-        morningAzkarNotificationHelper.enableBootRecieiver(getApplicationContext());
 
 
     }
@@ -348,7 +338,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 
     @Override
     public void onBackPressed() {
-        presenter.exitApp(searchView, navView);
+        presenter.exitApp(searchView, navView, drawer);
     }
 
     @Override
@@ -363,14 +353,16 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     @Override
     protected void onResume() {
         super.onResume();
-//        NotificationHelperPrayerTime notificationHelperPrayerTime = new NotificationHelperPrayerTime();
-//        NotificationHelper notificationHelper = new NotificationHelper();
-//
-//        notificationHelper.sendNotificationEveryHalfDay(getApplicationContext());
-//        notificationHelper.enableBootRecieiver(getApplicationContext());
-//
-//        notificationHelperPrayerTime.getPrayerTimesEveryday(getApplicationContext());
-//        notificationHelperPrayerTime.enableBootRecieiver(getApplicationContext());
+        isAzkarTrue = sharedPreferences.getBoolean(getString(R.string.azkar_key), true);
+        if (isAzkarTrue) {
+            MorningAzkarNotificationHelper morningAzkarNotificationHelper = new MorningAzkarNotificationHelper(getApplicationContext());
+            morningAzkarNotificationHelper.getAzkarTimesEveryday(getApplicationContext());
+            morningAzkarNotificationHelper.enableBootRecieiver(getApplicationContext());
+        } else {
+            AlarmUtils alarm = new AlarmUtils();
+            alarm.cancelAllAlarmForBroadcastAzkar(getApplicationContext());
+        }
+
     }
 
     public static void getPrayerTimesEveryMonth(Context context) {
@@ -694,31 +686,25 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
             HelperClass.startActivity(getApplicationContext(), ElarbaoonElnawawyActivity.class);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-            }} else if (id == R.id.use_way) {
-                SharedPerefrenceHelper.removeDataForWayUsing(this);
-                HelperClass.startActivity(getApplicationContext(), SplashActivity.class);
-            }else if (id == R.id.action_share) {
-                presenter.shareApp(getString(R.string.about), appPackageName);
-            }else if (id == R.id.action_rate) {
-                presenter.actionRate(appPackageName);
+            }
+        } else if (id == R.id.use_way) {
+            SharedPerefrenceHelper.removeDataForWayUsing(this);
+            HelperClass.startActivity(getApplicationContext(), SplashActivity.class);
+        } else if (id == R.id.action_share) {
+            presenter.shareApp(getString(R.string.about), appPackageName);
+        } else if (id == R.id.action_rate) {
+            presenter.actionRate(appPackageName);
 
-            }else if (id == R.id.action_send_us) {
-                presenter.sendUs();
-            }else if (id == R.id.action_settings) {
-                HelperClass.startActivity(getApplicationContext(), SettingsActivity2.class);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                }
-             }
-
+        } else if (id == R.id.action_send_us) {
+            presenter.sendUs();
+        } else if (id == R.id.action_settings) {
+            HelperClass.startActivity(getApplicationContext(), SettingsActivity2.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            }
+        }
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
-    private void selectedNavigationMenu(int id) {
-        NavigationView navigationView = findViewById(R.id.nav_view_header);
-        Menu menu = navigationView.getMenu();
-        menu.findItem(id).setChecked(true);
-    }
-
 }

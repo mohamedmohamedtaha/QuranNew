@@ -13,8 +13,6 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
@@ -22,15 +20,16 @@ import androidx.core.content.ContextCompat;
 
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.mvp.model.ModelAzkar;
+import com.MohamedTaha.Imagine.New.notification.prayerTimes.ModelMessageNotification;
 import com.MohamedTaha.Imagine.New.ui.activities.SwipePagesActivity;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-import static com.MohamedTaha.Imagine.New.helper.Images.addImagesList;
-import static com.MohamedTaha.Imagine.New.ui.activities.ElarbaoonElnawawyActivity.POSITION;
+import static com.MohamedTaha.Imagine.New.notification.prayerTimes.Alarm.LIST_TIME__NOTIFICATION;
 
 /**
  * Created by MANASATT on 04/09/17.
@@ -38,30 +37,37 @@ import static com.MohamedTaha.Imagine.New.ui.activities.ElarbaoonElnawawyActivit
 
 public class MorningAzkarAlarmReceiver extends BroadcastReceiver {
     private static final String CHANNEL_ID_MORNING_AZKAR = "com.MohamedTaha.Imagine.Quran.notification.CHANNEL_ID_MORNING_AZKAR";
-    public static final String NOTIFICATION_ID_AZKAR = "com.MohamedTaha.Imagine.Quran.notification.NOTIFICATION_ID_MORNING_AZKAR";
+    public static final String NOTIFICATION_ID_NUMBER_AZKAR = "com.MohamedTaha.Imagine.Quran.notification.NOTIFICATION_ID_MORNING_AZKAR";
     public static final String NOTIFICATION_ID_TEXT_AZKAR = "com.MohamedTaha.Imagine.Quran.notification.NOTIFICATION_ID_TEXT_AZKAR";
-
+    public static final String NOTIFICATION_ID_TIME_AZKAR = "com.MohamedTaha.Imagine.Quran.notification.NOTIFICATION_ID_TIME_AZKAR";
+    public static final String NOTIFICATION_ID_LIST_AZKAR = "com.MohamedTaha.Imagine.Quran.notification.NOTIFICATION_ID_LIST_AZKAR";
     public static final String TIME_SEND_MORNING_AZKAR = "com.MohamedTaha.Imagine.Quran.notification.TIME_SEND_MORNING_AZKAR";
     public static final String SAVE_POSITION_MORNING_AZKAR = "com.MohamedTaha.Imagine.Quran.notification.SAVE_POSITION_MORNING_AZKAR";
     private static int num;
     private List<ModelAzkar> modelAzkar;
-    private int position_azkar;
+    private int number_azkar;
     private String text_azkar ;
+    private ArrayList<ModelMessageNotification> list_azkar;
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        list_azkar= new ArrayList<>();
         num = (int) System.currentTimeMillis();
-        position_azkar = intent.getIntExtra(NOTIFICATION_ID_AZKAR ,-1 );
-        text_azkar = intent.getStringExtra(NOTIFICATION_ID_TEXT_AZKAR);
+        number_azkar = intent.getIntExtra(NOTIFICATION_ID_NUMBER_AZKAR,-1 );
+        text_azkar = intent.getStringExtra(NOTIFICATION_ID_LIST_AZKAR);
+        Type listType = new TypeToken<List<ModelMessageNotification>>() {
+        }.getType();
+        String st = intent.getStringExtra(NOTIFICATION_ID_LIST_AZKAR);
+        list_azkar = new Gson().fromJson(st, listType);
+      //  list_azkar = new Gson().fromJson(intent.getStringExtra(NOTIFICATION_ID_LIST_AZKAR), ModelMessageNotification.class);
         Intent intentToRepeat = new Intent(context, SwipePagesActivity.class);
-        intentToRepeat.putExtra(NOTIFICATION_ID_AZKAR, position_azkar);
+        intentToRepeat.putExtra(NOTIFICATION_ID_NUMBER_AZKAR, number_azkar);
         intentToRepeat.putExtra(TIME_SEND_MORNING_AZKAR, num);
-        intentToRepeat.putExtra(SAVE_POSITION_MORNING_AZKAR,new Gson().toJson(getAzkar(context,position_azkar)));
+        intentToRepeat.putExtra(NOTIFICATION_ID_LIST_AZKAR, new Gson().toJson(list_azkar));
+        intentToRepeat.putExtra(SAVE_POSITION_MORNING_AZKAR,new Gson().toJson(getAzkar(context, number_azkar)));
         intentToRepeat.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent openIntent = PendingIntent.getActivity(context, num, intentToRepeat, PendingIntent.FLAG_UPDATE_CURRENT);
-      //  createNotification(context, openIntent, context.getString(R.string.app_name), text_azkar);
         createNotification(context, openIntent, context.getString(R.string.app_name), modelAzkar.get(0).getName_azkar());
-
     }
     private List<ModelAzkar> getAzkar(Context context,int number_zakr){
         modelAzkar = new ArrayList<>();
@@ -110,6 +116,8 @@ public class MorningAzkarAlarmReceiver extends BroadcastReceiver {
         builder.setDefaults(Notification.DEFAULT_ALL);//Require VIBREATE permission
         builder.setStyle(new NotificationCompat.BigTextStyle().bigText(desribe));
         builder.setAutoCancel(true);
+        builder.setPriority(NotificationCompat.PRIORITY_MAX);
+//        builder.setFullScreenIntent(openIntent,true);
         notificationManager.notify(num, builder.build());
         return builder;
     }

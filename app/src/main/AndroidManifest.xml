@@ -19,6 +19,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
 
     <application
         android:allowBackup="true"
@@ -31,15 +32,16 @@
         android:supportsRtl="false"
         android:theme="@style/FullScreenWindow"
         tools:targetApi="n">
+        <activity android:name=".FullScreenActivity"></activity>
         <activity
             android:name=".ui.activities.SettingsActivity2"
-        android:label="@string/settings"
-        android:launchMode="singleTop"
-        android:theme="@style/AppTheme">
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity" />
-    </activity>
+            android:label="@string/settings"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity" />
+        </activity>
         <activity
             android:name=".MainDrawableActivity"
             android:label="@string/title_activity_main_drawable"
@@ -108,7 +110,6 @@
         <receiver android:name=".notification.morningAzkar.MorningAzkarAlarmReceiver" />
         <receiver android:name=".receiver.GetPrayerTimesEveryDay" />
         <receiver android:name=".receiver.GetAzkarTimesEveryDay" />
-
         <receiver android:name=".notification.morningAzkar.CancelMorningAzkarNotification" />
         <receiver
             android:name=".notification.morningAzkar.MorningAzkarAlarmBootRecevier"

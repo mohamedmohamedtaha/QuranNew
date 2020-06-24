@@ -834,6 +834,8 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
                 //Set the notification color
                 .setColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
                 .setLargeIcon(largeIcon)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+
                 //.setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 //Add media control buttons that invoke intents in your media service
                 .addAction(android.R.drawable.ic_media_previous, "previous", playbackAction(3))

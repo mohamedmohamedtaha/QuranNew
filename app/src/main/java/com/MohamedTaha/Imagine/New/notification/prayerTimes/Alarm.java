@@ -133,6 +133,23 @@ public class Alarm {
                 }
             }}
     }
+    public void cancelAlarmForAzkarMorningAndNight(List<ModelMessageNotification> listForSavePrayerTimes, int number_azkar) {
+        if (listForSavePrayerTimes.size() >0){
+            alarmManager = new AlarmManager[listForSavePrayerTimes.size()];
+            intent = new Intent[listForSavePrayerTimes.size()];
+            for (int i = 0; i < listForSavePrayerTimes.size(); i++) {
+                if (listForSavePrayerTimes.get(i).getNumber_azkar() == number_azkar){
+                    alarmManager[i] = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                    intent[i] = new Intent(context, ServiceForPlayPrayerTimesNotification.class);
+                        pendingIntent = PendingIntent.getBroadcast(context, i, intent[i], PendingIntent.FLAG_NO_CREATE);
+                    if (pendingIntent != null && alarmManager != null){
+                        alarmManager[i].cancel(pendingIntent);
+                    }
+                    Log.d("TAG", " cancelAlarmForAzkarMorningAndNight :" + i);
+                }
+            }}
+    }
+
     public void cancelAlarmBeforeSetNotification() {
           AlarmManager  alarmManager = null;
            Intent intent = new Intent();

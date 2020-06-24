@@ -101,9 +101,9 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
         builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID);
         audioFocusChange = new AudioFocusChange(this, this);
         //you only need to create  the cnannel on API 26+ devices
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createChannelForNotifiction();
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            createChannelForNotifiction();
+//        }
         if (mediaSessionManager == null) {
             Log.d("TAG", "mediaSessionManager is " + mediaSessionManager);
             try {
@@ -140,8 +140,8 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
                     isPlaying = true;
                 }
             } else {
-            //    mediaSessionManager = null ;
-                Log.d("TAG", "mediaSessionManager = null is : " + mediaSessionManager );
+                //    mediaSessionManager = null ;
+                Log.d("TAG", "mediaSessionManager = null is : " + mediaSessionManager);
 
             }
         } else {
@@ -266,6 +266,8 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
 
         cancelNotification.putExtra(LIST_TIME__NOTIFICATION, new Gson().toJson(listForSavePrayerTimes));
         PendingIntent exitPending = PendingIntent.getBroadcast(this, num, cancelNotification, PendingIntent.FLAG_UPDATE_CURRENT);
+
+
 //        RemoteViews remoteViewsCollapes = new RemoteViews(getPackageName(),R.layout.custom_notification_collapsed);
 //        remoteViewsCollapes.setTextViewText(R.id.TV_Name_Prayer_Times,desribe);
 //        RemoteViews remoteViewsExpanded = new RemoteViews(getPackageName(),R.layout.custom_notification_expanded);
@@ -284,12 +286,12 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
                 .setOngoing(true)// Cant cancel your notification (except NotificationManger.cancel();
                 .setChannelId(CHANNEL_ID)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setFullScreenIntent(exitPending, true)
                 .setColor(ContextCompat.getColor(this, R.color.colorOrange))
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .addAction(R.drawable.ic_close, "close", exitPending)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle().setShowActionsInCompactView(0)
                         .setShowCancelButton(true));
-        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForeground(NOTIFICATION_ID_SERVICE, builder.build());
         } else {

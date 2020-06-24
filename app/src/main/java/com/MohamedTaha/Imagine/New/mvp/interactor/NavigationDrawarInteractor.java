@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.mvp.presenter.NavigationDrawarPresenter;
 import com.MohamedTaha.Imagine.New.mvp.view.NavigationDrawarView;
@@ -29,10 +32,12 @@ public class NavigationDrawarInteractor implements NavigationDrawarPresenter {
     }
 
     @Override
-    public void exitApp(MaterialSearchView searchView, BottomNavigationView navView) {
+    public void exitApp(MaterialSearchView searchView, BottomNavigationView navView, DrawerLayout drawerLayout) {
         if (searchView.isSearchOpen()) {
-            searchView.closeSearch();}
-       else {
+            searchView.closeSearch();
+        } else if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
             if (exitApp) {
                 navigationDrawarView.exitApp();
                 return;
