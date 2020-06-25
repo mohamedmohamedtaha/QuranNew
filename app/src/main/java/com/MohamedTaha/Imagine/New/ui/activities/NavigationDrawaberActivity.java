@@ -698,7 +698,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         } else if (id == R.id.action_send_us) {
             presenter.sendUs();
         } else if (id == R.id.action_settings) {
-            HelperClass.startActivity(getApplicationContext(), SettingsActivity2.class);
+            HelperClass.startActivity(getApplicationContext(), SettingsActivity.class);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }

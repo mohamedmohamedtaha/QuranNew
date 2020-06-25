@@ -34,25 +34,13 @@
         tools:targetApi="n">
         <activity android:name=".FullScreenActivity"></activity>
         <activity
-            android:name=".ui.activities.SettingsActivity2"
+            android:name=".ui.activities.SettingsActivity"
             android:label="@string/settings"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity" />
-        </activity>
-        <activity
-            android:name=".MainDrawableActivity"
-            android:label="@string/title_activity_main_drawable"
-            android:theme="@style/FullScreenWindow.NoActionBar">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".ui.activities.ContianerDescriptionElnawawyActivity"
@@ -65,15 +53,6 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity
-            android:name=".ui.activities.SettingsActivity"
-            android:label="@string/settings_Notification_label"
-            android:launchMode="singleTop"
-            android:theme="@style/AppTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity" />
-        </activity>
         <activity android:name=".ui.activities.NavigationDrawaberActivity" />
         <activity
             android:name=".ui.activities.SwipePagesActivity"
