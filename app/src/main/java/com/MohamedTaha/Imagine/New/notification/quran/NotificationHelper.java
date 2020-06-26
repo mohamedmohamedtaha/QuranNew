@@ -12,6 +12,7 @@ import androidx.preference.PreferenceManager;
 import android.util.Log;
 
 import com.MohamedTaha.Imagine.New.R;
+import com.MohamedTaha.Imagine.New.receiver.bootDevice.ReadAyatAlarmBootRecevier;
 
 import static android.content.Context.ALARM_SERVICE;
 
@@ -23,8 +24,13 @@ public class NotificationHelper {
     public static int ALARM_TYPE_ELAPSED = 101;
     private static AlarmManager alarmManager;
     private static PendingIntent alarmPendingIntent;
+    private Context context ;
 
-    public  void sendNotificationEveryHalfDay(Context context) {
+    public NotificationHelper(Context context) {
+        this.context = context;
+    }
+
+    public  void sendNotificationEveryHalfDay() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         //getString Retrieve a String value from the Preference
         String repear = sharedPreferences.getString(context.getString(R.string.settings_Notification_key),
@@ -68,8 +74,8 @@ public class NotificationHelper {
     }
 
     //Enable boot receiver to persist alarms set for notification across device reboots
-    public void enableBootRecieiver(Context context) {
-        ComponentName receiver = new ComponentName(context, AlarmBootRecevier.class);
+    public void enableBootRecieiver() {
+        ComponentName receiver = new ComponentName(context, ReadAyatAlarmBootRecevier.class);
         PackageManager pm = context.getPackageManager();
         pm.setComponentEnabledSetting(receiver,
                 PackageManager.COMPONENT_ENABLED_STATE_ENABLED,

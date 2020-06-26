@@ -27,3 +27,5 @@
 -keepclassmembers,allowobfuscation class * {
   @com.google.gson.annotations.SerializedName <fields>;
 }
+# for fix a problem with preference settings
+-keep public class * extends androidx.preference.PreferenceFragmentCompat

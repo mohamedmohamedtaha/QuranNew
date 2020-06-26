@@ -122,7 +122,6 @@ public class ListSoundReader extends AppCompatActivity {
     public static TextView textDuration;
     public static MaterialCardView FragmentListSoundLLControlMedia;
 
-    private Menu globalMenu;
     Utilities utilities;
     Intent intent;
     private static CircleImageView imageViewAlbumArt;
@@ -692,20 +691,6 @@ public class ListSoundReader extends AppCompatActivity {
         snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.colorAccent));
         snackbar.show();
     }
-
-    //For Delete those menus from that page
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        globalMenu = menu;
-        globalMenu.findItem(R.id.action_send_us).setVisible(false);
-        globalMenu.findItem(R.id.action_share).setVisible(false);
-        globalMenu.findItem(R.id.action_rate).setVisible(false);
-        globalMenu.findItem(R.id.action_settings).setVisible(false);
-        globalMenu.findItem(R.id.action_rate).setVisible(false);
-        globalMenu.findItem(R.id.shareApp).setVisible(false);
-        return super.onPrepareOptionsMenu(globalMenu);
-    }
-
     public static void updateUI(Context context) {
         if (!IsPlay) {
             btnPlay.setVisibility(View.VISIBLE);

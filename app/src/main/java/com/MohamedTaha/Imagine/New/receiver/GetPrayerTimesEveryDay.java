@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarNotificationHelper;
 import com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationHelperPrayerTime;
@@ -17,7 +18,7 @@ import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertDate;
 public class GetPrayerTimesEveryDay extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        NotificationHelperPrayerTime notificationHelperPrayerTime = new NotificationHelperPrayerTime();
+        NotificationHelperPrayerTime notificationHelperPrayerTime = new NotificationHelperPrayerTime(context);
         TimingsRepository timingsRepository = TimingsRepository.getInstance(context);
         timingsRepository.getPrayerTimesForCurrentDate(convertDate()).
                 subscribeOn(Schedulers.trampoline())
@@ -25,7 +26,8 @@ public class GetPrayerTimesEveryDay extends BroadcastReceiver {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(prayer_times -> {
                     if (prayer_times.getDate_today().equals(convertDate())) {
-                        notificationHelperPrayerTime.sendNotificationForPrayerTime(context, prayer_times);
+                        Log.d("TAG", "prayer_times.getDate_today().equals(convertDate()) : " + prayer_times.getDate_today().equals(convertDate()));
+                        notificationHelperPrayerTime.sendNotificationForPrayerTime( prayer_times);
                     }
                 }, e -> {
                     Log.d("TAG", "GetPrayerTimesEveryDay e : " + e.getMessage());

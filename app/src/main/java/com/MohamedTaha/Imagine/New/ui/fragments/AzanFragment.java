@@ -167,6 +167,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
 
     private Bundle bundle;
     private boolean isValueForPrayerTimesChanged = false;
+    private AdapterAzanVP adapterAzan;
 
 
     public AzanFragment() {
@@ -349,7 +350,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
                         } else {
                             fragmentAzanBinding.TVShowError.setVisibility(View.GONE);
                             fragmentAzanBinding.AzanFragmentVP.setVisibility(View.VISIBLE);
-                            AdapterAzanVP adapterAzan = new AdapterAzanVP(getActivity(), new AdapterAzanVP.ClickListener() {
+                            adapterAzan = new AdapterAzanVP(getActivity(), new AdapterAzanVP.ClickListener() {
                                 @Override
                                 public void CheckCity() {
                                     isRefresh = true;
@@ -963,6 +964,7 @@ public class AzanFragment extends Fragment implements GoogleApiClient.Connection
     @Override
     public void onResume() {
         super.onResume();
+       // adapterAzan.notifyDataSetChanged();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         repear = sharedPreferences.getString(getString(R.string.settings_method_key),
                 getString(R.string.settings_method_default));

@@ -9,8 +9,8 @@ android {
         applicationId "com.MohamedTaha.Imagine.New"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 13
-        versionName "1.1"
+        versionCode 17
+        versionName "1.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
 
@@ -19,7 +19,8 @@ android {
         release {
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     // Butter knife requires Java 8.

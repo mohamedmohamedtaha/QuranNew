@@ -39,7 +39,6 @@ import static com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkar
 import static com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarAlarmReceiver.NOTIFICATION_ID_NUMBER_AZKAR;
 import static com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarAlarmReceiver.SAVE_POSITION_MORNING_AZKAR;
 import static com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarAlarmReceiver.TIME_SEND_MORNING_AZKAR;
-import static com.MohamedTaha.Imagine.New.notification.prayerTimes.Alarm.LIST_TIME__NOTIFICATION;
 import static com.MohamedTaha.Imagine.New.notification.quran.AlarmReceiver.NOTIFICATION_ID;
 import static com.MohamedTaha.Imagine.New.notification.quran.AlarmReceiver.SAVE_Position_Notification;
 import static com.MohamedTaha.Imagine.New.notification.quran.AlarmReceiver.TIME_SEND;

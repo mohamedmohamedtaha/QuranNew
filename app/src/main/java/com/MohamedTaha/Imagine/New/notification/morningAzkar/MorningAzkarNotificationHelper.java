@@ -12,6 +12,7 @@ import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.notification.prayerTimes.AlarmUtils;
 import com.MohamedTaha.Imagine.New.notification.prayerTimes.ModelMessageNotification;
 import com.MohamedTaha.Imagine.New.receiver.GetAzkarTimesEveryDay;
+import com.MohamedTaha.Imagine.New.receiver.bootDevice.MorningAzkarAlarmBootRecevier;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,31 +33,29 @@ public class MorningAzkarNotificationHelper {
 
     public void showNotificationAzkar() {
         listForSavePrayerTimes = new ArrayList<>();
-        AlarmUtils alarm = new AlarmUtils();
-        alarm.cancelAllAlarmForBroadcastAzkar(context);
+        AlarmUtils alarm = new AlarmUtils(context);
+        alarm.cancelAllAlarmForBroadcastAzkar();
         addAzkar(5, 01, 27 ,context.getString(R.string.morning_azkar));
         addAzkar(16, 34, 28,context.getString(R.string.night_azkar));
 
-//        addAzkar(22, 13, 27, context.getString(R.string.morning_azkar));
-//        addAzkar(22, 16, 28, context.getString(R.string.night_azkar));
+//        addAzkar(13, 33, 27, context.getString(R.string.morning_azkar));
+//        addAzkar(13, 40, 28, context.getString(R.string.night_azkar));
 
-        alarm.setAlarmForBroadcast(context, listForSavePrayerTimes);
+        alarm.setAlarmForBroadcast(listForSavePrayerTimes);
     }
 
     private void addAzkar(int value_hour, int value_secound, int number_azkar, String name_azkar) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
         Calendar setTime = Calendar.getInstance();
         setTime.setTimeInMillis(System.currentTimeMillis());
         setTime.set(Calendar.HOUR_OF_DAY, value_hour);
         setTime.set(Calendar.MINUTE, value_secound);
         setTime.set(Calendar.SECOND, 1);
-        if (calendar.getTimeInMillis() < setTime.getTimeInMillis()) {
+        if (System.currentTimeMillis() < setTime.getTimeInMillis()) {
             listForSavePrayerTimes.add(new ModelMessageNotification(setTime.getTimeInMillis(), name_azkar, number_azkar));
         }
     }
 
-    public void getAzkarTimesEveryday(Context context) {
+    public void getAzkarTimesEveryday() {
         int ALARM_TYPE_ELAPSED = 20;
         AlarmManager alarmManager;
         PendingIntent alarmPendingIntent;
@@ -72,7 +71,7 @@ public class MorningAzkarNotificationHelper {
         }
     }
 
-    public void enableBootRecieiver(Context context) {
+    public void enableBootRecieiver() {
         ComponentName receiver = new ComponentName(context, MorningAzkarAlarmBootRecevier.class);
         PackageManager pm = context.getPackageManager();
         pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);

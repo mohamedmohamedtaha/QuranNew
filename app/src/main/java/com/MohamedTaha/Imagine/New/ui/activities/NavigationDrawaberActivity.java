@@ -270,13 +270,13 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                 });
 
 
-        NotificationHelper notificationHelper = new NotificationHelper();
-        notificationHelper.sendNotificationEveryHalfDay(getApplicationContext());
-        notificationHelper.enableBootRecieiver(getApplicationContext());
+        NotificationHelper notificationHelper = new NotificationHelper(getApplicationContext());
+        notificationHelper.sendNotificationEveryHalfDay();
+        notificationHelper.enableBootRecieiver();
 
-        NotificationHelperPrayerTime notificationHelperPrayerTime = new NotificationHelperPrayerTime();
-        notificationHelperPrayerTime.getPrayerTimesEveryday(getApplicationContext());
-        notificationHelperPrayerTime.enableBootRecieiver(getApplicationContext());
+        NotificationHelperPrayerTime notificationHelperPrayerTime = new NotificationHelperPrayerTime(getApplicationContext());
+        notificationHelperPrayerTime.getPrayerTimesEveryday();
+        notificationHelperPrayerTime.enableBootRecieiver();
 
 
     }
@@ -356,11 +356,11 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         isAzkarTrue = sharedPreferences.getBoolean(getString(R.string.azkar_key), true);
         if (isAzkarTrue) {
             MorningAzkarNotificationHelper morningAzkarNotificationHelper = new MorningAzkarNotificationHelper(getApplicationContext());
-            morningAzkarNotificationHelper.getAzkarTimesEveryday(getApplicationContext());
-            morningAzkarNotificationHelper.enableBootRecieiver(getApplicationContext());
+            morningAzkarNotificationHelper.getAzkarTimesEveryday();
+            morningAzkarNotificationHelper.enableBootRecieiver();
         } else {
-            AlarmUtils alarm = new AlarmUtils();
-            alarm.cancelAllAlarmForBroadcastAzkar(getApplicationContext());
+            AlarmUtils alarm = new AlarmUtils(getApplicationContext());
+            alarm.cancelAllAlarmForBroadcastAzkar();
         }
 
     }

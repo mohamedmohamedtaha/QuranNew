@@ -7,5 +7,5 @@ public interface MediaPlayerListener {
 
     void slowVolume();
 
-    void stopService();
+//    void stopService();
 }

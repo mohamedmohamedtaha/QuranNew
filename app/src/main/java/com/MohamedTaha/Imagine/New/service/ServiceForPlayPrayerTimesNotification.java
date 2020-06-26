@@ -20,6 +20,7 @@ import android.os.RemoteException;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -38,10 +39,9 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.MohamedTaha.Imagine.New.notification.prayerTimes.Alarm.LIST_TIME__NOTIFICATION;
-import static com.MohamedTaha.Imagine.New.notification.prayerTimes.Alarm.TEXT_NAME_NOTIFICATION;
-import static com.MohamedTaha.Imagine.New.notification.prayerTimes.Alarm.TIME_NOTIFICATION;
+import static com.MohamedTaha.Imagine.New.notification.prayerTimes.AlarmUtils.LIST_TIME__NOTIFICATION;
+import static com.MohamedTaha.Imagine.New.notification.prayerTimes.AlarmUtils.TEXT_NAME_NOTIFICATION;
+import static com.MohamedTaha.Imagine.New.notification.prayerTimes.AlarmUtils.TIME_NOTIFICATION;
 
 public class ServiceForPlayPrayerTimesNotification extends Service implements MediaPlayer.OnCompletionListener
         , MediaPlayer.OnErrorListener, MediaPlayerListener {
@@ -130,7 +130,6 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
             String st = bundle.getString(LIST_TIME__NOTIFICATION);
             listForSavePrayerTimes = new Gson().fromJson(st, listType);
             Log.d("TAG", "prayer_time is : " + prayer_time + "name_prayer_time is : " + name_prayer_time);
-            //initMediaPlayer(name_prayer_time);
             createNotification(name_prayer_time);
             if (!name_prayer_time.equals(getString(R.string.sunrise_string))) {
                 getNameShekh();
@@ -144,11 +143,12 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
                 Log.d("TAG", "mediaSessionManager = null is : " + mediaSessionManager);
 
             }
-        } else {
-            Log.d("TAG", "NOTIFICATION_ID_SERVICE two ");
-            startForeground(NOTIFICATION_ID_SERVICE, builder.build());
-            stopSelf();
         }
+//        else {
+//            Log.d("TAG", "NOTIFICATION_ID_SERVICE two ");
+//            startForeground(NOTIFICATION_ID_SERVICE, builder.build());
+//            stopSelf();
+//        }
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -286,7 +286,7 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
                 .setOngoing(true)// Cant cancel your notification (except NotificationManger.cancel();
                 .setChannelId(CHANNEL_ID)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setFullScreenIntent(exitPending, true)
+             //   .setFullScreenIntent(exitPending, true)
                 .setColor(ContextCompat.getColor(this, R.color.colorOrange))
                 .addAction(R.drawable.ic_close, "close", exitPending)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
@@ -332,18 +332,20 @@ public class ServiceForPlayPrayerTimesNotification extends Service implements Me
     @Override
     public void stopMedia() {
         Log.d("TAG", "stopMedia");
-        releaseMediaPlayer();
-        audioFocusChange.onDestroy();
+        stopSelf();
+
+//        releaseMediaPlayer();
+//        audioFocusChange.onDestroy();
     }
 
     @Override
     public void slowVolume() {
         if (mediaPlayer.isPlaying() && isPlaying) mediaPlayer.setVolume(0.1f, 0.1f);
     }
-
-    @Override
-    public void stopService() {
-        Log.d("TAG", "stopService");
-        stopSelf();
-    }
+//
+//    @Override
+//    public void stopService() {
+//        Log.d("TAG", "stopService");
+//        stopSelf();
+//    }
 }

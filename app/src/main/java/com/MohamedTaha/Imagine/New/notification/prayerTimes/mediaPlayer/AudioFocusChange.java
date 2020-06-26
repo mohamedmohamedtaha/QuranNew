@@ -13,7 +13,7 @@ public class AudioFocusChange implements AudioManager.OnAudioFocusChangeListener
         this.context = context;
         this.mediaPlayerListener = mediaPlayerListener;
         if (requestAduioFocus() == false) {
-            mediaPlayerListener.stopService();
+            mediaPlayerListener.stopMedia();
             Log.d("TAG", " mediaPlayerListener : stopService");
 
         }

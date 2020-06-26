@@ -22,10 +22,9 @@ import com.MohamedTaha.Imagine.New.helper.checkConnection.NetworkConnection;
 import com.MohamedTaha.Imagine.New.helper.checkConnection.NoInternetConnection;
 import com.MohamedTaha.Imagine.New.mvp.model.azan.Azan;
 import com.MohamedTaha.Imagine.New.mvp.model.getCity.GetCity;
+import com.MohamedTaha.Imagine.New.receiver.bootDevice.PrayerTimeEveryMonthAlarmBootRecevier;
 import com.MohamedTaha.Imagine.New.rest.APIServices;
-import com.MohamedTaha.Imagine.New.room.DatabaseCallback;
 import com.MohamedTaha.Imagine.New.room.TimingsAppDatabase;
-import com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity;
 
 import java.io.IOException;
 import java.util.List;
@@ -89,7 +88,7 @@ public class GetPrayerTimesEveryMonth extends BroadcastReceiver implements Datab
 
     //Enable boot receiver to persist alarms set for notification across device reboots
     public static void enableBootReceiverEveryMonth(Context context) {
-        ComponentName receiver = new ComponentName(context, AlarmBootRecevierPrayerTimeEveryMonth.class);
+        ComponentName receiver = new ComponentName(context, PrayerTimeEveryMonthAlarmBootRecevier.class);
         PackageManager pm = context.getPackageManager();
         pm.setComponentEnabledSetting(receiver,
                 PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
