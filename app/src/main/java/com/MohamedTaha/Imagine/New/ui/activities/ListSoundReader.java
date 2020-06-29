@@ -94,8 +94,8 @@ public class ListSoundReader extends AppCompatActivity {
     TextView FragmentListSoundTVNoData;
     @BindView(R.id.Fragment_List_Sound_TB)
     Toolbar FragmentListSoundTB;
-    @BindView(R.id.search_view)
-    MaterialSearchView searchView;
+    @BindView(R.id.Fragment_List_Sound_Search_View)
+    MaterialSearchView Fragment_List_Sound_Search_View;
     @BindView(R.id.btnPrevious)
     ImageButton btnPrevious;
     @BindView(R.id.btnStop)
@@ -207,11 +207,10 @@ public class ListSoundReader extends AppCompatActivity {
         textBufferDuration = findViewById(R.id.textBufferDuration);
         textDuration = findViewById(R.id.textDuration);
         textNowPlaying = findViewById(R.id.textNowPlaying);
+        Fragment_List_Sound_Search_View = findViewById(R.id.Fragment_List_Sound_Search_View);
         seekBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
 
         custom_toolbar();
-        //For ReDraw the Menu
-        invalidateOptionsMenu();
         respones = new ArrayList<>();
         Intent bundle = getIntent();
         if (bundle != null) {
@@ -219,7 +218,6 @@ public class ListSoundReader extends AppCompatActivity {
             imageModelTest = new Gson().fromJson(bundle.getStringExtra(SHEKH_NAME), String.class);
         }
         FILENAME = "/" + imageModelTest + "/";
-        searchView = findViewById(R.id.search_view);
         FragmentListSoundTVNameSora.setText(imageModelTest);
         //For start position from right don't left
         GridLayoutManager linearLayoutManager = new GridLayoutManager(getApplicationContext(), 2) {
@@ -261,7 +259,7 @@ public class ListSoundReader extends AppCompatActivity {
 
             }
         });
-        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+        Fragment_List_Sound_Search_View.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
             public void onSearchViewShown() {
 
@@ -288,7 +286,7 @@ public class ListSoundReader extends AppCompatActivity {
             }
         });
 
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+        Fragment_List_Sound_Search_View.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -576,7 +574,7 @@ public class ListSoundReader extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         MenuItem SearchItem = menu.findItem(R.id.action_search);
-        searchView.setMenuItem(SearchItem);
+        Fragment_List_Sound_Search_View.setMenuItem(SearchItem);
         return true;
     }
 
@@ -591,8 +589,8 @@ public class ListSoundReader extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (searchView.isSearchOpen()) {
-            searchView.closeSearch();
+        if (Fragment_List_Sound_Search_View.isSearchOpen()) {
+            Fragment_List_Sound_Search_View.closeSearch();
         } else {
             super.onBackPressed();
         }

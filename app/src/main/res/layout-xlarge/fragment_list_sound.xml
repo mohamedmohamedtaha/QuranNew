@@ -24,7 +24,7 @@
         android:textStyle="bold" />
 
     <com.miguelcatalan.materialsearchview.MaterialSearchView
-        android:id="@+id/search_view"
+        android:id="@+id/Fragment_List_Sound_Search_View"
         style="@style/style_default_layout_wrap_match" />
 
     <androidx.recyclerview.widget.RecyclerView

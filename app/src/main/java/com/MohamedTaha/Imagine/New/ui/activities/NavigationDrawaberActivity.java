@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -37,6 +38,7 @@ import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.ShowGuide;
 import com.MohamedTaha.Imagine.New.helper.HelperClass;
 import com.MohamedTaha.Imagine.New.helper.SharedPerefrenceHelper;
+import com.MohamedTaha.Imagine.New.helper.Silence;
 import com.MohamedTaha.Imagine.New.helper.checkConnection.NetworkConnection;
 import com.MohamedTaha.Imagine.New.helper.checkConnection.NoInternetConnection;
 import com.MohamedTaha.Imagine.New.mvp.interactor.NavigationDrawarInteractor;
@@ -136,7 +138,6 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         //checkIsFragmentAzanIsOpen();
         apiServicesForCity = getRetrofitForCity().create(APIServices.class);
         apiServices = getRetrofit().create(APIServices.class);
-
         presenter = new NavigationDrawarInteractor(this);
         appPackageName = getPackageName();
 
