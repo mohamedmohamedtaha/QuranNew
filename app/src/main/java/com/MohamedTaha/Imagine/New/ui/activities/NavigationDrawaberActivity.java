@@ -36,6 +36,7 @@ import androidx.room.EmptyResultSetException;
 import com.MohamedTaha.Imagine.New.AppConstants;
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.ShowGuide;
+import com.MohamedTaha.Imagine.New.YoutubeActivity;
 import com.MohamedTaha.Imagine.New.helper.HelperClass;
 import com.MohamedTaha.Imagine.New.helper.SharedPerefrenceHelper;
 import com.MohamedTaha.Imagine.New.helper.Silence;
@@ -386,6 +387,10 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_youtube:
+                Intent intent = new Intent(NavigationDrawaberActivity.this, YoutubeActivity.class);
+                startActivity(intent);
+                break;
 //            case R.id.action_share:
 //                presenter.shareApp(getString(R.string.about), appPackageName);
 //                break;

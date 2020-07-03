@@ -19,6 +19,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <permission android:name="android.permission.MEDIA_CONTENT_CONTROL" />
+
     <application
         android:allowBackup="true"
         android:fullBackupContent="true"
@@ -30,7 +31,8 @@
         android:supportsRtl="false"
         android:theme="@style/FullScreenWindow"
         tools:targetApi="n">
-        <activity android:name=".FullScreenActivity"></activity>
+        <activity android:name=".YoutubeActivity"></activity>
+        <activity android:name=".FullScreenActivity" />
         <activity
             android:name=".ui.activities.SettingsActivity"
             android:label="@string/settings"
@@ -108,7 +110,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.TIME_SET" />
             </intent-filter>
-
         </receiver>
         <receiver
             android:name=".receiver.changeTime.PrayerTimeEveryMonthAlarmChangeTimeRecevier"
@@ -116,7 +117,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.TIME_SET" />
             </intent-filter>
-
         </receiver>
         <receiver
             android:name=".receiver.bootDevice.MorningAzkarAlarmBootRecevier"
@@ -169,14 +169,14 @@
                 <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
         </service>
-        <receiver android:name="androidx.media.session.MediaButtonReceiver" >
 
-        <intent-filter>
+        <receiver android:name="androidx.media.session.MediaButtonReceiver">
+            <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
                 <action android:name="android.media.AUDIO_BECOMING_NOISY" />
-
             </intent-filter>
         </receiver>
+
         <service android:name=".service.ServiceForPlayPrayerTimesNotification">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />

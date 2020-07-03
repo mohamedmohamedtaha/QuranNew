@@ -6,6 +6,11 @@
         android:icon="@drawable/ic_baseline_youtube_searched_for_24"
         android:title="search"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/action_youtube"
+        android:icon="@drawable/youtube"
+        android:title="@string/youtube"
+        app:showAsAction="always" />
 
 <!--    <item-->
 <!--        android:id="@+id/el_arbaoon_elnawawy"-->
