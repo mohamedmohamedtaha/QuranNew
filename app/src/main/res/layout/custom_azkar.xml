@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/style_default_layout_wrap_content"
-    android:layout_gravity="center"
-    android:orientation="horizontal">
+    android:layout_gravity="center">
 
-    <com.google.android.material.card.MaterialCardView style="@style/style_material_card_view">
+    <com.google.android.material.card.MaterialCardView
+        style="@style/style_material_card_view">
 
         <TextView
             android:id="@+id/TV_Name_Azkar"

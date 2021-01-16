@@ -1,21 +1,23 @@
 package com.MohamedTaha.Imagine.New.ui.fragments.elnawawy;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
+import androidx.fragment.app.Fragment;
+
+import com.MohamedTaha.Imagine.New.libraryTextView.TextViewEx;
 import com.MohamedTaha.Imagine.New.R;
-import com.MohamedTaha.Imagine.New.databinding.FragmentTextElhadethBinding;
 import com.google.gson.Gson;
 
 import java.util.concurrent.Callable;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -29,7 +31,11 @@ import static com.MohamedTaha.Imagine.New.ui.activities.ElarbaoonElnawawyActivit
  * A simple {@link Fragment} subclass.
  */
 public class TextElhadethFragment extends Fragment {
-    private FragmentTextElhadethBinding fragmentTextElhadethBinding;
+    @BindView(R.id.TextElhadethFragment_TV_Text_Elhaseth)
+    TextViewEx TextElhadethFragmentTVTextElhaseth;
+    @BindView(R.id.TextElhadethFragment_ProgressBar)
+    ProgressBar TextElhadethFragmentProgressBar;
+    // private FragmentTextElhadethBinding fragmentTextElhadethBinding;
     private Bundle bundle_for_save_position_elhadeth;
     private int position_elhadeth;
     private CompositeDisposable disposable;
@@ -45,8 +51,10 @@ public class TextElhadethFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        fragmentTextElhadethBinding = FragmentTextElhadethBinding.inflate(inflater,container,false);
-        View view = fragmentTextElhadethBinding.getRoot();
+        //   fragmentTextElhadethBinding = FragmentTextElhadethBinding.inflate(inflater);
+        //View view = fragmentTextElhadethBinding.getRoot();
+        View view = inflater.inflate(R.layout.fragment_text_elhadeth, container, false);
+        ButterKnife.bind(this, view);
         bundle_for_save_position_elhadeth = getArguments();
         if (bundle_for_save_position_elhadeth != null) {
             position_elhadeth = new Gson().fromJson(bundle_for_save_position_elhadeth.getString(POSITION), Integer.class);
@@ -77,8 +85,8 @@ public class TextElhadethFragment extends Fragment {
             @Override
             public void onNext(@NonNull String s) {
                 return_text_elhadeth = s;
-                fragmentTextElhadethBinding.TextElhadethFragmentTVTextElhaseth.setText(return_text_elhadeth);
-                fragmentTextElhadethBinding.TextElhadethFragmentTVTextElhaseth.setMovementMethod(new ScrollingMovementMethod());
+                TextElhadethFragmentTVTextElhaseth.setText(return_text_elhadeth);
+                TextElhadethFragmentTVTextElhaseth.setMovementMethod(new ScrollingMovementMethod());
 
                 Log.d("TAG", return_text_elhadeth);
 
@@ -86,12 +94,12 @@ public class TextElhadethFragment extends Fragment {
 
             @Override
             public void onError(@NonNull Throwable e) {
-                fragmentTextElhadethBinding.TextElhadethFragmentProgressBar.setVisibility(View.GONE);
+                TextElhadethFragmentProgressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onComplete() {
-                fragmentTextElhadethBinding.TextElhadethFragmentProgressBar.setVisibility(View.GONE);
+                TextElhadethFragmentProgressBar.setVisibility(View.GONE);
             }
 
         }));
@@ -102,9 +110,9 @@ public class TextElhadethFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-            if (disposable != null && !disposable.isDisposed()) {
-                disposable.clear();
-                disposable.dispose();
-            }
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.clear();
+            disposable.dispose();
+        }
     }
 }

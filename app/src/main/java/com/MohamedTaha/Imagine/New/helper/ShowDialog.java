@@ -2,17 +2,13 @@ package com.MohamedTaha.Imagine.New.helper;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.os.Build;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.viewpager.widget.ViewPager;
 
@@ -22,7 +18,7 @@ import com.MohamedTaha.Imagine.New.mvp.model.ModelAzkar;
 import static com.MohamedTaha.Imagine.New.ui.activities.SwipePagesActivity.IS_TRUE;
 import static com.MohamedTaha.Imagine.New.ui.activities.SwipePagesActivity.IS_TRUE_AZKAR;
 import static com.MohamedTaha.Imagine.New.ui.fragments.AzkarFragment.SAVE_AZKAR;
-import static com.MohamedTaha.Imagine.New.ui.fragments.GridViewFragment.SAVE_IMAGES;
+import static com.MohamedTaha.Imagine.New.ui.fragments.ReadSwarFragment.SAVE_IMAGES;
 
 public class ShowDialog {
     public static void showDialogForRetrieveReadingSora(Activity activity, ViewPager SwipePagesActivityVP, int position) {

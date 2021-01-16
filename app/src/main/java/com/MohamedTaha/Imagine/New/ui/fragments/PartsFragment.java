@@ -15,13 +15,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.MohamedTaha.Imagine.New.Adapter.AdapterGridView;
+import com.MohamedTaha.Imagine.New.Adapter.AdapterForPartsAndSwar;
 import com.MohamedTaha.Imagine.New.R;
+import com.MohamedTaha.Imagine.New.ReScrollUtil;
 import com.MohamedTaha.Imagine.New.mvp.interactor.PartsFragmentsInteractor;
 import com.MohamedTaha.Imagine.New.mvp.model.ModelSora;
 import com.MohamedTaha.Imagine.New.mvp.presenter.PartsFragmentPresenter;
 import com.MohamedTaha.Imagine.New.mvp.view.PartsFragmentView;
 import com.MohamedTaha.Imagine.New.ui.activities.SwipePagesActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.searchView;
-import static com.MohamedTaha.Imagine.New.ui.fragments.GridViewFragment.SAVE_STATE;
+import static com.MohamedTaha.Imagine.New.ui.fragments.ReadSwarFragment.SAVE_STATE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,14 +40,17 @@ import static com.MohamedTaha.Imagine.New.ui.fragments.GridViewFragment.SAVE_STA
 public class PartsFragment extends Fragment implements PartsFragmentView {
     public static final String SAVE_IMAGES = "save_images";
     Bundle bundle;
-    @BindView(R.id.PartsFragment_GV_Show_Images)
-    RecyclerView PartsFragmentGVShowImages;
+    @BindView(R.id.PartsFragment_RecyclerView)
+    RecyclerView PartsFragmentRecyclerView;
     @BindView(R.id.PartsFragment_TV_No_Data)
     TextView PartsFragmentTVNoData;
     @BindView(R.id.PartsFragment_ProgressBar)
     ProgressBar PartsFragmentProgressBar;
+    @BindView(R.id.PartsFragment_FloatingActionButton)
+    FloatingActionButton PartsFragmentFloatingActionButton;
+
     private List<ModelSora> name_part;
-    private AdapterGridView adapterNamePart;
+    private AdapterForPartsAndSwar adapterNamePart;
     private PartsFragmentPresenter presenter;
     private List<Integer> integers_bundle;
 
@@ -72,7 +77,9 @@ public class PartsFragment extends Fragment implements PartsFragmentView {
                 return true;
             }
         };
-        PartsFragmentGVShowImages.setLayoutManager(linearLayoutManager);
+        PartsFragmentRecyclerView.setLayoutManager(linearLayoutManager);
+        ReScrollUtil reScrollUtil = new ReScrollUtil(PartsFragmentFloatingActionButton, PartsFragmentRecyclerView);
+        reScrollUtil.onClickRecyclerView(R.id.PartsFragment_FloatingActionButton);
         return view;
     }
 
@@ -84,7 +91,7 @@ public class PartsFragment extends Fragment implements PartsFragmentView {
 
     @Override
     public void showAfterSearch() {
-        adapterNamePart = new AdapterGridView(name_part, true, new AdapterGridView.ClickListener() {
+        adapterNamePart = new AdapterForPartsAndSwar(name_part, true, new AdapterForPartsAndSwar.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 presenter.getPosition(name_part.get(position).getPosition(), bundle);
@@ -96,14 +103,14 @@ public class PartsFragment extends Fragment implements PartsFragmentView {
                 getActivity().overridePendingTransition(R.anim.item_anim_slide_from_top, R.anim.item_anim_no_thing);
             }
         });
-        PartsFragmentGVShowImages.setAdapter(adapterNamePart);
+        PartsFragmentRecyclerView.setAdapter(adapterNamePart);
     }
 
     @Override
     public void showAfterQueryText(List<ModelSora> stringList) {
         //name_part.clear();
         name_part = stringList;
-        adapterNamePart = new AdapterGridView(stringList, true, new AdapterGridView.ClickListener() {
+        adapterNamePart = new AdapterForPartsAndSwar(stringList, true, new AdapterForPartsAndSwar.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 presenter.getPosition(name_part.get(position).getPosition(), bundle);
@@ -115,7 +122,7 @@ public class PartsFragment extends Fragment implements PartsFragmentView {
                 getActivity().overridePendingTransition(R.anim.item_anim_slide_from_top, R.anim.item_anim_no_thing);
             }
         });
-        PartsFragmentGVShowImages.setAdapter(adapterNamePart);
+        PartsFragmentRecyclerView.setAdapter(adapterNamePart);
     }
 
     @Override
@@ -126,13 +133,13 @@ public class PartsFragment extends Fragment implements PartsFragmentView {
     @Override
     public void isEmpty() {
         PartsFragmentTVNoData.setVisibility(View.VISIBLE);
-        PartsFragmentGVShowImages.setVisibility(View.GONE);
+        PartsFragmentRecyclerView.setVisibility(View.GONE);
     }
 
     @Override
     public void thereData() {
         PartsFragmentTVNoData.setVisibility(View.GONE);
-        PartsFragmentGVShowImages.setVisibility(View.VISIBLE);
+        PartsFragmentRecyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -148,7 +155,7 @@ public class PartsFragment extends Fragment implements PartsFragmentView {
     @Override
     public void showAllINamePart(List<ModelSora> strings) {
         name_part = strings;
-        adapterNamePart = new AdapterGridView(name_part, true, new AdapterGridView.ClickListener() {
+        adapterNamePart = new AdapterForPartsAndSwar(name_part, true, new AdapterForPartsAndSwar.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 presenter.getPosition(name_part.get(position).getPosition(), bundle);
@@ -160,7 +167,7 @@ public class PartsFragment extends Fragment implements PartsFragmentView {
                 getActivity().overridePendingTransition(R.anim.item_anim_slide_from_top, R.anim.item_anim_no_thing);
             }
         });
-        PartsFragmentGVShowImages.setAdapter(adapterNamePart);
+        PartsFragmentRecyclerView.setAdapter(adapterNamePart);
         adapterNamePart.notifyDataSetChanged();
         //For feel when Search
         presenter.setOnQueryText(searchView, name_part);
@@ -170,7 +177,8 @@ public class PartsFragment extends Fragment implements PartsFragmentView {
     public void showAnimation() {
         //For animation
         LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getActivity(), R.anim.layout_fall_dwon);
-        PartsFragmentGVShowImages.setLayoutAnimation(controller);
-        PartsFragmentGVShowImages.scheduleLayoutAnimation();
+        PartsFragmentRecyclerView.setLayoutAnimation(controller);
+        PartsFragmentRecyclerView.scheduleLayoutAnimation();
     }
+
 }

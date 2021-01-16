@@ -8,7 +8,6 @@
         style="@style/style_default_layout_wrap_match"
         android:layout_margin="@dimen/dimens_ss"
         android:outlineSpotShadowColor="@color/colorAccent"
-        android:rotationY="180"
         card:cardCornerRadius="@dimen/dimens_l"
         card:cardElevation="@dimen/dimens_m">
 

@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/style_default_layout_match_parent"
-    android:orientation="vertical"
+    android:layout_marginTop="@dimen/dimens_xl"
+    android:layout_marginBottom="@dimen/dimens_xxxxl"
     tools:context=".ui.fragments.PartsFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/PartsFragment_GV_Show_Images"
-        style="@style/style_list_view"
-        android:layout_gravity="center_horizontal" />
+        android:id="@+id/PartsFragment_RecyclerView"
+        style="@style/style_default_layout_wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
         android:id="@+id/PartsFragment_ProgressBar"
@@ -16,11 +22,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/dimens_9xl"
         android:indeterminateDrawable="@drawable/color_progressbar"
-        android:visibility="gone" />
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/PartsFragment_TV_No_Data"
-        style="@style/style_text_view_no_data" />
-</LinearLayout>
+        style="@style/style_text_view_no_data"
+        android:layout_marginTop="@dimen/dimens_6xl"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/PartsFragment_FloatingActionButton"
+        style="@style/float_add_constraint"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

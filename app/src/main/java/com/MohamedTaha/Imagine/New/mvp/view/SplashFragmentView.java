@@ -1,7 +1,8 @@
 package com.MohamedTaha.Imagine.New.mvp.view;
 
-public interface SplashView {
+public interface SplashFragmentView {
     void showAnimation();
+
     void goToSlider();
 
 }

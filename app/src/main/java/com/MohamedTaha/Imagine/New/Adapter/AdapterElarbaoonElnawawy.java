@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.MohamedTaha.Imagine.New.R;
-import com.MohamedTaha.Imagine.New.databinding.CustomElarbaoonElnawawyBinding;
 import com.MohamedTaha.Imagine.New.mvp.model.ElarbaoonElnawawyModel;
 
 import java.util.List;
@@ -21,8 +20,8 @@ import butterknife.ButterKnife;
 public class AdapterElarbaoonElnawawy extends RecyclerView.Adapter<AdapterElarbaoonElnawawy.ElarbaoonViewHolder> {
 
 
-    private CustomElarbaoonElnawawyBinding customElarbaoonElnawawyBinding;
     private List<ElarbaoonElnawawyModel> elnawawyModelsList;
+
     private Context context;
 
     private ClickListener clickListener;
@@ -40,7 +39,7 @@ public class AdapterElarbaoonElnawawy extends RecyclerView.Adapter<AdapterElarba
     @Override
     public ElarbaoonViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //customElarbaoonElnawawyBinding = CustomElarbaoonElnawawyBinding.inflate();
-        View row = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_layout_read_quran, null);
+        View row = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_parts_swar_quran, null);
         ElarbaoonViewHolder elarbaoonViewHolder = new ElarbaoonViewHolder(row);
         row.setOnClickListener(new View.OnClickListener() {
             @Override

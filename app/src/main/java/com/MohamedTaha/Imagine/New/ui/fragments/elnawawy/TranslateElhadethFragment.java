@@ -6,15 +6,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.fragment.app.Fragment;
 
+import com.MohamedTaha.Imagine.New.libraryTextView.TextViewEx;
 import com.MohamedTaha.Imagine.New.R;
-import com.MohamedTaha.Imagine.New.databinding.FragmentTranslateBinding;
 import com.google.gson.Gson;
 
 import java.util.concurrent.Callable;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -28,7 +31,11 @@ import static com.MohamedTaha.Imagine.New.ui.activities.ElarbaoonElnawawyActivit
  * A simple {@link Fragment} subclass.
  */
 public class TranslateElhadethFragment extends Fragment {
-    private FragmentTranslateBinding fragmentTranslateBinding;
+    @BindView(R.id.TranslateElhadethFragment_TV_Translate_Elhaseth)
+    TextViewEx TranslateElhadethFragmentTVTranslateElhaseth;
+    @BindView(R.id.TranslateElhadethFragment_ProgressBar)
+    ProgressBar TranslateElhadethFragmentProgressBar;
+    //private FragmentTranslateBinding fragmentTranslateBinding;
     private Bundle bundle_for_save_position_elhadeth;
     private int position_elhadeth;
     private CompositeDisposable disposable;
@@ -45,9 +52,10 @@ public class TranslateElhadethFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        fragmentTranslateBinding = FragmentTranslateBinding.inflate(inflater, container, false);
-        View view = fragmentTranslateBinding.getRoot();
-
+//        fragmentTranslateBinding = FragmentTranslateBinding.inflate(inflater);
+//        View view = fragmentTranslateBinding.getRoot();
+        View view = inflater.inflate(R.layout.fragment_translate, container, false);
+        ButterKnife.bind(this, view);
         bundle_for_save_position_elhadeth = getArguments();
         if (bundle_for_save_position_elhadeth != null) {
             position_elhadeth = new Gson().fromJson(bundle_for_save_position_elhadeth.getString(POSITION), Integer.class);
@@ -77,8 +85,8 @@ public class TranslateElhadethFragment extends Fragment {
             @Override
             public void onNext(@NonNull String s) {
                 translate_elhadeth_depended_on_position = s;
-                fragmentTranslateBinding.TranslateElhadethFragmentTVTranslateElhaseth.setText(translate_elhadeth_depended_on_position);
-                fragmentTranslateBinding.TranslateElhadethFragmentTVTranslateElhaseth.setMovementMethod(new ScrollingMovementMethod());
+                TranslateElhadethFragmentTVTranslateElhaseth.setText(translate_elhadeth_depended_on_position);
+                TranslateElhadethFragmentTVTranslateElhaseth.setMovementMethod(new ScrollingMovementMethod());
 
                 Log.d("TAG", translate_elhadeth_depended_on_position);
 
@@ -86,12 +94,12 @@ public class TranslateElhadethFragment extends Fragment {
 
             @Override
             public void onError(@NonNull Throwable e) {
-                fragmentTranslateBinding.TranslateElhadethFragmentProgressBar.setVisibility(View.GONE);
+                TranslateElhadethFragmentProgressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onComplete() {
-                fragmentTranslateBinding.TranslateElhadethFragmentProgressBar.setVisibility(View.GONE);
+                TranslateElhadethFragmentProgressBar.setVisibility(View.GONE);
             }
 
         }));
@@ -104,5 +112,5 @@ public class TranslateElhadethFragment extends Fragment {
             disposable.clear();
             disposable.dispose();
         }
-          }
+    }
 }

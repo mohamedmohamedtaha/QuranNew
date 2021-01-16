@@ -57,6 +57,11 @@
     \n</string>
 
     <string name="shareApp">مشاركة التطبيق</string>
+    <string name="sendTo">إرسال إلى </string>
+    <string name="subject">الموضوع</string>
+    <string name="messageBody">الرسالة</string>
+    <string name="rateOur">قيمنا</string>
+    <string name="notShare">للأسف التليفون لا يوجد به اي تطبيق للمشاركة</string>
     <string name="notSupport">للأسف التليفون لا يوجد به اي تطبيق لإرسال الرسائل</string>
     <string name="hafs_an_asem">حَفْصٌ عَنْ عَاصِمٍ</string>
     <string name="khalaf_ben_hamza">خَلَفٌ عَنْ حَمْزَةَ </string>

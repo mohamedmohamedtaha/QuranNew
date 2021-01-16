@@ -1,6 +1,9 @@
 package com.MohamedTaha.Imagine.New.mvp.interactor;
 
-import androidx.fragment.app.FragmentActivity;
+import android.content.Context;
+import android.util.Log;
+
+import androidx.lifecycle.ViewModel;
 
 import com.MohamedTaha.Imagine.New.mvp.model.ImageModel;
 import com.MohamedTaha.Imagine.New.mvp.presenter.ListSoundReaderPresenter;
@@ -20,15 +23,14 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import static com.MohamedTaha.Imagine.New.helper.Images.getData;
 
-public class ListSoundReaderInteractor implements ListSoundReaderPresenter {
+public class ListSoundReaderInteractor extends ViewModel implements ListSoundReaderPresenter {
     private ListSoundReaderView listSoundReaderView;
-    private FragmentActivity context;
+    private Context context;
+
     private CompositeDisposable disposable;
 
-
-    public ListSoundReaderInteractor(ListSoundReaderView listSoundReaderView, FragmentActivity context) {
-        this.listSoundReaderView = listSoundReaderView;
-        this.context = context;
+    public ListSoundReaderInteractor() {
+        Log.d("TAG", "ListSoundReaderInteractor");
     }
 
     @Override
@@ -75,6 +77,13 @@ public class ListSoundReaderInteractor implements ListSoundReaderPresenter {
                 }
             }
         }));
+    }
+
+    @Override
+    public void onBind(ListSoundReaderView listSoundReaderView, Context context) {
+        this.listSoundReaderView = listSoundReaderView;
+        this.context = context;
+
     }
 
     @Override

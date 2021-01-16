@@ -73,6 +73,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
     public static final String BROADCAST_NOT_INTERNET = "com.example.createmediaplayer.no.internet";
     private ConnectivityReceiver connectivityReceiver = null;
     private NoInternetReceiver noInternetReceiver = null;
+    private static final int MESSAGE_ID = 5;
     NotificationCompat.Builder notificationBuilder;
     private static Timer timer;
     Integer totalDuration;
@@ -98,7 +99,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
                 i[1] = totalDuration;
                 i[2] = progress;
                 try {
-                    PlayerConstants.PROGRESSER_HANDLER.sendMessage(PlayerConstants.PROGRESSER_HANDLER.obtainMessage(0, i));
+                    PlayerConstants.PROGRESSER_HANDLER.sendMessage(PlayerConstants.PROGRESSER_HANDLER.obtainMessage(MESSAGE_ID, i));
                 } catch (Exception e) {
 
                 }
@@ -264,8 +265,9 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         super.onDestroy();
         if (mediaPlayer != null) {
             stopMedia();
-
+            handler1.removeMessages(MESSAGE_ID);
         }
+
         removeAudioFocus();
         //Disable the PhoneStateListener
         if (phoneStateListener != null) {

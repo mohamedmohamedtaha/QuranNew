@@ -1,7 +1,10 @@
 package com.MohamedTaha.Imagine.New.mvp.interactor;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Handler;
 
@@ -9,26 +12,37 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.MohamedTaha.Imagine.New.R;
+import com.MohamedTaha.Imagine.New.helper.HelperClass;
 import com.MohamedTaha.Imagine.New.mvp.presenter.NavigationDrawarPresenter;
-import com.MohamedTaha.Imagine.New.mvp.view.NavigationDrawarView;
+import com.MohamedTaha.Imagine.New.mvp.view.NavigationDrawaberView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import java.util.List;
+
+import javax.inject.Inject;
+
+//@ScopeActivity
 public class NavigationDrawarInteractor implements NavigationDrawarPresenter {
-    private NavigationDrawarView navigationDrawarView;
+    @Inject
+    Intent intent, intentEmail, IntentRateApp;
+    private NavigationDrawaberView navigationDrawaberView;
     private Boolean exitApp = false;
+    Activity context;
+    private static final String TAG = "NavigationDrawarInterac";
     public static final String GOOGLE_ACCOUNT_ID = "https://play.google.com/store/apps/details?id=";
     public static final String NAME_EMAIL = "mohamed01007919166@gmail.com";
     public static final String MARKET_ID = "market://details?id=";
 
-    public NavigationDrawarInteractor(NavigationDrawarView navigationDrawarView) {
-        this.navigationDrawarView = navigationDrawarView;
+    @Inject
+    public NavigationDrawarInteractor(NavigationDrawaberView navigationDrawaberView, Activity context) {
+        this.navigationDrawaberView = navigationDrawaberView;
+        this.context = context;
     }
 
     @Override
     public void onDestroy() {
-        navigationDrawarView = null;
-
+        navigationDrawaberView = null;
     }
 
     @Override
@@ -39,11 +53,11 @@ public class NavigationDrawarInteractor implements NavigationDrawarPresenter {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             if (exitApp) {
-                navigationDrawarView.exitApp();
+                navigationDrawaberView.exitApp();
                 return;
             }
             exitApp = true;
-            navigationDrawarView.showMessageExitApp();
+            navigationDrawaberView.showMessageExitApp();
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -55,43 +69,64 @@ public class NavigationDrawarInteractor implements NavigationDrawarPresenter {
 
     @Override
     public void shareApp(String aboutString, String appPackageName) {
-        try {
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("text/plain");
-            intent.putExtra(Intent.EXTRA_SUBJECT, R.string.nameSora);
-            String about = aboutString + GOOGLE_ACCOUNT_ID + appPackageName;
-            intent.putExtra(Intent.EXTRA_TEXT, about);
-            navigationDrawarView.getShareApp(intent);
-        } catch (Exception e) {
-            e.toString();
+        intent.setAction(Intent.ACTION_SEND);
+        List<ResolveInfo> resolveInfos = context.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_ALL);
+        if (resolveInfos.size() > 1) {
+            try {
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_SUBJECT, R.string.nameSora);
+                String about = aboutString + GOOGLE_ACCOUNT_ID + appPackageName;
+                intent.putExtra(Intent.EXTRA_TEXT, about);
+                Intent intentChooser = Intent.createChooser(intent, context.getString(R.string.shareApp));
+                navigationDrawaberView.getShareApp(intentChooser);
+            } catch (Exception e) {
+                e.toString();
+            }
+        } else if (intent.resolveActivity(context.getPackageManager()) != null) {
+            navigationDrawaberView.getShareApp(intent);
+        } else {
+            HelperClass.customToast(context, context.getString(R.string.notShare));
         }
     }
 
     @Override
     public void sendUs() {
-        Intent intentEmail = new Intent(Intent.ACTION_SEND);
-        intentEmail.setData(Uri.parse("mailto:"));
-        intentEmail.setType("message/rfc2822");
-        intentEmail.putExtra(Intent.EXTRA_EMAIL, new String[]{NAME_EMAIL});
-        intentEmail.putExtra(Intent.EXTRA_SUBJECT, "Subject");
-        intentEmail.putExtra(Intent.EXTRA_TEXT, "Message Body");
-        intentEmail.createChooser(intentEmail, "Send mail...");
-        navigationDrawarView.getSendUs(intentEmail);
+        intentEmail.setAction(Intent.ACTION_SEND);
+        List<ResolveInfo> resolveInfos = context.getPackageManager().queryIntentActivities(intentEmail, PackageManager.MATCH_ALL);
+        if (resolveInfos.size() > 1) {
+            intentEmail.setData(Uri.parse("mailto:"));
+            intentEmail.setType("message/rfc2822");
+            intentEmail.putExtra(Intent.EXTRA_EMAIL, new String[]{NAME_EMAIL});
+            intentEmail.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.subject));
+            intentEmail.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.messageBody));
+            Intent intentChooser = Intent.createChooser(intentEmail, context.getString(R.string.sendTo));
+            navigationDrawaberView.getSendUs(intentChooser);
+        } else if (intentEmail.resolveActivity(context.getPackageManager()) != null) {
+            navigationDrawaberView.getSendUs(intentEmail);
+        } else {
+            HelperClass.customToast(context, context.getString(R.string.notSupport));
+        }
     }
 
     @Override
     public void actionRate(String appPackageName) {
-        Intent rateApp = null;
-        try {
-            //Open the Store and show the App
-            rateApp = new Intent(Intent.ACTION_VIEW);
-            rateApp.setData(Uri.parse(MARKET_ID + appPackageName));
-            navigationDrawarView.getRateApp(rateApp);
-        } catch (ActivityNotFoundException e) {
-            //In state store there is not open by The browser
-            //  Intent webRate = new Intent(Intent.ACTION_VIEW);
-            rateApp.setData(Uri.parse(GOOGLE_ACCOUNT_ID + appPackageName));
-            navigationDrawarView.getRateApp(rateApp);
+        IntentRateApp.setAction(Intent.ACTION_VIEW);
+        List<ResolveInfo> resolveInfos = context.getPackageManager().queryIntentActivities(IntentRateApp, PackageManager.MATCH_ALL);
+        if (resolveInfos.size() > 1) {
+            try {
+                //Open the Store and show the App
+                IntentRateApp.setData(Uri.parse(MARKET_ID + appPackageName));
+                Intent intentChooser = Intent.createChooser(IntentRateApp, context.getString(R.string.rateOur));
+                navigationDrawaberView.getRateApp(intentChooser);
+            } catch (ActivityNotFoundException e) {
+                //In state store there is not open by The browser
+                IntentRateApp.setData(Uri.parse(GOOGLE_ACCOUNT_ID + appPackageName));
+                navigationDrawaberView.getRateApp(IntentRateApp);
+            }
+        } else if (IntentRateApp.resolveActivity(context.getPackageManager()) != null) {
+            navigationDrawaberView.getRateApp(IntentRateApp);
+        } else {
+            HelperClass.customToast(context, context.getString(R.string.notSupport));
         }
     }
 }

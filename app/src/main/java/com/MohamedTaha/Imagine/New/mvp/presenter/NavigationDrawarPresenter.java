@@ -15,5 +15,4 @@ public interface NavigationDrawarPresenter {
     void sendUs();
 
     void actionRate(String appPackageName);
-
 }

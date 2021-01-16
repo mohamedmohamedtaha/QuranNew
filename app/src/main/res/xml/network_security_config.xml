@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+
+    </base-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">server6.mp3quran.net</domain>
         <domain includeSubdomains="true">server7.mp3quran.net</domain>
@@ -14,6 +17,5 @@
         <domain includeSubdomains="true">clients3.google.com</domain>
         <domain includeSubdomains="true">api.aladhan.com</domain>
         <domain includeSubdomains="true">ip-api.com</domain>
-
     </domain-config>
 </network-security-config>

@@ -3,25 +3,29 @@ package com.MohamedTaha.Imagine.New.ui.activities;
 import android.app.NotificationManager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.transition.Fade;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.MohamedTaha.Imagine.New.Adapter.AdapterForAzkarSwipe;
 import com.MohamedTaha.Imagine.New.Adapter.AdapterForSwipe;
 import com.MohamedTaha.Imagine.New.R;
+import com.MohamedTaha.Imagine.New.RxBusData;
 import com.MohamedTaha.Imagine.New.helper.HelperClass;
 import com.MohamedTaha.Imagine.New.helper.SharedPerefrenceHelper;
 import com.MohamedTaha.Imagine.New.helper.ShowDialog;
 import com.MohamedTaha.Imagine.New.mvp.model.ModelAzkar;
-import com.MohamedTaha.Imagine.New.notification.prayerTimes.Alarm;
-import com.MohamedTaha.Imagine.New.notification.prayerTimes.ModelMessageNotification;
+import com.MohamedTaha.Imagine.New.ui.fragments.FullScreenImageFragment;
 import com.booking.rtlviewpager.RtlViewPager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -30,32 +34,33 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Timer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.observers.DisposableObserver;
 
 import static com.MohamedTaha.Imagine.New.helper.Images.SAVE_POSITION;
-import static com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarAlarmReceiver.NOTIFICATION_ID_LIST_AZKAR;
 import static com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarAlarmReceiver.NOTIFICATION_ID_NUMBER_AZKAR;
 import static com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarAlarmReceiver.SAVE_POSITION_MORNING_AZKAR;
 import static com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarAlarmReceiver.TIME_SEND_MORNING_AZKAR;
 import static com.MohamedTaha.Imagine.New.notification.quran.AlarmReceiver.NOTIFICATION_ID;
 import static com.MohamedTaha.Imagine.New.notification.quran.AlarmReceiver.SAVE_Position_Notification;
 import static com.MohamedTaha.Imagine.New.notification.quran.AlarmReceiver.TIME_SEND;
+import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.SAVE_ALL_IMAGES;
+import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.SAVE_PAGE;
 import static com.MohamedTaha.Imagine.New.ui.fragments.AzkarFragment.SAVE_AZKAR;
 import static com.MohamedTaha.Imagine.New.ui.fragments.AzkarFragment.SAVE_POTION_AZKAR;
-import static com.MohamedTaha.Imagine.New.ui.fragments.GridViewFragment.SAVE_IMAGES;
-import static com.MohamedTaha.Imagine.New.ui.fragments.GridViewFragment.SAVE_STATE;
-import static com.MohamedTaha.Imagine.New.ui.fragments.SplashFragment.SAVE_ALL_IMAGES;
-import static com.MohamedTaha.Imagine.New.ui.fragments.SplashFragment.SAVE_PAGE;
-
-public class SwipePagesActivity extends AppCompatActivity {
+import static com.MohamedTaha.Imagine.New.ui.fragments.ReadSwarFragment.SAVE_IMAGES;
+import static com.MohamedTaha.Imagine.New.ui.fragments.ReadSwarFragment.SAVE_STATE;
+public class SwipePagesActivity extends AppCompatActivity  {
     ArrayList<Integer> images = new ArrayList<>();
     ArrayList<Integer> imagesNotification = new ArrayList<>();
     ArrayList<Integer> imagesFirst = new ArrayList<>();
-    ArrayList<String> AzkarNotification = new ArrayList<>();
-
-
     public static final String IS_TRUE = "is_true";
     public static final String IS_TRUE_AZKAR = "is_true_azkar";
     @BindView(R.id.SwipePagesActivity_PB)
@@ -74,6 +79,8 @@ public class SwipePagesActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private boolean screenOn;
     private ModelAzkar position_azkar_notification;
+    private Disposable disposable;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +93,6 @@ public class SwipePagesActivity extends AppCompatActivity {
         if (!language_name.equals("ar")) {
             HelperClass.change_language("ar", this);
         }
-
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         screenOn = sharedPreferences.getBoolean(getString(R.string.switch_key), true);
@@ -118,7 +124,7 @@ public class SwipePagesActivity extends AppCompatActivity {
                 SwipePagesActivityVP.setCurrentItem(notification_id_morning_azkar);
             }
             if (notificationManager != null) {
-                 notificationManager.cancel(time_send_morning_azkar);
+                notificationManager.cancel(time_send_morning_azkar);
             }
         } else if (bundle.getBoolean(SAVE_STATE)) {
             getArgemnets();
@@ -275,16 +281,46 @@ public class SwipePagesActivity extends AppCompatActivity {
     }
 
     private void getArgemnetsForAzkar() {
-        if (bundle != null) {
-            Type listType = new TypeToken<List<ModelAzkar>>() {
-            }.getType();
-            String st = bundle.getString(SAVE_AZKAR);
-            modelAzkarList = new Gson().fromJson(st, listType);
-            position_azkar = bundle.getInt(SAVE_POTION_AZKAR);
-        }
-        SwipePagesActivityPB.setVisibility(View.GONE);
+        Log.d("TTTT:" , "getArgemnetsForAzkar");
+        RxBusData.subscribe((message)->{
+            if (message instanceof ModelAzkar){
+                ModelAzkar data = (ModelAzkar)message;
+                Log.d("TTTT:" , data.getName_azkar());
+            }else {
+                Log.d("TTTT:", "Error ");
+
+
+            }
+        });
+
+//        RxBusData.subscribe(new Consumer<Object>() {
+//            @Override
+//            public void accept(Object o) throws Throwable {
+//                Log.d("TTTT:" , "TAha");
+//
+//                if (o instanceof ModelAzkar){
+//                    ModelAzkar data = (ModelAzkar)o;
+//                    Log.d("TTTT:" , data.toString());
+//                }else {
+//                    Log.d("TTTT:" , "Error ");
+//
+//                }
+//
+//               // }
+//            }
+//        });
+//        if (bundle != null) {
+//            Type listType = new TypeToken<List<ModelAzkar>>() {
+//            }.getType();
+//            String st = bundle.getString(SAVE_AZKAR);
+//            modelAzkarList = new Gson().fromJson(st, listType);
+//            position_azkar = bundle.getInt(SAVE_POTION_AZKAR);
+//        }
+//        SwipePagesActivityPB.setVisibility(View.GONE);
     }
+
     private void getArgemnetsForNotificationAzkar() {
+
         if (bundle != null) {
             Type listType = new TypeToken<List<ModelAzkar>>() {
             }.getType();
@@ -333,4 +369,5 @@ public class SwipePagesActivity extends AppCompatActivity {
 
         //  }
     }
+
 }

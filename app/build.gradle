@@ -30,25 +30,18 @@ android {
     }
 
 
-    buildFeatures{
-        viewBinding =true
-    }
 }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'androidx.navigation:navigation-fragment:2.2.2'
-    implementation 'androidx.navigation:navigation-ui:2.2.2'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.navigation:navigation-fragment:2.3.2'
+    implementation 'androidx.navigation:navigation-ui:2.3.2'
     testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
-
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.google.android.material:material:1.1.0'
 
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'com.android.support.constraint:constraint-layout:2.0.4'
     // For use NotificationCompat
     implementation "com.android.support:support-compat:$supportLibraryVersion"
 
@@ -76,8 +69,8 @@ dependencies {
     implementation 'com.booking:rtlviewpager:1.0.1'
 
 //For Motion Layout
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta6'
-    implementation 'com.android.support.constraint:constraint-layout:2.0.0-beta6'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'com.android.support.constraint:constraint-layout:2.0.4'
     //Add Library for retrofit and adapter for rx java
     implementation 'com.squareup.retrofit2:adapter-rxjava:2.8.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.8.1'
@@ -86,12 +79,12 @@ dependencies {
     implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
     // Add the Firebase SDK for Google Analytics
-    implementation 'com.google.firebase:firebase-analytics:17.4.3'
-    implementation 'com.google.firebase:firebase-messaging:20.2.0'
+    implementation 'com.google.firebase:firebase-analytics:18.0.1'
+    implementation 'com.google.firebase:firebase-messaging:21.0.1'
     implementation 'org.jetbrains:annotations:15.0'
 
     //Add services location
-    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.1.0'
 
     //Add Library For RXJava
     // Add RXAndroid2 for support with Room because still RX java3 don't support Room
@@ -108,6 +101,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 // UI
     implementation "com.google.android.material:material:$materialVersion"
+
 // Testing
     androidTestImplementation "androidx.arch.core:core-testing:$coreTestingVersion"
 // for LifeCycle Awareness
@@ -116,8 +110,18 @@ dependencies {
     // LiveData
     implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
-
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
-
-
+    //For dagger 2
+    implementation 'com.google.dagger:dagger-android-support:2.31' // if you use the support libraries
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.31'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.31'
 }
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == "androidx") {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion "${targetSdk}.+"
+            }
+        }
+    }}

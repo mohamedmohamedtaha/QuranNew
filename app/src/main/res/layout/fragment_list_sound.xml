@@ -4,10 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/style_default_layout_match_parent"
     android:id="@+id/RelativeLayout"
-
     tools:context=".ui.activities.ListSoundReader">
-<!--    style="@style/style_default_layout_match_parent_with_background"-->
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/Fragment_List_Sound_TB"
         style="@style/style_toolbar" />
@@ -51,7 +48,6 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/Fragment_List_Sound_LL_Control_Media"
-
         style="@style/style_default_layout_wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/dimens_ss"

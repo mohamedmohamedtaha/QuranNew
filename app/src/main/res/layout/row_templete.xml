@@ -1,37 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card="http://schemas.android.com/apk/res-auto"
     style="@style/style_default_layout_wrap_match">
 
     <com.google.android.material.card.MaterialCardView
-        style="@style/style_default_layout_wrap_content"
-        android:layout_margin="@dimen/dimens_ss"
-        android:outlineSpotShadowColor="@color/blue"
+        style="@style/style_default_layout_wrap_match"
+        android:layout_margin="@dimen/dimens_m"
         card:cardCornerRadius="@dimen/dimens_m"
         card:cardElevation="@dimen/dimens_m">
-
-        <RelativeLayout
-            style="@style/style_default_layout_wrap_match"
-            android:padding="@dimen/dimens_m">
-
             <ImageView
                 android:id="@+id/IV_Download"
                 android:layout_width="@dimen/dimens_6xl"
                 android:layout_height="@dimen/dimens_xxl"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
                 android:contentDescription="@string/decriptionImage"
                 android:src="@drawable/ic_download" />
 
             <TextView
                 android:id="@+id/text_title"
+                android:layout_gravity="end"
+                android:padding="@dimen/dimens_mm"
                 style="@style/style_default_layout_wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/dimens_mm"
                 android:textSize="@dimen/txt_size_l"
                 android:textStyle="bold" />
 
-
-        </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>
-</RelativeLayout>
+</LinearLayout>

@@ -2,33 +2,36 @@ package com.MohamedTaha.Imagine.New;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.preference.PreferenceManager;
 
 import com.MohamedTaha.Imagine.New.helper.SharedPerefrenceHelper;
 import com.MohamedTaha.Imagine.New.informationInrto.TapTarget;
 import com.MohamedTaha.Imagine.New.informationInrto.TapTargetSequence;
 import com.MohamedTaha.Imagine.New.informationInrto.TapTargetView;
+import com.MohamedTaha.Imagine.New.scope.ScopeActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.IS_FIRST_TIME_WAY_USING;
-import static com.MohamedTaha.Imagine.New.ui.fragments.AzanFragment.COMPARE_METHOD;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
+import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.IS_FIRST_TIME_WAY_USING;
+
+//@ScopeActivity
 public class ShowGuide extends AppCompatActivity {
     private Activity context;
     private TapTargetSequence sequence;
     private Toolbar toolbar;
     private BottomNavigationView bottomNavigationView;
-    private SharedPreferences sharedPreferences;
-    private String repear;
 
+    @Inject
+    public ShowGuide() {
+    }
 
-    public ShowGuide(Activity context, Toolbar toolbar, BottomNavigationView bottomNavigationView) {
+    public void getGuide(Activity context, Toolbar toolbar, BottomNavigationView bottomNavigationView) {
         this.context = context;
         this.toolbar = toolbar;
         this.bottomNavigationView = bottomNavigationView;
@@ -120,7 +123,7 @@ public class ShowGuide extends AppCompatActivity {
             }
         };
         customInfo(R.id.read_quran, R.string.spectial_button, R.string.read_string, listener);
-       // setInformation();
+        // setInformation();
 
 //        toolbar.inflateMenu(R.menu.menu);
 //        sequence = new TapTargetSequence(context)
@@ -148,30 +151,31 @@ public class ShowGuide extends AppCompatActivity {
 
 
     }
-    private void setInformation(){
+
+    private void setInformation() {
         toolbar.inflateMenu(R.menu.menu);
         sequence = new TapTargetSequence(context);
         sequence.targets(
-                      //  showInformationInToolbar(R.id.action_search, context.getString(R.string.spectial_button), context.getString(R.string.search_string)).id(0),
-                        showInformationInToolbar(R.id.action_share, context.getString(R.string.spectial_button), context.getString(R.string.share_string)).id(1),
-                        //This for R.id.spectial_button
-                        TapTarget.forToolbarOverflow(toolbar, "   هذا الزر خاص",
-                                "      بالأربعون النووية  " +
-                                        "\n" +
-                                        "      ضبط زمن الأشعارات  " +
-                                        "\n" +
-                                        "      عرض طريقة الاستخدام مرة أخرى    "
-                                        + "\n" +
-                                        "      وتقييم التطبيق     " +
-                                        "\n" +
-                                        "      ومراسلتنا    ")
-                                .outerCircleColor(R.color.color_background_drawable)
-                                .outerCircleAlpha(0.9f)
-                                .textColor(android.R.color.white)
-                                //  .targetCircleColor(R.color.colorAccent)
-                                .transparentTarget(true)
-                                .tintTarget(false)
-                ).listener(listenerForEndInformation);
+                //  showInformationInToolbar(R.id.action_search, context.getString(R.string.spectial_button), context.getString(R.string.search_string)).id(0),
+                showInformationInToolbar(R.id.action_share, context.getString(R.string.spectial_button), context.getString(R.string.share_string)).id(1),
+                //This for R.id.spectial_button
+                TapTarget.forToolbarOverflow(toolbar, "   هذا الزر خاص",
+                        "      بالأربعون النووية  " +
+                                "\n" +
+                                "      ضبط زمن الأشعارات  " +
+                                "\n" +
+                                "      عرض طريقة الاستخدام مرة أخرى    "
+                                + "\n" +
+                                "      وتقييم التطبيق     " +
+                                "\n" +
+                                "      ومراسلتنا    ")
+                        .outerCircleColor(R.color.color_background_drawable)
+                        .outerCircleAlpha(0.9f)
+                        .textColor(android.R.color.white)
+                        //  .targetCircleColor(R.color.colorAccent)
+                        .transparentTarget(true)
+                        .tintTarget(false)
+        ).listener(listenerForEndInformation);
     }
 
     private void setTwoShow() {
@@ -254,7 +258,7 @@ public class ShowGuide extends AppCompatActivity {
                 super.onTargetClick(view);
                 // .. which evidently starts the sequence we defined earlier
 //                sequence.start();
-             //   setInformation();
+                //   setInformation();
                 getshowGuideTrue();
 
             }

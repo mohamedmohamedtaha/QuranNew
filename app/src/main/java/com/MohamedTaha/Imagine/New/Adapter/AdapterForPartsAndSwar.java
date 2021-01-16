@@ -16,13 +16,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AdapterGridView extends RecyclerView.Adapter<AdapterGridView.ViewHolder> {
+public class AdapterForPartsAndSwar extends RecyclerView.Adapter<AdapterForPartsAndSwar.ViewHolder> {
     private boolean isParts;
     private List<ModelSora> modelSoraList;
     private ClickListener clickListener;
 
 
-    public AdapterGridView( List<ModelSora> modelSoraList,boolean isParts,ClickListener clickListener ) {
+    public AdapterForPartsAndSwar(List<ModelSora> modelSoraList, boolean isParts, ClickListener clickListener ) {
         this.isParts = isParts;
         this.modelSoraList = modelSoraList;
         this.clickListener = clickListener;
@@ -34,7 +34,7 @@ public class AdapterGridView extends RecyclerView.Adapter<AdapterGridView.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View row = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_layout_read_quran, null);
+        View row = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_parts_swar_quran, null);
         ViewHolder viewHolder = new ViewHolder(row);
         row.setOnClickListener(new View.OnClickListener() {
             @Override

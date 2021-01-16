@@ -1,5 +1,7 @@
 package com.MohamedTaha.Imagine.New.mvp.view;
 
+import androidx.fragment.app.FragmentActivity;
+
 import com.MohamedTaha.Imagine.New.mvp.model.ModelSora;
 
 import java.util.List;

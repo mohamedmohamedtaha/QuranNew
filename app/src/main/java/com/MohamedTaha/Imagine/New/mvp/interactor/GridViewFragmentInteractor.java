@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModel;
 
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.mvp.model.ModelSora;
@@ -14,6 +15,7 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -25,17 +27,24 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import static com.MohamedTaha.Imagine.New.helper.Images.addImagesList;
 import static com.MohamedTaha.Imagine.New.helper.Images.getPositionForNameSwars;
 
-public class GridViewFragmentInteractor implements GridViewFragmentPresenter {
+public class GridViewFragmentInteractor extends ViewModel implements GridViewFragmentPresenter {
     private GridViewFragmentView fragmentView;
     private FragmentActivity activity;
     private List<ModelSora> name_Sroa;
     private String[] a = null;
     private String[] nzol_elsora = null;
     private CompositeDisposable disposable = new CompositeDisposable();
+    private ExecutorService executorService = null;
+    private int numberImage =0;
 
-    public GridViewFragmentInteractor(GridViewFragmentView fragmentView, FragmentActivity context) {
+    public GridViewFragmentInteractor() {
+    }
+
+    @Override
+    public void onBind(GridViewFragmentView fragmentView, FragmentActivity context) {
         this.fragmentView = fragmentView;
         activity = context;
+
     }
 
     @Override
@@ -91,6 +100,42 @@ public class GridViewFragmentInteractor implements GridViewFragmentPresenter {
         }));
     }
 
+//    @Override
+//    public void getAllImages() {
+//        fragmentView.showProgress();
+//        Observable<List<Integer>> modelAzkarObservable = Observable.fromCallable(new Callable<List<Integer>>() {
+//            @Override
+//            public List<Integer> call() throws Exception {
+//                return addImagesList();
+//            }
+//        }).subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread());
+//        disposable.add(modelAzkarObservable.subscribeWith(new DisposableObserver<List<Integer>>() {
+//            @Override
+//            public void onNext(@NonNull List<Integer> integers) {
+//                if (fragmentView != null) {
+//                    fragmentView.showAllImages(integers);
+//                    Log.i("addImages", "onNext");
+//                }
+//            }
+//
+//            @Override
+//            public void onError(@NonNull Throwable e) {
+//                if (fragmentView != null) {
+//                    fragmentView.hideProgress();
+//                }
+//            }
+//
+//            @Override
+//            public void onComplete() {
+//                if (fragmentView != null) {
+//                    fragmentView.hideProgress();
+//                }
+//                Log.i("addImages", "onCompleted");
+//            }
+//        }));
+//    }
+
     @Override
     public void getAllImages() {
         fragmentView.showProgress();
@@ -126,7 +171,6 @@ public class GridViewFragmentInteractor implements GridViewFragmentPresenter {
             }
         }));
     }
-
 
     @Override
     public void onDestroy() {

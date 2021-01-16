@@ -10,27 +10,55 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.MohamedTaha.Imagine.New.Adapter.AdapterElarbaoonElnawawy;
 import com.MohamedTaha.Imagine.New.R;
-import com.MohamedTaha.Imagine.New.databinding.ActivityElarbaoonElnawawyBinding;
+import com.MohamedTaha.Imagine.New.ReScrollUtil;
 import com.MohamedTaha.Imagine.New.mvp.interactor.ElarbaoonElnwawyInteractor;
 import com.MohamedTaha.Imagine.New.mvp.model.ElarbaoonElnawawyModel;
 import com.MohamedTaha.Imagine.New.mvp.presenter.ElarbaoonElnwawyPresenter;
 import com.MohamedTaha.Imagine.New.mvp.view.ElarbaoonElnwawyView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class ElarbaoonElnawawyActivity extends AppCompatActivity implements ElarbaoonElnwawyView {
     public static final String POSITION = "position";
     public static final String NAME_ELHADETH = "name_elhadeth";
     public static final String NUMBER_ELHADETH = "number_elhadeth";
+    @BindView(R.id.ElarbaoonElnawawyActivity_TB)
+    Toolbar ElarbaoonElnawawyActivityTB;
+    @BindView(R.id.ElarbaoonElnawawyActivity_TV_Elarbaoon_Elnawawy)
+    TextView ElarbaoonElnawawyActivityTVElarbaoonElnawawy;
+    @BindView(R.id.ElarbaoonElnawawyActivitySearch_View)
+    MaterialSearchView ElarbaoonElnawawyActivitySearchView;
+    @BindView(R.id.ElarbaoonElnawawyActivity_RecyclerView)
+    RecyclerView ElarbaoonElnawawyActivityRecyclerView;
+    @BindView(R.id.ElarbaoonElnawawyActivity_ProgressBar)
+    ProgressBar ElarbaoonElnawawyActivityProgressBar;
+    @BindView(R.id.ElarbaoonElnawawyActivity_TV_No_Data)
+    TextView ElarbaoonElnawawyActivityTVNoData;
+    @BindView(R.id.ElarbaoonElnawawyActivity_FloatingActionButton)
+    FloatingActionButton ElarbaoonElnawawyActivityFloatingActionButton;
 
-    private ActivityElarbaoonElnawawyBinding activityElarbaoonElnawawyBinding;
+    // private ActivityElarbaoonElnawawyBinding activityElarbaoonElnawawyBinding;
     private ElarbaoonElnwawyPresenter elarbaoonElnwawyPresenter;
     private List<ElarbaoonElnawawyModel> elnawawyModelList;
     private Menu globalMenu;
@@ -40,14 +68,23 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activityElarbaoonElnawawyBinding = ActivityElarbaoonElnawawyBinding.inflate(getLayoutInflater());
-        View view = activityElarbaoonElnawawyBinding.getRoot();
-        setContentView(view);
-        activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivityTVElarbaoonElnawawy.setText(getString(R.string.el_arbaoon_elnawawy));
-        elarbaoonElnwawyPresenter = new ElarbaoonElnwawyInteractor(this, getApplicationContext());
+        setContentView(R.layout.activity_elarbaoon_elnawawy);
+        ButterKnife.bind(this);
+        // activityElarbaoonElnawawyBinding = DataBindingUtil.setContentView(this,R.layout.activity_elarbaoon_elnawawy);
+//
+//        activityElarbaoonElnawawyBinding = ActivityElarbaoonElnawawyBinding.inflate(getLayoutInflater());
+//        View view = activityElarbaoonElnawawyBinding.getRoot();
+//        setContentView(view);
+        ElarbaoonElnawawyActivityTVElarbaoonElnawawy.setText(getString(R.string.el_arbaoon_elnawawy));
+        //  elarbaoonElnwawyPresenter = new ElarbaoonElnwawyInteractor(this, getApplicationContext());
+        //elarbaoonElnwawyPresenter = new ElarbaoonElnwawyInteractor(this, getApplicationContext());
+        elarbaoonElnwawyPresenter = new ViewModelProvider(this).get(ElarbaoonElnwawyInteractor.class);
+        elarbaoonElnwawyPresenter.onBind(this, getApplicationContext());
+
         custom_toolbar();
+        //onClickRecyclerView();
         elarbaoonElnwawyPresenter.getAllData();
-        elarbaoonElnwawyPresenter.setOnSearchView(activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivitySearchView);
+        elarbaoonElnwawyPresenter.setOnSearchView(ElarbaoonElnawawyActivitySearchView);
         Log.d("TAG", "Elnawawy");
         GridLayoutManager linearLayoutManager = new GridLayoutManager(getApplicationContext(), 2) {
             @Override
@@ -55,7 +92,10 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
                 return true;
             }
         };
-        activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivityRecyclerView.setLayoutManager(linearLayoutManager);
+        ElarbaoonElnawawyActivityRecyclerView.setLayoutManager(linearLayoutManager);
+        ReScrollUtil reScrollUtil = new ReScrollUtil(ElarbaoonElnawawyActivityFloatingActionButton,
+                ElarbaoonElnawawyActivityRecyclerView);
+        reScrollUtil.onClickRecyclerView(R.id.ElarbaoonElnawawyActivity_FloatingActionButton);
     }
 
     @Override
@@ -70,30 +110,30 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
                 openFragmentElnawary(elnawawyModel);
             }
         });
-        activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivityRecyclerView.setAdapter(adapterElarbaoonElnawawy);
+        ElarbaoonElnawawyActivityRecyclerView.setAdapter(adapterElarbaoonElnawawy);
     }
 
     @Override
     public void isEmpty() {
-        activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivityTVNoData.setVisibility(View.VISIBLE);
-        activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivityRecyclerView.setVisibility(View.GONE);
+        ElarbaoonElnawawyActivityTVNoData.setVisibility(View.VISIBLE);
+        ElarbaoonElnawawyActivityRecyclerView.setVisibility(View.GONE);
     }
 
     @Override
     public void thereData() {
-        activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivityTVNoData.setVisibility(View.GONE);
-        activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivityRecyclerView.setVisibility(View.VISIBLE);
+        ElarbaoonElnawawyActivityTVNoData.setVisibility(View.GONE);
+        ElarbaoonElnawawyActivityRecyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showProgress() {
-        activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivityProgressBar.setVisibility(View.VISIBLE);
+        ElarbaoonElnawawyActivityProgressBar.setVisibility(View.VISIBLE);
 
     }
 
     @Override
     public void hideProgress() {
-        activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivityProgressBar.setVisibility(View.GONE);
+        ElarbaoonElnawawyActivityProgressBar.setVisibility(View.GONE);
 
     }
 
@@ -115,18 +155,18 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
                 openFragmentElnawary(elnawawyModel);
             }
         });
-        activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivityRecyclerView.setAdapter(adapterElarbaoonElnawawy);
+        ElarbaoonElnawawyActivityRecyclerView.setAdapter(adapterElarbaoonElnawawy);
         adapterElarbaoonElnawawy.notifyDataSetChanged();
         //For feel when Search
-        elarbaoonElnwawyPresenter.setOnQueryTextForElhadeth(activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivitySearchView, elnawawyModelList);
+        elarbaoonElnwawyPresenter.setOnQueryTextForElhadeth(ElarbaoonElnawawyActivitySearchView, elnawawyModelList);
 
     }
 
     @Override
     public void showAnimation() {
         LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getApplicationContext(), R.anim.layout_fall_dwon);
-        activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivityRecyclerView.setLayoutAnimation(controller);
-        activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivityRecyclerView.scheduleLayoutAnimation();
+        ElarbaoonElnawawyActivityRecyclerView.setLayoutAnimation(controller);
+        ElarbaoonElnawawyActivityRecyclerView.scheduleLayoutAnimation();
     }
 
     @Override
@@ -140,12 +180,12 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
                 openFragmentElnawary(elnawawyModel);
             }
         });
-        activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivityRecyclerView.setAdapter(adapterElarbaoonElnawawy);
+        ElarbaoonElnawawyActivityRecyclerView.setAdapter(adapterElarbaoonElnawawy);
 
     }
 
     public void custom_toolbar() {
-        setSupportActionBar(activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivityTB);
+        setSupportActionBar(ElarbaoonElnawawyActivityTB);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         //for delete label for Activity
@@ -157,7 +197,7 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         MenuItem SearchItem = menu.findItem(R.id.action_search);
-        activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivitySearchView.setMenuItem(SearchItem);
+        ElarbaoonElnawawyActivitySearchView.setMenuItem(SearchItem);
         return true;
     }
 
@@ -195,9 +235,10 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
 
     @Override
     public void onBackPressed() {
-        if (activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivitySearchView.isSearchOpen()) {
-            activityElarbaoonElnawawyBinding.ElarbaoonElnawawyActivitySearchView.closeSearch();
+        if (ElarbaoonElnawawyActivitySearchView.isSearchOpen()) {
+            ElarbaoonElnawawyActivitySearchView.closeSearch();
         } else {
             super.onBackPressed();
-        }    }
+        }
+    }
 }

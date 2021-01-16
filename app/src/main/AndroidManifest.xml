@@ -21,6 +21,7 @@
     <permission android:name="android.permission.MEDIA_CONTENT_CONTROL" />
 
     <application
+        android:name=".dagger2.MainApplication"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/logo"
@@ -31,7 +32,13 @@
         android:supportsRtl="false"
         android:theme="@style/FullScreenWindow"
         tools:targetApi="n">
-        <activity android:name=".YoutubeActivity"></activity>
+        <service
+            android:name=".service.GetDataEveryMonthJobService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE"></service>
+
+        <activity android:name=".YoutubeActivity" />
         <activity android:name=".FullScreenActivity" />
         <activity
             android:name=".ui.activities.SettingsActivity"
@@ -164,7 +171,8 @@
         </service>
         <service android:name=".service.MediaPlayerService">
             <intent-filter>
-                <action android:name="android.intent.action.MEDIA_BUTTON" />
+
+                <!-- <action android:name="android.intent.action.MEDIA_BUTTON" /> -->
                 <action android:name="android.media.AUDIO_BECOMING_NOISY" />
                 <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
@@ -178,9 +186,10 @@
         </receiver>
 
         <service android:name=".service.ServiceForPlayPrayerTimesNotification">
-            <intent-filter>
-                <action android:name="android.intent.action.MEDIA_BUTTON" />
-            </intent-filter>
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MEDIA_BUTTON" /> -->
+            <!-- </intent-filter> -->
         </service>
     </application>
 

@@ -1,7 +1,10 @@
 package com.MohamedTaha.Imagine.New.mvp.interactor;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
+
+import androidx.lifecycle.ViewModel;
 
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.mvp.model.ModelAzkar;
@@ -10,51 +13,61 @@ import com.MohamedTaha.Imagine.New.mvp.view.AzkarFragmentView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Callable;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.observers.DisposableObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
-public class AzkarFragmentInteractor implements AzkarFragmentPresenter {
+public class AzkarFragmentInteractor extends ViewModel implements AzkarFragmentPresenter {
+    private static final String SAVE_INSTANCE_AZKAR = "save_instance_azkar";
+    public boolean isNewlyCreated = true;
+
     private static final String TAG = "TAG";
     private AzkarFragmentView azkarFragmentView;
-    private List<ModelAzkar> modelAzkar;
+    private ArrayList<ModelAzkar> modelAzkar;
     private Context context;
     private CompositeDisposable disposable;
 
     String[] array_azkar;
     String[] array_describe_azkar;
 
-    public AzkarFragmentInteractor(AzkarFragmentView azkarFragmentView, Context context) {
+    public AzkarFragmentInteractor() {
+        Log.i("TAGO", " AzkarFragmentInteractor");
+
+    }
+
+    @Override
+    public void onBind(AzkarFragmentView azkarFragmentView, Context context) {
         this.azkarFragmentView = azkarFragmentView;
         this.context = context;
+        Log.i("TAGO", " onBind presenter azkar ");
+
     }
 
     @Override
     public void getAllData() {
         disposable = new CompositeDisposable();
         azkarFragmentView.showProgress();
-        Observable<List<ModelAzkar>> modelAzkarObservable = Observable.fromCallable(new Callable<List<ModelAzkar>>() {
+        Observable<ArrayList<ModelAzkar>> modelAzkarObservable = Observable.fromCallable(new Callable<ArrayList<ModelAzkar>>() {
             @Override
-            public List<ModelAzkar> call() throws Exception {
+            public ArrayList<ModelAzkar> call() throws Exception {
                 try {
-                    modelAzkar = new ArrayList<>();
-                    array_azkar = context.getResources().getStringArray(R.array.azkar);
-                    array_describe_azkar = context.getResources().getStringArray(R.array.describe_azkar);
-                    for (int i = 0; i < array_azkar.length; i++) {
-                        ModelAzkar modelAzkarLocal = new ModelAzkar();
-                        modelAzkarLocal.setName_azkar(array_azkar[i]);
-                        modelAzkarLocal.setDescribe_azkar(array_describe_azkar[i]);
-                        modelAzkarLocal.setPosition(i);
-                        modelAzkar.add(modelAzkarLocal);
+                    if (modelAzkar == null) {
+                        modelAzkar = new ArrayList<>();
+                        array_azkar = context.getResources().getStringArray(R.array.azkar);
+                        array_describe_azkar = context.getResources().getStringArray(R.array.describe_azkar);
+                        for (int i = 0; i < array_azkar.length; i++) {
+                            ModelAzkar modelAzkarLocal = new ModelAzkar();
+                            modelAzkarLocal.setName_azkar(array_azkar[i]);
+                            modelAzkarLocal.setDescribe_azkar(array_describe_azkar[i]);
+                            modelAzkarLocal.setPosition(i);
+                            modelAzkar.add(modelAzkarLocal);
+                        }
                     }
                 } catch (Exception e) {
                 }
@@ -62,13 +75,13 @@ public class AzkarFragmentInteractor implements AzkarFragmentPresenter {
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
-        disposable.add( modelAzkarObservable.subscribeWith(new DisposableObserver<List<ModelAzkar>>() {
+        disposable.add(modelAzkarObservable.subscribeWith(new DisposableObserver<ArrayList<ModelAzkar>>() {
             @Override
-            public void onNext(@NonNull List<ModelAzkar> modelAzkars) {
+            public void onNext(@NonNull ArrayList<ModelAzkar> modelAzkars) {
                 if (azkarFragmentView != null) {
                     azkarFragmentView.showAllINameAzkar(modelAzkars);
                     azkarFragmentView.showAnimation();
-                    Log.d(TAG, "onNext  " );
+                    Log.d(TAG, "onNext  ");
 
                 }
             }
@@ -77,7 +90,7 @@ public class AzkarFragmentInteractor implements AzkarFragmentPresenter {
             public void onError(@NonNull Throwable e) {
                 if (azkarFragmentView != null) {
                     azkarFragmentView.hideProgress();
-                    Log.d(TAG, "onError  " );
+                    Log.d(TAG, "onError  ");
 
                 }
             }
@@ -86,21 +99,66 @@ public class AzkarFragmentInteractor implements AzkarFragmentPresenter {
             public void onComplete() {
                 if (azkarFragmentView != null) {
                     azkarFragmentView.hideProgress();
-                    Log.d(TAG, "onComplete  " );
+                    Log.d(TAG, "onComplete  ");
 
                 }
             }
         }));
+
+
+//        Observable<ArrayList<ModelAzkar>> modelAzkarObservable = (Observable<ArrayList<ModelAzkar>>) Observable.fromCallable(new Callable<ArrayList<ModelAzkar>>() {
+//            @Override
+//            public ArrayList<ModelAzkar> call() throws Exception {
+//                try {
+//                    if (modelAzkar  == null){
+//                        modelAzkar = new ArrayList<>();
+//                        array_azkar = context.getResources().getStringArray(R.array.azkar);
+//                        array_describe_azkar = context.getResources().getStringArray(R.array.describe_azkar);
+//                        for (int i = 0; i < array_azkar.length; i++) {
+//                            ModelAzkar modelAzkarLocal = new ModelAzkar();
+//                            modelAzkarLocal.setName_azkar(array_azkar[i]);
+//                            modelAzkarLocal.setDescribe_azkar(array_describe_azkar[i]);
+//                            modelAzkarLocal.setPosition(i);
+//                            modelAzkar.add(modelAzkarLocal);
+//                        }
+//                    }} catch (Exception e) {
+//                }
+//
+//
+//                return modelAzkar;
+//            }
+//        }).subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread()).subscribe(result ->{
+//                    if (azkarFragmentView != null) {
+//                        azkarFragmentView.showAllINameAzkar(result);
+//                        azkarFragmentView.showAnimation();
+//                        Log.d(TAG, "onNext  " );
+//
+//                    }
+//
+//                });
     }
+
 
     @Override
     public void onDestroy() {
         if (disposable != null && !disposable.isDisposed()) {
             disposable.clear();
             disposable.dispose();
-            Log.d(TAG, "disposable cleared  " );
+            Log.d(TAG, "disposable cleared  ");
         }
         this.azkarFragmentView = null;
+
+    }
+
+    @Override
+    public void saveState(Bundle outState) {
+        outState.putParcelableArrayList(SAVE_INSTANCE_AZKAR, modelAzkar);
+    }
+
+    @Override
+    public void restoreState(Bundle outState) {
+        modelAzkar = outState.getParcelableArrayList(SAVE_INSTANCE_AZKAR);
 
     }
 
@@ -120,7 +178,7 @@ public class AzkarFragmentInteractor implements AzkarFragmentPresenter {
     }
 
     @Override
-    public void setOnQueryTextForAzkar(MaterialSearchView materialSearchView, List<ModelAzkar> name_azkar) {
+    public void setOnQueryTextForAzkar(MaterialSearchView materialSearchView, ArrayList<ModelAzkar> name_azkar) {
         materialSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -129,8 +187,9 @@ public class AzkarFragmentInteractor implements AzkarFragmentPresenter {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                modelAzkar = new ArrayList<>();
                 if (newText != null && !newText.isEmpty()) {
-                    List<ModelAzkar> stringList = new ArrayList<>();
+                    ArrayList<ModelAzkar> stringList = new ArrayList<>();
                     for (ModelAzkar item : name_azkar) {
                         if (item.getName_azkar().contains(newText))
                             stringList.add(item);
@@ -144,10 +203,13 @@ public class AzkarFragmentInteractor implements AzkarFragmentPresenter {
 
                 } else {
                     azkarFragmentView.thereData();
-                    azkarFragmentView.showAllINameAzkar(name_azkar);
+                    modelAzkar = name_azkar;
+                    azkarFragmentView.showAllINameAzkar(modelAzkar);
                 }
                 return false;
             }
         });
     }
+
+
 }

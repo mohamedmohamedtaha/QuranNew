@@ -6,18 +6,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
-import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.MohamedTaha.Imagine.New.Adapter.ImageAdapter;
+import com.MohamedTaha.Imagine.New.AutofitRecyclerView;
 import com.MohamedTaha.Imagine.New.R;
+import com.MohamedTaha.Imagine.New.ReScrollUtil;
 import com.MohamedTaha.Imagine.New.mvp.interactor.ListSoundReaderInteractor;
 import com.MohamedTaha.Imagine.New.mvp.model.ImageModel;
 import com.MohamedTaha.Imagine.New.mvp.presenter.ListSoundReaderPresenter;
 import com.MohamedTaha.Imagine.New.mvp.view.ListSoundReaderView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -33,14 +38,18 @@ import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivi
 
 
 public class FragmentSound extends Fragment implements ListSoundReaderView {
-    @BindView(R.id.Fragment_Grid_View_GridView)
-    GridView FragmentGridViewGridView;
-    @BindView(R.id.Fragment_Grid_View_TV_No_Data)
-    TextView FragmentGridViewTVNoData;
+    //    @BindView(R.id.Fragment_Sound_GridView)
+//    GridView FragmentSoundGridView;
+    @BindView(R.id.Fragment_Sound_ProgressBar)
+    ProgressBar FragmentSoundProgressBar;
+    @BindView(R.id.Fragment_Sound_TV_No_Data)
+    TextView FragmentSoundTVNoData;
+    @BindView(R.id.Fragment_Sound_FloatingActionButton)
+    FloatingActionButton FragmentSoundFloatingActionButton;
     Unbinder unbinder;
     ImageAdapter imageAdapter;
-    @BindView(R.id.FragmentGridView_ProgressBar)
-    ProgressBar FragmentGridViewProgressBar;
+    @BindView(R.id.Fragment_Sound_RecyclerView)
+    AutofitRecyclerView FragmentSoundRecyclerView;
     private List<ImageModel> imageModel;
     private ListSoundReaderPresenter presenter;
 
@@ -48,12 +57,24 @@ public class FragmentSound extends Fragment implements ListSoundReaderView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_grid_view, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_sound, container, false);
         unbinder = ButterKnife.bind(this, rootView);
         getActivity().setTitle(getString(R.string.listen_swar));
-        presenter = new ListSoundReaderInteractor(this, getActivity());
+        presenter = new ViewModelProvider(this).get(ListSoundReaderInteractor.class);
+        presenter.onBind(this, getActivity());
         presenter.getAllData();
+
         presenter.setOnSearchViewListener(searchView);
+//        GridLayoutManager linearLayoutManager = new GridLayoutManager(getActivity(), 2) {
+//            @Override
+//            protected boolean isLayoutRTL() {
+//                return true;
+//            }
+//        };
+//        FragmentSoundRecyclerView.setLayoutManager(linearLayoutManager);
+//        FragmentSoundRecyclerView.setHasFixedSize(true);
+        ReScrollUtil reScrollUtil = new ReScrollUtil(FragmentSoundFloatingActionButton, FragmentSoundRecyclerView);
+        reScrollUtil.onClickRecyclerView(R.id.Fragment_Sound_FloatingActionButton);
         return rootView;
     }
 
@@ -66,31 +87,31 @@ public class FragmentSound extends Fragment implements ListSoundReaderView {
 
     @Override
     public void showProgress() {
-        FragmentGridViewProgressBar.setVisibility(View.VISIBLE);
+        FragmentSoundProgressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgress() {
-        FragmentGridViewProgressBar.setVisibility(View.GONE);
+        FragmentSoundProgressBar.setVisibility(View.GONE);
     }
 
     @Override
     public void noData() {
-        FragmentGridViewTVNoData.setVisibility(View.VISIBLE);
-        FragmentGridViewGridView.setVisibility(View.GONE);
+        FragmentSoundTVNoData.setVisibility(View.VISIBLE);
+        FragmentSoundRecyclerView.setVisibility(View.GONE);
     }
 
     @Override
     public void thereData() {
-        FragmentGridViewTVNoData.setVisibility(View.GONE);
-        FragmentGridViewGridView.setVisibility(View.VISIBLE);
+        FragmentSoundTVNoData.setVisibility(View.GONE);
+        FragmentSoundRecyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showAllData(List<ImageModel> imageModels) {
         imageModel = imageModels;
-        imageAdapter = new ImageAdapter(getActivity(), imageModel, getActivity());
-        FragmentGridViewGridView.setAdapter(imageAdapter);
+        imageAdapter = new ImageAdapter(imageModel, getActivity());
+        FragmentSoundRecyclerView.setAdapter(imageAdapter);
         imageAdapter.notifyDataSetChanged();
         //For feel when Search
         presenter.setOnQueryTextListener(searchView, imageModel);
@@ -98,21 +119,21 @@ public class FragmentSound extends Fragment implements ListSoundReaderView {
 
     @Override
     public void showAfterSearch() {
-        imageAdapter = new ImageAdapter(getActivity(), imageModel, getActivity());
-        FragmentGridViewGridView.setAdapter(imageAdapter);
+        imageAdapter = new ImageAdapter(imageModel, getActivity());
+        FragmentSoundRecyclerView.setAdapter(imageAdapter);
     }
 
     @Override
     public void showAfterQueryText(List<ImageModel> lstFound) {
-        imageAdapter = new ImageAdapter(getActivity(), lstFound, getActivity());
-        FragmentGridViewGridView.setAdapter(imageAdapter);
+        imageAdapter = new ImageAdapter(lstFound, getActivity());
+        FragmentSoundRecyclerView.setAdapter(imageAdapter);
     }
 
     @Override
     public void showAnimation() {
         //For animation
         LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getActivity(), R.anim.layout_fall_dwon);
-        FragmentGridViewGridView.setLayoutAnimation(controller);
-        FragmentGridViewGridView.scheduleLayoutAnimation();
+        FragmentSoundRecyclerView.setLayoutAnimation(controller);
+        FragmentSoundRecyclerView.scheduleLayoutAnimation();
     }
 }

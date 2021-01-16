@@ -73,14 +73,6 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="style_list_view" parent="@style/style_default_layout_wrap_content">
-        <item name="android:layout_marginTop">@dimen/dimens_xxl</item>
-        <item name="android:layout_marginBottom">@dimen/dimens_7xl</item>
-        <item name="android:divider">@null</item>
-        <item name="android:dividerHeight">@dimen/dimens_sssss</item>
-        <item name="android:gravity">center</item>
-    </style>
-
     <style name="style_reycler_view_elnawawy" parent="@style/style_default_layout_wrap_content">
         <item name="android:layout_marginTop">@dimen/dimens_mm</item>
         <item name="android:layout_marginBottom">@dimen/dimens_mm</item>
@@ -281,4 +273,22 @@
     <style name="FullScreenWindow.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="FullScreenWindow.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="float_add" parent="@style/style_default_layout_wrap_content">
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_marginEnd">@dimen/dimens_xl</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:src">@drawable/ic_baseline_arrow_upward_24</item>
+        <item name="android:layout_marginBottom">@dimen/dimens_6xl</item>
+        <item name="backgroundTint">@color/colorAccent</item>
+    <item name="tint">@android:color/white</item>
+</style>
+    <style name="float_add_constraint" parent="@style/style_default_layout_wrap_content">
+    <item name="android:layout_marginEnd">@dimen/dimens_xl</item>
+    <item name="android:src">@drawable/ic_baseline_arrow_upward_24</item>
+    <item name="android:layout_marginBottom">@dimen/dimens_xl</item>
+    <item name="backgroundTint">@color/colorAccent</item>
+    <item name="tint">@android:color/white</item>
+
+    </style>
 </resources>

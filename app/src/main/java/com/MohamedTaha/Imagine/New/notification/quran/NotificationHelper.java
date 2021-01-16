@@ -13,6 +13,13 @@ import android.util.Log;
 
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.receiver.bootDevice.ReadAyatAlarmBootRecevier;
+import com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity;
+
+import java.util.concurrent.Callable;
+
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.observers.DisposableObserver;
 
 import static android.content.Context.ALARM_SERVICE;
 
@@ -25,13 +32,17 @@ public class NotificationHelper {
     private static AlarmManager alarmManager;
     private static PendingIntent alarmPendingIntent;
     private Context context ;
-
+    private CompositeDisposable disposable;
+    String repearAsync = null;
+    SharedPreferences sharedPreferences = null;
+    String repear = null;
     public NotificationHelper(Context context) {
         this.context = context;
     }
 
     public  void sendNotificationEveryHalfDay() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+     //   getSharedPreferencesThreadSeperate();
+         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         //getString Retrieve a String value from the Preference
         String repear = sharedPreferences.getString(context.getString(R.string.settings_Notification_key),
                 context.getString(R.string.settings_Notification_default));
@@ -48,6 +59,53 @@ public class NotificationHelper {
 //        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
 //                AlarmManager.RTC_WAKEUP,
 //                AlarmManager.RTC_WAKEUP, alarmPendingIntent);
+    }
+    private void getSharedPreferencesThreadSeperate(){
+        disposable = new CompositeDisposable();
+        Observable<String> modelAzkarObservable = Observable.fromCallable(new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                try {
+                    sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                    //getString Retrieve a String value from the Preference
+                    repear = sharedPreferences.getString(context.getString(R.string.settings_Notification_key),
+                            context.getString(R.string.settings_Notification_default));
+                    Log.d("TAG", "doInBackground - Thread call" + Thread.currentThread().getId() + "Name : "
+                            + Thread.currentThread().getName() );
+                } catch (Exception e) {
+                }
+                return repear;
+            }
+        }).subscribeOn(io.reactivex.rxjava3.schedulers.Schedulers.io())
+                .observeOn(io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread());
+        disposable.add(modelAzkarObservable.subscribeWith(new DisposableObserver<String>() {
+            @Override
+            public void onNext(@io.reactivex.rxjava3.annotations.NonNull String repearAsync) {
+                if (repearAsync != null) {
+                    repear = repearAsync;
+                    Log.d("TAG", "onNext Prefrences  ");
+                    Log.d("TAG", "doInBackground - Thread " + Thread.currentThread().getId() + "Name : "
+                            + Thread.currentThread().getName() );
+                }
+            }
+
+            @Override
+            public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                if (repearAsync != null) {
+                    Log.d("TAG", "onError Prefrences ");
+
+                }
+            }
+
+            @Override
+            public void onComplete() {
+                if (repearAsync != null) {
+                    Log.d("TAG", "onComplete Prefrences ");
+                    Log.d("TAG", "doInBackground - Thread " + Thread.currentThread().getId() + "Name : "
+                            + Thread.currentThread().getName() );
+                }
+            }
+        }));
     }
 
     private static Long setAlarm(String key) {

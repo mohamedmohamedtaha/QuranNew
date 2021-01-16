@@ -6,15 +6,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.fragment.app.Fragment;
 
+import com.MohamedTaha.Imagine.New.libraryTextView.TextViewEx;
 import com.MohamedTaha.Imagine.New.R;
-import com.MohamedTaha.Imagine.New.databinding.FragmentDescriptionElhaedthBinding;
 import com.google.gson.Gson;
 
 import java.util.concurrent.Callable;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -28,7 +31,11 @@ import static com.MohamedTaha.Imagine.New.ui.activities.ElarbaoonElnawawyActivit
  * A simple {@link Fragment} subclass.
  */
 public class DescriptionElhaedthFragment extends Fragment {
-    private FragmentDescriptionElhaedthBinding fragmentDescriptionElhaedthBinding;
+    @BindView(R.id.DescriptionElhaedthFragment_TV_Description_Elhaseth)
+    TextViewEx DescriptionElhaedthFragmentTVDescriptionElhaseth;
+    @BindView(R.id.DescriptionElhaedthFragment_ProgressBar)
+    ProgressBar DescriptionElhaedthFragmentProgressBar;
+    //   private FragmentDescriptionElhaedthBinding fragmentDescriptionElhaedthBinding;
     private Bundle bundle_for_save_position_elhadeth;
     private int position_elhadeth;
     private CompositeDisposable disposable;
@@ -43,8 +50,10 @@ public class DescriptionElhaedthFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        fragmentDescriptionElhaedthBinding = FragmentDescriptionElhaedthBinding.inflate(inflater, container, false);
-        View view = fragmentDescriptionElhaedthBinding.getRoot();
+//        fragmentDescriptionElhaedthBinding = FragmentDescriptionElhaedthBinding.inflate(inflater,container,false);
+//        View view = fragmentDescriptionElhaedthBinding.getRoot();
+        View view = inflater.inflate(R.layout.fragment_description_elhaedth, container, false);
+        ButterKnife.bind(this, view);
         bundle_for_save_position_elhadeth = getArguments();
         if (bundle_for_save_position_elhadeth != null) {
             position_elhadeth = new Gson().fromJson(bundle_for_save_position_elhadeth.getString(POSITION), Integer.class);
@@ -75,8 +84,8 @@ public class DescriptionElhaedthFragment extends Fragment {
             @Override
             public void onNext(@NonNull String s) {
                 return_text_elhadeth = s;
-                fragmentDescriptionElhaedthBinding.DescriptionElhaedthFragmentTVDescriptionElhaseth.setText(return_text_elhadeth);
-                fragmentDescriptionElhaedthBinding.DescriptionElhaedthFragmentTVDescriptionElhaseth.setMovementMethod(new ScrollingMovementMethod());
+                DescriptionElhaedthFragmentTVDescriptionElhaseth.setText(return_text_elhadeth);
+                DescriptionElhaedthFragmentTVDescriptionElhaseth.setMovementMethod(new ScrollingMovementMethod());
 
                 Log.d("TAG", return_text_elhadeth);
 
@@ -84,14 +93,13 @@ public class DescriptionElhaedthFragment extends Fragment {
 
             @Override
             public void onError(@NonNull Throwable e) {
-                fragmentDescriptionElhaedthBinding.DescriptionElhaedthFragmentProgressBar.setVisibility(View.GONE);
+                DescriptionElhaedthFragmentProgressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onComplete() {
-                fragmentDescriptionElhaedthBinding.DescriptionElhaedthFragmentProgressBar.setVisibility(View.GONE);
+                DescriptionElhaedthFragmentProgressBar.setVisibility(View.GONE);
             }
-
         }));
 
         return return_text_elhadeth;

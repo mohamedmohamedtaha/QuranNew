@@ -3,6 +3,9 @@ package com.MohamedTaha.Imagine.New.ui.activities;
 import android.Manifest;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,8 +16,9 @@ import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PersistableBundle;
+import android.os.StrictMode;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,23 +34,29 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.preference.PreferenceManager;
 import androidx.room.EmptyResultSetException;
 
 import com.MohamedTaha.Imagine.New.AppConstants;
+import com.MohamedTaha.Imagine.New.BuildConfig;
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.ShowGuide;
 import com.MohamedTaha.Imagine.New.YoutubeActivity;
+import com.MohamedTaha.Imagine.New.dagger2.MainApplication;
+import com.MohamedTaha.Imagine.New.dagger2.component.AppComponent;
+import com.MohamedTaha.Imagine.New.dagger2.component.DaggerRetrofitComponent;
+import com.MohamedTaha.Imagine.New.dagger2.component.RetrofitComponent;
+import com.MohamedTaha.Imagine.New.dagger2.module.NavigationDrawaberPresenterModule;
+import com.MohamedTaha.Imagine.New.dagger2.module.SharedPreferencesModule;
+import com.MohamedTaha.Imagine.New.dagger2.named.APIServiceBase;
+import com.MohamedTaha.Imagine.New.dagger2.named.APIServiceCity;
 import com.MohamedTaha.Imagine.New.helper.HelperClass;
 import com.MohamedTaha.Imagine.New.helper.SharedPerefrenceHelper;
-import com.MohamedTaha.Imagine.New.helper.Silence;
 import com.MohamedTaha.Imagine.New.helper.checkConnection.NetworkConnection;
 import com.MohamedTaha.Imagine.New.helper.checkConnection.NoInternetConnection;
 import com.MohamedTaha.Imagine.New.mvp.interactor.NavigationDrawarInteractor;
 import com.MohamedTaha.Imagine.New.mvp.model.azan.Azan;
 import com.MohamedTaha.Imagine.New.mvp.model.getCity.GetCity;
-import com.MohamedTaha.Imagine.New.mvp.presenter.NavigationDrawarPresenter;
-import com.MohamedTaha.Imagine.New.mvp.view.NavigationDrawarView;
+import com.MohamedTaha.Imagine.New.mvp.view.NavigationDrawaberView;
 import com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarNotificationHelper;
 import com.MohamedTaha.Imagine.New.notification.prayerTimes.AlarmUtils;
 import com.MohamedTaha.Imagine.New.notification.prayerTimes.NotificationHelperPrayerTime;
@@ -56,11 +66,12 @@ import com.MohamedTaha.Imagine.New.rest.APIServices;
 import com.MohamedTaha.Imagine.New.room.DatabaseCallback;
 import com.MohamedTaha.Imagine.New.room.TimingsAppDatabase;
 import com.MohamedTaha.Imagine.New.room.TimingsViewModel;
+import com.MohamedTaha.Imagine.New.service.GetDataEveryMonthJobService;
 import com.MohamedTaha.Imagine.New.ui.fragments.AzanFragment;
 import com.MohamedTaha.Imagine.New.ui.fragments.AzkarFragment;
 import com.MohamedTaha.Imagine.New.ui.fragments.FragmentSound;
-import com.MohamedTaha.Imagine.New.ui.fragments.GridViewFragment;
 import com.MohamedTaha.Imagine.New.ui.fragments.PartsFragment;
+import com.MohamedTaha.Imagine.New.ui.fragments.ReadSwarFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -70,11 +81,19 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Callable;
 
+import javax.inject.Inject;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.Flowable;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -85,61 +104,103 @@ import static com.MohamedTaha.Imagine.New.helper.Images.addImagesList;
 import static com.MohamedTaha.Imagine.New.helper.checkConnection.NoInternetConnection.isInternet;
 import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertDate;
 import static com.MohamedTaha.Imagine.New.receiver.GetPrayerTimesEveryMonth.enableBootReceiverEveryMonth;
-import static com.MohamedTaha.Imagine.New.rest.RetrofitClient.getRetrofit;
 import static com.MohamedTaha.Imagine.New.rest.RetrofitClientCity.getRetrofitForCity;
 import static com.MohamedTaha.Imagine.New.room.TimingsViewModel.store_date_today;
 import static com.MohamedTaha.Imagine.New.ui.activities.SwipePagesActivity.IS_TRUE;
 import static com.MohamedTaha.Imagine.New.ui.fragments.AzanFragment.AZAN_DEFUALT;
 import static com.MohamedTaha.Imagine.New.ui.fragments.AzanFragment.COMPARE_METHOD;
-import static com.MohamedTaha.Imagine.New.ui.fragments.SplashFragment.SAVE_ALL_IMAGES;
-import static com.MohamedTaha.Imagine.New.ui.fragments.SplashFragment.SAVE_PAGE;
 
-public class NavigationDrawaberActivity extends AppCompatActivity implements NavigationDrawarView, DatabaseCallback, NavigationView.OnNavigationItemSelectedListener {
+public class NavigationDrawaberActivity extends AppCompatActivity implements NavigationDrawaberView, DatabaseCallback, NavigationView.OnNavigationItemSelectedListener {
     private static final String SAVE_STATE_VIEW_PAGER = "save_state_view_pager";
     public static final String IS_FIRST_TIME_WAY_USING = "way_sueing";
     public static final String IS_FIRST_TIME_PRAYER_TIME_EVERYDAY = "prayer_time_everyday";
-
+    public static final String SAVE_PAGE = "savepage";
+    public static final String SAVE_ALL_IMAGES = "save_all_images";
     public static final String FOR_GET_FRAGMENT_AZAN = "fragemnt_azan";
     public static final String CHECKISDATAORNOTINDATABASE = "store_date_today";
-
-    // private ActivityNavigationDrawaberBinding activityNavigationDrawaberBinding;
+    private static final String TAG = "NavigationDrawaberActiv";
+    @BindView(R.id.toolbar)
+    Toolbar toobar;
+    @BindView(R.id.nav_view)
+    BottomNavigationView navView;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawer;
+    @BindView(R.id.nav_view_header)
+    NavigationView navigationView;
+    @Inject
+    SharedPreferences sharedPreferences;
+    @Inject
+    SharedPreferences.Editor editor;
+    @Inject
+    ShowGuide showGuide;
+    @Inject
+    NavigationDrawarInteractor presenter;
     private int current_fragment;
     public static MaterialSearchView searchView;
     String appPackageName;
-    private NavigationDrawarPresenter presenter;
     private TimingsViewModel timingsViewModel;
     public static String store_city_name = null;
-    private SharedPreferences sharedPreferences;
     private String repear;
     private String number_azan_default;
-    APIServices apiServicesForCity;
     String city_name = null;
     int geocoderMaxResults = 1;
-    private APIServices apiServices;
+    @Inject
+    @APIServiceBase
+    APIServices apiServices;
+    @Inject
+    @APIServiceCity
+    APIServices apiServicesForCity;
+
     public static boolean checkIsGetData = false;
-    Toolbar toobar;
-    private DrawerLayout drawer;
-    private BottomNavigationView navView;
+
     private Boolean isAzkarTrue;
+    private CompositeDisposable disposable;
+    String repearAsync = null;
+    boolean isFirstTime;
+
+    private void enableStrictMode() {
+        if (BuildConfig.DEBUG) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .build();
+            StrictMode.setThreadPolicy(policy);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_drawable);
+        ButterKnife.bind(this);
+
+        RetrofitComponent retrofitComponent = ((MainApplication)getApplication()).getRetrofitComponent();
+        retrofitComponent.appComponentFactory().create(new NavigationDrawaberPresenterModule(this,this),new SharedPreferencesModule(this)).inject(this);
+
+//        AppComponent appComponent = DaggerAppComponent.factory().create(retrofitComponent,new NavigationDrawaberPresenterModule(this,this),new SharedPreferencesModule(this));
+//                appComponent.inject(this);
+//        AppComponent showGiudeComponent = DaggerAppComponent.builder().sharedPreferencesModule(new SharedPreferencesModule(this))
+//                .navigationDrawaberPresenterModule(new NavigationDrawaberPresenterModule(this, this)).build();
+//
+//        showGiudeComponent.inject(this);
+
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
-        toobar = findViewById(R.id.toobar);
-        navView = findViewById(R.id.nav_view);
-        //   activityNavigationDrawaberBinding = ActivityNavigationDrawaberBinding.inflate(getLayoutInflater());
-        // View view = activityNavigationDrawaberBinding.getRoot();
-        //setContentView(view);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        //getString Retrieve a String value from the Preference
+
+        enableStrictMode();
+
+        Log.d("TAG", "doInBackground - Thread On create " + Thread.currentThread().getId() + "Name : "
+                + Thread.currentThread().getName());
+
+//        //getString Retrieve a String value from the Preference
         repear = sharedPreferences.getString(getString(R.string.settings_method_key),
                 getString(R.string.settings_method_default));
         //checkIsFragmentAzanIsOpen();
-        apiServicesForCity = getRetrofitForCity().create(APIServices.class);
-        apiServices = getRetrofit().create(APIServices.class);
-        presenter = new NavigationDrawarInteractor(this);
+        //apiServicesForCity = getRetrofitForCity().create(APIServices.class);
+        //apiServices = getRetrofit().create(APIServices.class);
+        Log.i("TAG", " onSuccess apiServices " + apiServices);
+        Log.i("TAG", " onSuccess apiServicesForCity " + apiServicesForCity);
+
+
         appPackageName = getPackageName();
 
         timingsViewModel = new ViewModelProvider(this).get(TimingsViewModel.class);
@@ -152,8 +213,10 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         getDateTodayFromDatabase();
         getCityName();
         //for show way using
-        if (!SharedPerefrenceHelper.getBooleanForWayUsing(getApplicationContext(), IS_FIRST_TIME_WAY_USING, false)) {
-            ShowGuide showGuide = new ShowGuide(NavigationDrawaberActivity.this, toobar, navView);
+        boolean isFirstTimeWayUsing = SharedPerefrenceHelper.getBooleanForWayUsing(getApplicationContext(), IS_FIRST_TIME_WAY_USING, false);
+        if (!isFirstTimeWayUsing) {
+            Log.d(TAG, "onCreate: showGuide : " + showGuide);
+            showGuide.getGuide(NavigationDrawaberActivity.this, toobar, navView);
         }
         //For open on the save pages immediately
         if (SharedPerefrenceHelper.getBoolean(getApplicationContext(), IS_TRUE, false)) {
@@ -164,11 +227,10 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
             startActivity(intent);
             overridePendingTransition(R.anim.item_anim_slide_from_top, R.anim.item_anim_no_thing);
         }
-
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         //navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        GridViewFragment gridViewFragment = (GridViewFragment) fragmentManager.findFragmentByTag("TAG_WORKER");
+        ReadSwarFragment readSwarFragment = (ReadSwarFragment) fragmentManager.findFragmentByTag("TAG_WORKER");
         if (savedInstanceState != null) {
             current_fragment = savedInstanceState.getInt(SAVE_STATE_VIEW_PAGER);
             navView.setSelectedItemId(current_fragment);
@@ -179,10 +241,6 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         setSupportActionBar(toobar);
         //for change color text toolbar
         toobar.setTitleTextColor(Color.parseColor("#FFFFFF"));
-
-
-        drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view_header);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toobar, R.string.open_drawer
                 , R.string.close_drawer);
@@ -219,6 +277,52 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 //
     }
 
+    private boolean getSharedPreferencesThreadSeperateBoolean() {
+        disposable = new CompositeDisposable();
+        Observable<Boolean> modelAzkarObservable = Observable.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                try {
+                    //getString Retrieve a String value from the Preference
+                    isFirstTime = SharedPerefrenceHelper.getBooleanForWayUsing(getApplicationContext(), IS_FIRST_TIME_WAY_USING, false);
+
+                } catch (Exception e) {
+                }
+                return isFirstTime;
+            }
+        }).subscribeOn(io.reactivex.rxjava3.schedulers.Schedulers.io())
+                .observeOn(io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread());
+        disposable.add(modelAzkarObservable.subscribeWith(new DisposableObserver<Boolean>() {
+            @Override
+            public void onNext(@io.reactivex.rxjava3.annotations.NonNull Boolean repearAsync) {
+                if (repearAsync != null) {
+                    isFirstTime = repearAsync;
+                    Log.d("TAG", "onNext Prefrences  ");
+                    Log.d("TAG", "doInBackground - Thread " + Thread.currentThread().getId() + "Name : "
+                            + Thread.currentThread().getName());
+                }
+            }
+
+            @Override
+            public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                if (repearAsync != null) {
+                    Log.d("TAG", "onError Prefrences ");
+
+                }
+            }
+
+            @Override
+            public void onComplete() {
+                if (repearAsync != null) {
+                    Log.d("TAG", "onComplete Prefrences ");
+                    Log.d("TAG", "doInBackground - Thread " + Thread.currentThread().getId() + "Name : "
+                            + Thread.currentThread().getName());
+                }
+            }
+        }));
+        return isFirstTime;
+    }
+
     private void getDateTodayFromDatabase() {
         Log.i("TAG", " getDateTodayFromDatabase");
         String date = convertDate();
@@ -237,7 +341,10 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                         store_date_today = integer;
                         Log.i("TAG", " timingsViewModel.store_date_today onSuccess" + store_date_today);
                         getPrayerTimesEveryMonth(getApplicationContext());
+
                         enableBootReceiverEveryMonth(getApplicationContext());
+
+                        ScheduleGetDataEveryMonth();
                     }
 
                     @Override
@@ -310,8 +417,8 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
             switch (id) {
                 case R.id.read_quran:
                     //NavigationDrawaberActivityVPager.setCurrentItem(0);
-                    GridViewFragment gridViewFragment = new GridViewFragment();
-                    HelperClass.replece(gridViewFragment, getSupportFragmentManager(), R.id.frameLayout, FOR_GET_FRAGMENT_AZAN);
+                    ReadSwarFragment readSwarFragment = new ReadSwarFragment();
+                    HelperClass.replece(readSwarFragment, getSupportFragmentManager(), R.id.frameLayout, FOR_GET_FRAGMENT_AZAN);
                     break;
                 case R.id.read_parts:
                     //  NavigationDrawaberActivityVPager.setCurrentItem(1);
@@ -384,6 +491,17 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                 setTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmPendingIntent);
     }
 
+    private void ScheduleGetDataEveryMonth() {
+        PersistableBundle extras = new PersistableBundle();
+        extras.putInt(CHECKISDATAORNOTINDATABASE, store_date_today);
+        ComponentName componentName = new ComponentName(this, GetDataEveryMonthJobService.class);
+        JobInfo info = new JobInfo.Builder(1, componentName)
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                .setExtras(extras).build();
+        JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+        scheduler.schedule(info);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -391,32 +509,6 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                 Intent intent = new Intent(NavigationDrawaberActivity.this, YoutubeActivity.class);
                 startActivity(intent);
                 break;
-//            case R.id.action_share:
-//                presenter.shareApp(getString(R.string.about), appPackageName);
-//                break;
-//            case R.id.action_send_us:
-//                presenter.sendUs();
-//                break;
-//            case R.id.use_way:
-//                SharedPerefrenceHelper.removeDataForWayUsing(this);
-//                // SharedPerefrenceHelper.removeDataForCompareMethod(this);
-//                HelperClass.startActivity(getApplicationContext(), SplashActivity.class);
-//                break;
-//            case R.id.action_settings:
-//                HelperClass.startActivity(getApplicationContext(), SettingsActivity.class);
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-//                }
-//                break;
-//            case R.id.action_rate:
-//                presenter.actionRate(appPackageName);
-//                break;
-//            case R.id.el_arbaoon_elnawawy:
-//                HelperClass.startActivity(getApplicationContext(), ElarbaoonElnawawyActivity.class);
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-//                }
-//                break;
             default:
         }
         return super.onOptionsItemSelected(item);
@@ -434,16 +526,12 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 
     @Override
     public void getShareApp(Intent intent) {
-        startActivity(Intent.createChooser(intent, getString(R.string.shareApp)));
+        startActivity(intent);
     }
 
     @Override
     public void getSendUs(Intent intentEmail) {
-        if (intentEmail.resolveActivity(getPackageManager()) != null) {
-            startActivity(intentEmail);
-        } else {
-            HelperClass.customToast(this, getString(R.string.notSupport));
-        }
+        startActivity(intentEmail);
     }
 
     @Override
@@ -463,8 +551,6 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         outState.putInt(SAVE_STATE_VIEW_PAGER, current_fragment);
         timingsViewModel.saveState(outState);
         Log.d("TAG", "Current fragment is :" + current_fragment);
-
-
     }
 
     @Override
@@ -478,22 +564,14 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
             bundle.putInt("bundle", resultCode);
             azanFragment.setArguments(bundle);
             azanFragment.onActivityResult(requestCode, resultCode, data);
-        } else if (requestCode == AzanFragment.LOCATION_PERMISSION_REQUEST_CODE) {
-            Log.i("TAG", "LOCATION_PERMISSION_REQUEST_CODE");
-        } else {
+        }
+//        else if (requestCode == AzanFragment.LOCATION_PERMISSION_REQUEST_CODE) {
+//            Log.i("TAG", "LOCATION_PERMISSION_REQUEST_CODE");
+//        }
+        else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
-//    private void setupViewPager(ViewPager viewPager){
-//        AdapterForNavigation adapterForNavigation = new AdapterForNavigation(getSupportFragmentManager());
-//        GridViewFragment gridViewFragment = new GridViewFragment();
-//          PartsFragment partsFragment = new PartsFragment();
-//           FragmentSound fragmentSound = new FragmentSound();
-//           adapterForNavigation.addFragment(gridViewFragment);
-//        adapterForNavigation.addFragment(partsFragment);
-//        adapterForNavigation.addFragment(fragmentSound);
-//        viewPager.setAdapter(adapterForNavigation);
-//    }
 
     private void isNetworkConnected(Context context) {
         NoInternetConnection noInternetConnection = new NoInternetConnection();
@@ -618,27 +696,25 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     }
 
     private String customForPreferences(String method_key, String method_default) {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         repear = sharedPreferences.getString(method_key, method_default);
         return number_azan_default;
     }
 
     private String customForPreferencesAzan(String method_key, String method_default) {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         number_azan_default = sharedPreferences.getString(method_key, method_default);
         return number_azan_default;
     }
 
     private void changeValueInListPreference() {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        //  sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        //  SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(getString(R.string.settings_method_key), repear);
         editor.commit();
     }
 
     private void changeValueInListPreferenceForAzan() {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        //sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        //SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(getString(R.string.settings_azan_key), number_azan_default);
         editor.commit();
     }
@@ -683,7 +759,6 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     public void onPrayerTimesError(Throwable e) {
 
     }
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

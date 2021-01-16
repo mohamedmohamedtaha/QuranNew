@@ -2,7 +2,7 @@ package com.MohamedTaha.Imagine.New.mvp.view;
 
 import android.content.Intent;
 
-public interface NavigationDrawarView {
+public interface NavigationDrawaberView {
     void showMessageExitApp();
 
     void exitApp();

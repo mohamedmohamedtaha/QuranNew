@@ -3,6 +3,8 @@ package com.MohamedTaha.Imagine.New.mvp.interactor;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.lifecycle.ViewModel;
+
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.mvp.model.ElarbaoonElnawawyModel;
 import com.MohamedTaha.Imagine.New.mvp.presenter.ElarbaoonElnwawyPresenter;
@@ -20,7 +22,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.observers.DisposableObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class ElarbaoonElnwawyInteractor implements ElarbaoonElnwawyPresenter {
+public class ElarbaoonElnwawyInteractor  extends ViewModel implements ElarbaoonElnwawyPresenter {
     private ElarbaoonElnwawyView elarbaoonElnwawyView;
     private Context context;
     private CompositeDisposable disposable;
@@ -30,7 +32,11 @@ public class ElarbaoonElnwawyInteractor implements ElarbaoonElnwawyPresenter {
     private String[] text_elhadeth;
     private String[] description_elhadeth;
     private String[] transelate_elhadeth;
-    public ElarbaoonElnwawyInteractor(ElarbaoonElnwawyView elarbaoonElnwawyView,Context context) {
+    public ElarbaoonElnwawyInteractor() {
+
+    }
+    @Override
+    public void onBind(ElarbaoonElnwawyView elarbaoonElnwawyView, Context context) {
         this.elarbaoonElnwawyView = elarbaoonElnwawyView;
         this.context = context;
     }
@@ -101,6 +107,8 @@ public class ElarbaoonElnwawyInteractor implements ElarbaoonElnwawyPresenter {
         }
         elarbaoonElnwawyView = null;
         }
+
+
 
     @Override
     public void setOnSearchView(MaterialSearchView materialSearchView) {

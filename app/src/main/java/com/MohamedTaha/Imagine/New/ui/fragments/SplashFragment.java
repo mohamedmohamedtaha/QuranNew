@@ -12,27 +12,27 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.MohamedTaha.Imagine.New.R;
+import com.MohamedTaha.Imagine.New.dagger2.component.ComponentSplashFragment;
+import com.MohamedTaha.Imagine.New.dagger2.component.DaggerComponentSplashFragment;
+import com.MohamedTaha.Imagine.New.dagger2.module.ModuleSplashFragment;
 import com.MohamedTaha.Imagine.New.helper.HelperClass;
-import com.MohamedTaha.Imagine.New.mvp.interactor.SplashInteractor;
-import com.MohamedTaha.Imagine.New.mvp.presenter.SplashPresenter;
-import com.MohamedTaha.Imagine.New.mvp.view.SplashView;
+import com.MohamedTaha.Imagine.New.mvp.interactor.SplashFragmentInteractor;
+import com.MohamedTaha.Imagine.New.mvp.view.SplashFragmentView;
 import com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity;
 
 import org.jetbrains.annotations.NotNull;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
-public class SplashFragment extends Fragment implements SplashView {
-    public static final String SAVE_PAGE = "savepage";
-    public static final String SAVE_ALL_IMAGES = "save_all_images";
+public class SplashFragment extends Fragment implements SplashFragmentView {
     @BindView(R.id.textShow)
     TextView textShow;
-    private SplashPresenter splashPresenter;
+    @Inject
+    SplashFragmentInteractor splashFragmentPresenter;
+    private static final String TAG = "SplashFragment";
 
     public SplashFragment() {
         // Required empty public constructor
@@ -44,8 +44,11 @@ public class SplashFragment extends Fragment implements SplashView {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_splash, container, false);
         ButterKnife.bind(this, view);
-        splashPresenter = new SplashInteractor(this, getActivity());
-        splashPresenter.goToSlider();
+        ComponentSplashFragment componentSplashFragment = DaggerComponentSplashFragment.builder().
+                moduleSplashFragment(new ModuleSplashFragment(this, getActivity())).build();
+        componentSplashFragment.inject(this);
+        splashFragmentPresenter.onBind(this, getActivity());
+        splashFragmentPresenter.goToSlider();
         return view;
     }
 
@@ -63,19 +66,12 @@ public class SplashFragment extends Fragment implements SplashView {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        splashPresenter.onDestroy();
+        splashFragmentPresenter.onDestroy();
     }
 
     @Override
     public void goToSlider() {
-//        SliderFragment sliderFragment = new SliderFragment();
-//        HelperClass.replece(sliderFragment, getFragmentManager(), R.id.Cycle_Splash_contener);
-//        getActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-
-        //  HelperClass.startActivity(getActivity(), SplashActivity.class);
-        // getActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-
         HelperClass.startActivity(getActivity(), NavigationDrawaberActivity.class);
-            getActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        getActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 }
