@@ -11,9 +11,6 @@ import java.util.ArrayList;
 
 public interface AzkarFragmentPresenter {
     void getAllData();
-
-    void onBind(AzkarFragmentView azkarFragmentView, Context context);
-
     void onDestroy();
 
     void saveState(Bundle outState);

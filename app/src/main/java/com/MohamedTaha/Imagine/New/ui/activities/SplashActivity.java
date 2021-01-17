@@ -53,6 +53,4 @@ public class SplashActivity extends AppCompatActivity implements SplashActivityV
     public void onBackPressed() {
         //Do not do any thing
     }
-
-
 }

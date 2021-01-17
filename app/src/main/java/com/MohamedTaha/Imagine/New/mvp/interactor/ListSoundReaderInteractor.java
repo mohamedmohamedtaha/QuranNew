@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import javax.inject.Inject;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -26,10 +28,12 @@ import static com.MohamedTaha.Imagine.New.helper.Images.getData;
 public class ListSoundReaderInteractor extends ViewModel implements ListSoundReaderPresenter {
     private ListSoundReaderView listSoundReaderView;
     private Context context;
-
-    private CompositeDisposable disposable;
-
-    public ListSoundReaderInteractor() {
+    @Inject
+    CompositeDisposable disposable;
+    @Inject
+    public ListSoundReaderInteractor(ListSoundReaderView listSoundReaderView, Context context) {
+        this.listSoundReaderView = listSoundReaderView;
+        this.context = context;
         Log.d("TAG", "ListSoundReaderInteractor");
     }
 
@@ -44,9 +48,7 @@ public class ListSoundReaderInteractor extends ViewModel implements ListSoundRea
 
     @Override
     public void getAllData() {
-        disposable = new CompositeDisposable();
         listSoundReaderView.showProgress();
-
         Observable<List<ImageModel>> modelAzkarObservable = Observable.fromCallable(new Callable<List<ImageModel>>() {
             @Override
             public List<ImageModel> call() throws Exception {
@@ -77,13 +79,6 @@ public class ListSoundReaderInteractor extends ViewModel implements ListSoundRea
                 }
             }
         }));
-    }
-
-    @Override
-    public void onBind(ListSoundReaderView listSoundReaderView, Context context) {
-        this.listSoundReaderView = listSoundReaderView;
-        this.context = context;
-
     }
 
     @Override
@@ -121,13 +116,9 @@ public class ListSoundReaderInteractor extends ViewModel implements ListSoundRea
                     if (!lstFound.isEmpty()) {
                         listSoundReaderView.showAfterQueryText(lstFound);
                         listSoundReaderView.thereData();
-
                     } else {
                         listSoundReaderView.noData();
-
                     }
-
-
                 } else {
                     //If search is Null return default
                     listSoundReaderView.thereData();

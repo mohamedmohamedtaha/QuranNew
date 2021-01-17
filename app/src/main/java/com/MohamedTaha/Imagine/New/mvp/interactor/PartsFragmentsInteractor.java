@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import javax.inject.Inject;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -31,11 +33,12 @@ public class PartsFragmentsInteractor implements PartsFragmentPresenter {
     private Context context;
     private List<ModelSora> name_part_list = new ArrayList<>();
     //private Subscription subscription_name_sora;
-    private CompositeDisposable disposable = new CompositeDisposable();
+    @Inject
+    CompositeDisposable disposable ;
 
-
-    public PartsFragmentsInteractor(PartsFragmentView partsFragmentView, FragmentActivity fragmentActivity) {
-        this.context = fragmentActivity;
+    @Inject
+    public PartsFragmentsInteractor(PartsFragmentView partsFragmentView, Context context) {
+        this.context = context;
         this.partsFragmentView = partsFragmentView;
 
     }
@@ -51,7 +54,7 @@ public class PartsFragmentsInteractor implements PartsFragmentPresenter {
                 }
             }).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
-            disposable.add(modelAzkarObservable.subscribeWith(new DisposableObserver<List<Integer>>(){
+            disposable.add(modelAzkarObservable.subscribeWith(new DisposableObserver<List<Integer>>() {
                 @Override
                 public void onNext(@NonNull List<Integer> integers) {
                     if (partsFragmentView != null) {
@@ -104,7 +107,7 @@ public class PartsFragmentsInteractor implements PartsFragmentPresenter {
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
-        disposable.add(modelAzkarObservable.subscribeWith(new DisposableObserver<List<ModelSora>>(){
+        disposable.add(modelAzkarObservable.subscribeWith(new DisposableObserver<List<ModelSora>>() {
             @Override
             public void onNext(@NonNull List<ModelSora> modelSoras) {
                 if (partsFragmentView != null) {

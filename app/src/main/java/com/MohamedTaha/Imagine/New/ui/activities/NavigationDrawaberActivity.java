@@ -42,8 +42,6 @@ import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.ShowGuide;
 import com.MohamedTaha.Imagine.New.YoutubeActivity;
 import com.MohamedTaha.Imagine.New.dagger2.MainApplication;
-import com.MohamedTaha.Imagine.New.dagger2.component.AppComponent;
-import com.MohamedTaha.Imagine.New.dagger2.component.DaggerRetrofitComponent;
 import com.MohamedTaha.Imagine.New.dagger2.component.RetrofitComponent;
 import com.MohamedTaha.Imagine.New.dagger2.module.NavigationDrawaberPresenterModule;
 import com.MohamedTaha.Imagine.New.dagger2.module.SharedPreferencesModule;
@@ -71,7 +69,7 @@ import com.MohamedTaha.Imagine.New.ui.fragments.AzanFragment;
 import com.MohamedTaha.Imagine.New.ui.fragments.AzkarFragment;
 import com.MohamedTaha.Imagine.New.ui.fragments.FragmentSound;
 import com.MohamedTaha.Imagine.New.ui.fragments.PartsFragment;
-import com.MohamedTaha.Imagine.New.ui.fragments.ReadSwarFragment;
+import com.MohamedTaha.Imagine.New.ui.fragments.SwarFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -104,7 +102,6 @@ import static com.MohamedTaha.Imagine.New.helper.Images.addImagesList;
 import static com.MohamedTaha.Imagine.New.helper.checkConnection.NoInternetConnection.isInternet;
 import static com.MohamedTaha.Imagine.New.helper.util.ConvertTimes.convertDate;
 import static com.MohamedTaha.Imagine.New.receiver.GetPrayerTimesEveryMonth.enableBootReceiverEveryMonth;
-import static com.MohamedTaha.Imagine.New.rest.RetrofitClientCity.getRetrofitForCity;
 import static com.MohamedTaha.Imagine.New.room.TimingsViewModel.store_date_today;
 import static com.MohamedTaha.Imagine.New.ui.activities.SwipePagesActivity.IS_TRUE;
 import static com.MohamedTaha.Imagine.New.ui.fragments.AzanFragment.AZAN_DEFUALT;
@@ -230,7 +227,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         //navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        ReadSwarFragment readSwarFragment = (ReadSwarFragment) fragmentManager.findFragmentByTag("TAG_WORKER");
+        SwarFragment swarFragment = (SwarFragment) fragmentManager.findFragmentByTag("TAG_WORKER");
         if (savedInstanceState != null) {
             current_fragment = savedInstanceState.getInt(SAVE_STATE_VIEW_PAGER);
             navView.setSelectedItemId(current_fragment);
@@ -417,8 +414,8 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
             switch (id) {
                 case R.id.read_quran:
                     //NavigationDrawaberActivityVPager.setCurrentItem(0);
-                    ReadSwarFragment readSwarFragment = new ReadSwarFragment();
-                    HelperClass.replece(readSwarFragment, getSupportFragmentManager(), R.id.frameLayout, FOR_GET_FRAGMENT_AZAN);
+                    SwarFragment swarFragment = new SwarFragment();
+                    HelperClass.replece(swarFragment, getSupportFragmentManager(), R.id.frameLayout, FOR_GET_FRAGMENT_AZAN);
                     break;
                 case R.id.read_parts:
                     //  NavigationDrawaberActivityVPager.setCurrentItem(1);

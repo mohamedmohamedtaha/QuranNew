@@ -15,26 +15,26 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.MohamedTaha.Imagine.New.Adapter.AdapterElarbaoonElnawawy;
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.ReScrollUtil;
+import com.MohamedTaha.Imagine.New.dagger2.component.DaggerElarbaoonElnawawyComponent;
+import com.MohamedTaha.Imagine.New.dagger2.component.ElarbaoonElnawawyComponent;
+import com.MohamedTaha.Imagine.New.dagger2.module.ElarbaoonElnawawyModule;
+import com.MohamedTaha.Imagine.New.dagger2.module.RescroUtilModule;
 import com.MohamedTaha.Imagine.New.mvp.interactor.ElarbaoonElnwawyInteractor;
 import com.MohamedTaha.Imagine.New.mvp.model.ElarbaoonElnawawyModel;
-import com.MohamedTaha.Imagine.New.mvp.presenter.ElarbaoonElnwawyPresenter;
 import com.MohamedTaha.Imagine.New.mvp.view.ElarbaoonElnwawyView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,31 +58,30 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
     @BindView(R.id.ElarbaoonElnawawyActivity_FloatingActionButton)
     FloatingActionButton ElarbaoonElnawawyActivityFloatingActionButton;
 
-    // private ActivityElarbaoonElnawawyBinding activityElarbaoonElnawawyBinding;
-    private ElarbaoonElnwawyPresenter elarbaoonElnwawyPresenter;
+    @Inject
+    ElarbaoonElnwawyInteractor elarbaoonElnwawyPresenter;
+    @Inject
+    ReScrollUtil reScrollUtil;
     private List<ElarbaoonElnawawyModel> elnawawyModelList;
     private Menu globalMenu;
     private AdapterElarbaoonElnawawy adapterElarbaoonElnawawy;
     private ElarbaoonElnawawyModel elnawawyModel = new ElarbaoonElnawawyModel();
+    public ElarbaoonElnawawyActivity() {
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_elarbaoon_elnawawy);
         ButterKnife.bind(this);
-        // activityElarbaoonElnawawyBinding = DataBindingUtil.setContentView(this,R.layout.activity_elarbaoon_elnawawy);
-//
-//        activityElarbaoonElnawawyBinding = ActivityElarbaoonElnawawyBinding.inflate(getLayoutInflater());
-//        View view = activityElarbaoonElnawawyBinding.getRoot();
-//        setContentView(view);
-        ElarbaoonElnawawyActivityTVElarbaoonElnawawy.setText(getString(R.string.el_arbaoon_elnawawy));
-        //  elarbaoonElnwawyPresenter = new ElarbaoonElnwawyInteractor(this, getApplicationContext());
-        //elarbaoonElnwawyPresenter = new ElarbaoonElnwawyInteractor(this, getApplicationContext());
-        elarbaoonElnwawyPresenter = new ViewModelProvider(this).get(ElarbaoonElnwawyInteractor.class);
-        elarbaoonElnwawyPresenter.onBind(this, getApplicationContext());
+        ElarbaoonElnawawyComponent elarbaoonElnawawyComponent = DaggerElarbaoonElnawawyComponent.builder()
+                .elarbaoonElnawawyModule(new ElarbaoonElnawawyModule(this, this))
+                .rescroUtilModule(new RescroUtilModule(ElarbaoonElnawawyActivityFloatingActionButton, ElarbaoonElnawawyActivityRecyclerView))
+                .build();
+        elarbaoonElnawawyComponent.inject(this);
 
+        ElarbaoonElnawawyActivityTVElarbaoonElnawawy.setText(getString(R.string.el_arbaoon_elnawawy));
         custom_toolbar();
-        //onClickRecyclerView();
         elarbaoonElnwawyPresenter.getAllData();
         elarbaoonElnwawyPresenter.setOnSearchView(ElarbaoonElnawawyActivitySearchView);
         Log.d("TAG", "Elnawawy");
@@ -93,8 +92,6 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
             }
         };
         ElarbaoonElnawawyActivityRecyclerView.setLayoutManager(linearLayoutManager);
-        ReScrollUtil reScrollUtil = new ReScrollUtil(ElarbaoonElnawawyActivityFloatingActionButton,
-                ElarbaoonElnawawyActivityRecyclerView);
         reScrollUtil.onClickRecyclerView(R.id.ElarbaoonElnawawyActivity_FloatingActionButton);
     }
 
@@ -128,13 +125,11 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
     @Override
     public void showProgress() {
         ElarbaoonElnawawyActivityProgressBar.setVisibility(View.VISIBLE);
-
     }
 
     @Override
     public void hideProgress() {
         ElarbaoonElnawawyActivityProgressBar.setVisibility(View.GONE);
-
     }
 
     @Override
@@ -159,7 +154,6 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
         adapterElarbaoonElnawawy.notifyDataSetChanged();
         //For feel when Search
         elarbaoonElnwawyPresenter.setOnQueryTextForElhadeth(ElarbaoonElnawawyActivitySearchView, elnawawyModelList);
-
     }
 
     @Override
@@ -181,7 +175,6 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
             }
         });
         ElarbaoonElnawawyActivityRecyclerView.setAdapter(adapterElarbaoonElnawawy);
-
     }
 
     public void custom_toolbar() {
@@ -209,19 +202,6 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
         }
         return false;
     }
-
-//    //For Delete those menus from that page
-//    @Override
-//    public boolean onPrepareOptionsMenu(Menu menu) {
-//        globalMenu = menu;
-//        globalMenu.findItem(R.id.action_send_us).setVisible(false);
-//        globalMenu.findItem(R.id.action_share).setVisible(false);
-//        globalMenu.findItem(R.id.action_rate).setVisible(false);
-//        globalMenu.findItem(R.id.action_settings).setVisible(false);
-//        globalMenu.findItem(R.id.use_way).setVisible(false);
-//        globalMenu.findItem(R.id.el_arbaoon_elnawawy).setVisible(false);
-//        return super.onPrepareOptionsMenu(globalMenu);
-//    }
 
     private void openFragmentElnawary(ElarbaoonElnawawyModel elnawawyModel) {
         Intent startActivity = new Intent(getApplicationContext(), ContianerDescriptionElnawawyActivity.class);

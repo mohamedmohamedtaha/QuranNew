@@ -9,12 +9,16 @@ import android.widget.AbsListView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.MohamedTaha.Imagine.New.scope.ScopeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import javax.inject.Inject;
+@ScopeFragment
 public class ReScrollUtil {
     private FloatingActionButton floatingActionButton;
     private RecyclerView recyclerView;
 
+    @Inject
     public ReScrollUtil(FloatingActionButton floatingActionButton, RecyclerView recyclerView) {
         this.floatingActionButton = floatingActionButton;
         this.recyclerView = recyclerView;
@@ -36,13 +40,9 @@ public class ReScrollUtil {
     }
 
     private void setFabVisibility(boolean isVisible) {
-        // Animation animationFadeOut = AnimationUtils.loadAnimation(floatingActionButton.getContext(), android.R.anim.fade_out);
-        //Animation animationFadeIn = AnimationUtils.loadAnimation(floatingActionButton.getContext(), android.R.anim.fade_in);
-        if (isVisible) {
-            //  floatingActionButton.setAnimation(animationFadeIn);
+          if (isVisible) {
             floatingActionButton.setVisibility(View.VISIBLE);
         } else {
-            //floatingActionButton.setAnimation(animationFadeOut);
             floatingActionButton.setVisibility(View.INVISIBLE);
         }
     }
@@ -54,15 +54,12 @@ public class ReScrollUtil {
             super.onScrollStateChanged(recyclerView, newState);
             if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
                 Log.d("TAG", "SCROLL_STATE_TOUCH_SCROLL");
-
             }
             if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                 Log.d("TAG", "SCROLL_STATE_IDLE");
-
             }
             if (newState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
                 Log.d("TAG", "SCROLL_STATE_FLING");
-
             }
         }
 
@@ -70,17 +67,15 @@ public class ReScrollUtil {
         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
             if (isRecyclerScrollable()) {
-              //  Log.d("TAGO", "isRecyclerScrollable");
                 if (!recyclerView.canScrollVertically(1)) {
                     setFabVisibility(true);
-                //    Log.d("TAGO", "setFabVisibility true");
+                        Log.d("TAGO", "setFabVisibility true");
                 } else {
                     setFabVisibility(false);
-                    //Log.d("TAGO", "setFabVisibility false");
+                    Log.d("TAGO", "setFabVisibility false");
                 }
             } else {
-               // Log.d("TAGO", "isRecyclerScrollable not");
-
+                Log.d("TAGO", "isRecyclerScrollable not");
             }
         }
 
@@ -97,7 +92,6 @@ public class ReScrollUtil {
                 if (v.getId() == idFloatAction) {
                     recyclerView.smoothScrollToPosition(0);
                 }
-
             }
         });
     }

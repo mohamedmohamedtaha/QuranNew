@@ -13,33 +13,33 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.MohamedTaha.Imagine.New.Adapter.AdapterForAzkar;
-import com.MohamedTaha.Imagine.New.AutofitRecyclerView;
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.ReScrollUtil;
-import com.MohamedTaha.Imagine.New.RxBusData;
+import com.MohamedTaha.Imagine.New.dagger2.component.AzkarFragmentComponent;
+import com.MohamedTaha.Imagine.New.dagger2.component.DaggerAzkarFragmentComponent;
+import com.MohamedTaha.Imagine.New.dagger2.module.AzkarFragmentModule;
+import com.MohamedTaha.Imagine.New.dagger2.module.ContextModule;
+import com.MohamedTaha.Imagine.New.dagger2.module.RescroUtilModule;
 import com.MohamedTaha.Imagine.New.mvp.interactor.AzkarFragmentInteractor;
-import com.MohamedTaha.Imagine.New.mvp.interactor.ListSoundReaderInteractor;
 import com.MohamedTaha.Imagine.New.mvp.model.ModelAzkar;
-import com.MohamedTaha.Imagine.New.mvp.presenter.AzkarFragmentPresenter;
 import com.MohamedTaha.Imagine.New.mvp.view.AzkarFragmentView;
 import com.MohamedTaha.Imagine.New.ui.activities.SwipePagesActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.MohamedTaha.Imagine.New.room.TimingsViewModel.store_date_today;
 import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.searchView;
-import static com.MohamedTaha.Imagine.New.ui.fragments.ReadSwarFragment.SAVE_STATE;
+import static com.MohamedTaha.Imagine.New.ui.fragments.SwarFragment.SAVE_STATE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,15 +57,20 @@ public class AzkarFragment extends Fragment implements AzkarFragmentView {
     private ArrayList<ModelAzkar> modelAzkar;
     private ArrayList<ModelAzkar> modelAzkarBundle;
 
-    Bundle bundle;
+    private Bundle bundle;
     public static final String SAVE_AZKAR = "save_azkar";
     public static final String SAVE_POTION_AZKAR = "save_poition_azkar";
-    private AzkarFragmentInteractor presenter;
+    @Inject
+    AzkarFragmentInteractor presenter;
+    @Inject
+    ReScrollUtil reScrollUtil;
+    @Inject
     LinearLayoutManager linearLayoutManager;
 
     public AzkarFragment() {
         // Required empty public constructor
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -74,19 +79,21 @@ public class AzkarFragment extends Fragment implements AzkarFragmentView {
         ButterKnife.bind(this, view);
         bundle = new Bundle();
         getActivity().setTitle(getString(R.string.azkar_elmosle));
-        presenter = new ViewModelProvider(this).get(AzkarFragmentInteractor.class);
+
+        AzkarFragmentComponent azkarFragmentComponent = DaggerAzkarFragmentComponent.builder()
+                .azkarFragmentModule(new AzkarFragmentModule(this, getActivity()))
+                .contextModule(new ContextModule(getActivity()))
+                .rescroUtilModule(new RescroUtilModule(AzkarFragmentFloatingActionButton, AzkarFragmentRecycleView))
+
+                .build();
+        azkarFragmentComponent.inject(this);
         if (presenter.isNewlyCreated && savedInstanceState != null) {
             presenter.restoreState(savedInstanceState);
-            Log.i("TAGO", " onSuccess presenter azkar " );
+            Log.i("TAGO", " onSuccess presenter azkar ");
         }
-            presenter.onBind(this, getActivity());
-            presenter.getAllData();
+        presenter.getAllData();
         presenter.isNewlyCreated = false;
         presenter.setOnSearchView(searchView);
-
-        Log.i("TAGO", " Fail presenter azkar " );
-
-        ReScrollUtil reScrollUtil = new ReScrollUtil(AzkarFragmentFloatingActionButton,AzkarFragmentRecycleView);
         reScrollUtil.onClickRecyclerView(R.id.AzkarFragment_FloatingActionButton);
         return view;
     }
@@ -95,6 +102,7 @@ public class AzkarFragment extends Fragment implements AzkarFragmentView {
     public void onDestroy() {
         super.onDestroy();
         presenter.onDestroy();
+        Log.i("TAGO", " onDestroy azkar fragment ");
     }
 
     @Override
@@ -111,16 +119,15 @@ public class AzkarFragment extends Fragment implements AzkarFragmentView {
         adapterForAzkar = new AdapterForAzkar(stringList, new AdapterForAzkar.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-
                 //the data to be based
-                ArrayList<ModelAzkar> data =modelAzkarBundle;
-                RxBusData.sendData(data); ;
+//                ArrayList<ModelAzkar> data = modelAzkarBundle;
+//                RxBusData.sendData(data);
 
-//                bundle.putString(SAVE_AZKAR, new Gson().toJson(modelAzkarBundle));
-        //        bundle.putInt(SAVE_POTION_AZKAR, modelAzkar.get(position).getPosition());
-         //       bundle.putBoolean(SAVE_STATE, false);
+                bundle.putString(SAVE_AZKAR, new Gson().toJson(modelAzkarBundle));
+                        bundle.putInt(SAVE_POTION_AZKAR, modelAzkar.get(position).getPosition());
+                       bundle.putBoolean(SAVE_STATE, false);
                 Intent intent = new Intent(getActivity(), SwipePagesActivity.class);
-              //  intent.putExtras(bundle);
+                  intent.putExtras(bundle);
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.item_anim_slide_from_top, R.anim.item_anim_no_thing);
             }
@@ -154,7 +161,6 @@ public class AzkarFragment extends Fragment implements AzkarFragmentView {
     public void showAllINameAzkar(ArrayList<ModelAzkar> strings) {
         modelAzkarBundle = strings;
         modelAzkar = strings;
-        linearLayoutManager = new LinearLayoutManager(getActivity());
         AzkarFragmentRecycleView.setLayoutManager(linearLayoutManager);
         adapterForAzkar = new AdapterForAzkar(modelAzkar, new AdapterForAzkar.ClickListener() {
             @Override
@@ -166,15 +172,12 @@ public class AzkarFragment extends Fragment implements AzkarFragmentView {
                 intent.putExtras(bundle);
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.item_anim_slide_from_top, R.anim.item_anim_no_thing);
-
             }
         });
-
         AzkarFragmentRecycleView.setAdapter(adapterForAzkar);
         adapterForAzkar.notifyDataSetChanged();
         //For feel when Search
         presenter.setOnQueryTextForAzkar(searchView, modelAzkar);
-
     }
 
     @Override

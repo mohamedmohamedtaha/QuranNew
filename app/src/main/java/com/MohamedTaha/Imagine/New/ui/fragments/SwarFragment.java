@@ -14,23 +14,27 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.MohamedTaha.Imagine.New.Adapter.AdapterForPartsAndSwar;
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.ReScrollUtil;
-import com.MohamedTaha.Imagine.New.mvp.interactor.AzkarFragmentInteractor;
-import com.MohamedTaha.Imagine.New.mvp.interactor.GridViewFragmentInteractor;
+import com.MohamedTaha.Imagine.New.dagger2.component.DaggerSwarFragmentComponent;
+import com.MohamedTaha.Imagine.New.dagger2.component.SwarFragmentComponent;
+import com.MohamedTaha.Imagine.New.dagger2.module.ContextModule;
+import com.MohamedTaha.Imagine.New.dagger2.module.RescroUtilModule;
+import com.MohamedTaha.Imagine.New.dagger2.module.SwarFragmentModule;
+import com.MohamedTaha.Imagine.New.mvp.interactor.SwarFragmentInteractor;
 import com.MohamedTaha.Imagine.New.mvp.model.ModelSora;
-import com.MohamedTaha.Imagine.New.mvp.presenter.GridViewFragmentPresenter;
-import com.MohamedTaha.Imagine.New.mvp.view.GridViewFragmentView;
+import com.MohamedTaha.Imagine.New.mvp.view.SwarFragmentView;
 import com.MohamedTaha.Imagine.New.ui.activities.SwipePagesActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,7 +44,7 @@ import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivi
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ReadSwarFragment extends Fragment implements GridViewFragmentView {
+public class SwarFragment extends Fragment implements SwarFragmentView {
     @BindView(R.id.ReadSwarFragment_TV_No_Data)
     TextView ReadSwarFragmentTVNoData;
     @BindView(R.id.ReadSwarFragment_RecyclerView)
@@ -58,9 +62,12 @@ public class ReadSwarFragment extends Fragment implements GridViewFragmentView {
     private List<ModelSora> name_swar;
     private List<Integer> integers_bundle;
     private AdapterForPartsAndSwar adapterForPartsAndSwar;
-    private GridViewFragmentPresenter presenter;
+    @Inject
+    SwarFragmentInteractor presenter;
+    @Inject
+    ReScrollUtil reScrollUtil;
 
-    public ReadSwarFragment() {
+    public SwarFragment() {
         // Required empty public constructor
     }
 
@@ -69,6 +76,13 @@ public class ReadSwarFragment extends Fragment implements GridViewFragmentView {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_read_swar, container, false);
         ButterKnife.bind(this, view);
+
+        SwarFragmentComponent swarFragmentComponent = DaggerSwarFragmentComponent.builder()
+                .swarFragmentModule(new SwarFragmentModule(this,getActivity()))
+                .rescroUtilModule(new RescroUtilModule(ReadSwarFragmentFloatingActionButton, ReadSwarFragmentRecyclerView))
+                .contextModule(new ContextModule(getActivity()))
+                .build();
+        swarFragmentComponent.inject(this);
         getActivity().setTitle(getString(R.string.readswar));
         setRetainInstance(true);
         if (savedInstanceState == null) {
@@ -81,8 +95,6 @@ public class ReadSwarFragment extends Fragment implements GridViewFragmentView {
 
         }
         bundle = new Bundle();
-        presenter = new ViewModelProvider(this).get(GridViewFragmentInteractor.class);
-        presenter.onBind(this, getActivity());
         presenter.getAllNameSour();
         presenter.getAllImages();
         presenter.setOnSearchView(searchView);
@@ -95,7 +107,6 @@ public class ReadSwarFragment extends Fragment implements GridViewFragmentView {
             }
         };
         ReadSwarFragmentRecyclerView.setLayoutManager(linearLayoutManager);
-        ReScrollUtil reScrollUtil = new ReScrollUtil(ReadSwarFragmentFloatingActionButton, ReadSwarFragmentRecyclerView);
         reScrollUtil.onClickRecyclerView(R.id.ReadSwarFragment_FloatingActionButton);
 
         return view;

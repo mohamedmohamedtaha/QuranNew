@@ -3,17 +3,13 @@ package com.MohamedTaha.Imagine.New.ui.activities;
 import android.app.NotificationManager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.transition.Fade;
 import android.util.Log;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
@@ -25,7 +21,6 @@ import com.MohamedTaha.Imagine.New.helper.HelperClass;
 import com.MohamedTaha.Imagine.New.helper.SharedPerefrenceHelper;
 import com.MohamedTaha.Imagine.New.helper.ShowDialog;
 import com.MohamedTaha.Imagine.New.mvp.model.ModelAzkar;
-import com.MohamedTaha.Imagine.New.ui.fragments.FullScreenImageFragment;
 import com.booking.rtlviewpager.RtlViewPager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -34,15 +29,10 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Timer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.observers.DisposableObserver;
 
 import static com.MohamedTaha.Imagine.New.helper.Images.SAVE_POSITION;
 import static com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarAlarmReceiver.NOTIFICATION_ID_NUMBER_AZKAR;
@@ -55,8 +45,8 @@ import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivi
 import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.SAVE_PAGE;
 import static com.MohamedTaha.Imagine.New.ui.fragments.AzkarFragment.SAVE_AZKAR;
 import static com.MohamedTaha.Imagine.New.ui.fragments.AzkarFragment.SAVE_POTION_AZKAR;
-import static com.MohamedTaha.Imagine.New.ui.fragments.ReadSwarFragment.SAVE_IMAGES;
-import static com.MohamedTaha.Imagine.New.ui.fragments.ReadSwarFragment.SAVE_STATE;
+import static com.MohamedTaha.Imagine.New.ui.fragments.SwarFragment.SAVE_IMAGES;
+import static com.MohamedTaha.Imagine.New.ui.fragments.SwarFragment.SAVE_STATE;
 public class SwipePagesActivity extends AppCompatActivity  {
     ArrayList<Integer> images = new ArrayList<>();
     ArrayList<Integer> imagesNotification = new ArrayList<>();
@@ -309,14 +299,14 @@ public class SwipePagesActivity extends AppCompatActivity  {
 //               // }
 //            }
 //        });
-//        if (bundle != null) {
-//            Type listType = new TypeToken<List<ModelAzkar>>() {
-//            }.getType();
-//            String st = bundle.getString(SAVE_AZKAR);
-//            modelAzkarList = new Gson().fromJson(st, listType);
-//            position_azkar = bundle.getInt(SAVE_POTION_AZKAR);
-//        }
-//        SwipePagesActivityPB.setVisibility(View.GONE);
+        if (bundle != null) {
+            Type listType = new TypeToken<List<ModelAzkar>>() {
+            }.getType();
+            String st = bundle.getString(SAVE_AZKAR);
+            modelAzkarList = new Gson().fromJson(st, listType);
+            position_azkar = bundle.getInt(SAVE_POTION_AZKAR);
+        }
+        SwipePagesActivityPB.setVisibility(View.GONE);
     }
 
     private void getArgemnetsForNotificationAzkar() {

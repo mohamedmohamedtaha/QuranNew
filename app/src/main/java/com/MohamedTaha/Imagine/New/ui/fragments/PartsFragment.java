@@ -18,9 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.MohamedTaha.Imagine.New.Adapter.AdapterForPartsAndSwar;
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.ReScrollUtil;
+import com.MohamedTaha.Imagine.New.dagger2.component.DaggerPartsFragmentComponent;
+import com.MohamedTaha.Imagine.New.dagger2.component.PartsFragmentComponent;
+import com.MohamedTaha.Imagine.New.dagger2.module.ContextModule;
+import com.MohamedTaha.Imagine.New.dagger2.module.PartsFragmentModule;
+import com.MohamedTaha.Imagine.New.dagger2.module.RescroUtilModule;
 import com.MohamedTaha.Imagine.New.mvp.interactor.PartsFragmentsInteractor;
 import com.MohamedTaha.Imagine.New.mvp.model.ModelSora;
-import com.MohamedTaha.Imagine.New.mvp.presenter.PartsFragmentPresenter;
 import com.MohamedTaha.Imagine.New.mvp.view.PartsFragmentView;
 import com.MohamedTaha.Imagine.New.ui.activities.SwipePagesActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -28,11 +32,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivity.searchView;
-import static com.MohamedTaha.Imagine.New.ui.fragments.ReadSwarFragment.SAVE_STATE;
+import static com.MohamedTaha.Imagine.New.ui.fragments.SwarFragment.SAVE_STATE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,7 +57,10 @@ public class PartsFragment extends Fragment implements PartsFragmentView {
 
     private List<ModelSora> name_part;
     private AdapterForPartsAndSwar adapterNamePart;
-    private PartsFragmentPresenter presenter;
+    @Inject
+    PartsFragmentsInteractor presenter;
+    @Inject
+    ReScrollUtil reScrollUtil;
     private List<Integer> integers_bundle;
 
     public PartsFragment() {
@@ -64,9 +73,15 @@ public class PartsFragment extends Fragment implements PartsFragmentView {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_parts, container, false);
         ButterKnife.bind(this, view);
+        PartsFragmentComponent partsFragmentComponent = DaggerPartsFragmentComponent.builder()
+                .partsFragmentModule(new PartsFragmentModule(this, getActivity()))
+                .rescroUtilModule(new RescroUtilModule(PartsFragmentFloatingActionButton, PartsFragmentRecyclerView))
+                .contextModule(new ContextModule(getActivity()))
+                .build();
+        partsFragmentComponent.inject(this);
+
         getActivity().setTitle(getString(R.string.read_parts));
         bundle = new Bundle();
-        presenter = new PartsFragmentsInteractor(this, getActivity());
         presenter.getAllPartSoura();
         presenter.getAllImages();
         presenter.setOnSearchView(searchView);
@@ -78,7 +93,6 @@ public class PartsFragment extends Fragment implements PartsFragmentView {
             }
         };
         PartsFragmentRecyclerView.setLayoutManager(linearLayoutManager);
-        ReScrollUtil reScrollUtil = new ReScrollUtil(PartsFragmentFloatingActionButton, PartsFragmentRecyclerView);
         reScrollUtil.onClickRecyclerView(R.id.PartsFragment_FloatingActionButton);
         return view;
     }

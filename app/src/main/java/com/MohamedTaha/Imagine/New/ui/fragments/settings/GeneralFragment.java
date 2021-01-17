@@ -1,4 +1,4 @@
-package com.MohamedTaha.Imagine.New.ui.fragments;
+package com.MohamedTaha.Imagine.New.ui.fragments.settings;
 
 import android.os.Bundle;
 

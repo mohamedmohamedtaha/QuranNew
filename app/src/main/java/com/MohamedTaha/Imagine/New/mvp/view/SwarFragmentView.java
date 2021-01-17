@@ -6,7 +6,7 @@ import com.MohamedTaha.Imagine.New.mvp.model.ModelSora;
 
 import java.util.List;
 
-public interface GridViewFragmentView {
+public interface SwarFragmentView {
     void showAfterSearch();
     void showAfterQueryText(List<ModelSora> stringList);
     void hideProgress();

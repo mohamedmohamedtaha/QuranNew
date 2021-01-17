@@ -67,15 +67,12 @@ public class DescriptionElarbaoonFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "Click", Toast.LENGTH_LONG).show();
-
             }
         });
         PagerAdapterElarbaoonElnawawy pagerAdapterElarbaoonElnawawy = new PagerAdapterElarbaoonElnawawy(getActivity(), getChildFragmentManager(), position_elhadeth.getPosition());
         DescriptionElarbaoonFragmentViewPager.setAdapter(pagerAdapterElarbaoonElnawawy);
         DescriptionElarbaoonFragmentViewPager.setCurrentItem(2);
         DescriptionElarbaoonFragmentTabLayout.setupWithViewPager(DescriptionElarbaoonFragmentViewPager);
-
-
         return view;
     }
 
@@ -84,6 +81,4 @@ public class DescriptionElarbaoonFragment extends Fragment {
         super.onDestroyView();
         // fragmentDescriptionElarbaoonBinding = null;
     }
-
-
 }

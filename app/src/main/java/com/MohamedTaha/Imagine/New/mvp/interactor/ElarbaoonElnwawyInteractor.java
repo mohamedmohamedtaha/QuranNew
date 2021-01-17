@@ -1,7 +1,6 @@
 package com.MohamedTaha.Imagine.New.mvp.interactor;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.lifecycle.ViewModel;
 
@@ -9,11 +8,14 @@ import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.mvp.model.ElarbaoonElnawawyModel;
 import com.MohamedTaha.Imagine.New.mvp.presenter.ElarbaoonElnwawyPresenter;
 import com.MohamedTaha.Imagine.New.mvp.view.ElarbaoonElnwawyView;
+import com.MohamedTaha.Imagine.New.scope.ScopeFragment;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+
+import javax.inject.Inject;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -21,25 +23,30 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.observers.DisposableObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-
-public class ElarbaoonElnwawyInteractor  extends ViewModel implements ElarbaoonElnwawyPresenter {
+//@ScopeFragment
+public class ElarbaoonElnwawyInteractor extends ViewModel implements ElarbaoonElnwawyPresenter {
     private ElarbaoonElnwawyView elarbaoonElnwawyView;
     private Context context;
     private CompositeDisposable disposable;
-    private List<ElarbaoonElnawawyModel> elnawawyModelList ;
+    private List<ElarbaoonElnawawyModel> elnawawyModelList;
     private String[] number_elhadeth;
     private String[] name_elhadeth;
     private String[] text_elhadeth;
     private String[] description_elhadeth;
     private String[] transelate_elhadeth;
-    public ElarbaoonElnwawyInteractor() {
 
-    }
-    @Override
-    public void onBind(ElarbaoonElnwawyView elarbaoonElnwawyView, Context context) {
+    @Inject
+    public ElarbaoonElnwawyInteractor(ElarbaoonElnwawyView elarbaoonElnwawyView, Context context) {
         this.elarbaoonElnwawyView = elarbaoonElnwawyView;
         this.context = context;
+
     }
+
+//    @Override
+//    public void onBind(ElarbaoonElnwawyView elarbaoonElnwawyView, Context context) {
+//        this.elarbaoonElnwawyView = elarbaoonElnwawyView;
+//        this.context = context;
+//    }
 
     @Override
     public void getAllData() {
@@ -55,7 +62,7 @@ public class ElarbaoonElnwawyInteractor  extends ViewModel implements ElarbaoonE
                     text_elhadeth = context.getResources().getStringArray(R.array.elarbaon_elnawawaya_text_elhadeth);
                     description_elhadeth = context.getResources().getStringArray(R.array.elarbaon_elnawawaya_decription_elhadeth);
                     transelate_elhadeth = context.getResources().getStringArray(R.array.elarbaon_elnawawaya_translate_elhadeth);
-                    for (int i = 0; i<number_elhadeth.length;i++){
+                    for (int i = 0; i < number_elhadeth.length; i++) {
                         ElarbaoonElnawawyModel elnawawyModel = new ElarbaoonElnawawyModel();
                         elnawawyModel.setNumber_elhadeth(number_elhadeth[i]);
                         elnawawyModel.setName_elhadeth(name_elhadeth[i]);
@@ -65,18 +72,18 @@ public class ElarbaoonElnwawyInteractor  extends ViewModel implements ElarbaoonE
                         elnawawyModel.setPosition(i);
                         elnawawyModelList.add(elnawawyModel);
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
                 return elnawawyModelList;
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
-        disposable.add(observableForGetElahadeth.subscribeWith(new DisposableObserver<List<ElarbaoonElnawawyModel>>(){
+        disposable.add(observableForGetElahadeth.subscribeWith(new DisposableObserver<List<ElarbaoonElnawawyModel>>() {
 
             @Override
             public void onNext(@NonNull List<ElarbaoonElnawawyModel> elarbaoonElnawawyModels) {
-                if (elarbaoonElnwawyView != null){
+                if (elarbaoonElnwawyView != null) {
                     elarbaoonElnwawyView.showAllElahadeth(elarbaoonElnawawyModels);
                     elarbaoonElnwawyView.showAnimation();
 
@@ -106,8 +113,7 @@ public class ElarbaoonElnwawyInteractor  extends ViewModel implements ElarbaoonE
             disposable.dispose();
         }
         elarbaoonElnwawyView = null;
-        }
-
+    }
 
 
     @Override

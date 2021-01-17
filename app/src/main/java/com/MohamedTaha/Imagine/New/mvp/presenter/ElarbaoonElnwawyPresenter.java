@@ -12,7 +12,7 @@ public interface ElarbaoonElnwawyPresenter {
     void getAllData();
 
     void onDestroy();
-    void onBind(ElarbaoonElnwawyView elarbaoonElnwawyView, Context context);
+   // void onBind(ElarbaoonElnwawyView elarbaoonElnwawyView, Context context);
 
     void setOnSearchView(MaterialSearchView materialSearchView);
 

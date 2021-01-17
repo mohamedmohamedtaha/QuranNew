@@ -18,7 +18,7 @@ import com.MohamedTaha.Imagine.New.mvp.model.ModelAzkar;
 import static com.MohamedTaha.Imagine.New.ui.activities.SwipePagesActivity.IS_TRUE;
 import static com.MohamedTaha.Imagine.New.ui.activities.SwipePagesActivity.IS_TRUE_AZKAR;
 import static com.MohamedTaha.Imagine.New.ui.fragments.AzkarFragment.SAVE_AZKAR;
-import static com.MohamedTaha.Imagine.New.ui.fragments.ReadSwarFragment.SAVE_IMAGES;
+import static com.MohamedTaha.Imagine.New.ui.fragments.SwarFragment.SAVE_IMAGES;
 
 public class ShowDialog {
     public static void showDialogForRetrieveReadingSora(Activity activity, ViewPager SwipePagesActivityVP, int position) {

@@ -11,20 +11,24 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.MohamedTaha.Imagine.New.Adapter.ImageAdapter;
 import com.MohamedTaha.Imagine.New.AutofitRecyclerView;
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.ReScrollUtil;
+import com.MohamedTaha.Imagine.New.dagger2.component.DaggerFragmentSoundComponent;
+import com.MohamedTaha.Imagine.New.dagger2.component.FragmentSoundComponent;
+import com.MohamedTaha.Imagine.New.dagger2.module.ContextModule;
+import com.MohamedTaha.Imagine.New.dagger2.module.FragmentSoundModule;
+import com.MohamedTaha.Imagine.New.dagger2.module.RescroUtilModule;
 import com.MohamedTaha.Imagine.New.mvp.interactor.ListSoundReaderInteractor;
 import com.MohamedTaha.Imagine.New.mvp.model.ImageModel;
-import com.MohamedTaha.Imagine.New.mvp.presenter.ListSoundReaderPresenter;
 import com.MohamedTaha.Imagine.New.mvp.view.ListSoundReaderView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,7 +55,10 @@ public class FragmentSound extends Fragment implements ListSoundReaderView {
     @BindView(R.id.Fragment_Sound_RecyclerView)
     AutofitRecyclerView FragmentSoundRecyclerView;
     private List<ImageModel> imageModel;
-    private ListSoundReaderPresenter presenter;
+    @Inject
+    ListSoundReaderInteractor presenter;
+    @Inject
+    ReScrollUtil reScrollUtil;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,8 +67,13 @@ public class FragmentSound extends Fragment implements ListSoundReaderView {
         View rootView = inflater.inflate(R.layout.fragment_sound, container, false);
         unbinder = ButterKnife.bind(this, rootView);
         getActivity().setTitle(getString(R.string.listen_swar));
-        presenter = new ViewModelProvider(this).get(ListSoundReaderInteractor.class);
-        presenter.onBind(this, getActivity());
+
+        FragmentSoundComponent fragmentSoundComponent = DaggerFragmentSoundComponent.builder()
+                .fragmentSoundModule(new FragmentSoundModule(this,getActivity()))
+                .rescroUtilModule(new RescroUtilModule(FragmentSoundFloatingActionButton, FragmentSoundRecyclerView))
+                .contextModule(new ContextModule(getActivity()))
+                .build();
+        fragmentSoundComponent.inject(this);
         presenter.getAllData();
 
         presenter.setOnSearchViewListener(searchView);
@@ -73,7 +85,6 @@ public class FragmentSound extends Fragment implements ListSoundReaderView {
 //        };
 //        FragmentSoundRecyclerView.setLayoutManager(linearLayoutManager);
 //        FragmentSoundRecyclerView.setHasFixedSize(true);
-        ReScrollUtil reScrollUtil = new ReScrollUtil(FragmentSoundFloatingActionButton, FragmentSoundRecyclerView);
         reScrollUtil.onClickRecyclerView(R.id.Fragment_Sound_FloatingActionButton);
         return rootView;
     }

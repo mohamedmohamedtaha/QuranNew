@@ -1,5 +1,6 @@
 package com.MohamedTaha.Imagine.New.mvp.interactor;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -8,14 +9,16 @@ import androidx.lifecycle.ViewModel;
 
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.mvp.model.ModelSora;
-import com.MohamedTaha.Imagine.New.mvp.presenter.GridViewFragmentPresenter;
-import com.MohamedTaha.Imagine.New.mvp.view.GridViewFragmentView;
+import com.MohamedTaha.Imagine.New.mvp.presenter.SwarFragmentPresenter;
+import com.MohamedTaha.Imagine.New.mvp.view.SwarFragmentView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
+
+import javax.inject.Inject;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -27,24 +30,21 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import static com.MohamedTaha.Imagine.New.helper.Images.addImagesList;
 import static com.MohamedTaha.Imagine.New.helper.Images.getPositionForNameSwars;
 
-public class GridViewFragmentInteractor extends ViewModel implements GridViewFragmentPresenter {
-    private GridViewFragmentView fragmentView;
-    private FragmentActivity activity;
+public class SwarFragmentInteractor extends ViewModel implements SwarFragmentPresenter {
+    private SwarFragmentView fragmentView;
+    private Context context;
     private List<ModelSora> name_Sroa;
     private String[] a = null;
     private String[] nzol_elsora = null;
-    private CompositeDisposable disposable = new CompositeDisposable();
+    @Inject
+    CompositeDisposable disposable;
     private ExecutorService executorService = null;
-    private int numberImage =0;
+    private int numberImage = 0;
 
-    public GridViewFragmentInteractor() {
-    }
-
-    @Override
-    public void onBind(GridViewFragmentView fragmentView, FragmentActivity context) {
+    @Inject
+    public SwarFragmentInteractor(SwarFragmentView fragmentView, Context context) {
         this.fragmentView = fragmentView;
-        activity = context;
-
+        this.context = context;
     }
 
     @Override
@@ -58,8 +58,8 @@ public class GridViewFragmentInteractor extends ViewModel implements GridViewFra
             @Override
             public List<ModelSora> call() throws Exception {
                 name_Sroa = new ArrayList<>();
-                a = activity.getResources().getStringArray(R.array.name_allSwar);
-                nzol_elsora = activity.getResources().getStringArray(R.array.nzolElswar);
+                a = context.getResources().getStringArray(R.array.name_allSwar);
+                nzol_elsora = context.getResources().getStringArray(R.array.nzolElswar);
                 for (int i = 0; i < a.length; i++) {
                     ModelSora name_Sroa_local = new ModelSora();
                     name_Sroa_local.setName_sora(a[i]);

@@ -47,7 +47,7 @@ public class SplashFragment extends Fragment implements SplashFragmentView {
         ComponentSplashFragment componentSplashFragment = DaggerComponentSplashFragment.builder().
                 moduleSplashFragment(new ModuleSplashFragment(this, getActivity())).build();
         componentSplashFragment.inject(this);
-        splashFragmentPresenter.onBind(this, getActivity());
+     //   splashFragmentPresenter.onBind(this, getActivity());
         splashFragmentPresenter.goToSlider();
         return view;
     }

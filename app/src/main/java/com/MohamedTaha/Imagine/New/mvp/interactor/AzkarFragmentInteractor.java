@@ -1,57 +1,42 @@
 package com.MohamedTaha.Imagine.New.mvp.interactor;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-
 import androidx.lifecycle.ViewModel;
-
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.mvp.model.ModelAzkar;
 import com.MohamedTaha.Imagine.New.mvp.presenter.AzkarFragmentPresenter;
 import com.MohamedTaha.Imagine.New.mvp.view.AzkarFragmentView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
-
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
-
+import javax.inject.Inject;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.observers.DisposableObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-
-
 public class AzkarFragmentInteractor extends ViewModel implements AzkarFragmentPresenter {
+    @Inject
+    CompositeDisposable disposable;
     private static final String SAVE_INSTANCE_AZKAR = "save_instance_azkar";
     public boolean isNewlyCreated = true;
-
     private static final String TAG = "TAG";
     private AzkarFragmentView azkarFragmentView;
     private ArrayList<ModelAzkar> modelAzkar;
     private Context context;
-    private CompositeDisposable disposable;
-
     String[] array_azkar;
     String[] array_describe_azkar;
 
-    public AzkarFragmentInteractor() {
-        Log.i("TAGO", " AzkarFragmentInteractor");
-
-    }
-
-    @Override
-    public void onBind(AzkarFragmentView azkarFragmentView, Context context) {
+    @Inject
+    public AzkarFragmentInteractor(AzkarFragmentView azkarFragmentView, Context context) {
         this.azkarFragmentView = azkarFragmentView;
         this.context = context;
-        Log.i("TAGO", " onBind presenter azkar ");
-
     }
 
     @Override
     public void getAllData() {
-        disposable = new CompositeDisposable();
         azkarFragmentView.showProgress();
         Observable<ArrayList<ModelAzkar>> modelAzkarObservable = Observable.fromCallable(new Callable<ArrayList<ModelAzkar>>() {
             @Override
@@ -82,7 +67,6 @@ public class AzkarFragmentInteractor extends ViewModel implements AzkarFragmentP
                     azkarFragmentView.showAllINameAzkar(modelAzkars);
                     azkarFragmentView.showAnimation();
                     Log.d(TAG, "onNext  ");
-
                 }
             }
 
@@ -91,7 +75,6 @@ public class AzkarFragmentInteractor extends ViewModel implements AzkarFragmentP
                 if (azkarFragmentView != null) {
                     azkarFragmentView.hideProgress();
                     Log.d(TAG, "onError  ");
-
                 }
             }
 
@@ -100,7 +83,6 @@ public class AzkarFragmentInteractor extends ViewModel implements AzkarFragmentP
                 if (azkarFragmentView != null) {
                     azkarFragmentView.hideProgress();
                     Log.d(TAG, "onComplete  ");
-
                 }
             }
         }));
@@ -145,10 +127,9 @@ public class AzkarFragmentInteractor extends ViewModel implements AzkarFragmentP
         if (disposable != null && !disposable.isDisposed()) {
             disposable.clear();
             disposable.dispose();
-            Log.d(TAG, "disposable cleared  ");
+            Log.d("TAGO", "disposable cleared  ");
         }
         this.azkarFragmentView = null;
-
     }
 
     @Override
@@ -159,7 +140,6 @@ public class AzkarFragmentInteractor extends ViewModel implements AzkarFragmentP
     @Override
     public void restoreState(Bundle outState) {
         modelAzkar = outState.getParcelableArrayList(SAVE_INSTANCE_AZKAR);
-
     }
 
     @Override
@@ -200,7 +180,6 @@ public class AzkarFragmentInteractor extends ViewModel implements AzkarFragmentP
                     } else {
                         azkarFragmentView.isEmpty();
                     }
-
                 } else {
                     azkarFragmentView.thereData();
                     modelAzkar = name_azkar;
@@ -210,6 +189,4 @@ public class AzkarFragmentInteractor extends ViewModel implements AzkarFragmentP
             }
         });
     }
-
-
 }
