@@ -63,11 +63,10 @@ public class ElarbaoonElnawawyActivity extends AppCompatActivity implements Elar
     @Inject
     ReScrollUtil reScrollUtil;
     private List<ElarbaoonElnawawyModel> elnawawyModelList;
+    @Inject
+    ElarbaoonElnawawyModel elnawawyModel;
     private Menu globalMenu;
     private AdapterElarbaoonElnawawy adapterElarbaoonElnawawy;
-    private ElarbaoonElnawawyModel elnawawyModel = new ElarbaoonElnawawyModel();
-    public ElarbaoonElnawawyActivity() {
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

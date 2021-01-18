@@ -1,5 +1,7 @@
 package com.MohamedTaha.Imagine.New.mvp.model;
 
+import javax.inject.Inject;
+
 public class ElarbaoonElnawawyModel {
     private String number_elhadeth;
     private String name_elhadeth;
@@ -7,6 +9,10 @@ public class ElarbaoonElnawawyModel {
     private String description_elhadeth;
     private String transelate_elhadeth;
     private int position;
+
+    @Inject
+    public ElarbaoonElnawawyModel() {
+    }
 
     public int getPosition() {
         return position;

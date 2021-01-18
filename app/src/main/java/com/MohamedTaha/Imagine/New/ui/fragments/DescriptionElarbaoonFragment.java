@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -35,41 +34,23 @@ public class DescriptionElarbaoonFragment extends Fragment {
     android.view.View View;
     @BindView(R.id.DescriptionElarbaoonFragment_ViewPager)
     ViewPager DescriptionElarbaoonFragmentViewPager;
-    //  private FragmentDescriptionElarbaoonBinding fragmentDescriptionElarbaoonBinding;
     private ElarbaoonElnawawyModel position_elhadeth;
     private String name_elhadeth;
     private String number_elhadeth;
-
-
-    public DescriptionElarbaoonFragment() {
-        // Required empty public constructor
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_description_elarbaoon, container, false);
         ButterKnife.bind(this, view);
-
-        // Inflate the layout for this fragment
-//        fragmentDescriptionElarbaoonBinding = FragmentDescriptionElarbaoonBinding.inflate(inflater);
-//        View view = fragmentDescriptionElarbaoonBinding.getRoot();
         Bundle bundle = getArguments();
         if (bundle != null) {
             position_elhadeth = new Gson().fromJson(bundle.getString(POSITION), ElarbaoonElnawawyModel.class);
-//            name_elhadeth = new Gson().fromJson(bundle.getString(NAME_ELHADETH), String.class);
-//            number_elhadeth = new Gson().fromJson(bundle.getString(NUMBER_ELHADETH), String.class);
             DescriptionElarbaoonFragmentTVNumberElhadeth.setText(position_elhadeth.getNumber_elhadeth() + "/");
             DescriptionElarbaoonFragmentTVNameElhadeth.setText(position_elhadeth.getName_elhadeth());
         }
-        DescriptionElarbaoonFragmentViewPager.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Click", Toast.LENGTH_LONG).show();
-            }
-        });
-        PagerAdapterElarbaoonElnawawy pagerAdapterElarbaoonElnawawy = new PagerAdapterElarbaoonElnawawy(getActivity(), getChildFragmentManager(), position_elhadeth.getPosition());
+        PagerAdapterElarbaoonElnawawy pagerAdapterElarbaoonElnawawy = new PagerAdapterElarbaoonElnawawy(getActivity(), getChildFragmentManager(),
+                position_elhadeth.getPosition());
         DescriptionElarbaoonFragmentViewPager.setAdapter(pagerAdapterElarbaoonElnawawy);
         DescriptionElarbaoonFragmentViewPager.setCurrentItem(2);
         DescriptionElarbaoonFragmentTabLayout.setupWithViewPager(DescriptionElarbaoonFragmentViewPager);
@@ -79,6 +60,5 @@ public class DescriptionElarbaoonFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // fragmentDescriptionElarbaoonBinding = null;
     }
 }

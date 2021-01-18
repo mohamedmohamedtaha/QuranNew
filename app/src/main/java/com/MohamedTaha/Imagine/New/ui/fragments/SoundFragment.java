@@ -41,7 +41,7 @@ import static com.MohamedTaha.Imagine.New.ui.activities.NavigationDrawaberActivi
  */
 
 
-public class FragmentSound extends Fragment implements ListSoundReaderView {
+public class SoundFragment extends Fragment implements ListSoundReaderView {
     //    @BindView(R.id.Fragment_Sound_GridView)
 //    GridView FragmentSoundGridView;
     @BindView(R.id.Fragment_Sound_ProgressBar)

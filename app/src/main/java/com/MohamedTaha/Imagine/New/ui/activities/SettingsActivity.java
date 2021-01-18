@@ -13,7 +13,6 @@ import com.MohamedTaha.Imagine.New.R;
 
 public class SettingsActivity extends AppCompatActivity implements
         PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
-
     private static final String TITLE_TAG = "settingsActivityTitle";
 
     @Override
@@ -77,7 +76,6 @@ public class SettingsActivity extends AppCompatActivity implements
     }
 
     public static class HeaderFragment extends PreferenceFragmentCompat {
-
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.header_preferences, rootKey);

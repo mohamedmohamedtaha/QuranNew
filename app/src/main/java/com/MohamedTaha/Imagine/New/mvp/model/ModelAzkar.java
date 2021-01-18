@@ -3,12 +3,15 @@ package com.MohamedTaha.Imagine.New.mvp.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import javax.inject.Inject;
+
 public class ModelAzkar implements Parcelable {
     protected ModelAzkar(Parcel in) {
         name_azkar = in.readString();
         describe_azkar = in.readString();
         position = in.readInt();
     }
+
 
     public static final Creator<ModelAzkar> CREATOR = new Creator<ModelAzkar>() {
         @Override
@@ -21,9 +24,12 @@ public class ModelAzkar implements Parcelable {
             return new ModelAzkar[size];
         }
     };
+
+    @Inject
     public ModelAzkar() {
 
     }
+
     public String getName_azkar() {
         return name_azkar;
     }

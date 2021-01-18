@@ -67,7 +67,7 @@ import com.MohamedTaha.Imagine.New.room.TimingsViewModel;
 import com.MohamedTaha.Imagine.New.service.GetDataEveryMonthJobService;
 import com.MohamedTaha.Imagine.New.ui.fragments.AzanFragment;
 import com.MohamedTaha.Imagine.New.ui.fragments.AzkarFragment;
-import com.MohamedTaha.Imagine.New.ui.fragments.FragmentSound;
+import com.MohamedTaha.Imagine.New.ui.fragments.SoundFragment;
 import com.MohamedTaha.Imagine.New.ui.fragments.PartsFragment;
 import com.MohamedTaha.Imagine.New.ui.fragments.SwarFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -424,8 +424,8 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                     break;
                 case R.id.sound_quran:
                     //    NavigationDrawaberActivityVPager.setCurrentItem(2);
-                    FragmentSound fragmentSound = new FragmentSound();
-                    HelperClass.replece(fragmentSound, getSupportFragmentManager(), R.id.frameLayout);
+                    SoundFragment soundFragment = new SoundFragment();
+                    HelperClass.replece(soundFragment, getSupportFragmentManager(), R.id.frameLayout);
                     break;
                 case R.id.azkar:
                     AzkarFragment azkarFragment = new AzkarFragment();

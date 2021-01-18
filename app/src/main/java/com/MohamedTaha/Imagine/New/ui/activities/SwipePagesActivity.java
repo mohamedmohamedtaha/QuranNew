@@ -10,13 +10,14 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.MohamedTaha.Imagine.New.Adapter.AdapterForAzkarSwipe;
 import com.MohamedTaha.Imagine.New.Adapter.AdapterForSwipe;
 import com.MohamedTaha.Imagine.New.R;
-import com.MohamedTaha.Imagine.New.RxBusData;
+import com.MohamedTaha.Imagine.New.dagger2.component.DaggerSwipePagesActivityComponent;
+import com.MohamedTaha.Imagine.New.dagger2.component.SwipePagesActivityComponent;
+import com.MohamedTaha.Imagine.New.dagger2.module.SharedPreferencesModule;
 import com.MohamedTaha.Imagine.New.helper.HelperClass;
 import com.MohamedTaha.Imagine.New.helper.SharedPerefrenceHelper;
 import com.MohamedTaha.Imagine.New.helper.ShowDialog;
@@ -30,9 +31,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.rxjava3.disposables.Disposable;
 
 import static com.MohamedTaha.Imagine.New.helper.Images.SAVE_POSITION;
 import static com.MohamedTaha.Imagine.New.notification.morningAzkar.MorningAzkarAlarmReceiver.NOTIFICATION_ID_NUMBER_AZKAR;
@@ -47,29 +49,28 @@ import static com.MohamedTaha.Imagine.New.ui.fragments.AzkarFragment.SAVE_AZKAR;
 import static com.MohamedTaha.Imagine.New.ui.fragments.AzkarFragment.SAVE_POTION_AZKAR;
 import static com.MohamedTaha.Imagine.New.ui.fragments.SwarFragment.SAVE_IMAGES;
 import static com.MohamedTaha.Imagine.New.ui.fragments.SwarFragment.SAVE_STATE;
-public class SwipePagesActivity extends AppCompatActivity  {
-    ArrayList<Integer> images = new ArrayList<>();
-    ArrayList<Integer> imagesNotification = new ArrayList<>();
-    ArrayList<Integer> imagesFirst = new ArrayList<>();
+
+public class SwipePagesActivity extends AppCompatActivity {
+    ArrayList<Integer> images, imagesNotification, imagesFirst;
     public static final String IS_TRUE = "is_true";
     public static final String IS_TRUE_AZKAR = "is_true_azkar";
     @BindView(R.id.SwipePagesActivity_PB)
     ProgressBar SwipePagesActivityPB;
     @BindView(R.id.SwipePagesActivity_VP)
     RtlViewPager SwipePagesActivityVP;
-    List<ModelAzkar> modelAzkarList = new ArrayList<>();
+    @Inject
+    List<ModelAzkar> modelAzkarList;
+    @Inject
+    SharedPreferences sharedPreferences;
     private int save_position;
     private int save_position_azkar;
     private int position = 1;
     private int position_azkar = 0;
-    Bundle bundle;
+    private Bundle bundle;
     int notificationId = -1;
     int notification_id_morning_azkar = -1;
     private String language_name;
-    private SharedPreferences sharedPreferences;
     private boolean screenOn;
-    private ModelAzkar position_azkar_notification;
-    private Disposable disposable;
 
 
     @Override
@@ -84,7 +85,9 @@ public class SwipePagesActivity extends AppCompatActivity  {
             HelperClass.change_language("ar", this);
         }
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SwipePagesActivityComponent swipePagesActivityComponent = DaggerSwipePagesActivityComponent.builder()
+                .sharedPreferencesModule(new SharedPreferencesModule(this)).build();
+        swipePagesActivityComponent.inject(this);
         screenOn = sharedPreferences.getBoolean(getString(R.string.switch_key), true);
         getScreenOn(screenOn);
         //for close Notification
@@ -183,7 +186,6 @@ public class SwipePagesActivity extends AppCompatActivity  {
                 }
             });
             SwipePagesActivityVP.setAdapter(adapterForAzkarSwipe);
-
             if (SharedPerefrenceHelper.getBooleanForAzkar(this, IS_TRUE_AZKAR, false)) {
                 ShowDialog.showDialogForRetrieveAzkar(this, SwipePagesActivityVP, position_azkar);
             } else {
@@ -227,10 +229,7 @@ public class SwipePagesActivity extends AppCompatActivity  {
             for (int i = 0; i < imagesNotification.size(); i++) {
                 bundle.putInt(SAVE_Position_Notification, imagesNotification.get(i));
             }
-            //  bundle.putInt(SAVE_Position_Notification, imagesNotification);
             Log.d("TAG", " " + imagesNotification);
-
-
             SwipePagesActivityPB.setVisibility(View.GONE);
         }
     }
@@ -247,10 +246,7 @@ public class SwipePagesActivity extends AppCompatActivity  {
             for (int i = 0; i < imagesNotification.size(); i++) {
                 bundle.putInt(SAVE_Position_Notification, imagesNotification.get(i));
             }
-            //  bundle.putInt(SAVE_Position_Notification, imagesNotification);
             Log.d("TAG", " " + imagesNotification);
-
-
             SwipePagesActivityPB.setVisibility(View.GONE);
         }
     }
@@ -271,34 +267,6 @@ public class SwipePagesActivity extends AppCompatActivity  {
     }
 
     private void getArgemnetsForAzkar() {
-        Log.d("TTTT:" , "getArgemnetsForAzkar");
-        RxBusData.subscribe((message)->{
-            if (message instanceof ModelAzkar){
-                ModelAzkar data = (ModelAzkar)message;
-                Log.d("TTTT:" , data.getName_azkar());
-            }else {
-                Log.d("TTTT:", "Error ");
-
-
-            }
-        });
-
-//        RxBusData.subscribe(new Consumer<Object>() {
-//            @Override
-//            public void accept(Object o) throws Throwable {
-//                Log.d("TTTT:" , "TAha");
-//
-//                if (o instanceof ModelAzkar){
-//                    ModelAzkar data = (ModelAzkar)o;
-//                    Log.d("TTTT:" , data.toString());
-//                }else {
-//                    Log.d("TTTT:" , "Error ");
-//
-//                }
-//
-//               // }
-//            }
-//        });
         if (bundle != null) {
             Type listType = new TypeToken<List<ModelAzkar>>() {
             }.getType();
@@ -310,7 +278,6 @@ public class SwipePagesActivity extends AppCompatActivity  {
     }
 
     private void getArgemnetsForNotificationAzkar() {
-
         if (bundle != null) {
             Type listType = new TypeToken<List<ModelAzkar>>() {
             }.getType();
@@ -338,8 +305,6 @@ public class SwipePagesActivity extends AppCompatActivity  {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        imagesNotification.clear();
-        //      images.clear();
     }
 
     @Override
@@ -350,14 +315,7 @@ public class SwipePagesActivity extends AppCompatActivity  {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-//        if (bundle.getBoolean(SAVE_PAGE)){
-//            Intent intent = new Intent(SwipePagesActivity.this, SwipePagesActivity.class);
-//            startActivity(intent);
-//            overridePendingTransition(R.anim.item_anim_no_thing, R.anim.item_anim_slide_from_bottom);
-//        }else {
         overridePendingTransition(R.anim.item_anim_no_thing, R.anim.item_anim_slide_from_bottom);
-
-        //  }
     }
 
 }
