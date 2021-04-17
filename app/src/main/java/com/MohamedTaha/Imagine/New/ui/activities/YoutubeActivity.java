@@ -1,10 +1,12 @@
-package com.MohamedTaha.Imagine.New;
+package com.MohamedTaha.Imagine.New.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.MohamedTaha.Imagine.New.Config;
+import com.MohamedTaha.Imagine.New.R;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -12,7 +14,7 @@ import com.google.android.youtube.player.YouTubePlayerView;
 
 public class YoutubeActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
     private static final int RECOVERY_REQUEST = 1;
-    private static final String LINK_YOUTUBE = "7bfQJS5Thec";
+    private static final String LINK_YOUTUBE = "SMNHZR1u6KQ";
     private YouTubePlayerView youTubeView;
 
     @Override

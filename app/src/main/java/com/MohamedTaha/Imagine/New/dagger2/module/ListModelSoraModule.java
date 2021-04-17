@@ -1,6 +1,6 @@
 package com.MohamedTaha.Imagine.New.dagger2.module;
 
-import com.MohamedTaha.Imagine.New.mvp.model.ModelAzkar;
+import com.MohamedTaha.Imagine.New.mvp.model.ModelSora;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +9,10 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class ListModelAzkarModule {
+public class ListModelSoraModule {
+
     @Provides
-    public List<ModelAzkar> provideModelAzkarList() {
+    public List<ModelSora> provideModelSoraList() {
         return new ArrayList<>();
     }
-
 }

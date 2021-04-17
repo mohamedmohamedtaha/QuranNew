@@ -4,13 +4,13 @@ apply plugin: 'com.google.gms.google-services'  // Google Services plugin
 
 android {
 
-    compileSdkVersion 29
+    compileSdkVersion 30
     defaultConfig {
         applicationId "com.MohamedTaha.Imagine.New"
         minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 19
-        versionName "1.4"
+        targetSdkVersion 30
+        versionCode 20
+        versionName "2.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
 
@@ -36,7 +36,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.navigation:navigation-fragment:2.3.2'
     implementation 'androidx.navigation:navigation-ui:2.3.2'
-    testImplementation 'junit:junit:4.13'
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -47,7 +47,7 @@ dependencies {
 
     implementation "com.android.support:recyclerview-v7:$supportLibraryVersion"
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.6', changing: true
-    testImplementation 'junit:junit:4.13'
+    testImplementation 'junit:junit:4.13.2'
     implementation 'com.github.clans:fab:1.6.4'
     //ButterKnife Dependency
     implementation "com.jakewharton:butterknife:$supportButterKnife"
@@ -79,8 +79,8 @@ dependencies {
     implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
     // Add the Firebase SDK for Google Analytics
-    implementation 'com.google.firebase:firebase-analytics:18.0.1'
-    implementation 'com.google.firebase:firebase-messaging:21.0.1'
+    implementation 'com.google.firebase:firebase-analytics:18.0.3'
+    implementation 'com.google.firebase:firebase-messaging:21.1.0'
     implementation 'org.jetbrains:annotations:15.0'
 
     //Add services location
@@ -112,9 +112,15 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
     //For dagger 2
-    implementation 'com.google.dagger:dagger-android-support:2.31' // if you use the support libraries
+    implementation 'com.google.dagger:dagger-android-support:2.31'
+    // if you use the support libraries
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.31'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.31'
+//For use work manager
+    implementation 'androidx.work:work-runtime-ktx:2.5.0'
+//For update the app
+    implementation 'com.github.javiersantos:AppUpdater:2.7'
+
 }
 configurations.all {
     resolutionStrategy.eachDependency { DependencyResolveDetails details ->
@@ -124,4 +130,5 @@ configurations.all {
                 details.useVersion "${targetSdk}.+"
             }
         }
-    }}
+    }
+}

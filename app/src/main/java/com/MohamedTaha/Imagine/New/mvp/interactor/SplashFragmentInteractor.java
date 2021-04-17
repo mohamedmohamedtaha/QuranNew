@@ -19,7 +19,6 @@ public class SplashFragmentInteractor extends ViewModel implements SplashFragmen
     private static final String TAG = "SplashFragmentInteracto";
     @Inject
     Timer waitTimer;
-   // @Inject
     Activity context;
     SplashFragmentView splashFragmentView;
     private static final int WAIT_TIME = 2500;

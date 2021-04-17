@@ -1,5 +1,7 @@
 package com.MohamedTaha.Imagine.New.mvp.model;
 
+import javax.inject.Inject;
+
 public class ModelSora {
     private String name_sora;
     private int position;
@@ -22,7 +24,7 @@ public class ModelSora {
         this.nzol_elsora = nsol_elsora;
     }
 
-
+    @Inject
     public ModelSora() {
     }
 

@@ -32,7 +32,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.room.EmptyResultSetException;
 
@@ -40,7 +39,6 @@ import com.MohamedTaha.Imagine.New.AppConstants;
 import com.MohamedTaha.Imagine.New.BuildConfig;
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.ShowGuide;
-import com.MohamedTaha.Imagine.New.YoutubeActivity;
 import com.MohamedTaha.Imagine.New.dagger2.MainApplication;
 import com.MohamedTaha.Imagine.New.dagger2.component.RetrofitComponent;
 import com.MohamedTaha.Imagine.New.dagger2.module.NavigationDrawaberPresenterModule;
@@ -67,9 +65,11 @@ import com.MohamedTaha.Imagine.New.room.TimingsViewModel;
 import com.MohamedTaha.Imagine.New.service.GetDataEveryMonthJobService;
 import com.MohamedTaha.Imagine.New.ui.fragments.AzanFragment;
 import com.MohamedTaha.Imagine.New.ui.fragments.AzkarFragment;
-import com.MohamedTaha.Imagine.New.ui.fragments.SoundFragment;
 import com.MohamedTaha.Imagine.New.ui.fragments.PartsFragment;
+import com.MohamedTaha.Imagine.New.ui.fragments.SoundFragment;
 import com.MohamedTaha.Imagine.New.ui.fragments.SwarFragment;
+import com.github.javiersantos.appupdater.AppUpdater;
+import com.github.javiersantos.appupdater.enums.UpdateFrom;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -79,7 +79,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
@@ -89,9 +88,7 @@ import io.reactivex.Flowable;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -137,7 +134,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     String appPackageName;
     private TimingsViewModel timingsViewModel;
     public static String store_city_name = null;
-    private String repear;
+    private String prayer_timing_default;
     private String number_azan_default;
     String city_name = null;
     int geocoderMaxResults = 1;
@@ -147,6 +144,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     @Inject
     @APIServiceCity
     APIServices apiServicesForCity;
+    private AppUpdater appUpdater;
 
     public static boolean checkIsGetData = false;
 
@@ -170,17 +168,8 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_drawable);
         ButterKnife.bind(this);
-
-        RetrofitComponent retrofitComponent = ((MainApplication)getApplication()).getRetrofitComponent();
-        retrofitComponent.appComponentFactory().create(new NavigationDrawaberPresenterModule(this,this),new SharedPreferencesModule(this)).inject(this);
-
-//        AppComponent appComponent = DaggerAppComponent.factory().create(retrofitComponent,new NavigationDrawaberPresenterModule(this,this),new SharedPreferencesModule(this));
-//                appComponent.inject(this);
-//        AppComponent showGiudeComponent = DaggerAppComponent.builder().sharedPreferencesModule(new SharedPreferencesModule(this))
-//                .navigationDrawaberPresenterModule(new NavigationDrawaberPresenterModule(this, this)).build();
-//
-//        showGiudeComponent.inject(this);
-
+        RetrofitComponent retrofitComponent = ((MainApplication) getApplication()).getRetrofitComponent();
+        retrofitComponent.appComponentFactory().create(new NavigationDrawaberPresenterModule(this, this), new SharedPreferencesModule(this)).inject(this);
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
 
         enableStrictMode();
@@ -189,14 +178,9 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                 + Thread.currentThread().getName());
 
 //        //getString Retrieve a String value from the Preference
-        repear = sharedPreferences.getString(getString(R.string.settings_method_key),
+        prayer_timing_default = sharedPreferences.getString(getString(R.string.settings_method_key),
                 getString(R.string.settings_method_default));
-        //checkIsFragmentAzanIsOpen();
-        //apiServicesForCity = getRetrofitForCity().create(APIServices.class);
-        //apiServices = getRetrofit().create(APIServices.class);
-        Log.i("TAG", " onSuccess apiServices " + apiServices);
-        Log.i("TAG", " onSuccess apiServicesForCity " + apiServicesForCity);
-
+        Log.i("prayer_timing_default", "prayer_timing_default $prayer_timing_default" + prayer_timing_default);
 
         appPackageName = getPackageName();
 
@@ -225,9 +209,6 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
             overridePendingTransition(R.anim.item_anim_slide_from_top, R.anim.item_anim_no_thing);
         }
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        //navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        SwarFragment swarFragment = (SwarFragment) fragmentManager.findFragmentByTag("TAG_WORKER");
         if (savedInstanceState != null) {
             current_fragment = savedInstanceState.getInt(SAVE_STATE_VIEW_PAGER);
             navView.setSelectedItemId(current_fragment);
@@ -272,52 +253,25 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 //        });
 //        setupViewPager(NavigationDrawaberActivityVPager);
 //
+        //For update the app when there any library there
+        appUpdater = new AppUpdater(this);
+        appUpdater.setDisplay(com.github.javiersantos.appupdater.enums.Display.DIALOG)
+                .setUpdateFrom(UpdateFrom.GOOGLE_PLAY)
+                .setTitleOnUpdateAvailable(getString(R.string.update_available))
+                .setContentOnUpdateAvailable(getString(R.string.content_update_available))
+                .setButtonUpdate(getString(R.string.text_update))
+                .setButtonDoNotShowAgain("")
+                .setButtonDismiss(getString(R.string.maybe_later))
+                .setIcon(R.mipmap.logo)
+                .setCancelable(false)
+                .start();
+
     }
 
-    private boolean getSharedPreferencesThreadSeperateBoolean() {
-        disposable = new CompositeDisposable();
-        Observable<Boolean> modelAzkarObservable = Observable.fromCallable(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                try {
-                    //getString Retrieve a String value from the Preference
-                    isFirstTime = SharedPerefrenceHelper.getBooleanForWayUsing(getApplicationContext(), IS_FIRST_TIME_WAY_USING, false);
-
-                } catch (Exception e) {
-                }
-                return isFirstTime;
-            }
-        }).subscribeOn(io.reactivex.rxjava3.schedulers.Schedulers.io())
-                .observeOn(io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread());
-        disposable.add(modelAzkarObservable.subscribeWith(new DisposableObserver<Boolean>() {
-            @Override
-            public void onNext(@io.reactivex.rxjava3.annotations.NonNull Boolean repearAsync) {
-                if (repearAsync != null) {
-                    isFirstTime = repearAsync;
-                    Log.d("TAG", "onNext Prefrences  ");
-                    Log.d("TAG", "doInBackground - Thread " + Thread.currentThread().getId() + "Name : "
-                            + Thread.currentThread().getName());
-                }
-            }
-
-            @Override
-            public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                if (repearAsync != null) {
-                    Log.d("TAG", "onError Prefrences ");
-
-                }
-            }
-
-            @Override
-            public void onComplete() {
-                if (repearAsync != null) {
-                    Log.d("TAG", "onComplete Prefrences ");
-                    Log.d("TAG", "doInBackground - Thread " + Thread.currentThread().getId() + "Name : "
-                            + Thread.currentThread().getName());
-                }
-            }
-        }));
-        return isFirstTime;
+    @Override
+    protected void onStop() {
+        super.onStop();
+        appUpdater.stop();
     }
 
     private void getDateTodayFromDatabase() {
@@ -337,11 +291,9 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                         Log.i("TAG", " onSuccess " + integer);
                         store_date_today = integer;
                         Log.i("TAG", " timingsViewModel.store_date_today onSuccess" + store_date_today);
-                        getPrayerTimesEveryMonth(getApplicationContext());
-
+                        //getPrayerTimesEveryMonth(getApplicationContext());
+                        ScheduleGetDataEveryMonth(getApplicationContext());
                         enableBootReceiverEveryMonth(getApplicationContext());
-
-                        ScheduleGetDataEveryMonth();
                     }
 
                     @Override
@@ -365,14 +317,15 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                     Log.i("TAG", " timingsViewModel.store_date_today second method" + store_date_today);
 
                     // if (store_date_today <= 0) {
-                    getPrayerTimesEveryMonth(getApplicationContext());
+                   // getPrayerTimesEveryMonth(getApplicationContext());
+                    ScheduleGetDataEveryMonth(getApplicationContext());
                     enableBootReceiverEveryMonth(getApplicationContext());
                     // Log.i("TAG", "store_date_today yes : " + store_date_today);
                     //    isNetworkConnected(this);
                     //    }
                 }, e -> {
                     // Log.i("TAG", "e yes : " + store_date_today);
-                    Toast.makeText(getApplicationContext(), "e : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
 
 
@@ -488,14 +441,15 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                 setTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmPendingIntent);
     }
 
-    private void ScheduleGetDataEveryMonth() {
+    public static void ScheduleGetDataEveryMonth(Context context) {
         PersistableBundle extras = new PersistableBundle();
         extras.putInt(CHECKISDATAORNOTINDATABASE, store_date_today);
-        ComponentName componentName = new ComponentName(this, GetDataEveryMonthJobService.class);
+        ComponentName componentName = new ComponentName(context, GetDataEveryMonthJobService.class);
         JobInfo info = new JobInfo.Builder(1, componentName)
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                .setRequiresBatteryNotLow(true)
                 .setExtras(extras).build();
-        JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+        JobScheduler scheduler = (JobScheduler) context.getSystemService(JOB_SCHEDULER_SERVICE);
         scheduler.schedule(info);
     }
 
@@ -561,11 +515,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
             bundle.putInt("bundle", resultCode);
             azanFragment.setArguments(bundle);
             azanFragment.onActivityResult(requestCode, resultCode, data);
-        }
-//        else if (requestCode == AzanFragment.LOCATION_PERMISSION_REQUEST_CODE) {
-//            Log.i("TAG", "LOCATION_PERMISSION_REQUEST_CODE");
-//        }
-        else {
+        } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
@@ -593,7 +543,7 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 
     @Override
     public void onPrayerTimesAdded() {
-        SharedPerefrenceHelper.putStringCompareMethod(this, COMPARE_METHOD, repear);
+        SharedPerefrenceHelper.putStringCompareMethod(this, COMPARE_METHOD, prayer_timing_default);
         SharedPerefrenceHelper.putStringAzan(this, AZAN_DEFUALT, number_azan_default);
         changeValueInListPreference();
         changeValueInListPreferenceForAzan();
@@ -629,8 +579,8 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
                         city_name = getCityNameWithoutLocation(city.getLat(), city.getLon());
                         Log.d("TAG", "City name in arabic getCity is : " + city_name);
                         getMethodPreferences(city.getCountry());
-                        getPrayerTimesByCity(context, city.getCity(), city.getCountry(), Integer.valueOf(repear), city_name);
-                        Log.d("TAG", " repear is : " + repear);
+                        getPrayerTimesByCity(context, city.getCity(), city.getCountry(), Integer.valueOf(prayer_timing_default), city_name);
+                        Log.d("TAG", " repear is : " + prayer_timing_default);
 
                     }
                 } catch (Exception e) {
@@ -689,12 +639,12 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
             customForPreferences(getString(R.string.settings_method_key), getString(R.string.settings_method_default));
             customForPreferencesAzan(getString(R.string.settings_azan_abdelbaset_value), getString(R.string.settings_azan_abdelbaset_value));
         }
-        return repear;
+        return prayer_timing_default;
     }
 
     private String customForPreferences(String method_key, String method_default) {
-        repear = sharedPreferences.getString(method_key, method_default);
-        return number_azan_default;
+        prayer_timing_default = sharedPreferences.getString(method_key, method_default);
+        return prayer_timing_default;
     }
 
     private String customForPreferencesAzan(String method_key, String method_default) {
@@ -703,15 +653,11 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
     }
 
     private void changeValueInListPreference() {
-        //  sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        //  SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(getString(R.string.settings_method_key), repear);
+        editor.putString(getString(R.string.settings_method_key), prayer_timing_default);
         editor.commit();
     }
 
     private void changeValueInListPreferenceForAzan() {
-        //sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        //SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(getString(R.string.settings_azan_key), number_azan_default);
         editor.commit();
     }
@@ -749,12 +695,10 @@ public class NavigationDrawaberActivity extends AppCompatActivity implements Nav
 
     @Override
     public void getDataFromLocationAfterDeleteData() {
-
     }
 
     @Override
     public void onPrayerTimesError(Throwable e) {
-
     }
 
     @Override

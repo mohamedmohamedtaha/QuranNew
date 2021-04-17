@@ -65,12 +65,12 @@ public class GetDataEveryMonthJobService extends JobService  implements Database
                 getString(R.string.settings_method_default));
             int isData = params.getExtras().getInt(CHECKISDATAORNOTINDATABASE,-1);
             if (isData <= 0) {
-                isNetworkConnected();
-                if (isInternet()){
-                    jobFinished(params,true);
+                //isNetworkConnected();
+            //    if (isInternet()){
+                TimingsAppDatabase.getInstance(GetDataEveryMonthJobService.this).DeletePrayerTimes(GetDataEveryMonthJobService.this);
+                jobFinished(params,true);
                     Log.i("TAG", "GetDataEveryMonthJobService jobFinished DeletePrayerTimes");
-
-                }
+               // }
         }
         return true;
     }
@@ -104,9 +104,7 @@ public class GetDataEveryMonthJobService extends JobService  implements Database
 
                 } else {
                     if (!isInternet()) {
-
                     } else {
-
                         Log.i("TAG", "GetDataEveryMonthJobService start DeletePrayerTimes");
                         TimingsAppDatabase.getInstance(GetDataEveryMonthJobService.this).DeletePrayerTimes(GetDataEveryMonthJobService.this);
                     }

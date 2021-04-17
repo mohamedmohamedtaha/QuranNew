@@ -3,8 +3,6 @@ package com.MohamedTaha.Imagine.New.mvp.interactor;
 import android.content.Context;
 import android.os.Bundle;
 
-import androidx.fragment.app.FragmentActivity;
-
 import com.MohamedTaha.Imagine.New.R;
 import com.MohamedTaha.Imagine.New.mvp.model.ModelSora;
 import com.MohamedTaha.Imagine.New.mvp.presenter.PartsFragmentPresenter;
@@ -14,12 +12,15 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.observers.DisposableObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -31,16 +32,18 @@ public class PartsFragmentsInteractor implements PartsFragmentPresenter {
     private PartsFragmentView partsFragmentView;
     private String[] name_parts;
     private Context context;
-    private List<ModelSora> name_part_list = new ArrayList<>();
-    //private Subscription subscription_name_sora;
     @Inject
-    CompositeDisposable disposable ;
+     List<ModelSora> name_part_list;
+    @Inject
+    CompositeDisposable disposable;
+    int threadCount =Runtime.getRuntime().availableProcessors();
+    ExecutorService threaPoolExecutor = Executors.newFixedThreadPool(threadCount);
+    Scheduler scheduler = Schedulers.from(threaPoolExecutor);
 
     @Inject
     public PartsFragmentsInteractor(PartsFragmentView partsFragmentView, Context context) {
         this.context = context;
         this.partsFragmentView = partsFragmentView;
-
     }
 
     @Override
@@ -52,7 +55,7 @@ public class PartsFragmentsInteractor implements PartsFragmentPresenter {
                 public List<Integer> call() throws Exception {
                     return addImagesList();
                 }
-            }).subscribeOn(Schedulers.io())
+            }).subscribeOn(scheduler)
                     .observeOn(AndroidSchedulers.mainThread());
             disposable.add(modelAzkarObservable.subscribeWith(new DisposableObserver<List<Integer>>() {
                 @Override
@@ -105,7 +108,7 @@ public class PartsFragmentsInteractor implements PartsFragmentPresenter {
                 }
                 return name_part_list;
             }
-        }).subscribeOn(Schedulers.io())
+        }).subscribeOn(scheduler)
                 .observeOn(AndroidSchedulers.mainThread());
         disposable.add(modelAzkarObservable.subscribeWith(new DisposableObserver<List<ModelSora>>() {
             @Override

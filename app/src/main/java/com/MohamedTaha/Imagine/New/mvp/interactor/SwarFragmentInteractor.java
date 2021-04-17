@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModel;
 
 import com.MohamedTaha.Imagine.New.R;
@@ -17,12 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.observers.DisposableObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -31,15 +32,21 @@ import static com.MohamedTaha.Imagine.New.helper.Images.addImagesList;
 import static com.MohamedTaha.Imagine.New.helper.Images.getPositionForNameSwars;
 
 public class SwarFragmentInteractor extends ViewModel implements SwarFragmentPresenter {
-    private SwarFragmentView fragmentView;
-    private Context context;
-    private List<ModelSora> name_Sroa;
-    private String[] a = null;
-    private String[] nzol_elsora = null;
+    @Inject
+    List<ModelSora> name_Sroa;
     @Inject
     CompositeDisposable disposable;
+    private SwarFragmentView fragmentView;
+    private Context context;
+
+    private String[] a = null;
+    private String[] nzol_elsora = null;
+
     private ExecutorService executorService = null;
     private int numberImage = 0;
+    int threadCount =Runtime.getRuntime().availableProcessors();
+    ExecutorService threaPoolExecutor = Executors.newFixedThreadPool(threadCount);
+    Scheduler scheduler = Schedulers.from(threaPoolExecutor);
 
     @Inject
     public SwarFragmentInteractor(SwarFragmentView fragmentView, Context context) {
@@ -57,7 +64,6 @@ public class SwarFragmentInteractor extends ViewModel implements SwarFragmentPre
         Observable<List<ModelSora>> observable = Observable.fromCallable(new Callable<List<ModelSora>>() {
             @Override
             public List<ModelSora> call() throws Exception {
-                name_Sroa = new ArrayList<>();
                 a = context.getResources().getStringArray(R.array.name_allSwar);
                 nzol_elsora = context.getResources().getStringArray(R.array.nzolElswar);
                 for (int i = 0; i < a.length; i++) {
@@ -66,10 +72,11 @@ public class SwarFragmentInteractor extends ViewModel implements SwarFragmentPre
                     name_Sroa_local.setPosition(i);
                     name_Sroa_local.setNzol_elsora(nzol_elsora[i]);
                     name_Sroa.add(name_Sroa_local);
+                    Log.d("ODD", "call subscribeOn: " + name_Sroa.get(i) + " : : " + Thread.currentThread().getName() + " threadCount is : " + threadCount);
                 }
                 return name_Sroa;
             }
-        }).subscribeOn(Schedulers.io())
+        }).subscribeOn(scheduler)
                 .observeOn(AndroidSchedulers.mainThread());
         disposable.add(observable.subscribeWith(new DisposableObserver<List<ModelSora>>() {
             @Override
@@ -79,7 +86,7 @@ public class SwarFragmentInteractor extends ViewModel implements SwarFragmentPre
                     fragmentView.thereData();
                     fragmentView.showAnimation();
                     Log.i("SetNameSora", "onNext");
-
+                    Log.d("ODD", "observeOn call: " +  name_Sroa + " : : "+Thread.currentThread().getName());
                 }
             }
 
@@ -144,7 +151,7 @@ public class SwarFragmentInteractor extends ViewModel implements SwarFragmentPre
             public List<Integer> call() throws Exception {
                 return addImagesList();
             }
-        }).subscribeOn(Schedulers.io())
+        }).subscribeOn(scheduler)
                 .observeOn(AndroidSchedulers.mainThread());
         disposable.add(modelAzkarObservable.subscribeWith(new DisposableObserver<List<Integer>>() {
             @Override
