@@ -24,7 +24,7 @@
             android:layout_marginStart="@dimen/dimens_xxxxl"
             android:background="@color/colorAccent"
             />
-        <com.MohamedTaha.Imagine.New.libraryTextView.TextViewEx
+        <com.mohamedtaha.imagine.libraryTextView.TextViewEx
             android:id="@+id/TV_Name_Describe"
             android:layout_width="match_parent"
             android:layout_height="0dp"

@@ -2,26 +2,20 @@
 
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.3'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30"
+        classpath 'com.android.tools.build:gradle:7.3.0-alpha05'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
-        // Add the following line:
-        classpath 'com.google.gms:google-services:4.3.5'  // Google Services plugin
-    }
-}
-allprojects {
-    repositories {
-        jcenter()
-        google()
+//        classpath 'com.google.gms:google-services:4.3.10'  // Google Services plugin
+        //Safe args
+        classpath('androidx.navigation:navigation-safe-args-gradle-plugin:2.4.1')
+         //add hilt
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.38.1")
 
-        //For Animation
-        maven { url 'https://jitpack.io' }
-        //For RXJava
-        maven { url "https://oss.jfrog.org/libs-snapshot" }
     }
 }
 
@@ -32,7 +26,6 @@ ext {
     supportLibraryVersion = '29.0.0'
     supportButterKnife = '10.2.1'
     room_version = '2.2.6'
-
     archLifecycleVersion = '2.2.0-rc2'
     coreTestingVersion = '2.1.0'
     materialVersion = '1.2.1'

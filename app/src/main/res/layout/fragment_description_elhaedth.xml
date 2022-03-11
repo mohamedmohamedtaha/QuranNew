@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/style_default_layout_match_parent"
 
-    tools:context=".ui.fragments.elnawawy.DescriptionElhaedthFragment">
+    tools:context="com.mohamedtaha.imagine.ui.fragments.elnawawy.DescriptionElhaedthFragment">
 <!--    style="@style/style_default_layout_match_parent_with_background"-->
 
-    <com.MohamedTaha.Imagine.New.libraryTextView.TextViewEx
+    <com.mohamedtaha.imagine.libraryTextView.TextViewEx
         android:id="@+id/DescriptionElhaedthFragment_TV_Description_Elhaseth"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

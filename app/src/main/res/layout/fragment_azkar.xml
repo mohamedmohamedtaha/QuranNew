@@ -5,8 +5,8 @@
     style="@style/style_default_layout_match_parent"
     android:layout_marginTop="@dimen/dimens_xl"
     android:layout_marginBottom="@dimen/dimens_xxxxl"
-    tools:context=".ui.fragments.AzkarFragment">
-    <!--    <com.MohamedTaha.Imagine.New.AutofitRecyclerView-->
+    tools:context="com.mohamedtaha.imagine.ui.fragments.AzkarFragment">
+    <!--    <AutofitRecyclerView-->
     <!--        android:id="@+id/AzkarFragmentRecycleView"-->
     <!--        style="@style/style_default_layout_match_parent"-->
     <!--        android:columnWidth="100dp"-->

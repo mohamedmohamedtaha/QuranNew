@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/style_default_layout_match_parent"
     android:id="@+id/RelativeLayout"
-    tools:context=".ui.activities.ListSoundReader">
+    tools:context="com.mohamedtaha.imagine.ui.activities.ListSoundReader">
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/Fragment_List_Sound_TB"
         style="@style/style_toolbar" />
@@ -20,9 +20,9 @@
         android:textSize="@dimen/txt_size_l"
         android:textStyle="bold" />
 
-    <com.miguelcatalan.materialsearchview.MaterialSearchView
-        android:id="@+id/Fragment_List_Sound_Search_View"
-        style="@style/style_default_layout_wrap_match" />
+<!--    <com.miguelcatalan.materialsearchview.MaterialSearchView-->
+<!--        android:id="@+id/Fragment_List_Sound_Search_View"-->
+<!--        style="@style/style_default_layout_wrap_match" />-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleViewSound"

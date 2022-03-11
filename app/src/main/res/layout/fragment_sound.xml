@@ -5,15 +5,15 @@
     android:layout_marginTop="@dimen/dimens_xl"
     android:layout_marginBottom="@dimen/dimens_xxxxl">
 
-    <com.MohamedTaha.Imagine.New.AutofitRecyclerView
-        android:id="@+id/Fragment_Sound_RecyclerView"
-        style="@style/style_default_layout_match_parent"
-        android:columnWidth="200dp"
-        android:clipToPadding="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <AutofitRecyclerView-->
+<!--        android:id="@+id/Fragment_Sound_RecyclerView"-->
+<!--        style="@style/style_default_layout_match_parent"-->
+<!--        android:columnWidth="200dp"-->
+<!--        android:clipToPadding="false"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
     <!--    <GridView-->
     <!--        android:id="@+id/Fragment_Sound_GridView"-->
     <!--        style="@style/style_default_layout_wrap_match"-->

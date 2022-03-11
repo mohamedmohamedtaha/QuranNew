@@ -1,6 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/QuranNew/app/src/main/res/layout-xlarge/fragment_list_sound.xml" value="0.1" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/activity_contianer_description_elnawawy.xml" value="0.24583333333333332" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/activity_elarbaoon_elnawawy.xml" value="0.25" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/activity_full_screen.xml" value="0.23177083333333334" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/activity_main_drawable.xml" value="0.1" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/activity_splash.xml" value="0.2359375" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/activity_swipe_pages.xml" value="0.11614583333333334" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/activity_youtube.xml" value="0.24583333333333332" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/app_bar_main.xml" value="0.1" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/custom_azan.xml" value="0.1" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/custom_azkar.xml" value="0.24583333333333332" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/custom_azkar_swipe.xml" value="0.24583333333333332" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/custom_details.xml" value="0.24583333333333332" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/custom_elarbaoon_elnawawy.xml" value="0.24583333333333332" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/custom_name_reader.xml" value="0.24583333333333332" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/custom_notification_collapsed.xml" value="0.24583333333333332" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/custom_notification_expanded.xml" value="0.24583333333333332" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/custom_parts_swar_quran.xml" value="0.23177083333333334" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/custom_show_dialog.xml" value="0.23177083333333334" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/details_sound_activity.xml" value="0.2359375" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/fragment_azan.xml" value="0.11614583333333334" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/fragment_azkar.xml" value="0.10677083333333333" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/fragment_description_elarbaoon.xml" value="0.10677083333333333" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/fragment_description_elhaedth.xml" value="0.10677083333333333" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/fragment_full_screen_image.xml" value="0.10677083333333333" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/fragment_gallery.xml" value="0.10989583333333333" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/fragment_home.xml" value="0.24583333333333332" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/fragment_list_sound.xml" value="0.10208333333333333" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/fragment_parts.xml" value="0.10677083333333333" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/fragment_read_swar.xml" value="0.24583333333333332" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/fragment_slideshow.xml" value="0.10677083333333333" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/fragment_sound.xml" value="0.1" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/fragment_splash.xml" value="0.2359375" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/fragment_text_elhadeth.xml" value="0.1" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/fragment_translate.xml" value="0.1" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/nav_header_main.xml" value="0.1" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/preference_activity.xml" value="0.24583333333333332" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/row_templete.xml" value="0.24583333333333332" />
+        <entry key="..\:/QuranNew/app/src/main/res/xml/general_preferences.xml" value="0.23177083333333334" />
+        <entry key="..\:/QuranNew/app/src/main/res/xml/header_preferences.xml" value="0.23177083333333334" />
+        <entry key="..\:/QuranNew/app/src/main/res/xml/notification_preferences.xml" value="0.23177083333333334" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

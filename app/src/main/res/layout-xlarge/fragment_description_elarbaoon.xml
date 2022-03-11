@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     style="@style/style_default_layout_match_parent"
-    tools:context=".ui.fragments.DescriptionElarbaoonFragment">
+    tools:context="com.mohamedtaha.imagine.ui.fragments.DescriptionElarbaoonFragment">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/DescriptionElarbaoonFragment_TabLayout"

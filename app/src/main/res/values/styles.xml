@@ -191,11 +191,11 @@
         <item name="android:background">@color/colorAccent</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textColorHint">@android:color/white</item>
-        <item name="searchBackIcon">@drawable/ic_action_navigation_arrow_back_inverted</item>
-        <item name="searchBackground">@color/colorAccent</item>
-        <item name="searchCloseIcon">@drawable/ic_action_navigation_close_inverted</item>
-        <item name="searchSuggestionBackground">@android:color/black</item>
-        <item name="searchSuggestionIcon">@drawable/ic_suggestion</item>
+<!--        <item name="searchBackIcon">@drawable/ic_action_navigation_arrow_back_inverted</item>-->
+<!--        <item name="searchBackground">@color/colorAccent</item>-->
+<!--        <item name="searchCloseIcon">@drawable/ic_action_navigation_close_inverted</item>-->
+<!--        <item name="searchSuggestionBackground">@android:color/black</item>-->
+<!--        <item name="searchSuggestionIcon">@drawable/ic_suggestion</item>-->
     </style>
 
     <style name="style_navigation_bottom" parent="@style/style_default_layout_wrap_match">

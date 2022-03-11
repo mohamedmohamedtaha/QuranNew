@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/style_default_layout_match_parent"
     android:background="@drawable/background_azkar"
-    tools:context=".ui.activities.SwipePagesActivity">
+    tools:context="com.mohamedtaha.imagine.ui.activities.SwipePagesActivity">
 
-    <com.booking.rtlviewpager.RtlViewPager
-        android:id="@+id/SwipePagesActivity_VP"
-        style="@style/style_default_layout_match_parent"></com.booking.rtlviewpager.RtlViewPager>
+<!--    <com.booking.rtlviewpager.RtlViewPager-->
+<!--        android:id="@+id/SwipePagesActivity_VP"-->
+<!--        style="@style/style_default_layout_match_parent"></com.booking.rtlviewpager.RtlViewPager>-->
 
 <!--    <com.google.android.material.tabs.TabLayout-->
 <!--        android:id="@+id/tab_layout"-->

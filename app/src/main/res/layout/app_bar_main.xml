@@ -10,9 +10,9 @@
             android:id="@+id/toolbar"
             style="@style/style_toolbar" />
 
-        <com.miguelcatalan.materialsearchview.MaterialSearchView
-            android:id="@+id/search_view"
-            style="@style/style_default_layout_wrap_match" />
+<!--        <com.miguelcatalan.materialsearchview.MaterialSearchView-->
+<!--            android:id="@+id/search_view"-->
+<!--            style="@style/style_default_layout_wrap_match" />-->
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/NavigationDrawaberActivity_VPager"

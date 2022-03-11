@@ -664,4 +664,6 @@
     <string name="update_available">التحديث متاح</string>
     <string name="content_update_available">تحقق من أحدث إصدار متاح من التطبيق</string>
     <string name="maybe_later">ذكرني لاحقاً</string>
-    <string name="text_update">تحديث</string></resources>
+    <string name="text_update">تحديث</string>
+    <string name="logo">Logo</string>
+</resources>

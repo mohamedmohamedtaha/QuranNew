@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<layout>-->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View"/>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+        <variable
+            name="modelSora"
+            type="com.mohamedtaha.imagine.mvp.model.ModelSora" />
+        <variable
+            name="isParts"
+            type="java.lang.Boolean" />
+    </data>
+
+    <LinearLayout
+
         style="@style/style_default_layout_wrap_content"
         android:layout_gravity="center">
-
         <com.google.android.material.card.MaterialCardView style="@style/style_material_card_view">
 
             <RelativeLayout style="@style/style_default_layout_wrap_content">
@@ -19,6 +29,7 @@
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/txt_size_m"
                     android:textStyle="bold"
+                    android:text="@{modelSora.nameSora}"
                     tools:text="@string/nameSora" />
 
                 <TextView
@@ -33,8 +44,10 @@
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/txt_size_s"
                     android:textStyle="bold"
+                    android:visibility="@{isParts ?  View.INVISIBLE : View.VISIBLE}"
+                    android:text="@{modelSora.nzolElsora}"
                     tools:text="@string/nameSora" />
             </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
-<!--</layout>-->
+</layout>
