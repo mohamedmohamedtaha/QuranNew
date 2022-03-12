@@ -1,4 +1,4 @@
-package com.mohamedtaha.imagine.Adapter;
+package com.mohamedtaha.imagine.adapter;
 
 import android.content.Context;
 import android.os.CountDownTimer;
@@ -13,8 +13,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import com.mohamedtaha.imagine.R;
-import com.mohamedtaha.imagine.mvp.model.azan.Timings;
 import com.mohamedtaha.imagine.helper.util.ConvertTimes;
+import com.mohamedtaha.imagine.mvp.model.azan.Timings;
 
 import java.util.ArrayList;
 import java.util.Calendar;

@@ -13,8 +13,8 @@ import androidx.fragment.app.Fragment;
 
 import com.mohamedtaha.imagine.R;
 import com.mohamedtaha.imagine.helper.HelperClass;
+import com.mohamedtaha.imagine.ui.home.activity.NavigationDrawaberActivity;
 import com.mohamedtaha.imagine.mvp.view.SplashFragmentView;
-import com.mohamedtaha.imagine.ui.activities.NavigationDrawaberActivity;
 
 import org.jetbrains.annotations.NotNull;
 import butterknife.BindView;

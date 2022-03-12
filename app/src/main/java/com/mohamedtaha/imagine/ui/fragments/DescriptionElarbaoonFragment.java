@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import com.mohamedtaha.imagine.Adapter.PagerAdapterElarbaoonElnawawy;
+import com.mohamedtaha.imagine.adapter.PagerAdapterElarbaoonElnawawy;
 import com.mohamedtaha.imagine.R;
 import com.mohamedtaha.imagine.mvp.model.ElarbaoonElnawawyModel;
 import com.mohamedtaha.imagine.ui.activities.ElarbaoonElnawawyActivity;

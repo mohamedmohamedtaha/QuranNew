@@ -45,7 +45,7 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mohamedtaha.imagine.Adapter.RecycleViewReaderAdapter;
+import com.mohamedtaha.imagine.adapter.RecycleViewReaderAdapter;
 import com.mohamedtaha.imagine.R;
 import com.mohamedtaha.imagine.helper.HelperClass;
 import com.mohamedtaha.imagine.helper.Utilities;
@@ -59,12 +59,13 @@ import com.mohamedtaha.imagine.receiver.DownloadReceiver;
 import com.mohamedtaha.imagine.receiver.NoInternetReceiver;
 import com.mohamedtaha.imagine.service.MediaPlayerService;
 import com.mohamedtaha.imagine.viewmodel.SoundViewHolder;
-import com.mohamedtaha.imagine.Adapter.ImageAdapter;
+import com.mohamedtaha.imagine.ui.home.adapter.ImageAdapter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
+
 import java.io.File;
 import java.util.ArrayList;
 

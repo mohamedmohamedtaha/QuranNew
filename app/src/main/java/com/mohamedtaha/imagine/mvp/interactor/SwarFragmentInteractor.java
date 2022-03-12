@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.lifecycle.ViewModel;
 
 import com.mohamedtaha.imagine.R;
+import com.mohamedtaha.imagine.helper.images;
 import com.mohamedtaha.imagine.mvp.model.ModelSora;
 import com.mohamedtaha.imagine.mvp.presenter.SwarFragmentPresenter;
 import com.mohamedtaha.imagine.mvp.view.SwarFragmentView;
@@ -23,9 +24,6 @@ import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.observers.DisposableObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-
-import static com.mohamedtaha.imagine.helper.Images.addImagesList;
-import static com.mohamedtaha.imagine.helper.Images.getPositionForNameSwars;
 
 public class SwarFragmentInteractor extends ViewModel implements SwarFragmentPresenter {
     List<ModelSora> name_Sroa;
@@ -49,7 +47,7 @@ public class SwarFragmentInteractor extends ViewModel implements SwarFragmentPre
 
     @Override
     public void getPosition(int position, Bundle bundle) {
-        getPositionForNameSwars(position, bundle);
+        images.getPositionForNameSwars(position, bundle);
     }
 
     @Override
@@ -142,7 +140,7 @@ public class SwarFragmentInteractor extends ViewModel implements SwarFragmentPre
         Observable<List<Integer>> modelAzkarObservable = Observable.fromCallable(new Callable<List<Integer>>() {
             @Override
             public List<Integer> call() throws Exception {
-                return addImagesList();
+                return images.addImagesList();
             }
         }).subscribeOn(scheduler)
                 .observeOn(AndroidSchedulers.mainThread());

@@ -15,11 +15,14 @@ import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
+
 import com.mohamedtaha.imagine.helper.checkConnection.NetworkConnection;
 import com.mohamedtaha.imagine.helper.checkConnection.NoInternetConnection;
 import com.mohamedtaha.imagine.mvp.model.azan.Azan;
 import com.mohamedtaha.imagine.mvp.model.getCity.GetCity;
 import com.mohamedtaha.imagine.rest.APIServices;
+import com.mohamedtaha.imagine.rest.RetrofitClient;
+import com.mohamedtaha.imagine.rest.RetrofitClientCity;
 import com.mohamedtaha.imagine.room.DatabaseCallback;
 import com.mohamedtaha.imagine.room.TimingsAppDatabase;
 
@@ -32,13 +35,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.mohamedtaha.imagine.helper.checkConnection.NoInternetConnection.isInternet;
-import static com.mohamedtaha.imagine.rest.RetrofitClient.getRetrofit;
-import static com.mohamedtaha.imagine.rest.RetrofitClientCity.getRetrofitForCity;
 import static com.mohamedtaha.imagine.service.MediaPlayerService.BROADCAST_NOT_CONNECTION;
 import static com.mohamedtaha.imagine.service.MediaPlayerService.BROADCAST_NOT_INTERNET;
-import static com.mohamedtaha.imagine.ui.fragments.AzanFragment.MY_PERMISSIONS_WRITE_STORAGE;
+import static com.mohamedtaha.imagine.ui.home.fragment.AzanFragment.MY_PERMISSIONS_WRITE_STORAGE;
 
-public class AddDataInDatabase extends Activity implements  DatabaseCallback {
+public class AddDataInDatabase extends Activity implements DatabaseCallback {
     private Context context;
     private Activity activity;
     private APIServices apiServicesForCity;
@@ -147,7 +148,7 @@ public class AddDataInDatabase extends Activity implements  DatabaseCallback {
     private void getCity() {
         interactiveAndDisactiveUser.disInteractiveUSerWithUI();
         Log.d("TAG", "getPrayerTimesByCity");
-        apiServicesForCity = getRetrofitForCity().create(APIServices.class);
+        apiServicesForCity = RetrofitClientCity.getRetrofitForCity().create(APIServices.class);
         Call<GetCity> getCityCall = apiServicesForCity.getCity();
         getCityCall.enqueue(new Callback<GetCity>() {
             @Override
@@ -222,7 +223,7 @@ public class AddDataInDatabase extends Activity implements  DatabaseCallback {
     }
 
     private void getPrayerTimesByCity(String city, String country, int method, String city_name) {
-        apiServices = getRetrofit().create(APIServices.class);
+        apiServices = RetrofitClient.getRetrofit().create(APIServices.class);
         Call<Azan> azanCall = apiServices.getPrayerTimesByCity(city, country, false, method);
         azanCall.enqueue(new Callback<Azan>() {
             @Override

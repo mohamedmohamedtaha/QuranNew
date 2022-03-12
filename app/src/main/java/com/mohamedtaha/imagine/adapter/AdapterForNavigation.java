@@ -1,4 +1,4 @@
-package com.mohamedtaha.imagine.Adapter;
+package com.mohamedtaha.imagine.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

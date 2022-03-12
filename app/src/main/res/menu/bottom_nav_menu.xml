@@ -2,23 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/read_quran"
+        android:id="@+id/swarFragment"
         android:icon="@drawable/ic_read"
         android:title="@string/readswar" />
     <item
-        android:id="@+id/read_parts"
+        android:id="@+id/partsFragment"
         android:icon="@drawable/ic_read"
         android:title="@string/read_parts" />
     <item
-        android:id="@+id/sound_quran"
+        android:id="@+id/soundFragment"
         android:icon="@drawable/ic_speaker"
         android:title="@string/listen_swar" />
     <item
-        android:id="@+id/prayer_times"
+        android:id="@+id/azanFragment"
         android:icon="@drawable/ic_baseline_museum_24"
         android:title="@string/elslah" />
     <item
-        android:id="@+id/azkar"
+        android:id="@+id/azkarFragment"
         android:icon="@drawable/ic_baseline_access_alarm_24"
         android:title="@string/azkar" />
 </menu>

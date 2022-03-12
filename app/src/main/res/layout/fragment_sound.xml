@@ -4,8 +4,16 @@
     style="@style/style_default_layout_match_parent"
     android:layout_marginTop="@dimen/dimens_xl"
     android:layout_marginBottom="@dimen/dimens_xxxxl">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/Fragment_Sound_RecyclerView"
+        style="@style/style_default_layout_match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+            />
 
-<!--    <AutofitRecyclerView-->
+    <!--    <AutofitRecyclerView-->
 <!--        android:id="@+id/Fragment_Sound_RecyclerView"-->
 <!--        style="@style/style_default_layout_match_parent"-->
 <!--        android:columnWidth="200dp"-->

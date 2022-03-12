@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import com.mohamedtaha.imagine.R;
+import com.mohamedtaha.imagine.helper.images;
 import com.mohamedtaha.imagine.mvp.model.ModelSora;
 import com.mohamedtaha.imagine.mvp.presenter.PartsFragmentPresenter;
 import com.mohamedtaha.imagine.mvp.view.PartsFragmentView;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -19,9 +21,6 @@ import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.observers.DisposableObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-
-import static com.mohamedtaha.imagine.helper.Images.addImagesList;
-import static com.mohamedtaha.imagine.helper.Images.getPositionForNameParts;
 
 public class PartsFragmentsInteractor implements PartsFragmentPresenter {
     private PartsFragmentView partsFragmentView;
@@ -44,7 +43,7 @@ public class PartsFragmentsInteractor implements PartsFragmentPresenter {
             Observable<List<Integer>> modelAzkarObservable = Observable.fromCallable(new Callable<List<Integer>>() {
                 @Override
                 public List<Integer> call() throws Exception {
-                    return addImagesList();
+                    return images.addImagesList();
                 }
             }).subscribeOn(scheduler)
                     .observeOn(AndroidSchedulers.mainThread());
@@ -77,7 +76,7 @@ public class PartsFragmentsInteractor implements PartsFragmentPresenter {
 
     @Override
     public void getPosition(int position, Bundle bundle) {
-        getPositionForNameParts(position, bundle);
+        images.getPositionForNameParts(position, bundle);
     }
 
     @Override

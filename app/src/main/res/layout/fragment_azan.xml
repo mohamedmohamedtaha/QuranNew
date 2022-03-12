@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context="com.mohamedtaha.imagine.ui.fragments.AzanFragment">
+        tools:context="com.mohamedtaha.imagine.images.mohamedtaha.imagine.ui.fragments.AzanFragment">
 
 <!--        <com.booking.rtlviewpager.RtlViewPager-->
 <!--            android:id="@+id/AzanFragment_VP"-->

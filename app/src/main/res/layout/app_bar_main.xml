@@ -6,6 +6,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             style="@style/style_toolbar" />
@@ -13,6 +15,14 @@
 <!--        <com.miguelcatalan.materialsearchview.MaterialSearchView-->
 <!--            android:id="@+id/search_view"-->
 <!--            style="@style/style_default_layout_wrap_match" />-->
+    <ProgressBar
+        android:id="@+id/ProgressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:indeterminateDrawable="@drawable/color_progressbar"
+        android:layout_centerInParent="true"/>
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/NavigationDrawaberActivity_VPager"
@@ -20,13 +30,25 @@
             android:layout_below="@+id/toolbar"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-        <FrameLayout
-            android:id="@+id/frameLayout"
-            style="@style/style_default_layout_match_parent"
-            android:layout_below="@+id/toolbar" />
+<!--        <FrameLayout-->
+<!--            android:id="@+id/frameLayout"-->
+<!--            style="@style/style_default_layout_match_parent"-->
+<!--            android:layout_below="@+id/toolbar" />-->
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        app:navGraph="@navigation/nav_graph"
+        android:layout_below="@id/toolbar"
+        android:layout_above="@id/bottom_navigation_view"
+        android:layout_alignBottom="@+id/bottom_navigation_view"
+        app:defaultNavHost="true"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/nav_view"
+            android:id="@+id/bottom_navigation_view"
             style="@style/style_navigation_bottom"
             app:labelVisibilityMode="selected" />
     </RelativeLayout>

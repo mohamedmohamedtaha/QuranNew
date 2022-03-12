@@ -6,6 +6,8 @@ import android.util.Log;
 
 import androidx.preference.PreferenceManager;
 
+import com.mohamedtaha.imagine.R;
+
 import java.util.concurrent.Callable;
 
 import io.reactivex.rxjava3.core.Observable;

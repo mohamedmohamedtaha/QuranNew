@@ -5,13 +5,14 @@ import android.content.Context;
 import androidx.lifecycle.ViewModel;
 
 import com.mohamedtaha.imagine.R;
-import com.mohamedtaha.imagine.mvp.model.ElarbaoonElnawawyModel;
 import com.mohamedtaha.imagine.mvp.presenter.ElarbaoonElnwawyPresenter;
+import com.mohamedtaha.imagine.mvp.model.ElarbaoonElnawawyModel;
 import com.mohamedtaha.imagine.mvp.view.ElarbaoonElnwawyView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;

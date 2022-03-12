@@ -12,7 +12,7 @@ import com.mohamedtaha.imagine.helper.SharedPerefrenceHelper;
 import com.mohamedtaha.imagine.informationInrto.TapTarget;
 import com.mohamedtaha.imagine.informationInrto.TapTargetSequence;
 import com.mohamedtaha.imagine.informationInrto.TapTargetView;
-import com.mohamedtaha.imagine.ui.activities.NavigationDrawaberActivity;
+import com.mohamedtaha.imagine.ui.home.activity.NavigationDrawaberActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 //@ScopeActivity
@@ -102,7 +102,7 @@ public class ShowGuide extends AppCompatActivity {
             @Override
             public void onTargetClick(TapTargetView view) {
                 super.onTargetClick(view);
-                bottomNavigationView.setSelectedItemId(R.id.read_parts);
+                bottomNavigationView.setSelectedItemId(R.id.partsFragment);
                 setTwoShow();
             }
 
@@ -116,7 +116,7 @@ public class ShowGuide extends AppCompatActivity {
                 Log.d("TapTargetViewSample", "You dismissed me :(");
             }
         };
-        customInfo(R.id.read_quran, R.string.spectial_button, R.string.read_string, listener);
+        customInfo(R.id.swarFragment, R.string.spectial_button, R.string.read_string, listener);
         // setInformation();
 
 //        toolbar.inflateMenu(R.menu.menu);
@@ -178,7 +178,7 @@ public class ShowGuide extends AppCompatActivity {
             public void onTargetClick(TapTargetView view) {
                 super.onTargetClick(view);
                 // .. which evidently starts the sequence we defined earlier
-                bottomNavigationView.setSelectedItemId(R.id.sound_quran);
+                bottomNavigationView.setSelectedItemId(R.id.soundFragment);
                 setShowThreeItem();
             }
 
@@ -193,7 +193,7 @@ public class ShowGuide extends AppCompatActivity {
 
             }
         };
-        customInfo(R.id.read_parts, R.string.spectial_button, R.string.read_parts_string, listener);
+        customInfo(R.id.partsFragment, R.string.spectial_button, R.string.read_parts_string, listener);
 
     }
 
@@ -203,7 +203,7 @@ public class ShowGuide extends AppCompatActivity {
             public void onTargetClick(TapTargetView view) {
                 super.onTargetClick(view);
                 // .. which evidently starts the sequence we defined earlier
-                bottomNavigationView.setSelectedItemId(R.id.prayer_times);
+                bottomNavigationView.setSelectedItemId(R.id.azanFragment);
                 setShowFourItem();
             }
 
@@ -218,7 +218,7 @@ public class ShowGuide extends AppCompatActivity {
 
             }
         };
-        customInfo(R.id.sound_quran, R.string.spectial_button, R.string.sound_string, listener);
+        customInfo(R.id.soundFragment, R.string.spectial_button, R.string.sound_string, listener);
     }
 
     private void setShowFourItem() {
@@ -226,7 +226,7 @@ public class ShowGuide extends AppCompatActivity {
             @Override
             public void onTargetClick(TapTargetView view) {
                 super.onTargetClick(view);
-                bottomNavigationView.setSelectedItemId(R.id.azkar);
+                bottomNavigationView.setSelectedItemId(R.id.azkarFragment);
                 setShowFiveItem();
             }
 
@@ -241,7 +241,7 @@ public class ShowGuide extends AppCompatActivity {
 
             }
         };
-        customInfo(R.id.prayer_times, R.string.spectial_button, R.string.set_prayer_times, listener);
+        customInfo(R.id.azanFragment, R.string.spectial_button, R.string.set_prayer_times, listener);
 
     }
 
@@ -267,7 +267,7 @@ public class ShowGuide extends AppCompatActivity {
                 Log.d("TapTargetViewSample", "You dismissed me :(");
             }
         };
-        customInfo(R.id.azkar, R.string.spectial_button, R.string.read_azkar, listener);
+        customInfo(R.id.azkarFragment, R.string.spectial_button, R.string.read_azkar, listener);
 
     }
 

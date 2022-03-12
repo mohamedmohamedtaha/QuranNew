@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/style_default_layout_match_parent"
     android:background="@drawable/background_azkar"
-    tools:context="com.mohamedtaha.imagine.ui.activities.DetailsSoundActivity">
+    tools:context="com.mohamedtaha.imagine.images.mohamedtaha.imagine.ui.activities.DetailsSoundActivity">
 
     <RelativeLayout style="@style/style_default_layout_match_parent">
 

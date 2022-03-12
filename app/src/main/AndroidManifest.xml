@@ -21,7 +21,7 @@
     <permission android:name="android.permission.MEDIA_CONTENT_CONTROL" />
 
     <application
-        android:name="com.mohamedtaha.imagine.hilt.MainApplication"
+        android:name=".hilt.MainApplication"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/logo"
@@ -33,45 +33,45 @@
         android:theme="@style/FullScreenWindow"
         tools:targetApi="n">
         <service
-            android:name="com.mohamedtaha.imagine.service.GetDataEveryMonthJobService"
+            android:name=".service.GetDataEveryMonthJobService"
             android:enabled="true"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
 
-        <activity android:name="com.mohamedtaha.imagine.ui.activities.YoutubeActivity" />
+        <activity android:name=".ui.activities.YoutubeActivity" />
         <activity android:name=".FullScreenActivity" />
         <activity
-            android:name="com.mohamedtaha.imagine.ui.activities.SettingsActivity"
+            android:name=".ui.activities.SettingsActivity"
             android:label="@string/settings"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.MohamedTaha.Imagine.New.com.MohamedTaha.Imagine.n.ui.activities.NavigationDrawaberActivity" />
+                android:value=".ui.home.activity.NavigationDrawaberActivity" />
         </activity>
         <activity
-            android:name="com.mohamedtaha.imagine.ui.activities.ContianerDescriptionElnawawyActivity"
+            android:name=".ui.activities.ContianerDescriptionElnawawyActivity"
             android:launchMode="singleTop" />
         <activity
-            android:name="com.mohamedtaha.imagine.ui.activities.ElarbaoonElnawawyActivity"
+            android:name=".ui.activities.ElarbaoonElnawawyActivity"
             android:launchMode="singleTop" />
 
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name="com.mohamedtaha.imagine.ui.activities.NavigationDrawaberActivity" />
+        <activity android:name=".ui.home.activity.NavigationDrawaberActivity" />
         <activity
-            android:name="com.mohamedtaha.imagine.ui.activities.SwipePagesActivity"
+            android:name=".ui.activities.SwipePagesActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/FullScreenWindow" />
         <activity
-            android:name="com.mohamedtaha.imagine.ui.activities.DetailsSoundActivity"
+            android:name=".ui.activities.DetailsSoundActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTop" />
         <activity
-            android:name="com.mohamedtaha.imagine.ui.activities.SplashActivity"
+            android:name=".ui.splash.SplashActivity"
             android:configChanges="orientation|screenSize"
             android:exported="true">
             <intent-filter>
@@ -81,25 +81,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.mohamedtaha.imagine.ui.activities.ListSoundReader"
+            android:name=".ui.activities.ListSoundReader"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.MohamedTaha.Imagine.New.com.MohamedTaha.Imagine.n.ui.activities.NavigationDrawaberActivity" />
+                android:value=".ui.home.activity.NavigationDrawaberActivity" />
         </activity>
 
-        <receiver android:name="com.mohamedtaha.imagine.notification.quran.CancelNotification" />
-        <receiver android:name="com.mohamedtaha.imagine.notification.quran.AlarmReceiver" />
-        <receiver android:name="com.mohamedtaha.imagine.notification.prayerTimes.AlarmReceiverPrayerTime" />
-        <receiver android:name="com.mohamedtaha.imagine.notification.prayerTimes.CancelNotificationPrayerTime" />
-        <receiver android:name="com.mohamedtaha.imagine.notification.CancelNotificationMediaPlayer" />
-        <receiver android:name="com.mohamedtaha.imagine.notification.morningAzkar.MorningAzkarAlarmReceiver" />
-        <receiver android:name="com.mohamedtaha.imagine.receiver.GetPrayerTimesEveryDay" />
-        <receiver android:name="com.mohamedtaha.imagine.receiver.GetAzkarTimesEveryDay" />
-        <receiver android:name="com.mohamedtaha.imagine.notification.morningAzkar.CancelMorningAzkarNotification" />
+        <receiver android:name=".notification.CancelNotificationMediaPlayer" />
+        <receiver android:name=".notification.quran.AlarmReceiver" />
+        <receiver android:name=".notification.prayerTimes.AlarmReceiverPrayerTime" />
+        <receiver android:name=".notification.prayerTimes.CancelNotificationPrayerTime" />
+        <receiver android:name=".notification.CancelNotificationMediaPlayer" />
+        <receiver android:name=".notification.morningAzkar.MorningAzkarAlarmReceiver" />
+        <receiver android:name=".receiver.GetPrayerTimesEveryDay" />
+        <receiver android:name=".receiver.GetAzkarTimesEveryDay" />
+        <receiver android:name=".notification.morningAzkar.CancelMorningAzkarNotification" />
         <receiver
-            android:name="com.mohamedtaha.imagine.receiver.changeTime.MorningAzkarAlarmChangeTimeRecevier"
+            android:name=".receiver.changeTime.MorningAzkarAlarmChangeTimeRecevier"
             android:enabled="false"
             android:exported="true">
             <intent-filter>
@@ -107,7 +107,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="com.mohamedtaha.imagine.receiver.changeTime.PrayerTimeEveryDayAlarmChangeTimeRecevier"
+            android:name=".receiver.changeTime.PrayerTimeEveryDayAlarmChangeTimeRecevier"
             android:enabled="false"
             android:exported="true">
             <intent-filter>
@@ -115,7 +115,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="com.mohamedtaha.imagine.receiver.changeTime.ReadAyatAlarmChangeTimeRecevier"
+            android:name=".receiver.changeTime.ReadAyatAlarmChangeTimeRecevier"
             android:enabled="false"
             android:exported="true">
             <intent-filter>
@@ -123,7 +123,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="com.mohamedtaha.imagine.receiver.changeTime.PrayerTimeEveryMonthAlarmChangeTimeRecevier"
+            android:name=".receiver.changeTime.PrayerTimeEveryMonthAlarmChangeTimeRecevier"
             android:enabled="false"
             android:exported="true">
             <intent-filter>
@@ -131,7 +131,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="com.mohamedtaha.imagine.receiver.bootDevice.MorningAzkarAlarmBootRecevier"
+            android:name=".receiver.bootDevice.MorningAzkarAlarmBootRecevier"
             android:enabled="false"
             android:exported="true">
             <intent-filter>
@@ -141,7 +141,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="com.mohamedtaha.imagine.receiver.bootDevice.ReadAyatAlarmBootRecevier"
+            android:name=".receiver.bootDevice.ReadAyatAlarmBootRecevier"
             android:enabled="false"
             android:exported="true">
             <intent-filter>
@@ -151,7 +151,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="com.mohamedtaha.imagine.receiver.bootDevice.PrayerTimeEveryDayAlarmBootRecevier"
+            android:name=".receiver.bootDevice.PrayerTimeEveryDayAlarmBootRecevier"
             android:enabled="false"
             android:exported="true">
             <intent-filter>
@@ -160,9 +160,9 @@
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.mohamedtaha.imagine.receiver.GetPrayerTimesEveryMonth" />
+        <receiver android:name=".receiver.GetPrayerTimesEveryMonth" />
         <receiver
-            android:name="com.mohamedtaha.imagine.receiver.bootDevice.PrayerTimeEveryMonthAlarmBootRecevier"
+            android:name=".receiver.bootDevice.PrayerTimeEveryMonthAlarmBootRecevier"
             android:enabled="false"
             android:exported="true">
             <intent-filter>
@@ -172,14 +172,14 @@
             </intent-filter>
         </receiver>
 
-        <service android:name="com.mohamedtaha.imagine.firebaseNotification.MyFirebaseMessagingService"
+        <service android:name=".firebaseNotification.MyFirebaseMessagingService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
-        <service android:name="com.mohamedtaha.imagine.service.MediaPlayerService"
+        <service android:name=".service.MediaPlayerService"
             android:exported="true">
             <intent-filter>
 
@@ -197,7 +197,7 @@
             </intent-filter>
         </receiver>
 
-        <service android:name="com.mohamedtaha.imagine.service.ServiceForPlayPrayerTimesNotification">
+        <service android:name=".service.ServiceForPlayPrayerTimesNotification">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MEDIA_BUTTON" /> -->

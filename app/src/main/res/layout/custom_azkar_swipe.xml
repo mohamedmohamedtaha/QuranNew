@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="modelAzkar"
+            type="com.mohamedtaha.imagine.mvp.model.ModelAzkar" />
+    </data>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/style_default_layout_match_parent"
@@ -14,6 +20,7 @@
         android:textColor="@color/colorAccent"
         android:textSize="@dimen/txt_size_xxl"
         android:textStyle="bold"
+        android:text="@{modelAzkar.name_azkar}"
         tools:text="@string/read_parts" />
 
     <View
@@ -32,6 +39,7 @@
         android:layout_marginTop="@dimen/dimens_9xl"
         android:layout_marginEnd="@dimen/dimens_xl"
         android:layout_marginBottom="@dimen/dimens_xxl"
+        android:text="@{modelAzkar.describe_azkar}"
         android:gravity="center_horizontal"
         android:padding="@dimen/dimens_mm"
         android:scrollbars="vertical"
@@ -40,3 +48,4 @@
         android:textStyle="bold"
         tools:text="@string/read_parts" />
 </LinearLayout>
+</layout>

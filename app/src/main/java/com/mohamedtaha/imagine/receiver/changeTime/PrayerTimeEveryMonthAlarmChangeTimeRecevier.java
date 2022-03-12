@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.mohamedtaha.imagine.ui.activities.NavigationDrawaberActivity;
+import com.mohamedtaha.imagine.ui.home.activity.NavigationDrawaberActivity;
 
 public class PrayerTimeEveryMonthAlarmChangeTimeRecevier extends BroadcastReceiver {
     @Override

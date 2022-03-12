@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="imageModel"
+            type="com.mohamedtaha.imagine.mvp.model.ImageModel" />
+    </data>
+<LinearLayout
     style="@style/style_default_layout_wrap_match"
     android:orientation="vertical">
 
@@ -31,6 +37,7 @@
             <TextView
                 android:id="@+id/textViewShow"
                 style="@style/themecustom_name_reader"
+                android:text="@{imageModel.name_shekh}"
                 android:layout_weight="1"
                 android:textColor="@android:color/black"
                 android:textStyle="bold" />
@@ -40,8 +47,10 @@
                 style="@style/themecustom_name_reader"
                 android:layout_marginBottom="@dimen/dimens_m"
                 android:layout_weight="1"
+                android:text="@{imageModel.type_sora}"
                 android:textColor="@android:color/black" />
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 </LinearLayout>
+</layout>

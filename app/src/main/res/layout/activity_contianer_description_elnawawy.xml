@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.mohamedtaha.imagine.ui.activities.ContianerDescriptionElnawawyActivity">
+    tools:context="com.mohamedtaha.imagine.images.mohamedtaha.imagine.ui.activities.ContianerDescriptionElnawawyActivity">
     <FrameLayout
         android:id="@+id/Cycle_Elarbaoon_Elnawawy_contener"
         style="@style/style_default_layout_match_parent" />

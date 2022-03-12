@@ -19,7 +19,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.mohamedtaha.imagine.R;
-import com.mohamedtaha.imagine.ui.activities.NavigationDrawaberActivity;
+import com.mohamedtaha.imagine.ui.home.activity.NavigationDrawaberActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;

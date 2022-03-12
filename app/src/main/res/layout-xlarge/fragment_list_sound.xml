@@ -5,7 +5,7 @@
     style="@style/style_default_layout_match_parent"
     android:id="@+id/RelativeLayout"
 
-    tools:context="com.mohamedtaha.imagine.ui.activities.ListSoundReader">
+    tools:context="com.mohamedtaha.imagine.images.mohamedtaha.imagine.ui.activities.ListSoundReader">
 <!--    style="@style/style_default_layout_match_parent_with_background"-->
 
     <androidx.appcompat.widget.Toolbar

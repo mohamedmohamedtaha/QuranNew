@@ -20,11 +20,13 @@ import com.mohamedtaha.imagine.DatabaseCallbackEveryMonth;
 import com.mohamedtaha.imagine.R;
 import com.mohamedtaha.imagine.helper.checkConnection.NetworkConnection;
 import com.mohamedtaha.imagine.helper.checkConnection.NoInternetConnection;
-import com.mohamedtaha.imagine.mvp.model.azan.Azan;
-import com.mohamedtaha.imagine.mvp.model.getCity.GetCity;
 import com.mohamedtaha.imagine.receiver.bootDevice.PrayerTimeEveryMonthAlarmBootRecevier;
 import com.mohamedtaha.imagine.rest.APIServices;
+import com.mohamedtaha.imagine.rest.RetrofitClient;
+import com.mohamedtaha.imagine.rest.RetrofitClientCity;
 import com.mohamedtaha.imagine.room.TimingsAppDatabase;
+import com.mohamedtaha.imagine.mvp.model.azan.Azan;
+import com.mohamedtaha.imagine.mvp.model.getCity.GetCity;
 
 import java.io.IOException;
 import java.util.List;
@@ -35,9 +37,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.mohamedtaha.imagine.helper.checkConnection.NoInternetConnection.isInternet;
-import static com.mohamedtaha.imagine.rest.RetrofitClient.getRetrofit;
-import static com.mohamedtaha.imagine.rest.RetrofitClientCity.getRetrofitForCity;
-import static com.mohamedtaha.imagine.ui.activities.NavigationDrawaberActivity.CHECKISDATAORNOTINDATABASE;
+import static com.mohamedtaha.imagine.ui.home.activity.NavigationDrawaberActivity.CHECKISDATAORNOTINDATABASE;
 
 public class GetPrayerTimesEveryMonth extends BroadcastReceiver implements DatabaseCallbackEveryMonth {
     private Context context;
@@ -51,8 +51,8 @@ public class GetPrayerTimesEveryMonth extends BroadcastReceiver implements Datab
     @Override
     public void onReceive(Context context, Intent intent) {
         this.context = context;
-        apiServicesForCity = getRetrofitForCity().create(APIServices.class);
-        apiServices = getRetrofit().create(APIServices.class);
+        apiServicesForCity = RetrofitClientCity.getRetrofitForCity().create(APIServices.class);
+        apiServices = RetrofitClient.getRetrofit().create(APIServices.class);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         repear = sharedPreferences.getString(context.getString(R.string.settings_method_key),
                 context.getString(R.string.settings_method_default));

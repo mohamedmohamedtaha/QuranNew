@@ -5,20 +5,20 @@ import android.util.Log;
 
 import androidx.lifecycle.ViewModel;
 
-import com.mohamedtaha.imagine.mvp.model.ImageModel;
+import com.mohamedtaha.imagine.helper.images;
 import com.mohamedtaha.imagine.mvp.presenter.ListSoundReaderPresenter;
+import com.mohamedtaha.imagine.mvp.model.ImageModel;
 import com.mohamedtaha.imagine.mvp.view.ListSoundReaderView;
 
 import java.util.List;
 import java.util.concurrent.Callable;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.observers.DisposableObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-
-import static com.mohamedtaha.imagine.helper.Images.getData;
 
 public class ListSoundReaderInteractor extends ViewModel implements ListSoundReaderPresenter {
     private ListSoundReaderView listSoundReaderView;
@@ -45,7 +45,7 @@ public class ListSoundReaderInteractor extends ViewModel implements ListSoundRea
         Observable<List<ImageModel>> modelAzkarObservable = Observable.fromCallable(new Callable<List<ImageModel>>() {
             @Override
             public List<ImageModel> call() throws Exception {
-                return getData(context);
+                return images.getData(context);
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

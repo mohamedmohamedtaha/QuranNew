@@ -10,8 +10,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.preference.PreferenceManager;
+
 import com.mohamedtaha.imagine.helper.SharedPerefrenceHelper;
-import com.mohamedtaha.imagine.ui.activities.NavigationDrawaberActivity;
+
+import com.mohamedtaha.imagine.ui.home.activity.NavigationDrawaberActivity;
 
 public class GetMethodPreferences {
     public static final String COMPARE_METHOD = "compare_method";

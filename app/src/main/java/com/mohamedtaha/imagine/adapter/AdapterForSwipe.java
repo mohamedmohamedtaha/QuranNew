@@ -1,4 +1,4 @@
-package com.mohamedtaha.imagine.Adapter;
+package com.mohamedtaha.imagine.adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;

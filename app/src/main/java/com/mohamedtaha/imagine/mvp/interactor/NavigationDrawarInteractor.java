@@ -13,6 +13,7 @@ import com.mohamedtaha.imagine.mvp.presenter.NavigationDrawarPresenter;
 import com.mohamedtaha.imagine.mvp.view.NavigationDrawaberView;
 
 import java.util.List;
+
 //@ScopeActivity
 public class NavigationDrawarInteractor implements NavigationDrawarPresenter {
     Intent intent, intentEmail, IntentRateApp;

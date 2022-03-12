@@ -13,11 +13,11 @@ import android.widget.TextView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.mohamedtaha.imagine.R;
-import com.mohamedtaha.imagine.mvp.model.ModelAzkar;
 import com.mohamedtaha.imagine.ui.activities.SwipePagesActivity;
-import com.mohamedtaha.imagine.ui.fragments.SwarFragment;
+import com.mohamedtaha.imagine.ui.home.fragment.SwarFragment;
+import com.mohamedtaha.imagine.mvp.model.ModelAzkar;
 
-import static com.mohamedtaha.imagine.ui.fragments.AzkarFragment.SAVE_AZKAR;
+import static com.mohamedtaha.imagine.ui.home.fragment.AzkarFragment.SAVE_AZKAR;
 
 public class ShowDialog {
     public static void showDialogForRetrieveReadingSora(Activity activity, ViewPager SwipePagesActivityVP, int position) {

@@ -1,4 +1,4 @@
-package com.mohamedtaha.imagine.ui.activities
+package com.mohamedtaha.imagine.ui.home.activity
 
 import android.Manifest
 import android.app.AlarmManager
@@ -23,9 +23,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import androidx.room.EmptyResultSetException
 import com.mohamedtaha.imagine.helper.HelperClass
-import com.mohamedtaha.imagine.helper.Images
+import com.mohamedtaha.imagine.helper.images
 import com.mohamedtaha.imagine.helper.SharedPerefrenceHelper
 import com.mohamedtaha.imagine.helper.checkConnection.NetworkConnection
 import com.mohamedtaha.imagine.helper.checkConnection.NoInternetConnection
@@ -40,12 +44,18 @@ import com.mohamedtaha.imagine.room.DatabaseCallback
 import com.mohamedtaha.imagine.room.TimingsAppDatabase
 import com.mohamedtaha.imagine.room.TimingsViewModel
 import com.mohamedtaha.imagine.service.GetDataEveryMonthJobService
-import com.mohamedtaha.imagine.ui.fragments.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.mohamedtaha.imagine.AppConstants
+import com.mohamedtaha.imagine.BuildConfig
 import com.mohamedtaha.imagine.R
 import com.mohamedtaha.imagine.databinding.ActivityMainDrawableBinding
+import com.mohamedtaha.imagine.ui.activities.ElarbaoonElnawawyActivity
+import com.mohamedtaha.imagine.ui.activities.SettingsActivity
+import com.mohamedtaha.imagine.ui.activities.SwipePagesActivity
+import com.mohamedtaha.imagine.ui.activities.YoutubeActivity
+import com.mohamedtaha.imagine.ui.home.fragment.AzanFragment
+import com.mohamedtaha.imagine.ui.splash.SplashActivity
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -100,13 +110,13 @@ class NavigationDrawaberActivity : AppCompatActivity(),
     var repearAsync: String? = null
     var isFirstTime = false
     private fun enableStrictMode() {
-//        if (BuildConfig.DEBUG) {
-//            val policy = ThreadPolicy.Builder()
-//                .detectAll()
-//                .penaltyLog()
-//                .build()
-//            StrictMode.setThreadPolicy(policy)
-//        }
+        if (BuildConfig.DEBUG) {
+            val policy = ThreadPolicy.Builder()
+                .detectAll()
+                .penaltyLog()
+                .build()
+            StrictMode.setThreadPolicy(policy)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -156,25 +166,32 @@ class NavigationDrawaberActivity : AppCompatActivity(),
                 false
             )
         ) {
-            Images.addImagesList()
+            images.addImagesList()
             val intent = Intent(applicationContext, SwipePagesActivity::class.java)
-            intent.putIntegerArrayListExtra(SAVE_ALL_IMAGES, Images.IMAGES as ArrayList<Int?>)
+            intent.putIntegerArrayListExtra(SAVE_ALL_IMAGES, images.IMAGES as ArrayList<Int?>)
             intent.putExtra(SAVE_PAGE, true)
             startActivity(intent)
             overridePendingTransition(R.anim.item_anim_slide_from_top, R.anim.item_anim_no_thing)
         }
-
-        binding.includeAppBarMain.navView.setOnNavigationItemSelectedListener(
-            mOnNavigationItemSelectedListener
-        )
-        if (savedInstanceState != null) {
-            current_fragment = savedInstanceState.getInt(SAVE_STATE_VIEW_PAGER)
-            binding.includeAppBarMain.navView.selectedItemId = current_fragment
-            Log.d("TAG", "Current fragment  three is :$current_fragment")
-        } else {
-            binding.includeAppBarMain.navView.selectedItemId = R.id.read_quran
-        }
         setSupportActionBar(binding.includeAppBarMain.toolbar)
+
+        val navHostFragment  = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        val navController = navHostFragment.navController
+        binding.includeAppBarMain.bottomNavigationView.setupWithNavController(navController)
+        val appBarConfiguration = AppBarConfiguration(setOf(R.id.swarFragment,R.id.partsFragment,R.id.soundFragment,R.id.azanFragment,R.id.azkarFragment))
+        setupActionBarWithNavController(navController,appBarConfiguration)
+
+
+//        binding.includeAppBarMain.bottomNavigationView.setOnNavigationItemSelectedListener(
+//            mOnNavigationItemSelectedListener
+//        )
+//        if (savedInstanceState != null) {
+//            current_fragment = savedInstanceState.getInt(SAVE_STATE_VIEW_PAGER)
+//            binding.includeAppBarMain.bottomNavigationView.selectedItemId = current_fragment
+//            Log.d("TAG", "Current fragment  three is :$current_fragment")
+//        } else {
+//            binding.includeAppBarMain.bottomNavigationView.selectedItemId = R.id.swarFragment
+//        }
         //for change color text toolbar
         binding.includeAppBarMain.toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"))
         val toggle = ActionBarDrawerToggle(
@@ -311,50 +328,6 @@ class NavigationDrawaberActivity : AppCompatActivity(),
                     )
                 }
         }
-    private val mOnNavigationItemSelectedListener =
-        BottomNavigationView.OnNavigationItemSelectedListener { item ->
-            val id = item.itemId
-            if (id == current_fragment) {
-                return@OnNavigationItemSelectedListener false
-            }
-            when (id) {
-                R.id.read_quran -> {
-                    //NavigationDrawaberActivityVPager.setCurrentItem(0);
-                    val swarFragment = SwarFragment()
-                    HelperClass.replece(
-                        swarFragment,
-                        supportFragmentManager,
-                        R.id.frameLayout,
-                        FOR_GET_FRAGMENT_AZAN
-                    )
-                }
-                R.id.read_parts -> {
-                    //  NavigationDrawaberActivityVPager.setCurrentItem(1);
-                    val partsFragment =
-                        PartsFragment()
-                    HelperClass.replece(partsFragment, supportFragmentManager, R.id.frameLayout)
-                }
-                R.id.sound_quran -> {
-                    //    NavigationDrawaberActivityVPager.setCurrentItem(2);
-                    val soundFragment =
-                        SoundFragment()
-                    HelperClass.replece(soundFragment, supportFragmentManager, R.id.frameLayout)
-                }
-                R.id.azkar -> {
-                    val azkarFragment =
-                        AzkarFragment()
-                    HelperClass.replece(azkarFragment, supportFragmentManager, R.id.frameLayout)
-                }
-                R.id.prayer_times -> {
-                    val azanFragment =
-                        AzanFragment()
-                    HelperClass.replece(azanFragment, supportFragmentManager, R.id.frameLayout)
-                }
-            }
-            current_fragment = id
-            Log.d("TAG", "Current fragment  two is :$current_fragment")
-            true
-        }
 
     override fun onBackPressed() {
         //  presenter.exitApp(searchView, navView, drawer);
@@ -437,7 +410,7 @@ class NavigationDrawaberActivity : AppCompatActivity(),
             val azanFragment =
                 AzanFragment()
             val bundle = Bundle()
-            HelperClass.replece(azanFragment, supportFragmentManager, R.id.frameLayout)
+           // HelperClass.replece(azanFragment, supportFragmentManager, R.id.frameLayout)
             bundle.putInt("bundle", resultCode)
             azanFragment.arguments = bundle
             azanFragment.onActivityResult(requestCode, resultCode, data)

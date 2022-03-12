@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/style_default_layout_match_parent"
     android:layout_marginTop="@dimen/dimens_xl"
-    android:layout_marginBottom="@dimen/dimens_xxxxl"
-    tools:context="com.mohamedtaha.imagine.ui.fragments.AzkarFragment">
+    android:layout_marginBottom="@dimen/dimens_xxxxl">
     <!--    <AutofitRecyclerView-->
     <!--        android:id="@+id/AzkarFragmentRecycleView"-->
     <!--        style="@style/style_default_layout_match_parent"-->
@@ -20,6 +19,7 @@
         android:id="@+id/AzkarFragmentRecycleView"
         style="@style/style_default_layout_wrap_content"
         android:layout_gravity="center_horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintEnd_toEndOf="parent"

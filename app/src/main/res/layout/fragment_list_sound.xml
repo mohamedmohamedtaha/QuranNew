@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/style_default_layout_match_parent"
     android:id="@+id/RelativeLayout"
-    tools:context="com.mohamedtaha.imagine.ui.activities.ListSoundReader">
+    tools:context="com.mohamedtaha.imagine.images.mohamedtaha.imagine.ui.activities.ListSoundReader">
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/Fragment_List_Sound_TB"
         style="@style/style_toolbar" />

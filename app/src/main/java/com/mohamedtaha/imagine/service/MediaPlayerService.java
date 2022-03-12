@@ -46,11 +46,11 @@ import com.mohamedtaha.imagine.helper.util.PlaybackStatus;
 import com.mohamedtaha.imagine.helper.util.PlayerConstants;
 import com.mohamedtaha.imagine.helper.util.StorageUtil;
 import com.mohamedtaha.imagine.mvp.model.ImageModel;
-import com.mohamedtaha.imagine.notification.CancelNotificationMediaPlayer;
 import com.mohamedtaha.imagine.receiver.ConnectivityReceiver;
 import com.mohamedtaha.imagine.receiver.NoInternetReceiver;
 import com.mohamedtaha.imagine.ui.activities.DetailsSoundActivity;
 import com.mohamedtaha.imagine.ui.activities.ListSoundReader;
+import com.mohamedtaha.imagine.notification.CancelNotificationMediaPlayer;
 
 import java.io.File;
 import java.util.ArrayList;

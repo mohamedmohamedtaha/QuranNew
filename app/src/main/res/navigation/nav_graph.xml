@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/swarFragment">
+
+    <fragment
+        android:id="@+id/swarFragment"
+        android:name="com.mohamedtaha.imagine.ui.home.fragment.SwarFragment"
+        android:label="@string/readswar" />
+    <fragment
+        android:id="@+id/partsFragment"
+        android:name="com.mohamedtaha.imagine.ui.home.fragment.PartsFragment"
+        android:label="@string/read_parts" />
+    <fragment
+        android:id="@+id/soundFragment"
+        android:name="com.mohamedtaha.imagine.ui.home.fragment.SoundFragment"
+        android:label="@string/listen_swar" />
+
+    <fragment
+        android:id="@+id/azanFragment"
+        android:name="com.mohamedtaha.imagine.ui.home.fragment.AzanFragment"
+        android:label="@string/elslah" />
+    <fragment
+        android:id="@+id/azkarFragment"
+        android:name="com.mohamedtaha.imagine.ui.home.fragment.AzkarFragment"
+        android:label="@string/azkar_elmosle" />
+</navigation>

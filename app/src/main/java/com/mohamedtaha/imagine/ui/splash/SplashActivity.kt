@@ -1,4 +1,4 @@
-package com.mohamedtaha.imagine.ui.activities
+package com.mohamedtaha.imagine.ui.splash
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,7 @@ import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.mohamedtaha.imagine.R
 import com.mohamedtaha.imagine.databinding.ActivitySplashBinding
+import com.mohamedtaha.imagine.ui.home.activity.NavigationDrawaberActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import javax.inject.Inject

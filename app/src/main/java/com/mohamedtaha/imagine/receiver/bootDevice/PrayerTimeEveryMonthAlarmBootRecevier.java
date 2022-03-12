@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import static com.mohamedtaha.imagine.ui.activities.NavigationDrawaberActivity.ScheduleGetDataEveryMonth;
+import static com.mohamedtaha.imagine.ui.home.activity.NavigationDrawaberActivity.ScheduleGetDataEveryMonth;
 
 public class PrayerTimeEveryMonthAlarmBootRecevier extends BroadcastReceiver {
     @Override
