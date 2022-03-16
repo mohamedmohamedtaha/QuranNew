@@ -44,6 +44,24 @@ class PartsFragment : BaseFragment(), PartsFragmentView {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentPartsBinding.inflate(inflater, container, false)
+        viewModel.getAllParts(requireContext())
+        binding.viewModel = viewModel
+        binding.PartsFragmentRecyclerView.adapter  =
+            AdapterForPartsAndSwar(true, object : ClickListener {
+                override fun onClick(view: View?, position: Int) {
+                    viewModel.getPositionForNameParts(position,bundle)
+                    bundle.putIntegerArrayList(SAVE_IMAGES, integers_bundle as ArrayList<Int>?)
+                    bundle.putBoolean(SAVE_STATE, true)
+                    val intent = Intent(requireActivity(), SwipePagesActivity::class.java)
+                    intent.putExtras(bundle)
+                    startActivity(intent)
+                    requireActivity().overridePendingTransition(
+                        R.anim.item_anim_slide_from_top,
+                        R.anim.item_anim_no_thing
+                    )
+
+                }
+            })
 
         //        PartsFragmentComponent partsFragmentComponent = DaggerPartsFragmentComponent.builder()
 //                .partsFragmentModule(new PartsFragmentModule(this, getActivity()))
@@ -56,43 +74,21 @@ class PartsFragment : BaseFragment(), PartsFragmentView {
         //        presenter.getAllPartSoura();
 //        presenter.getAllImages();
         // presenter.setOnSearchView(searchView);
-        val linearLayoutManager: GridLayoutManager = object : GridLayoutManager(activity, 2) {
-            override fun isLayoutRTL(): Boolean {
-                return true
-            }
-        }
-        binding.PartsFragmentRecyclerView.layoutManager = linearLayoutManager
+//        val linearLayoutManager: GridLayoutManager = object : GridLayoutManager(activity, 2) {
+//            override fun isLayoutRTL(): Boolean {
+//                return true
+//            }
+//        }
+//        binding.PartsFragmentRecyclerView.layoutManager = linearLayoutManager
         //reScrollUtil.onClickRecyclerView(R.id.PartsFragment_FloatingActionButton);
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getAllParts(requireContext())
         viewModel.addImagesList()
         viewModel.allImages.observe(viewLifecycleOwner){
             integers_bundle = it
-        }
-        viewModel.allParts.observe(viewLifecycleOwner) {
-            adapterNamePart =
-                AdapterForPartsAndSwar(true, object : ClickListener {
-                    override fun onClick(view: View?, position: Int) {
-                        viewModel.getPositionForNameParts(position,bundle)
-                        bundle.putIntegerArrayList(SAVE_IMAGES, integers_bundle as ArrayList<Int>?)
-                        bundle.putBoolean(SAVE_STATE, true)
-                        val intent = Intent(requireActivity(), SwipePagesActivity::class.java)
-                        intent.putExtras(bundle)
-                        startActivity(intent)
-                        requireActivity().overridePendingTransition(
-                            R.anim.item_anim_slide_from_top,
-                            R.anim.item_anim_no_thing
-                        )
-
-                    }
-                })
-            binding.PartsFragmentRecyclerView.setAdapter(adapterNamePart)
-            Log.d("MOHArr","it ${it}")
-            adapterNamePart.submitList(it)
         }
     }
 

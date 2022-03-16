@@ -16,10 +16,14 @@ import android.os.StrictMode.ThreadPolicy
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
@@ -28,11 +32,18 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.room.EmptyResultSetException
+import com.google.android.material.navigation.NavigationView
+import com.mohamedtaha.imagine.AppConstants
+import com.mohamedtaha.imagine.BuildConfig
+import com.mohamedtaha.imagine.R
+import com.mohamedtaha.imagine.configfirebase.RemoteConfig
+import com.mohamedtaha.imagine.databinding.ActivityMainDrawableBinding
+import com.mohamedtaha.imagine.datastore.DataStoreViewModel
 import com.mohamedtaha.imagine.helper.HelperClass
-import com.mohamedtaha.imagine.helper.images
 import com.mohamedtaha.imagine.helper.SharedPerefrenceHelper
 import com.mohamedtaha.imagine.helper.checkConnection.NetworkConnection
 import com.mohamedtaha.imagine.helper.checkConnection.NoInternetConnection
+import com.mohamedtaha.imagine.helper.images
 import com.mohamedtaha.imagine.helper.util.ConvertTimes
 import com.mohamedtaha.imagine.mvp.view.NavigationDrawaberView
 import com.mohamedtaha.imagine.notification.morningAzkar.MorningAzkarNotificationHelper
@@ -44,12 +55,6 @@ import com.mohamedtaha.imagine.room.DatabaseCallback
 import com.mohamedtaha.imagine.room.TimingsAppDatabase
 import com.mohamedtaha.imagine.room.TimingsViewModel
 import com.mohamedtaha.imagine.service.GetDataEveryMonthJobService
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationView
-import com.mohamedtaha.imagine.AppConstants
-import com.mohamedtaha.imagine.BuildConfig
-import com.mohamedtaha.imagine.R
-import com.mohamedtaha.imagine.databinding.ActivityMainDrawableBinding
 import com.mohamedtaha.imagine.ui.activities.ElarbaoonElnawawyActivity
 import com.mohamedtaha.imagine.ui.activities.SettingsActivity
 import com.mohamedtaha.imagine.ui.activities.SwipePagesActivity
@@ -64,13 +69,19 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import java.io.IOException
 import java.util.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class NavigationDrawaberActivity : AppCompatActivity(),
     NavigationDrawaberView,
     DatabaseCallback,
     NavigationView.OnNavigationItemSelectedListener {
+
     private lateinit var binding: ActivityMainDrawableBinding
+
+    @Inject
+    lateinit var remoteConfig: RemoteConfig
+    private val datStoreViewModel: DataStoreViewModel by viewModels()
 
 //    @JvmField
 //    @Inject
@@ -120,10 +131,30 @@ class NavigationDrawaberActivity : AppCompatActivity(),
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        //Handle the splash screen transition
+        val splashScreen = installSplashScreen()
+//        splashScreen.setOnExitAnimationListener{splashScreenView ->
+//            //Create your custom animation
+//
+//            val slideUp = ObjectAnimator.ofFloat(splashScreenView, View.TRANSLATION_Y,0f,splashScreenView.height.toFloat())
+//            slideUp.interpolator = AnticipateInterpolator()
+//            slideUp.duration = 1000L
+//
+//
+//            //Call splashScreenView. remove at the end of your custom animation
+//            slideUp.doOnEnd{splashScreenView.remove()}
+//            //Run your animation
+//            slideUp.start()
+//        }
         super.onCreate(savedInstanceState)
         binding = ActivityMainDrawableBinding.inflate(layoutInflater)
         setContentView(binding.root)
         // searchView = (MaterialSearchView) findViewById(R.id.search_view);
+
+        remoteConfig.setConfigComplete()
+        remoteConfig.youtubeChannel.observe(this) {
+            datStoreViewModel.saveYouTubeChannel(it)
+        }
         enableStrictMode()
         Log.d(
             "TAG", "doInBackground - Thread On create " + Thread.currentThread().id + "Name : "
@@ -175,11 +206,20 @@ class NavigationDrawaberActivity : AppCompatActivity(),
         }
         setSupportActionBar(binding.includeAppBarMain.toolbar)
 
-        val navHostFragment  = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
         binding.includeAppBarMain.bottomNavigationView.setupWithNavController(navController)
-        val appBarConfiguration = AppBarConfiguration(setOf(R.id.swarFragment,R.id.partsFragment,R.id.soundFragment,R.id.azanFragment,R.id.azkarFragment))
-        setupActionBarWithNavController(navController,appBarConfiguration)
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.swarFragment,
+                R.id.partsFragment,
+                R.id.soundFragment,
+                R.id.azanFragment,
+                R.id.azkarFragment
+            )
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
 
 
 //        binding.includeAppBarMain.bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -332,12 +372,40 @@ class NavigationDrawaberActivity : AppCompatActivity(),
     override fun onBackPressed() {
         //  presenter.exitApp(searchView, navView, drawer);
     }
+    private fun  setSearchIcons(searchView: SearchView, idSearchIcon:Int, drawable:Int){
+        //Change icon
+        val searchIcon = searchView.findViewById(idSearchIcon) as ImageView
+        searchIcon.setImageResource(drawable)
+
+    }
+    private fun setSearchTextColor(searchView: SearchView){
+        //Change color for search icon
+        val searchAutoComplete = searchView.findViewById(R.id.search_src_text) as SearchView.SearchAutoComplete
+        searchAutoComplete.setHintTextColor(ContextCompat.getColor(this, android.R.color.white))
+        searchAutoComplete.setTextColor(ContextCompat.getColor(this, android.R.color.white))
+
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.menu, menu)
-        val SearchItem = menu.findItem(R.id.action_search)
-        // searchView.setMenuItem(SearchItem);
+        menuInflater.inflate(R.menu.menu, menu)
+        val searchItem = menu.findItem(R.id.action_search)
+        val searchView = searchItem.actionView as SearchView
+        setSearchIcons(searchView,R.id.search_button,R.drawable.ic_search)
+        setSearchIcons(searchView,R.id.search_close_btn,R.drawable.ic_close_search)
+        setSearchIcons(searchView,R.id.search_close_btn,R.drawable.ic_close_search)
+        setSearchTextColor(searchView)
+        searchView.setOnQueryTextListener(object :
+            SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                Toast.makeText(this@NavigationDrawaberActivity, "${p0}", Toast.LENGTH_LONG).show()
+                return true
+            }
+
+        })
         return true
     }
 
@@ -410,7 +478,7 @@ class NavigationDrawaberActivity : AppCompatActivity(),
             val azanFragment =
                 AzanFragment()
             val bundle = Bundle()
-           // HelperClass.replece(azanFragment, supportFragmentManager, R.id.frameLayout)
+            // HelperClass.replece(azanFragment, supportFragmentManager, R.id.frameLayout)
             bundle.putInt("bundle", resultCode)
             azanFragment.arguments = bundle
             azanFragment.onActivityResult(requestCode, resultCode, data)

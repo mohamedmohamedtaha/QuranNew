@@ -2,6 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.mohamedtaha.imagine.ui.home.viewModel.SwarAndPartsViewModel" />
+    </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     style="@style/style_default_layout_match_parent"
     android:layout_marginTop="@dimen/dimens_xl"
@@ -13,6 +18,9 @@
         style="@style/style_default_layout_wrap_content"
         android:clickable="true"
         android:focusable="true"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2"
+        app:setRecyclerView="@{viewModel.allParts}"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

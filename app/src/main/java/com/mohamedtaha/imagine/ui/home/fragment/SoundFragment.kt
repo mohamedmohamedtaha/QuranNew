@@ -40,13 +40,13 @@ class SoundFragment : BaseFragment() {
         // Inflate the layout for this fragment
         binding = FragmentSoundBinding.inflate(inflater, container, false)
         //  presenter.setOnSearchViewListener(searchView);
-        val linearLayoutManager = object : GridLayoutManager(requireActivity(), 2) {
-            override fun isLayoutRTL(): Boolean {
-                return true
-            }
-        }
-        binding.FragmentSoundRecyclerView.setLayoutManager(linearLayoutManager);
-        binding.FragmentSoundRecyclerView.setHasFixedSize(true);
+//        val linearLayoutManager = object : GridLayoutManager(requireActivity(), 2) {
+//            override fun isLayoutRTL(): Boolean {
+//                return true
+//            }
+//        }
+//        binding.FragmentSoundRecyclerView.setLayoutManager(linearLayoutManager);
+//        binding.FragmentSoundRecyclerView.setHasFixedSize(true);
         //reScrollUtil.onClickRecyclerView(R.id.Fragment_Sound_FloatingActionButton);
         return binding.root
     }
@@ -54,10 +54,13 @@ class SoundFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getData(requireContext())
-        viewModel.sound.observe(viewLifecycleOwner) {
-            imageAdapter = ImageAdapter(it, requireActivity())
-            binding.FragmentSoundRecyclerView.adapter = imageAdapter
-        }
+        binding.viewModel = viewModel
+        binding.FragmentSoundRecyclerView.adapter = ImageAdapter(requireActivity())
+
+//        viewModel.sound.observe(viewLifecycleOwner) {
+//            imageAdapter = ImageAdapter(it, requireActivity())
+//            binding.FragmentSoundRecyclerView.adapter = imageAdapter
+//        }
     }
 //
 //    override fun showAnimation() {

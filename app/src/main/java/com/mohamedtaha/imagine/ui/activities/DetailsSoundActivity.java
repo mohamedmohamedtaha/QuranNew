@@ -20,8 +20,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.mohamedtaha.imagine.R;
 import com.mohamedtaha.imagine.helper.Utilities;
 import com.mohamedtaha.imagine.helper.util.PlayerConstants;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -112,10 +110,10 @@ public class DetailsSoundActivity extends AppCompatActivity{
             }
         });
         updateUI();
-        Glide.with(getApplicationContext())
-                .load(activeAudio.getUrl_image())
-                .apply(new RequestOptions().placeholder(R.mipmap.logo).centerCrop())
-                .into(DetailsSoundActivity_IV_Picture_Shekh);
+//        Glide.with(getApplicationContext())
+//                .load(activeAudio.getUrl_image())
+//                .apply(new RequestOptions().placeholder(R.mipmap.logo).centerCrop())
+//                .into(DetailsSoundActivity_IV_Picture_Shekh);
     }
     @Override
     protected void onDestroy() {

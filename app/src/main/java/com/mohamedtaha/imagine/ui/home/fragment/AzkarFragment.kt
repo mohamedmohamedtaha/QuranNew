@@ -64,23 +64,22 @@ class AzkarFragment  //    @Inject
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getAllAzkar(requireContext())
-        viewModel.azkar.observe(viewLifecycleOwner) {
-            adapterForAzkar = AdapterForAzkar(it, object : ClickListener {
-                override fun onClick(view: View?, position: Int) {
-                    bundle.putString(SAVE_AZKAR, Gson().toJson(it))
-                    bundle.putInt(SAVE_POTION_AZKAR, position)
-                    bundle.putBoolean(SAVE_STATE, false)
-                    val intent = Intent(activity, SwipePagesActivity::class.java)
-                    intent.putExtras(bundle)
-                    startActivity(intent)
-                    requireActivity().overridePendingTransition(
-                        R.anim.item_anim_slide_from_top,
-                        R.anim.item_anim_no_thing
-                    )
-                }
-            })
-            binding.AzkarFragmentRecycleView.adapter = adapterForAzkar
-        }
+       binding.viewModel = viewModel
+        viewModel.azkar.observe(viewLifecycleOwner){
+        binding.AzkarFragmentRecycleView.adapter = AdapterForAzkar(object : ClickListener {
+            override fun onClick(view: View?, position: Int) {
+                bundle.putString(SAVE_AZKAR, Gson().toJson(it))
+                bundle.putInt(SAVE_POTION_AZKAR, position)
+                bundle.putBoolean(SAVE_STATE, false)
+                val intent = Intent(activity, SwipePagesActivity::class.java)
+                intent.putExtras(bundle)
+                startActivity(intent)
+                requireActivity().overridePendingTransition(
+                    R.anim.item_anim_slide_from_top,
+                    R.anim.item_anim_no_thing
+                )
+            }
+        })}
     }
 
     override fun onDestroy() {

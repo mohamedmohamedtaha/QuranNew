@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.motion.widget.MotionLayout
+<layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="imageModel"
+            type="com.mohamedtaha.imagine.mvp.model.ImageModel" />
+    </data>
+<androidx.constraintlayout.motion.widget.MotionLayout
     style="@style/style_default_layout_match_parent"
     android:background="@drawable/background_azkar"
-    tools:context="com.mohamedtaha.imagine.images.mohamedtaha.imagine.ui.activities.DetailsSoundActivity">
+    tools:context=".ui.activities.DetailsSoundActivity">
 
     <RelativeLayout style="@style/style_default_layout_match_parent">
 
@@ -24,14 +29,16 @@
             android:layout_marginLeft="@dimen/dimens_xl"
             android:textColor="@android:color/black"
             android:textSize="@dimen/txt_size_m" />
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/DetailsSoundActivity_IV_Picture_Shekh"
-                android:layout_width="300dp"
-                android:layout_height="300dp"
-                android:layout_centerInParent="true"
 
-                app:civ_border_color="@android:color/white"
-                app:civ_border_width="@dimen/dimens_sss" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/DetailsSoundActivity_IV_Picture_Shekh"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            app:imageUrl="@{String.valueOf(imageModel.url_image)}"
+
+            android:layout_centerInParent="true"
+            app:civ_border_color="@android:color/white"
+            app:civ_border_width="@dimen/dimens_sss" />
 
             <ProgressBar
                 android:id="@+id/DetailsSoundActivity_loading_indicator"
@@ -110,3 +117,4 @@
             android:paddingRight="@dimen/dimens_m" />
     </RelativeLayout>
 </androidx.constraintlayout.motion.widget.MotionLayout>
+</layout>

@@ -11,11 +11,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             style="@style/style_toolbar" />
-
-<!--        <com.miguelcatalan.materialsearchview.MaterialSearchView-->
-<!--            android:id="@+id/search_view"-->
-<!--            style="@style/style_default_layout_wrap_match" />-->
-    <ProgressBar
+   <ProgressBar
         android:id="@+id/ProgressBar"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"

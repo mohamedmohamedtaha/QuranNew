@@ -6,6 +6,15 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+<!--        Set the splash screen background, animated icon and animation duration-->
+        <item name="windowSplashScreenBackground">@android:color/white</item>
+<!--        Use window splash screen animation to add either a drawable or an animated drawab;e. One of these is required.-->
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/logo</item>
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+<!--        Set the theme of the activity that directly follows your splash screen -->
+        <item name="postSplashScreenTheme">@style/FullScreenWindow</item>
+    </style>
 
     <!-- Delete ActionBar -->
     <style name="FullScreenWindow" parent="Theme.MaterialComponents.Light.NoActionBar">

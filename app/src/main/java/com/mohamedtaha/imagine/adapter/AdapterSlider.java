@@ -8,8 +8,6 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.bumptech.glide.Glide;
-
 public class AdapterSlider extends PagerAdapter {
     private int[] layouts;
     private Context context;
@@ -35,9 +33,9 @@ public class AdapterSlider extends PagerAdapter {
         //  int pos = bundle.getInt(SAVE_IMAGES);
         ImageView imageView = new ImageView(context);
 
-        Glide.with(context)
-                .load(layouts[position])
-                .into(imageView);
+//        Glide.with(context)
+//                .load(layouts[position])
+//                .into(imageView);
         container.addView(imageView);
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
        /*

@@ -104,13 +104,14 @@ class SwipePagesActivity : AppCompatActivity() {
             val adapterForSwipe = AdapterForSwipe(
                 this,
                 images
-            ) { postiopn: Int ->
-                ShowDialog.showDialog(
-                    this@SwipePagesActivity,
-                    save_position,
-                    getString(R.string.save_position)
-                )
-            }
+            )
+//            { postiopn: Int ->
+//                ShowDialog.showDialog(
+//                    this@SwipePagesActivity,
+//                    save_position,
+//                    getString(R.string.save_position)
+//                )
+//            }
             binding.SwipePagesActivityVP.addOnPageChangeListener(object :ViewPager.OnPageChangeListener{
                 override fun onPageScrolled(
                     position: Int,
@@ -140,13 +141,14 @@ class SwipePagesActivity : AppCompatActivity() {
             val adapterForSwipe = AdapterForSwipe(
                 this,
                 imagesFirst
-            ) { positon: Int ->
-                ShowDialog.showDialog(
-                    this@SwipePagesActivity,
-                    save_position,
-                    getString(R.string.save_position)
-                )
-            }
+            )
+//            { positon: Int ->
+//                ShowDialog.showDialog(
+//                    this@SwipePagesActivity,
+//                    save_position,
+//                    getString(R.string.save_position)
+//                )
+//            }
             //            SwipePagesActivityVP.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 //                @Override
 //                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

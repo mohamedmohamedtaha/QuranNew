@@ -1,71 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/style_default_layout_match_parent"
-    android:layout_marginTop="@dimen/dimens_xl"
-    android:layout_marginBottom="@dimen/dimens_xxxxl">
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/Fragment_Sound_RecyclerView"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.mohamedtaha.imagine.ui.home.viewModel.SwarAndPartsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+
         style="@style/style_default_layout_match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="@dimen/dimens_xl"
+        android:layout_marginBottom="@dimen/dimens_xxxxl">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/Fragment_Sound_RecyclerView"
+            style="@style/style_default_layout_match_parent"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:setRecyclerView="@{viewModel.sound}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent"
+            app:spanCount="2" />
 
-    <!--    <AutofitRecyclerView-->
-<!--        android:id="@+id/Fragment_Sound_RecyclerView"-->
-<!--        style="@style/style_default_layout_match_parent"-->
-<!--        android:columnWidth="200dp"-->
-<!--        android:clipToPadding="false"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-    <!--    <GridView-->
-    <!--        android:id="@+id/Fragment_Sound_GridView"-->
-    <!--        style="@style/style_default_layout_wrap_match"-->
-    <!--        android:layout_marginTop="@dimen/dimens_6xl"-->
-    <!--        android:layout_marginBottom="@dimen/dimens_6xl"-->
-    <!--        android:layout_marginEnd="@dimen/dimens_mm"-->
-    <!--        android:layout_marginStart="@dimen/dimens_mm"-->
-    <!--        android:columnWidth="@dimen/dimens_half_hundrand"-->
-    <!--        android:gravity="center"-->
-    <!--        android:horizontalSpacing="@dimen/dimens_mm"-->
-    <!--        android:numColumns="auto_fit"-->
-    <!--        android:paddingTop="@dimen/dimens_mm"-->
-    <!--        android:rotationY="180"-->
-    <!--        android:stretchMode="columnWidth"-->
-    <!--        android:verticalSpacing="@dimen/dimens_mm"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"/>-->
+        <!--    <AutofitRecyclerView-->
+        <!--        android:id="@+id/Fragment_Sound_RecyclerView"-->
+        <!--        style="@style/style_default_layout_match_parent"-->
+        <!--        android:columnWidth="200dp"-->
+        <!--        android:clipToPadding="false"-->
+        <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--        app:layout_constraintEnd_toEndOf="parent"-->
+        <!--        app:layout_constraintStart_toStartOf="parent"-->
+        <!--        app:layout_constraintTop_toTopOf="parent" />-->
+        <!--    <GridView-->
+        <!--        android:id="@+id/Fragment_Sound_GridView"-->
+        <!--        style="@style/style_default_layout_wrap_match"-->
+        <!--        android:layout_marginTop="@dimen/dimens_6xl"-->
+        <!--        android:layout_marginBottom="@dimen/dimens_6xl"-->
+        <!--        android:layout_marginEnd="@dimen/dimens_mm"-->
+        <!--        android:layout_marginStart="@dimen/dimens_mm"-->
+        <!--        android:columnWidth="@dimen/dimens_half_hundrand"-->
+        <!--        android:gravity="center"-->
+        <!--        android:horizontalSpacing="@dimen/dimens_mm"-->
+        <!--        android:numColumns="auto_fit"-->
+        <!--        android:paddingTop="@dimen/dimens_mm"-->
+        <!--        android:rotationY="180"-->
+        <!--        android:stretchMode="columnWidth"-->
+        <!--        android:verticalSpacing="@dimen/dimens_mm"-->
+        <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--        app:layout_constraintEnd_toEndOf="parent"-->
+        <!--        app:layout_constraintStart_toStartOf="parent"-->
+        <!--        app:layout_constraintTop_toTopOf="parent"/>-->
 
-    <ProgressBar
-        android:id="@+id/Fragment_Sound_ProgressBar"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:indeterminateDrawable="@drawable/color_progressbar"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ProgressBar
+            android:id="@+id/Fragment_Sound_ProgressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminateDrawable="@drawable/color_progressbar"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/Fragment_Sound_TV_No_Data"
-        style="@style/style_text_view_no_data"
-        android:layout_marginTop="@dimen/dimens_6xl"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/Fragment_Sound_TV_No_Data"
+            style="@style/style_text_view_no_data"
+            android:layout_marginTop="@dimen/dimens_6xl"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/Fragment_Sound_FloatingActionButton"
-        style="@style/float_add_constraint"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/Fragment_Sound_FloatingActionButton"
+            style="@style/float_add_constraint"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

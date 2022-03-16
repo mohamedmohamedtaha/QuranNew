@@ -60,8 +60,6 @@ import com.mohamedtaha.imagine.receiver.NoInternetReceiver;
 import com.mohamedtaha.imagine.service.MediaPlayerService;
 import com.mohamedtaha.imagine.viewmodel.SoundViewHolder;
 import com.mohamedtaha.imagine.ui.home.adapter.ImageAdapter;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
@@ -695,10 +693,10 @@ public class ListSoundReader extends AppCompatActivity {
             btnPause.setVisibility(View.VISIBLE);
         }
         textNowPlaying.setText(activeAudio.getName_sora() + " / " + activeAudio.getName_shekh());
-        Glide.with(context)
-                .load(activeAudio.getUrl_image())
-                .apply(new RequestOptions().placeholder(R.mipmap.logo).centerCrop())
-                .into(imageViewAlbumArt);
+//        Glide.with(context)
+//                .load(activeAudio.getUrl_image())
+//                .apply(new RequestOptions().placeholder(R.mipmap.logo).centerCrop())
+//                .into(imageViewAlbumArt);
     }
 
     @Override

@@ -1,37 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/action_search"
-        android:icon="@drawable/ic_baseline_youtube_searched_for_24"
-        android:title="search"
-        app:showAsAction="always" />
+
     <item
         android:id="@+id/action_youtube"
         android:icon="@drawable/youtube"
         android:title="@string/youtube"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_search"
+        android:title="@string/search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="always" />
-
-<!--    <item-->
-<!--        android:id="@+id/el_arbaoon_elnawawy"-->
-<!--        android:title="@string/el_arbaoon_elnawawy"-->
-<!--        app:showAsAction="never" />-->
-<!--    <item-->
-<!--        android:id="@+id/action_share"-->
-<!--        android:icon="@drawable/ic_share"-->
-<!--        android:title="@string/shareApp"-->
-<!--        app:showAsAction="ifRoom" />-->
-
-<!--    <item-->
-<!--        android:id="@+id/use_way"-->
-<!--        android:title="@string/use_way"-->
-<!--        app:showAsAction="never" />-->
-<!--    <item-->
-<!--        android:id="@+id/action_rate"-->
-<!--        android:title="@string/labelEvaluation"-->
-<!--        app:showAsAction="never" />-->
-<!--    <item-->
-<!--        android:id="@+id/action_send_us"-->
-<!--        android:title="@string/labelSend"-->
-<!--        app:showAsAction="never" />-->
 </menu>

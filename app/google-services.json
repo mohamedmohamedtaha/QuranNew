@@ -8,20 +8,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:197903713493:android:ce93dd06680488494fce5c",
+        "mobilesdk_app_id": "1:197903713493:android:bc58a606efed57024fce5c",
         "android_client_info": {
-          "package_name": "com.MohamedTaha.Imagine.New"
+          "package_name": "com.mohamedtaha.imagine"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "197903713493-o06oij03n2pmqfasg2m34bv2bkvspb29.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.MohamedTaha.Imagine.New",
-            "certificate_hash": "df083da63147bb5d441f10bd25786c25e2c46850"
-          }
-        },
         {
           "client_id": "197903713493-mamrr6u7jqc714fuuksjk3da8vebo7lq.apps.googleusercontent.com",
           "client_type": 3

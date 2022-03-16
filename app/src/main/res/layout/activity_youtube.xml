@@ -4,10 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.mohamedtaha.imagine.images.mohamedtaha.imagine.ui.activities.YoutubeActivity">
-    <com.google.android.youtube.player.YouTubePlayerView
-        android:id="@+id/Youtube_View"
+    tools:context=".ui.activities.YoutubeActivity">
+<!--    <com.google.android.youtube.player.YouTubePlayerView-->
+<!--        android:id="@+id/Youtube_View"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"/>-->
+    <fragment
+        android:name="com.google.android.youtube.player.YouTubePlayerSupportFragment"
+        android:id="@+id/youtubeFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

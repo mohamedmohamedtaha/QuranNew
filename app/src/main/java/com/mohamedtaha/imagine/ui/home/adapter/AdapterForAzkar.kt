@@ -8,10 +8,10 @@ import com.mohamedtaha.imagine.mvp.model.ModelAzkar
 import com.mohamedtaha.imagine.util.ClickListener
 
 class AdapterForAzkar(
-    private val modelAzkars: List<ModelAzkar>,
-    private val clickListener: ClickListener
+        private val clickListener: ClickListener
 ) :
     RecyclerView.Adapter<AdapterForAzkar.AzkarViewHolder>() {
+    private lateinit var modelAzkars: List<ModelAzkar>
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AzkarViewHolder {
         val viewHolder = AzkarViewHolder(
             CustomAzkarBinding.inflate(
@@ -29,12 +29,20 @@ class AdapterForAzkar(
 
     override fun onBindViewHolder(holder: AzkarViewHolder, position: Int) {
         val azkar = modelAzkars[position]
-        holder.binding.modelAzkar = azkar
+        holder.bind(azkar)
     }
 
     override fun getItemCount(): Int {
         return modelAzkars.size
     }
+    fun setData(modelAzkar: List<ModelAzkar>){
+        this.modelAzkars = modelAzkar
+    }
 
-    class AzkarViewHolder(val binding: CustomAzkarBinding) : RecyclerView.ViewHolder(binding.root)
+    class AzkarViewHolder(val binding: CustomAzkarBinding) : RecyclerView.ViewHolder(binding.root){
+        fun bind(modelAzkar: ModelAzkar){
+            binding.modelAzkar = modelAzkar
+            binding.executePendingBindings()
+        }
+    }
 }

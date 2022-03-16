@@ -22,8 +22,6 @@ import com.mohamedtaha.imagine.R;
 import com.mohamedtaha.imagine.ui.home.activity.NavigationDrawaberActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -86,19 +84,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onNewToken(@NonNull String s) {
         Log.d("TAG", "Refreshed token: " + s);
 
-        super.onNewToken(s);
-        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-            @Override
-            public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                if (!task.isSuccessful()){
-                    Log.d("TAG","getInstanceId failed ", task.getException());
-                    return;
-                }
-                //Get new Instance ID token
-                String token = task.getResult().getToken();
-                Log.d("TAG", "Token is : " + token);
-            }
-        });
     }
 }
 

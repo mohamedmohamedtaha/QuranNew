@@ -28,6 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimens_height_logo"
                 android:layout_gravity="center"
+                card:imageUrl="@{String.valueOf(imageModel.url_image)}"
                 android:layout_marginTop="@dimen/dimens_s"
                 android:layout_marginBottom="@dimen/dimens_s"
                 android:adjustViewBounds="true"
