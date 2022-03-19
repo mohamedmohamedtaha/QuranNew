@@ -59,9 +59,9 @@ public class RecycleViewReaderAdapter extends RecyclerView.Adapter<RecycleViewRe
     public void onBindViewHolder(RecycleViewHolder holder, int position) {
         viewHolder = holder;
         ImageModel data = responses.get(holder.getAdapterPosition());
-        FILENAME = "/" + data.getName_shekh() + "/";
+        FILENAME = "/" + data.getNameShekh() + "/";
         File media_path = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS + FILENAME);
-        final File exStore = new File(media_path, data.getName_sora() + ".mp3");
+        final File exStore = new File(media_path, data.getNameSora() + ".mp3");
         if (exStore != null && exStore.exists()) {
             viewHolder.IVDownload.setVisibility(View.INVISIBLE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -73,7 +73,7 @@ public class RecycleViewReaderAdapter extends RecyclerView.Adapter<RecycleViewRe
             holder.text_title.setTextColor(context.getResources().getColor(android.R.color.black));
             viewHolder.IVDownload.setVisibility(View.VISIBLE);
         }
-        holder.text_title.setText(data.getName_sora());
+        holder.text_title.setText(data.getNameSora());
 
 //        holder.IVDownload.setOnClickListener(new View.OnClickListener() {
 //            @Override

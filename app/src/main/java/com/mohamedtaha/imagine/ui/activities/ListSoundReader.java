@@ -240,8 +240,8 @@ public class ListSoundReader extends AppCompatActivity {
                 }, new RecycleViewReaderAdapter.DownloadMusic() {
                     @Override
                     public void download(int position) {
-                        urlLink = respones.get(position).getSora_link();
-                        name_sora = respones.get(position).getName_sora();
+                        urlLink = respones.get(position).getSoraLink();
+                        name_sora = respones.get(position).getNameSora();
                         checkPermistion();
                     }
                 });
@@ -692,7 +692,7 @@ public class ListSoundReader extends AppCompatActivity {
             btnPlay.setVisibility(View.GONE);
             btnPause.setVisibility(View.VISIBLE);
         }
-        textNowPlaying.setText(activeAudio.getName_sora() + " / " + activeAudio.getName_shekh());
+        textNowPlaying.setText(activeAudio.getNameSora() + " / " + activeAudio.getNameShekh());
 //        Glide.with(context)
 //                .load(activeAudio.getUrl_image())
 //                .apply(new RequestOptions().placeholder(R.mipmap.logo).centerCrop())
@@ -779,7 +779,7 @@ public class ListSoundReader extends AppCompatActivity {
             case R.id.Fragment_List_Sound_LL_Control_Media:
                 Bundle bundle = new Bundle();
                 bundle.putString(ImageAdapter.SHEKH_ID, new Gson().toJson(poisition));
-                bundle.putString(ImageAdapter.SHEKH_NAME, new Gson().toJson(activeAudio.getName_shekh()));
+                bundle.putString(ImageAdapter.SHEKH_NAME, new Gson().toJson(activeAudio.getNameShekh()));
                 openDetails.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 openDetails.putExtras(bundle);
                 startActivity(openDetails);

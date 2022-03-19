@@ -12,7 +12,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.mohamedtaha.imagine.adapter.PagerAdapterElarbaoonElnawawy;
 import com.mohamedtaha.imagine.R;
 import com.mohamedtaha.imagine.mvp.model.ElarbaoonElnawawyModel;
-import com.mohamedtaha.imagine.ui.activities.ElarbaoonElnawawyActivity;
+import com.mohamedtaha.imagine.ui.navigationview.ElarbaoonElnawawyActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 
@@ -45,14 +45,14 @@ public class DescriptionElarbaoonFragment extends Fragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             position_elhadeth = new Gson().fromJson(bundle.getString(ElarbaoonElnawawyActivity.POSITION), ElarbaoonElnawawyModel.class);
-            DescriptionElarbaoonFragmentTVNumberElhadeth.setText(position_elhadeth.getNumber_elhadeth() + "/");
-            DescriptionElarbaoonFragmentTVNameElhadeth.setText(position_elhadeth.getName_elhadeth());
-        }
+            DescriptionElarbaoonFragmentTVNumberElhadeth.setText(position_elhadeth.getNumberElhadeth() + "/");
+            DescriptionElarbaoonFragmentTVNameElhadeth.setText(position_elhadeth.getNameElhadeth());
+
         PagerAdapterElarbaoonElnawawy pagerAdapterElarbaoonElnawawy = new PagerAdapterElarbaoonElnawawy(getActivity(), getChildFragmentManager(),
                 position_elhadeth.getPosition());
         DescriptionElarbaoonFragmentViewPager.setAdapter(pagerAdapterElarbaoonElnawawy);
         DescriptionElarbaoonFragmentViewPager.setCurrentItem(2);
-        DescriptionElarbaoonFragmentTabLayout.setupWithViewPager(DescriptionElarbaoonFragmentViewPager);
+        DescriptionElarbaoonFragmentTabLayout.setupWithViewPager(DescriptionElarbaoonFragmentViewPager);}
         return view;
     }
 

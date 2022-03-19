@@ -1,57 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
+
         <variable
             name="viewModel"
             type="com.mohamedtaha.imagine.ui.home.viewModel.SwarAndPartsViewModel" />
     </data>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/style_default_layout_match_parent"
-    android:layout_marginTop="@dimen/dimens_xl"
-    android:layout_marginBottom="@dimen/dimens_xxxxl">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/ReadSwarFragment_RecyclerView"
-        style="@style/style_default_layout_wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2"
-        app:setRecyclerView="@{viewModel.modelSora}"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </androidx.recyclerview.widget.RecyclerView>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        style="@style/style_default_layout_match_parent">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ReadSwarFragment_RecyclerView"
+            style="@style/style_default_layout_wrap_content"
+            android:clickable="true"
+            android:clipToPadding="true"
+            android:focusable="true"
+            app:setRecyclerView="@{viewModel.modelSora}"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:spanCount="2" />
 
-    <ProgressBar
-        android:id="@+id/ReadSwarFragment_ProgressBar"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:indeterminateDrawable="@drawable/color_progressbar"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <TextView
-        android:id="@+id/ReadSwarFragment_TV_No_Data"
-        style="@style/style_text_view_no_data"
-        android:layout_marginTop="@dimen/dimens_6xl"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/ReadSwarFragment_FloatingActionButton"
-        style="@style/float_add_constraint"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/ReadSwarFragmentFloatingActionButton"
+            style="@style/float_add_constraint"
+            android:contentDescription="@string/button_description"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

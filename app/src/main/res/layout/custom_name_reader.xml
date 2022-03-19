@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimens_height_logo"
                 android:layout_gravity="center"
-                card:imageUrl="@{String.valueOf(imageModel.url_image)}"
+                card:imageUrl="@{imageModel.urlImage}"
                 android:layout_marginTop="@dimen/dimens_s"
                 android:layout_marginBottom="@dimen/dimens_s"
                 android:adjustViewBounds="true"
@@ -38,7 +38,7 @@
             <TextView
                 android:id="@+id/textViewShow"
                 style="@style/themecustom_name_reader"
-                android:text="@{imageModel.name_shekh}"
+                android:text="@{imageModel.nameShekh}"
                 android:layout_weight="1"
                 android:textColor="@android:color/black"
                 android:textStyle="bold" />
@@ -48,7 +48,7 @@
                 style="@style/themecustom_name_reader"
                 android:layout_marginBottom="@dimen/dimens_m"
                 android:layout_weight="1"
-                android:text="@{imageModel.type_sora}"
+                android:text="@{imageModel.typeSora}"
                 android:textColor="@android:color/black" />
 
         </LinearLayout>

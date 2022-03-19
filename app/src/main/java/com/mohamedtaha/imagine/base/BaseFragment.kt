@@ -3,6 +3,7 @@ package com.mohamedtaha.imagine.base
 import android.view.View
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.mohamedtaha.imagine.R
 import com.mohamedtaha.imagine.ui.home.viewModel.SwarAndPartsViewModel
@@ -14,11 +15,11 @@ abstract class BaseFragment:Fragment() {
 
     private lateinit var progressBar:View
     fun showProgressBar(){
-        progressBar = requireActivity().findViewById(R.id.progressBar) as View
+        progressBar = requireActivity().findViewById(R.id.MainProgressBar) as View
         progressBar.visibility =View.VISIBLE
     }
-    fun hidePropgressBar(){
-        progressBar = requireActivity().findViewById(R.id.progressBar) as View
+    fun hideProgressBar(){
+        progressBar = requireActivity().findViewById(R.id.MainProgressBar) as View
         progressBar.visibility = View.GONE
     }
 }

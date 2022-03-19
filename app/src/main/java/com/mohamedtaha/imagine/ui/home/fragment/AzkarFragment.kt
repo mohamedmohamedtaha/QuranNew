@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.google.gson.Gson
 import com.mohamedtaha.imagine.R
 import com.mohamedtaha.imagine.base.BaseFragment
@@ -15,6 +16,8 @@ import com.mohamedtaha.imagine.mvp.model.ModelAzkar
 import com.mohamedtaha.imagine.ui.activities.SwipePagesActivity
 import com.mohamedtaha.imagine.ui.home.adapter.AdapterForAzkar
 import com.mohamedtaha.imagine.ui.home.fragment.SwarFragment.Companion.SAVE_STATE
+import com.mohamedtaha.imagine.ui.home.viewModel.AzkarViewModel
+import com.mohamedtaha.imagine.ui.home.viewModel.SwarAndPartsViewModel
 import com.mohamedtaha.imagine.util.ClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -30,6 +33,8 @@ class AzkarFragment  //    @Inject
 //    @Inject
 //    LinearLayoutManager linearLayoutManager;
     : BaseFragment() {
+    internal val azkarViewModel: AzkarViewModel by viewModels()
+
     private lateinit var binding: FragmentAzkarBinding
     private var adapterForAzkar: AdapterForAzkar? = null
     private var modelAzkar: ArrayList<ModelAzkar>? = null
@@ -63,10 +68,10 @@ class AzkarFragment  //    @Inject
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getAllAzkar(requireContext())
-       binding.viewModel = viewModel
-        viewModel.azkar.observe(viewLifecycleOwner){
-        binding.AzkarFragmentRecycleView.adapter = AdapterForAzkar(object : ClickListener {
+        azkarViewModel.getAllAzkar(requireContext())
+       binding.viewModel = azkarViewModel
+        azkarViewModel.azkar.observe(viewLifecycleOwner){
+        binding.AzkarFragmentRecycleView.adapter = AdapterForAzkar(object : ClickListener<Int> {
             override fun onClick(view: View?, position: Int) {
                 bundle.putString(SAVE_AZKAR, Gson().toJson(it))
                 bundle.putInt(SAVE_POTION_AZKAR, position)

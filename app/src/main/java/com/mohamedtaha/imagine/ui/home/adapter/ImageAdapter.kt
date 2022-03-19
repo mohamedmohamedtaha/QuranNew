@@ -35,7 +35,7 @@ class ImageAdapter( private val activity: Activity) :
             val listSound = Intent(holder.binding.textViewShow.context, ListSoundReader::class.java)
             val bundle = Bundle()
             bundle.putString(SHEKH_ID, Gson().toJson(imageModel.position))
-            bundle.putString(SHEKH_NAME, Gson().toJson(imageModel.name_shekh))
+            bundle.putString(SHEKH_NAME, Gson().toJson(imageModel.nameShekh))
             listSound.putExtras(bundle)
             holder.binding.textViewShow.context.startActivity(listSound)
             activity.overridePendingTransition(

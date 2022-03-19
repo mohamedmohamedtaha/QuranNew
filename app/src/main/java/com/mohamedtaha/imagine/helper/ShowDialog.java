@@ -57,25 +57,15 @@ public class ShowDialog {
         dialog.setContentView(R.layout.custom_details);
         TextView tv_save_position =  dialog.findViewById(R.id.TV_Save_Position);
         RelativeLayout relativeLayout =  dialog.findViewById(R.id.Relative);
-        relativeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (dialog != null) {
-                    dialog.dismiss();
-                }
-            }
-        });
+        relativeLayout.setOnClickListener(v -> dialog.dismiss());
 
         tv_save_position.setText(text);
-        tv_save_position.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedPerefrenceHelper.removeData(activity);
-                SharedPerefrenceHelper.putBoolean(activity, SwipePagesActivity.IS_TRUE, true);
-                SharedPerefrenceHelper.putInt(activity, SwarFragment.SAVE_IMAGES, save_position);
-                HelperClass.customToast(activity, activity.getResources().getString(R.string.save));
-                dialog.dismiss();
-            }
+        tv_save_position.setOnClickListener(view -> {
+            SharedPerefrenceHelper.removeData(activity);
+            SharedPerefrenceHelper.putBoolean(activity, SwipePagesActivity.IS_TRUE, true);
+            SharedPerefrenceHelper.putInt(activity, SwarFragment.SAVE_IMAGES, save_position);
+            HelperClass.customToast(activity, activity.getResources().getString(R.string.save));
+            dialog.dismiss();
         });
         dialog.show();
     }

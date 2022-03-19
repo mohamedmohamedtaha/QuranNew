@@ -16,4 +16,12 @@ class DataStoreViewModel @Inject constructor(private val repository: DataStoreRe
         viewModelScope.launch { repository.saveYouTubeChannel(link) }
     }
 
+    val getReadingQuran get() = repository.getReadingQuran()
+    fun saveReadingQuran(numberPage:Int){
+        viewModelScope.launch { repository.saveReadingQuran(numberPage) }
+    }
+    fun deleteReadingQuran(){
+        viewModelScope.launch { repository.removeReadingQuran() }
+    }
+
 }

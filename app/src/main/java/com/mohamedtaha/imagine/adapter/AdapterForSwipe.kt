@@ -9,35 +9,16 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import coil.load
+import coil.transform.CircleCropTransformation
+import com.google.android.youtube.player.internal.t
 import com.mohamedtaha.imagine.R
+import com.mohamedtaha.imagine.util.ClickListener
 import java.util.ArrayList
 
-class AdapterForSwipe : PagerAdapter {
-    var context: Context
-    var lisenter: showDetail? = null
-    private var GalImages: ArrayList<Int>? = ArrayList()
-    var nyTypeface: Typeface? = null
-    private var position = 0
-
-    constructor(context: Context, GalImages: ArrayList<Int>?, lisenter: showDetail?) {
-        this.context = context
-        this.GalImages = GalImages
-        this.lisenter = lisenter
-    }
-
-    constructor(context: Context, GalImages: ArrayList<Int>?) {
-        this.context = context
-        this.GalImages = GalImages
-    }
-
-    constructor(context: Context, GalImages: Int) {
-        this.context = context
-        position = GalImages
-    }
-
+class AdapterForSwipe constructor(private val GalImages: List<Int>,private val onClick: ClickListener<Int>): PagerAdapter() {
     override fun getCount(): Int {
-        return if (GalImages != null && GalImages!!.size >= 0) {
-            GalImages!!.size
+        return if ( GalImages.size >= 0) {
+            GalImages.size
         } else {
             0
         }
@@ -53,8 +34,11 @@ class AdapterForSwipe : PagerAdapter {
 //
 //        View view = LayoutInflater.from(context).inflate(R.layout.custom_background_for_ayat, null);
 //        viewHolder = new ViewHolder(view);
-        val imageView = ImageView(context)
-        imageView.load(GalImages?.get(position))
+        val imageView = ImageView(container.context)
+        imageView.load(GalImages[position]){
+         // crossfade(true)
+           // transformations(CircleCropTransformation())
+        }
 
         //  TextView textView = new TextView(context);
 
@@ -77,25 +61,14 @@ class AdapterForSwipe : PagerAdapter {
         //  viewHolder.tvShowText
         //      .setTypeface(nyTypeface);
 
-//        Glide.with(context)
-//                .load(GalImages.get(position))
-//                .into(imageView);
         container.addView(imageView)
         imageView.scaleType = ImageView.ScaleType.FIT_XY
-        imageView.setOnClickListener { if (lisenter != null) lisenter!!.showDetails(position) }
+        imageView.setOnClickListener { onClick.onClick(it, position) }
         //    imageView.setRotationY(180);
-        val animation = AnimationUtils.loadAnimation(context, R.anim.fade_in)
+        val animation = AnimationUtils.loadAnimation(imageView.context, R.anim.fade_in)
         imageView.animation = animation
         animation.start()
-
-//        Animation animation = AnimationUtils.loadAnimation(context, R.anim.fade_in);
-//        viewHolder.tvShowText.setAnimation(animation);
-//        animation.start();
         return imageView
-    }
-
-    interface showDetail {
-        fun showDetails(positon: Int)
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {

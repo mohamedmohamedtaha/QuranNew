@@ -168,7 +168,7 @@ public class DetailsSoundActivity extends AppCompatActivity{
             btnPlay.setVisibility(View.GONE);
             btnPause.setVisibility(View.VISIBLE);
         }
-        MainActivityNameShekh.setText("" + activeAudio.getName_shekh());
-        MainActivityNameSora.setText("" + activeAudio.getName_sora());
+        MainActivityNameShekh.setText("" + activeAudio.getNameShekh());
+        MainActivityNameSora.setText("" + activeAudio.getNameSora());
     }
 }

@@ -55,7 +55,7 @@ import com.mohamedtaha.imagine.room.DatabaseCallback
 import com.mohamedtaha.imagine.room.TimingsAppDatabase
 import com.mohamedtaha.imagine.room.TimingsViewModel
 import com.mohamedtaha.imagine.service.GetDataEveryMonthJobService
-import com.mohamedtaha.imagine.ui.activities.ElarbaoonElnawawyActivity
+import com.mohamedtaha.imagine.ui.navigationview.ElarbaoonElnawawyActivity
 import com.mohamedtaha.imagine.ui.activities.SettingsActivity
 import com.mohamedtaha.imagine.ui.activities.SwipePagesActivity
 import com.mohamedtaha.imagine.ui.activities.YoutubeActivity
@@ -206,8 +206,7 @@ class NavigationDrawaberActivity : AppCompatActivity(),
         }
         setSupportActionBar(binding.includeAppBarMain.toolbar)
 
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
         binding.includeAppBarMain.bottomNavigationView.setupWithNavController(navController)
         val appBarConfiguration = AppBarConfiguration(
@@ -234,6 +233,9 @@ class NavigationDrawaberActivity : AppCompatActivity(),
 //        }
         //for change color text toolbar
         binding.includeAppBarMain.toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"))
+        binding.navViewHeader.itemIconTintList = null
+
+
         val toggle = ActionBarDrawerToggle(
             this,
             binding.drawerLayout,
@@ -241,9 +243,10 @@ class NavigationDrawaberActivity : AppCompatActivity(),
             R.string.open_drawer,
             R.string.close_drawer
         )
-        binding.drawerLayout.setDrawerListener(toggle)
+        binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
-        binding.navViewHeader.setNavigationItemSelectedListener(this)
+    binding.navViewHeader.setNavigationItemSelectedListener(this)
+
         //        NavigationDrawaberActivityVPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 //            @Override
 //            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -707,7 +710,7 @@ class NavigationDrawaberActivity : AppCompatActivity(),
     override fun onPrayerTimesError(e: Throwable) {}
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
-        if (id == R.id.el_arbaoon_elnawawy) {
+        if (id == R.id.elarbaoonElnawawyFragment) {
             HelperClass.startActivity(applicationContext, ElarbaoonElnawawyActivity::class.java)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 overridePendingTransition(

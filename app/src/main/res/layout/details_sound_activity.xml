@@ -34,7 +34,7 @@
             android:id="@+id/DetailsSoundActivity_IV_Picture_Shekh"
             android:layout_width="300dp"
             android:layout_height="300dp"
-            app:imageUrl="@{String.valueOf(imageModel.url_image)}"
+            app:imageUrl="@{String.valueOf(imageModel.urlImage)}"
 
             android:layout_centerInParent="true"
             app:civ_border_color="@android:color/white"

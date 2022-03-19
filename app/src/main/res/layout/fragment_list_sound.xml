@@ -74,7 +74,7 @@
                     android:id="@+id/imageViewAlbumArt"
                     android:layout_width="@dimen/dimens_9xl"
                     android:layout_height="@dimen/dimens_8xl"
-                    app:imageUrl="@{String.valueOf(imageModel.url_image)}"
+                    app:imageUrl="@{String.valueOf(imageModel.urlImage)}"
                     app:civ_border_color="@android:color/white"
                     app:civ_border_width="@dimen/dimens_sss" />
 

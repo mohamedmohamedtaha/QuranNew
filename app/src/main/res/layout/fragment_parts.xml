@@ -2,55 +2,37 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="viewModel"
             type="com.mohamedtaha.imagine.ui.home.viewModel.SwarAndPartsViewModel" />
     </data>
-<androidx.constraintlayout.widget.ConstraintLayout
-    style="@style/style_default_layout_match_parent"
-    android:layout_marginTop="@dimen/dimens_xl"
-    android:layout_marginBottom="@dimen/dimens_xxxxl"
-    tools:context="com.mohamedtaha.imagine.images.mohamedtaha.imagine.ui.fragments.PartsFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/PartsFragment_RecyclerView"
-        style="@style/style_default_layout_wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2"
-        app:setRecyclerView="@{viewModel.allParts}"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        style="@style/style_default_layout_match_parent"
+        tools:context="com.mohamedtaha.imagine.ui.fragments.PartsFragment">
 
-    <ProgressBar
-        android:id="@+id/PartsFragment_ProgressBar"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:indeterminateDrawable="@drawable/color_progressbar"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/PartsFragment_RecyclerView"
+            style="@style/style_default_layout_wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            setRecyclerView="@{viewModel.allParts}"
+            android:clipToPadding="true"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:spanCount="2" />
 
-    <TextView
-        android:id="@+id/PartsFragment_TV_No_Data"
-        style="@style/style_text_view_no_data"
-        android:layout_marginTop="@dimen/dimens_6xl"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/PartsFragment_FloatingActionButton"
-        style="@style/float_add_constraint"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/PartsFragment_FloatingActionButton"
+            style="@style/float_add_constraint"
+            android:visibility="invisible"
+            android:contentDescription="@string/button_description"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

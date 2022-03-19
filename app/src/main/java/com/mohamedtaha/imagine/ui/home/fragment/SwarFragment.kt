@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import com.mohamedtaha.imagine.R
 import com.mohamedtaha.imagine.base.BaseFragment
 import com.mohamedtaha.imagine.databinding.FragmentReadSwarBinding
@@ -19,22 +20,21 @@ import javax.inject.Inject
 class SwarFragment : BaseFragment() {
     private lateinit var binding: FragmentReadSwarBinding
     private var stateFragment = 0
+
     @Inject
     lateinit var bundle: Bundle
-    private var integersBundle: List<Int>? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentReadSwarBinding.inflate(inflater, container, false)
-        viewModel.addImagesList()
+        viewModel.getAllSwar(requireActivity())
         binding.viewModel = viewModel
         binding.ReadSwarFragmentRecyclerView.adapter = AdapterForPartsAndSwar(
-            false, object : ClickListener {
+            false, object : ClickListener<Int> {
                 override fun onClick(view: View?, position: Int) {
                     val bundle = Bundle()
                     viewModel.getPositionForNameSwars(position, bundle)
-                    bundle.putIntegerArrayList(SAVE_IMAGES, integersBundle as ArrayList<Int>?)
                     bundle.putBoolean(SAVE_STATE, true)
                     val intent = Intent(requireActivity(), SwipePagesActivity::class.java)
                     intent.putExtras(bundle)
@@ -44,9 +44,8 @@ class SwarFragment : BaseFragment() {
                         R.anim.item_anim_no_thing
                     )
                 }
-
             })
-
+        showAnimation()
         if (savedInstanceState == null) {
             stateFragment = 0
             Log.d("TAG", "Current fragment  four is :$stateFragment")
@@ -57,45 +56,18 @@ class SwarFragment : BaseFragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.getAllSwar(requireActivity())
-        viewModel.allImages.observe(viewLifecycleOwner) {
-            integersBundle = it
-        }
+    private fun showAnimation() {
+        val controller =
+            AnimationUtils.loadLayoutAnimation(requireActivity(), R.anim.layout_fall_dwon)
+        binding.ReadSwarFragmentRecyclerView.layoutAnimation = controller
+        binding.ReadSwarFragmentRecyclerView.scheduleLayoutAnimation()
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt(SAVE_STATE_FOR_ROTATION, stateFragment)
     }
-
-//    override fun showAllINameSour(strings: List<ModelSora>) {
-////        name_swar = strings
-////        adapterForPartsAndSwar = AdapterForPartsAndSwar(
-////            name_swar,
-////            false
-////        ) { view, position -> //presenter.getPosition(name_swar.get(position).getPosition(), bundle);
-////            bundle!!.putIntegerArrayList(SAVE_IMAGES, integers_bundle as ArrayList<Int>?)
-////            bundle!!.putBoolean(SAVE_STATE, true)
-////            val intent = Intent(activity, SwipePagesActivity::class.java)
-////            intent.putExtras(bundle!!)
-////            startActivity(intent)
-////            requireActivity().overridePendingTransition(
-////                R.anim.item_anim_slide_from_top,
-////                R.anim.item_anim_no_thing
-////            )
-////        }
-////        binding.ReadSwarFragmentRecyclerView.adapter = adapterForPartsAndSwar
-////        adapterForPartsAndSwar!!.notifyDataSetChanged()
-////        //For feel when Search
-////        // presenter.setOnQueryText(searchView, name_swar);
-//    }
-//
-//    override fun showAllImages(integers: List<Int>) {
-//        integers_bundle = integers
-//    }
-
 //    override fun showAnimation() {
 //        //For animation
 //        val controller = AnimationUtils.loadLayoutAnimation(activity, R.anim.layout_fall_dwon)

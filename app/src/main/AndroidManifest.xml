@@ -58,9 +58,11 @@
         </activity>
         <activity
             android:name=".ui.activities.ContianerDescriptionElnawawyActivity"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop"
+            android:theme="@style/FullScreenWindow"/>
         <activity
-            android:name=".ui.activities.ElarbaoonElnawawyActivity"
+            android:name=".ui.navigationview.ElarbaoonElnawawyActivity"
+            android:theme="@style/FullScreenWindow"
             android:launchMode="singleTop" />
 
         <meta-data

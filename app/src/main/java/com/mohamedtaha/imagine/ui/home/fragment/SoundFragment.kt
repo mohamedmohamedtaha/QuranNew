@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.mohamedtaha.imagine.R
@@ -14,6 +15,7 @@ import com.mohamedtaha.imagine.ui.home.adapter.ImageAdapter
 import com.mohamedtaha.imagine.databinding.FragmentSoundBinding
 import com.mohamedtaha.imagine.mvp.model.ImageModel
 import com.mohamedtaha.imagine.mvp.view.ListSoundReaderView
+import com.mohamedtaha.imagine.ui.home.viewModel.SoundViewModel
 import com.mohamedtaha.imagine.ui.home.viewModel.SwarAndPartsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,6 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class SoundFragment : BaseFragment() {
+    internal val soundViewModel: SoundViewModel by activityViewModels()
     private lateinit var binding: FragmentSoundBinding
     private lateinit var imageAdapter: ImageAdapter
 
@@ -53,9 +56,17 @@ class SoundFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getData(requireContext())
-        binding.viewModel = viewModel
-        binding.FragmentSoundRecyclerView.adapter = ImageAdapter(requireActivity())
+        soundViewModel.getData(requireContext())
+        binding.viewModel = soundViewModel
+        soundViewModel.sound.observe(viewLifecycleOwner){
+            val imageAdapter = ImageAdapter(requireActivity())
+            binding.FragmentSoundRecyclerView.adapter = imageAdapter
+            imageAdapter.setData(it)
+        }
+
+
+
+
 
 //        viewModel.sound.observe(viewLifecycleOwner) {
 //            imageAdapter = ImageAdapter(it, requireActivity())

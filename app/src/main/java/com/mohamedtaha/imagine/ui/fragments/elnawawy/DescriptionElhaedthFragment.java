@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import com.mohamedtaha.imagine.R;
 import com.mohamedtaha.imagine.libraryTextView.TextViewEx;
-import com.mohamedtaha.imagine.ui.activities.ElarbaoonElnawawyActivity;
+import com.mohamedtaha.imagine.ui.navigationview.ElarbaoonElnawawyActivity;
 import com.google.gson.Gson;
 
 import java.util.concurrent.Callable;

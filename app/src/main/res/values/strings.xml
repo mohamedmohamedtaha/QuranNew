@@ -667,4 +667,5 @@
     <string name="text_update">تحديث</string>
     <string name="logo">Logo</string>
     <string name="search">getString/search</string>
+    <string name="button_description">Up button</string>
 </resources>

@@ -4,7 +4,7 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         style="@style/style_default_layout_match_parent"
-        tools:context=".ui.activities.ElarbaoonElnawawyActivity">
+        tools:context=".ui.navigationview.ElarbaoonElnawawyActivity">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/ElarbaoonElnawawyActivity_TB"

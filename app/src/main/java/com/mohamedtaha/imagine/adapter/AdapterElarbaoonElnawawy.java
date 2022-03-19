@@ -55,8 +55,8 @@ public class AdapterElarbaoonElnawawy extends RecyclerView.Adapter<AdapterElarba
     @Override
     public void onBindViewHolder(@NonNull ElarbaoonViewHolder holder, int position) {
         ElarbaoonElnawawyModel elnawawyModel = elnawawyModelsList.get(position);
-        holder.TVNameElhadeth.setText(elnawawyModel.getName_elhadeth());
-        holder.TVNumberElhadeth.setText(elnawawyModel.getNumber_elhadeth());
+        holder.TVNameElhadeth.setText(elnawawyModel.getNameElhadeth());
+        holder.TVNumberElhadeth.setText(elnawawyModel.getNumberElhadeth());
 
     }
 

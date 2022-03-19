@@ -194,66 +194,66 @@ public class SoundRepositiory {
             case 0:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkEldokalyMohamed[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkEldokalyMohamed[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.dokaly_mohamed));
-                    model.setUrl_image(R.drawable.aldokaly_mohamed);
+                    model.setNameShekh(application.getString(R.string.dokaly_mohamed));
+                    model.setUrlImage(R.drawable.aldokaly_mohamed);
                     name_sora.add(model);
                 }
                 break;
             case 1:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkElzenMohamed[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkElzenMohamed[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.elzen_mohamed));
-                    model.setUrl_image(R.drawable.elzen_mohamed);
+                    model.setNameShekh(application.getString(R.string.elzen_mohamed));
+                    model.setUrlImage(R.drawable.elzen_mohamed);
                     name_sora.add(model);
                 }
                 break;
             case 2:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkEloyonElkorashy[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkEloyonElkorashy[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.al_ouoon_alkushi));
-                    model.setUrl_image(R.drawable.al_ouoon_alkushi);
+                    model.setNameShekh(application.getString(R.string.al_ouoon_alkushi));
+                    model.setUrlImage(R.drawable.al_ouoon_alkushi);
                     name_sora.add(model);
                 }
                 break;
             case 3:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkElfalehMohamed[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkElfalehMohamed[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.alfateh_mohamed));
-                    model.setUrl_image(R.drawable.alfateh_mohamed);
+                    model.setNameShekh(application.getString(R.string.alfateh_mohamed));
+                    model.setUrlImage(R.drawable.alfateh_mohamed);
                     name_sora.add(model);
                 }
                 break;
             case 4:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesElshatry[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesElshatry[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.shatri));
-                    model.setUrl_image(R.drawable.shatri);
+                    model.setNameShekh(application.getString(R.string.shatri));
+                    model.setUrlImage(R.drawable.shatri);
                     name_sora.add(model);
                 }
                 break;
             case 5:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkElagamy[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkElagamy[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.ahmed_elagamy));
-                    model.setUrl_image(R.drawable.elagamy);
+                    model.setNameShekh(application.getString(R.string.ahmed_elagamy));
+                    model.setUrlImage(R.drawable.elagamy);
                     name_sora.add(model);
                 }
                 break;
@@ -261,11 +261,11 @@ public class SoundRepositiory {
             case 6:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkAhmedKhedrEltrabolsy[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkAhmedKhedrEltrabolsy[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.ahmed_eltrabolsy));
-                    model.setUrl_image(R.drawable.ahmed_khdr_eltrabolsy);
+                    model.setNameShekh(application.getString(R.string.ahmed_eltrabolsy));
+                    model.setUrlImage(R.drawable.ahmed_khdr_eltrabolsy);
 
                     name_sora.add(model);
                 }
@@ -273,99 +273,99 @@ public class SoundRepositiory {
             case 7:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkAhmedEltrabolsy[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkAhmedEltrabolsy[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.ahmed_eltrabolsy));
-                    model.setUrl_image(R.drawable.ahmed_khdr_eltrabolsy);
+                    model.setNameShekh(application.getString(R.string.ahmed_eltrabolsy));
+                    model.setUrlImage(R.drawable.ahmed_khdr_eltrabolsy);
                     name_sora.add(model);
                 }
                 break;
             case 8:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkAhmedElhawashy[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkAhmedElhawashy[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.ahmed_elhawashy));
-                    model.setUrl_image(R.drawable.ahmed_elhawashy);
+                    model.setNameShekh(application.getString(R.string.ahmed_elhawashy));
+                    model.setUrlImage(R.drawable.ahmed_elhawashy);
                     name_sora.add(model);
                 }
                 break;
             case 9:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkAhmedSaber[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkAhmedSaber[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.ahmed_saber));
-                    model.setUrl_image(R.mipmap.logo);
+                    model.setNameShekh(application.getString(R.string.ahmed_saber));
+                    model.setUrlImage(R.mipmap.logo);
                     name_sora.add(model);
                 }
                 break;
             case 10:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkAhmedAmer[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkAhmedAmer[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.ahmed_amer));
-                    model.setUrl_image(R.drawable.ahmed_amer);
+                    model.setNameShekh(application.getString(R.string.ahmed_amer));
+                    model.setUrlImage(R.drawable.ahmed_amer);
                     name_sora.add(model);
                 }
                 break;
             case 11:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkAhmedNeanea[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkAhmedNeanea[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.ahmed_naeane));
-                    model.setUrl_image(R.drawable.ahmed_neanea);
+                    model.setNameShekh(application.getString(R.string.ahmed_naeane));
+                    model.setUrlImage(R.drawable.ahmed_neanea);
                     name_sora.add(model);
                 }
                 break;
             case 12:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkAkramAlAalakmi[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkAkramAlAalakmi[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.akram_al_aalakmi));
-                    model.setUrl_image(R.drawable.akram_al_aalakmi);
+                    model.setNameShekh(application.getString(R.string.akram_al_aalakmi));
+                    model.setUrlImage(R.drawable.akram_al_aalakmi);
                     name_sora.add(model);
                 }
                 break;
             case 13:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkEbrahemElakhdar[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkEbrahemElakhdar[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.ibrahim_al_akhdar));
-                    model.setUrl_image(R.drawable.ebrahem_khoder);
+                    model.setNameShekh(application.getString(R.string.ibrahim_al_akhdar));
+                    model.setUrlImage(R.drawable.ebrahem_khoder);
                     name_sora.add(model);
                 }
                 break;
             case 14:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkEbraghemeldosary[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkEbraghemeldosary[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.ibrahim_al_dosary));
-                    model.setUrl_image(R.drawable.ebrahem_eldosary);
+                    model.setNameShekh(application.getString(R.string.ibrahim_al_dosary));
+                    model.setUrlImage(R.drawable.ebrahem_eldosary);
                     name_sora.add(model);
                 }
                 break;
             case 15:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkEbraghem_eldosaryWarsh[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkEbraghem_eldosaryWarsh[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.ibrahim_al_dosary));
-                    model.setUrl_image(R.drawable.ebrahem_eldosary);
+                    model.setNameShekh(application.getString(R.string.ibrahim_al_dosary));
+                    model.setUrlImage(R.drawable.ebrahem_eldosary);
                     name_sora.add(model);
                 }
                 break;
@@ -373,44 +373,44 @@ public class SoundRepositiory {
             case 16:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkBnderBelela[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkBnderBelela[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.bnder_belela));
-                    model.setUrl_image(R.drawable.belela);
+                    model.setNameShekh(application.getString(R.string.bnder_belela));
+                    model.setUrlImage(R.drawable.belela);
                     name_sora.add(model);
                 }
                 break;
             case 17:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArraylinkesTwfeaElsayegh[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArraylinkesTwfeaElsayegh[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.tawfik_sayegh));
-                    model.setUrl_image(R.drawable.tawfik_sayegh);
+                    model.setNameShekh(application.getString(R.string.tawfik_sayegh));
+                    model.setUrlImage(R.drawable.tawfik_sayegh);
                     name_sora.add(model);
                 }
                 break;
             case 18:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkJamalShaker[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkJamalShaker[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.jamal_shaker));
-                    model.setUrl_image(R.drawable.jamal_shaker);
+                    model.setNameShekh(application.getString(R.string.jamal_shaker));
+                    model.setUrlImage(R.drawable.jamal_shaker);
                     name_sora.add(model);
                 }
                 break;
             case 19:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkJamanElesemy[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkJamanElesemy[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.jaman_elesemy));
-                    model.setUrl_image(R.drawable.jaman_elesemy);
+                    model.setNameShekh(application.getString(R.string.jaman_elesemy));
+                    model.setUrlImage(R.drawable.jaman_elesemy);
                     name_sora.add(model);
                 }
                 break;
@@ -418,66 +418,66 @@ public class SoundRepositiory {
             case 20:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArraylinkesHatemFared[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArraylinkesHatemFared[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.hatem_fared));
-                    model.setUrl_image(R.drawable.hatem_fared);
+                    model.setNameShekh(application.getString(R.string.hatem_fared));
+                    model.setUrlImage(R.drawable.hatem_fared);
                     name_sora.add(model);
                 }
                 break;
             case 21:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArraylinkesKhalidElmohana[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArraylinkesKhalidElmohana[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.khaled_elmehana));
-                    model.setUrl_image(R.drawable.khaled_elmehana);
+                    model.setNameShekh(application.getString(R.string.khaled_elmehana));
+                    model.setUrlImage(R.drawable.khaled_elmehana);
                     name_sora.add(model);
                 }
                 break;
             case 22:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArraylinkesKhalidAbdElkafy[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArraylinkesKhalidAbdElkafy[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.khaled_abdelkafy));
-                    model.setUrl_image(R.drawable.khaled_abdelkafy);
+                    model.setNameShekh(application.getString(R.string.khaled_abdelkafy));
+                    model.setUrlImage(R.drawable.khaled_abdelkafy);
                     name_sora.add(model);
                 }
                 break;
             case 23:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesKhaledElgalel[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesKhaledElgalel[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.jleel));
-                    model.setUrl_image(R.drawable.jleel);
+                    model.setNameShekh(application.getString(R.string.jleel));
+                    model.setUrlImage(R.drawable.jleel);
                     name_sora.add(model);
                 }
                 break;
             case 24:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesKhaledElqahtamny[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesKhaledElqahtamny[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.qht));
-                    model.setUrl_image(R.drawable.qht);
+                    model.setNameShekh(application.getString(R.string.qht));
+                    model.setUrlImage(R.drawable.qht);
                     name_sora.add(model);
                 }
                 break;
             case 25:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesKhalefaEltenegy[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesKhalefaEltenegy[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.tnjy));
-                    model.setUrl_image(R.drawable.tnjy);
+                    model.setNameShekh(application.getString(R.string.tnjy));
+                    model.setUrlImage(R.drawable.tnjy);
                     name_sora.add(model);
                 }
                 break;
@@ -485,253 +485,253 @@ public class SoundRepositiory {
             case 26:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArraylinkesRamyEldeaas[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArraylinkesRamyEldeaas[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.ramy_eldabs));
-                    model.setUrl_image(R.mipmap.logo);
+                    model.setNameShekh(application.getString(R.string.ramy_eldabs));
+                    model.setUrlImage(R.mipmap.logo);
                     name_sora.add(model);
                 }
                 break;
             case 27:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkZaky[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkZaky[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.zaki_daghistani));
-                    model.setUrl_image(R.drawable.zaki_daghistani);
+                    model.setNameShekh(application.getString(R.string.zaki_daghistani));
+                    model.setUrlImage(R.drawable.zaki_daghistani);
                     name_sora.add(model);
                 }
                 break;
             case 28:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArraylinkesSahlYassen[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArraylinkesSahlYassen[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.sahl_yassen));
-                    model.setUrl_image(R.drawable.sahl_yassen);
+                    model.setNameShekh(application.getString(R.string.sahl_yassen));
+                    model.setUrlImage(R.drawable.sahl_yassen);
                     name_sora.add(model);
                 }
                 break;
             case 29:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesSadElghamdy[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesSadElghamdy[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.s_gmd));
-                    model.setUrl_image(R.drawable.s_gmd);
+                    model.setNameShekh(application.getString(R.string.s_gmd));
+                    model.setUrlImage(R.drawable.s_gmd);
                     name_sora.add(model);
                 }
                 break;
             case 30:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkeSadElmeqren[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkeSadElmeqren[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.saad));
-                    model.setUrl_image(R.mipmap.logo);
+                    model.setNameShekh(application.getString(R.string.saad));
+                    model.setUrlImage(R.mipmap.logo);
                     name_sora.add(model);
                 }
                 break;
             case 31:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkSoaadElsherem[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkSoaadElsherem[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.soud_elsherem));
-                    model.setUrl_image(R.drawable.sherem);
+                    model.setNameShekh(application.getString(R.string.soud_elsherem));
+                    model.setUrlImage(R.drawable.sherem);
                     name_sora.add(model);
                 }
                 break;
             case 32:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesSyedRamadan[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesSyedRamadan[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.sayed));
-                    model.setUrl_image(R.drawable.syed_rmdan);
+                    model.setNameShekh(application.getString(R.string.sayed));
+                    model.setUrlImage(R.drawable.syed_rmdan);
                     name_sora.add(model);
                 }
                 break;
             case 33:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesShahrzadTaher[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesShahrzadTaher[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.taher));
-                    model.setUrl_image(R.drawable.taher);
+                    model.setNameShekh(application.getString(R.string.taher));
+                    model.setUrlImage(R.drawable.taher);
                     name_sora.add(model);
                 }
                 break;
             case 34:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesHKM[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesHKM[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.hkm));
-                    model.setUrl_image(R.drawable.hkm);
+                    model.setNameShekh(application.getString(R.string.hkm));
+                    model.setUrlImage(R.drawable.hkm);
                     name_sora.add(model);
                 }
                 break;
             case 35:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesSalahHashim[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesSalahHashim[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.salah_hashim_m));
-                    model.setUrl_image(R.drawable.salah_hashim_m);
+                    model.setNameShekh(application.getString(R.string.salah_hashim_m));
+                    model.setUrlImage(R.drawable.salah_hashim_m);
                     name_sora.add(model);
                 }
                 break;
             case 36:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkBder[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkBder[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.slah_elbadry));
-                    model.setUrl_image(R.drawable.bder);
+                    model.setNameShekh(application.getString(R.string.slah_elbadry));
+                    model.setUrlImage(R.drawable.bder);
                     name_sora.add(model);
                 }
                 break;
             case 37:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesBuKhtr[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesBuKhtr[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.bu_khtr));
-                    model.setUrl_image(R.drawable.bu_khtr);
+                    model.setNameShekh(application.getString(R.string.bu_khtr));
+                    model.setUrlImage(R.drawable.bu_khtr);
                     name_sora.add(model);
                 }
                 break;
             case 38:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesTareq[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesTareq[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.tareq));
-                    model.setUrl_image(R.drawable.tarek_abdelany);
+                    model.setNameShekh(application.getString(R.string.tareq));
+                    model.setUrlImage(R.drawable.tarek_abdelany);
                     name_sora.add(model);
                 }
                 break;
             case 39:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesRyan[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesRyan[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.ryan));
-                    model.setUrl_image(R.drawable.ryan);
+                    model.setNameShekh(application.getString(R.string.ryan));
+                    model.setUrlImage(R.drawable.ryan);
                     name_sora.add(model);
                 }
                 break;
             case 40:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkElklbanyHafs[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkElklbanyHafs[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.adel_elkalbany));
-                    model.setUrl_image(R.drawable.elklbany);
+                    model.setNameShekh(application.getString(R.string.adel_elkalbany));
+                    model.setUrlImage(R.drawable.elklbany);
                     name_sora.add(model);
                 }
                 break;
             case 41:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesAbdelbasetHAfs[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesAbdelbasetHAfs[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.abdelbaset));
-                    model.setUrl_image(R.drawable.abdeelbaset);
+                    model.setNameShekh(application.getString(R.string.abdelbaset));
+                    model.setUrlImage(R.drawable.abdeelbaset);
                     name_sora.add(model);
                 }
                 break;
             case 42:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesAbdelbasetWarsh[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesAbdelbasetWarsh[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.abdelbaset));
-                    model.setUrl_image(R.drawable.abdeelbaset);
+                    model.setNameShekh(application.getString(R.string.abdelbaset));
+                    model.setUrlImage(R.drawable.abdeelbaset);
                     name_sora.add(model);
                 }
                 break;
             case 43:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkAbdelbasetMgwad[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkAbdelbasetMgwad[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.abdelbaset));
-                    model.setUrl_image(R.drawable.abdeelbaset);
+                    model.setNameShekh(application.getString(R.string.abdelbaset));
+                    model.setUrlImage(R.drawable.abdeelbaset);
                     name_sora.add(model);
                 }
                 break;
             case 44:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkAbdlaElgeheny[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkAbdlaElgeheny[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.abdellah_elgeheny));
-                    model.setUrl_image(R.drawable.elgeheny);
+                    model.setNameShekh(application.getString(R.string.abdellah_elgeheny));
+                    model.setUrlImage(R.drawable.elgeheny);
                     name_sora.add(model);
                 }
                 break;
             case 45:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkElqasem[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkElqasem[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.abdelrhman_elqasem));
-                    model.setUrl_image(R.drawable.elqasem);
+                    model.setNameShekh(application.getString(R.string.abdelrhman_elqasem));
+                    model.setUrlImage(R.drawable.elqasem);
                     name_sora.add(model);
                 }
                 break;
             case 46:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkSoufi[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkSoufi[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.abdelrshed_sofy));
-                    model.setUrl_image(R.drawable.soufi_hfs);
+                    model.setNameShekh(application.getString(R.string.abdelrshed_sofy));
+                    model.setUrlImage(R.drawable.soufi_hfs);
                     name_sora.add(model);
                 }
                 break;
             case 47:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkSoufiKlf[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkSoufiKlf[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.abdelrshed_sofy));
-                    model.setUrl_image(R.drawable.soufi_hfs);
+                    model.setNameShekh(application.getString(R.string.abdelrshed_sofy));
+                    model.setUrlImage(R.drawable.soufi_hfs);
                     name_sora.add(model);
                 }
                 break;
             case 48:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkbdelazezZahrani[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkbdelazezZahrani[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.abdelazez_elzahrany));
-                    model.setUrl_image(R.drawable.abdelazez_elzahrany);
+                    model.setNameShekh(application.getString(R.string.abdelazez_elzahrany));
+                    model.setUrlImage(R.drawable.abdelazez_elzahrany);
                     name_sora.add(model);
                 }
                 break;
@@ -739,187 +739,187 @@ public class SoundRepositiory {
             case 49:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArraylinkesAbdelbariElthebety[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArraylinkesAbdelbariElthebety[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.abdelbara_elthebety));
-                    model.setUrl_image(R.drawable.abdelbara_elthebety);
+                    model.setNameShekh(application.getString(R.string.abdelbara_elthebety));
+                    model.setUrlImage(R.drawable.abdelbara_elthebety);
                     name_sora.add(model);
                 }
                 break;
             case 50:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArraylinkesAbdelrhmanEloasi[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArraylinkesAbdelrhmanEloasi[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.abdelrhman_elosa));
-                    model.setUrl_image(R.drawable.abdelrhman_elosa);
+                    model.setNameShekh(application.getString(R.string.abdelrhman_elosa));
+                    model.setUrlImage(R.drawable.abdelrhman_elosa);
                     name_sora.add(model);
                 }
                 break;
             case 51:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesBary[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesBary[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.bari));
-                    model.setUrl_image(R.drawable.abdelbary);
+                    model.setNameShekh(application.getString(R.string.bari));
+                    model.setUrlImage(R.drawable.abdelbary);
                     name_sora.add(model);
                 }
                 break;
             case 52:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkElsodes[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkElsodes[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.abdelrhman_elsodes));
-                    model.setUrl_image(R.drawable.elsodes);
+                    model.setNameShekh(application.getString(R.string.abdelrhman_elsodes));
+                    model.setUrlImage(R.drawable.elsodes);
                     name_sora.add(model);
                 }
                 break;
             case 53:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesAbdelrhmanMaged[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesAbdelrhmanMaged[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.a_majed));
-                    model.setUrl_image(R.drawable.a_majed);
+                    model.setNameShekh(application.getString(R.string.a_majed));
+                    model.setUrlImage(R.drawable.a_majed);
                     name_sora.add(model);
                 }
                 break;
             case 54:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesSoufiHfs[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesSoufiHfs[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.soufi_hfs));
-                    model.setUrl_image(R.drawable.soufi_hfs);
+                    model.setNameShekh(application.getString(R.string.soufi_hfs));
+                    model.setUrlImage(R.drawable.soufi_hfs);
                     name_sora.add(model);
                 }
                 break;
             case 55:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesAbdelazezAhmed[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesAbdelazezAhmed[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.a_ahmed));
-                    model.setUrl_image(R.drawable.a_ahmed);
+                    model.setNameShekh(application.getString(R.string.a_ahmed));
+                    model.setUrlImage(R.drawable.a_ahmed);
                     name_sora.add(model);
                 }
                 break;
             case 56:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkeKkhalf[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkeKkhalf[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.khalf));
-                    model.setUrl_image(R.drawable.khalf);
+                    model.setNameShekh(application.getString(R.string.khalf));
+                    model.setUrlImage(R.drawable.khalf);
                     name_sora.add(model);
                 }
                 break;
             case 57:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesAbdalah[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesAbdalah[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.abdullahk));
-                    model.setUrl_image(R.drawable.abdullahk);
+                    model.setNameShekh(application.getString(R.string.abdullahk));
+                    model.setUrlImage(R.drawable.abdullahk);
                     name_sora.add(model);
                 }
                 break;
             case 58:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesBsfr[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesBsfr[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.bsfr));
-                    model.setUrl_image(R.drawable.bsfr);
+                    model.setNameShekh(application.getString(R.string.bsfr));
+                    model.setUrlImage(R.drawable.bsfr);
                     name_sora.add(model);
                 }
                 break;
             case 59:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesKyat[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesKyat[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.kyat));
-                    model.setUrl_image(R.drawable.kyat);
+                    model.setNameShekh(application.getString(R.string.kyat));
+                    model.setUrlImage(R.drawable.kyat);
                     name_sora.add(model);
                 }
                 break;
             case 60:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesGulan[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesGulan[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.gulan));
-                    model.setUrl_image(R.drawable.gulan);
+                    model.setNameShekh(application.getString(R.string.gulan));
+                    model.setUrlImage(R.drawable.gulan);
                     name_sora.add(model);
                 }
                 break;
             case 61:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesmohsin_harthi[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesmohsin_harthi[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.mohsin_harthi));
-                    model.setUrl_image(R.drawable.mohsin_harthi);
+                    model.setNameShekh(application.getString(R.string.mohsin_harthi));
+                    model.setUrlImage(R.drawable.mohsin_harthi);
                     name_sora.add(model);
                 }
                 break;
             case 62:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesObk[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesObk[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.obk));
-                    model.setUrl_image(R.drawable.obk);
+                    model.setNameShekh(application.getString(R.string.obk));
+                    model.setUrlImage(R.drawable.obk);
                     name_sora.add(model);
                 }
                 break;
             case 63:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesKanakeri[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesKanakeri[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.kanakeri));
-                    model.setUrl_image(R.drawable.kanakeri);
+                    model.setNameShekh(application.getString(R.string.kanakeri));
+                    model.setUrlImage(R.drawable.kanakeri);
                     name_sora.add(model);
                 }
                 break;
             case 64:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesWdod[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesWdod[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.wdod));
-                    model.setUrl_image(R.drawable.wdod);
+                    model.setNameShekh(application.getString(R.string.wdod));
+                    model.setUrlImage(R.drawable.wdod);
                     name_sora.add(model);
                 }
                 break;
             case 65:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesAjbr[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesAjbr[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.a_jbr));
-                    model.setUrl_image(R.drawable.a_jbr);
+                    model.setNameShekh(application.getString(R.string.a_jbr));
+                    model.setUrlImage(R.drawable.a_jbr);
                     name_sora.add(model);
                 }
                 break;
@@ -927,99 +927,99 @@ public class SoundRepositiory {
             case 66:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkAliElhozefy[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkAliElhozefy[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.ali_elhozefy));
-                    model.setUrl_image(R.drawable.ali_elhozefy);
+                    model.setNameShekh(application.getString(R.string.ali_elhozefy));
+                    model.setUrlImage(R.drawable.ali_elhozefy);
                     name_sora.add(model);
                 }
                 break;
             case 67:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkAliElhozefyHafs[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkAliElhozefyHafs[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.ali_elhozefy));
-                    model.setUrl_image(R.drawable.ali_elhozefy);
+                    model.setNameShekh(application.getString(R.string.ali_elhozefy));
+                    model.setUrlImage(R.drawable.ali_elhozefy);
                     name_sora.add(model);
                 }
                 break;
             case 68:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkAlyElswesy[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkAlyElswesy[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.ali_swiesy));
-                    model.setUrl_image(R.drawable.ali_swiesy);
+                    model.setNameShekh(application.getString(R.string.ali_swiesy));
+                    model.setUrlImage(R.drawable.ali_swiesy);
                     name_sora.add(model);
                 }
                 break;
             case 69:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesHafz[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesHafz[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.hafz));
-                    model.setUrl_image(R.drawable.hafz);
+                    model.setNameShekh(application.getString(R.string.hafz));
+                    model.setUrlImage(R.drawable.hafz);
                     name_sora.add(model);
                 }
                 break;
             case 70:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkOmarElqzabry[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkOmarElqzabry[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.omar_kzabri));
-                    model.setUrl_image(R.drawable.omar_kzabri);
+                    model.setNameShekh(application.getString(R.string.omar_kzabri));
+                    model.setUrlImage(R.drawable.omar_kzabri);
                     name_sora.add(model);
                 }
                 break;
             case 71:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesFrs_a[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesFrs_a[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.frs_a));
-                    model.setUrl_image(R.drawable.frs_a);
+                    model.setNameShekh(application.getString(R.string.frs_a));
+                    model.setUrlImage(R.drawable.frs_a);
                     name_sora.add(model);
                 }
                 break;
             case 72:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkMAHER_ELMEAQLY[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkMAHER_ELMEAQLY[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.maher_elmeaqly));
-                    model.setUrl_image(R.drawable.almaqely);
+                    model.setNameShekh(application.getString(R.string.maher_elmeaqly));
+                    model.setUrlImage(R.drawable.almaqely);
                     name_sora.add(model);
                 }
                 break;
             case 73:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesShakshFs[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesShakshFs[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.shaksh));
-                    model.setUrl_image(R.drawable.shaksh);
+                    model.setNameShekh(application.getString(R.string.shaksh));
+                    model.setUrlImage(R.drawable.shaksh);
                     name_sora.add(model);
                 }
                 break;
             case 74:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesAyyub[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesAyyub[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.ayyub));
-                    model.setUrl_image(R.drawable.ayyub);
+                    model.setNameShekh(application.getString(R.string.ayyub));
+                    model.setUrlImage(R.drawable.ayyub);
                     name_sora.add(model);
                 }
                 break;
@@ -1027,77 +1027,77 @@ public class SoundRepositiory {
             case 75:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesM_krm[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesM_krm[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.m_krm));
-                    model.setUrl_image(R.drawable.m_krm);
+                    model.setNameShekh(application.getString(R.string.m_krm));
+                    model.setUrlImage(R.drawable.m_krm);
                     name_sora.add(model);
                 }
                 break;
             case 76:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesMkreem_warsh[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesMkreem_warsh[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.m_krm));
-                    model.setUrl_image(R.drawable.m_krm);
+                    model.setNameShekh(application.getString(R.string.m_krm));
+                    model.setUrlImage(R.drawable.m_krm);
                     name_sora.add(model);
                 }
                 break;
             case 77:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesEarawi[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesEarawi[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.earawi));
-                    model.setUrl_image(R.drawable.earawi);
+                    model.setNameShekh(application.getString(R.string.earawi));
+                    model.setUrlImage(R.drawable.earawi);
                     name_sora.add(model);
                 }
                 break;
             case 78:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesShah[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesShah[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.shah));
-                    model.setUrl_image(R.drawable.shah);
+                    model.setNameShekh(application.getString(R.string.shah));
+                    model.setUrlImage(R.drawable.shah);
                     name_sora.add(model);
                 }
                 break;
             case 79:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesRashad[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesRashad[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.rashad));
-                    model.setUrl_image(R.drawable.rashad);
+                    model.setNameShekh(application.getString(R.string.rashad));
+                    model.setUrlImage(R.drawable.rashad);
                     name_sora.add(model);
                 }
                 break;
             case 80:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesLhdan[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesLhdan[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.lhdan));
-                    model.setUrl_image(R.drawable.lhdan);
+                    model.setNameShekh(application.getString(R.string.lhdan));
+                    model.setUrlImage(R.drawable.lhdan);
                     name_sora.add(model);
                 }
                 break;
             case 81:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesKhan[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesKhan[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.khan));
-                    model.setUrl_image(R.mipmap.logo);
+                    model.setNameShekh(application.getString(R.string.khan));
+                    model.setUrlImage(R.mipmap.logo);
                     name_sora.add(model);
                 }
                 break;
@@ -1105,22 +1105,22 @@ public class SoundRepositiory {
             case 82:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkElmenshawyMgwad[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkElmenshawyMgwad[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.mohamed_elmenshawyM));
-                    model.setUrl_image(R.drawable.elmenshawy);
+                    model.setNameShekh(application.getString(R.string.mohamed_elmenshawyM));
+                    model.setUrlImage(R.drawable.elmenshawy);
                     name_sora.add(model);
                 }
                 break;
             case 83:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkElmenshawyHafs[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkElmenshawyHafs[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.mohamed_elmenshawyH));
-                    model.setUrl_image(R.drawable.elmenshawy);
+                    model.setNameShekh(application.getString(R.string.mohamed_elmenshawyH));
+                    model.setUrlImage(R.drawable.elmenshawy);
                     name_sora.add(model);
                 }
                 break;
@@ -1128,55 +1128,55 @@ public class SoundRepositiory {
             case 84:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkALTABLAWY[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkALTABLAWY[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.mohamed_eltblawy));
-                    model.setUrl_image(R.drawable.eltblawy);
+                    model.setNameShekh(application.getString(R.string.mohamed_eltblawy));
+                    model.setUrlImage(R.drawable.eltblawy);
                     name_sora.add(model);
                 }
                 break;
             case 85:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkAbdelhakemAlabdlah[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkAbdelhakemAlabdlah[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.mohamed_abd_elhakem));
-                    model.setUrl_image(R.drawable.mohamed_abd_elhakem);
+                    model.setNameShekh(application.getString(R.string.mohamed_abd_elhakem));
+                    model.setUrlImage(R.drawable.mohamed_abd_elhakem);
                     name_sora.add(model);
                 }
                 break;
             case 86:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesAbdullahDoris[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesAbdullahDoris[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.mohamed_abd_elhakem));
-                    model.setUrl_image(R.drawable.mohamed_abd_elhakem);
+                    model.setNameShekh(application.getString(R.string.mohamed_abd_elhakem));
+                    model.setUrlImage(R.drawable.mohamed_abd_elhakem);
                     name_sora.add(model);
                 }
                 break;
             case 87:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkMohamedGbrer[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkMohamedGbrer[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.mohamed_gebrer));
-                    model.setUrl_image(R.drawable.mohamedgbrer);
+                    model.setNameShekh(application.getString(R.string.mohamed_gebrer));
+                    model.setUrlImage(R.drawable.mohamedgbrer);
                     name_sora.add(model);
                 }
                 break;
             case 88:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkMsharyElafasy[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkMsharyElafasy[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.mshary_elafasy));
-                    model.setUrl_image(R.drawable.msharyelafasy);
+                    model.setNameShekh(application.getString(R.string.mshary_elafasy));
+                    model.setUrlImage(R.drawable.msharyelafasy);
                     name_sora.add(model);
                 }
                 break;
@@ -1184,187 +1184,187 @@ public class SoundRepositiory {
             case 89:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesMrifai[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesMrifai[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.mrifai));
-                    model.setUrl_image(R.drawable.mrifai);
+                    model.setNameShekh(application.getString(R.string.mrifai));
+                    model.setUrlImage(R.drawable.mrifai);
                     name_sora.add(model);
                 }
                 break;
             case 90:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesSheimy[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesSheimy[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.sheimy));
-                    model.setUrl_image(R.drawable.sheimy);
+                    model.setNameShekh(application.getString(R.string.sheimy));
+                    model.setUrlImage(R.drawable.sheimy);
                     name_sora.add(model);
                 }
                 break;
             case 91:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkElhosaryMgwad[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkElhosaryMgwad[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.mahmoud_elhosaryM));
-                    model.setUrl_image(R.drawable.elhosary);
+                    model.setNameShekh(application.getString(R.string.mahmoud_elhosaryM));
+                    model.setUrlImage(R.drawable.elhosary);
                     name_sora.add(model);
                 }
                 break;
             case 92:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArraylinkesElhosaryWarsh[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArraylinkesElhosaryWarsh[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.mahmoud_elhosaryM));
-                    model.setUrl_image(R.drawable.elhosary);
+                    model.setNameShekh(application.getString(R.string.mahmoud_elhosaryM));
+                    model.setUrlImage(R.drawable.elhosary);
                     name_sora.add(model);
                 }
                 break;
             case 93:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkElhosaryHAfs[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkElhosaryHAfs[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.mahmoud_elhosaryH));
-                    model.setUrl_image(R.drawable.elhosary);
+                    model.setNameShekh(application.getString(R.string.mahmoud_elhosaryH));
+                    model.setUrlImage(R.drawable.elhosary);
                     name_sora.add(model);
                 }
                 break;
             case 94:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkElbana[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkElbana[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.mahmoud_elbana));
-                    model.setUrl_image(R.drawable.elbana);
+                    model.setNameShekh(application.getString(R.string.mahmoud_elbana));
+                    model.setUrlImage(R.drawable.elbana);
                     name_sora.add(model);
                 }
                 break;
             case 95:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesBna_mjwds[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesBna_mjwds[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.mahmoud_elbana));
-                    model.setUrl_image(R.drawable.elbana);
+                    model.setNameShekh(application.getString(R.string.mahmoud_elbana));
+                    model.setUrlImage(R.drawable.elbana);
                     name_sora.add(model);
                 }
                 break;
             case 96:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesMustafa[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesMustafa[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.mustafa));
-                    model.setUrl_image(R.drawable.mustafa);
+                    model.setNameShekh(application.getString(R.string.mustafa));
+                    model.setUrlImage(R.drawable.mustafa);
                     name_sora.add(model);
                 }
                 break;
             case 97:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesLahoni[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesLahoni[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.lahoni));
-                    model.setUrl_image(R.drawable.lahoni);
+                    model.setNameShekh(application.getString(R.string.lahoni));
+                    model.setUrlImage(R.drawable.lahoni);
                     name_sora.add(model);
                 }
                 break;
             case 98:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesRa3ad[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesRa3ad[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.ra3ad));
-                    model.setUrl_image(R.drawable.ra3ad);
+                    model.setNameShekh(application.getString(R.string.ra3ad));
+                    model.setUrlImage(R.drawable.ra3ad);
                     name_sora.add(model);
                 }
                 break;
             case 99:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesHarthi[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesHarthi[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.harthi));
-                    model.setUrl_image(R.mipmap.logo);
+                    model.setNameShekh(application.getString(R.string.harthi));
+                    model.setUrlImage(R.mipmap.logo);
                     name_sora.add(model);
                 }
                 break;
             case 100:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArraylinkesMoftahElsalatnyEldawary[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArraylinkesMoftahElsalatnyEldawary[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.moftah_elslty));
-                    model.setUrl_image(R.drawable.moftah_elslty);
+                    model.setNameShekh(application.getString(R.string.moftah_elslty));
+                    model.setUrlImage(R.drawable.moftah_elslty);
                     name_sora.add(model);
                 }
                 break;
             case 101:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArraylinkesMoftahElsalatnyEnbZakor[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArraylinkesMoftahElsalatnyEnbZakor[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.moftah_elslty));
-                    model.setUrl_image(R.drawable.moftah_elslty);
+                    model.setNameShekh(application.getString(R.string.moftah_elslty));
+                    model.setUrlImage(R.drawable.moftah_elslty);
                     name_sora.add(model);
                 }
                 break;
             case 102:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArraylinkesMoftahHafs[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArraylinkesMoftahHafs[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.moftah_elslty));
-                    model.setUrl_image(R.drawable.moftah_elslty);
+                    model.setNameShekh(application.getString(R.string.moftah_elslty));
+                    model.setUrlImage(R.drawable.moftah_elslty);
                     name_sora.add(model);
                 }
                 break;
             case 103:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinklinkesMoftahElsltny[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinklinkesMoftahElsltny[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.moftah_elslty));
-                    model.setUrl_image(R.drawable.moftah_elslty);
+                    model.setNameShekh(application.getString(R.string.moftah_elslty));
+                    model.setUrlImage(R.drawable.moftah_elslty);
                     name_sora.add(model);
                 }
                 break;
             case 104:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesBilal[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesBilal[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.bilal));
-                    model.setUrl_image(R.drawable.bilal);
+                    model.setNameShekh(application.getString(R.string.bilal));
+                    model.setUrlImage(R.drawable.bilal);
                     name_sora.add(model);
                 }
                 break;
             case 105:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkNaserElqatamy[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkNaserElqatamy[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.naser_elqatamy));
-                    model.setUrl_image(R.drawable.naserelqatamy);
+                    model.setNameShekh(application.getString(R.string.naser_elqatamy));
+                    model.setUrlImage(R.drawable.naserelqatamy);
                     name_sora.add(model);
                 }
                 break;
@@ -1372,154 +1372,154 @@ public class SoundRepositiory {
             case 106:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesNasser_almajed[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesNasser_almajed[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.nasser_almajed));
-                    model.setUrl_image(R.drawable.nasser_almajed);
+                    model.setNameShekh(application.getString(R.string.nasser_almajed));
+                    model.setUrlImage(R.drawable.nasser_almajed);
                     name_sora.add(model);
                 }
                 break;
             case 107:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkNabelElrefay[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkNabelElrefay[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.nabel_elrefaay));
-                    model.setUrl_image(R.drawable.nabel_elrefaay);
+                    model.setNameShekh(application.getString(R.string.nabel_elrefaay));
+                    model.setUrlImage(R.drawable.nabel_elrefaay);
                     name_sora.add(model);
                 }
                 break;
             case 108:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesNamh[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesNamh[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.namh));
-                    model.setUrl_image(R.drawable.namh);
+                    model.setNameShekh(application.getString(R.string.namh));
+                    model.setUrlImage(R.drawable.namh);
                     name_sora.add(model);
                 }
                 break;
             case 109:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArraylinkesWadeaElyamany[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArraylinkesWadeaElyamany[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.wadea_elyamany));
-                    model.setUrl_image(R.drawable.wadea_elyamany);
+                    model.setNameShekh(application.getString(R.string.wadea_elyamany));
+                    model.setUrlImage(R.drawable.wadea_elyamany);
                     name_sora.add(model);
                 }
                 break;
             case 110:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkYaserEldosary[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkYaserEldosary[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.yaser_eldosary));
-                    model.setUrl_image(R.drawable.eldosary);
+                    model.setNameShekh(application.getString(R.string.yaser_eldosary));
+                    model.setUrlImage(R.drawable.eldosary);
                     name_sora.add(model);
                 }
                 break;
             case 111:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesHani[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesHani[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.hani));
-                    model.setUrl_image(R.drawable.hani);
+                    model.setNameShekh(application.getString(R.string.hani));
+                    model.setUrlImage(R.drawable.hani);
                     name_sora.add(model);
                 }
                 break;
             case 112:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkWaledElnaahy[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkWaledElnaahy[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.waled_elnaehy));
-                    model.setUrl_image(R.mipmap.logo);
+                    model.setNameShekh(application.getString(R.string.waled_elnaehy));
+                    model.setUrlImage(R.mipmap.logo);
                     name_sora.add(model);
                 }
                 break;
             case 113:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkYaserElmazroay[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkYaserElmazroay[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.yaser_elmazroay));
-                    model.setUrl_image(R.drawable.yaser_elmazroay);
+                    model.setNameShekh(application.getString(R.string.yaser_elmazroay));
+                    model.setUrlImage(R.drawable.yaser_elmazroay);
                     name_sora.add(model);
                 }
                 break;
             case 114:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkElqarashy[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkElqarashy[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.yaser_elqarashy));
-                    model.setUrl_image(R.drawable.elqarashy);
+                    model.setNameShekh(application.getString(R.string.yaser_elqarashy));
+                    model.setUrlImage(R.drawable.elqarashy);
                     name_sora.add(model);
                 }
                 break;
             case 115:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesSalamah[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesSalamah[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.salamah));
-                    model.setUrl_image(R.drawable.salamah);
+                    model.setNameShekh(application.getString(R.string.salamah));
+                    model.setUrlImage(R.drawable.salamah);
                     name_sora.add(model);
                 }
                 break;
             case 116:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkYasenElgazaery[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkYasenElgazaery[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.yasen_elgazaery));
-                    model.setUrl_image(R.drawable.yasen_elgazaery);
+                    model.setNameShekh(application.getString(R.string.yasen_elgazaery));
+                    model.setUrlImage(R.drawable.yasen_elgazaery);
                     name_sora.add(model);
                 }
                 break;
             case 117:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesYahya[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesYahya[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.yahya));
-                    model.setUrl_image(R.drawable.yahya);
+                    model.setNameShekh(application.getString(R.string.yahya));
+                    model.setUrlImage(R.drawable.yahya);
                     name_sora.add(model);
                 }
                 break;
             case 118:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(linkesNoah[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(linkesNoah[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.noah));
-                    model.setUrl_image(R.drawable.noah);
+                    model.setNameShekh(application.getString(R.string.noah));
+                    model.setUrlImage(R.drawable.noah);
                     name_sora.add(model);
                 }
                 break;
             case 119:
                 for (int i = 0; i < soar.length; ++i) {
                     ImageModel model = new ImageModel();
-                    model.setName_sora(soar[i]);
-                    model.setSora_link(ArrayLinkYosefElshereay[i]);
+                    model.setNameSora(soar[i]);
+                    model.setSoraLink(ArrayLinkYosefElshereay[i]);
                     model.setPosition(i);
-                    model.setName_shekh(application.getString(R.string.yosem_elshereay));
-                    model.setUrl_image(R.drawable.yosem_elshereay);
+                    model.setNameShekh(application.getString(R.string.yosem_elshereay));
+                    model.setUrlImage(R.drawable.yosem_elshereay);
                     name_sora.add(model);
                 }
                 break;

@@ -6,8 +6,8 @@
         android:id="@+id/primary"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/el_arbaoon_elnawawy"
-            android:icon="@drawable/ic_baseline_chrome_reader_mode_24"
+            android:id="@+id/elarbaoonElnawawyFragment"
+            android:icon="@drawable/ic_reader_mode"
             android:title="@string/el_arbaoon_elnawawy" />
 
     </group>
@@ -26,15 +26,15 @@
 
         <item
             android:id="@+id/action_share"
-            android:icon="@drawable/ic_baseline_share_24"
+            android:icon="@drawable/ic_share"
             android:title="@string/shareApp" />
         <item
             android:id="@+id/action_rate"
-            android:icon="@drawable/ic_baseline_grade_24"
+            android:icon="@drawable/ic_grade"
             android:title="@string/labelEvaluation" />
         <item
             android:id="@+id/action_send_us"
-            android:icon="@drawable/ic_baseline_email_24"
+            android:icon="@drawable/ic_email"
             android:title="@string/labelSend" />
     </group>
 
@@ -43,7 +43,7 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/action_settings"
-            android:icon="@drawable/ic_baseline_settings_24"
+            android:icon="@drawable/ic_settings"
             android:title="@string/settings" />
     </group>
 

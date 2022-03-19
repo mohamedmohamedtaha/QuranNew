@@ -1,15 +1,11 @@
-package com.mohamedtaha.imagine.ui.activities
+package com.mohamedtaha.imagine.ui.navigationview
 
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.AttributeSet
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -18,14 +14,14 @@ import com.mohamedtaha.imagine.R
 import com.mohamedtaha.imagine.adapter.AdapterElarbaoonElnawawy
 import com.mohamedtaha.imagine.databinding.ActivityElarbaoonElnawawyBinding
 import com.mohamedtaha.imagine.mvp.model.ElarbaoonElnawawyModel
-import com.mohamedtaha.imagine.mvp.view.ElarbaoonElnwawyView
-import com.mohamedtaha.imagine.ui.home.viewModel.SwarAndPartsViewModel
+import com.mohamedtaha.imagine.ui.activities.ContianerDescriptionElnawawyActivity
+import com.mohamedtaha.imagine.ui.home.viewModel.ElarbaoonElnawawyVieWModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ElarbaoonElnawawyActivity : AppCompatActivity(), ElarbaoonElnwawyView {
+class ElarbaoonElnawawyActivity : AppCompatActivity() {
     private lateinit var binding: ActivityElarbaoonElnawawyBinding
-    private val viewModel: SwarAndPartsViewModel by viewModels()
+    private val viewModel: ElarbaoonElnawawyVieWModel by viewModels()
 
     //    @Inject
     //    ElarbaoonElnwawyInteractor elarbaoonElnwawyPresenter;
@@ -42,13 +38,12 @@ class ElarbaoonElnawawyActivity : AppCompatActivity(), ElarbaoonElnwawyView {
         setContentView(binding.root)
         viewModel.getElarbaoonElnawawy(this)
         viewModel.elarbaoonElnawawy.observe(this){
-
                     adapterElarbaoonElnawawy =  AdapterElarbaoonElnawawy(it, object: AdapterElarbaoonElnawawy.ClickListener {
                         override fun onClick(position: Int) {
                             val elnawawyModel = ElarbaoonElnawawyModel()
                                 elnawawyModel.position = position
-                                elnawawyModel.name_elhadeth = it[position].name_elhadeth
-                                elnawawyModel.number_elhadeth = it[position].number_elhadeth
+                                elnawawyModel.nameElhadeth = it[position].nameElhadeth
+                                elnawawyModel.numberElhadeth = it[position].numberElhadeth
                                 openFragmentElnawary(elnawawyModel);
 
 
@@ -81,77 +76,77 @@ class ElarbaoonElnawawyActivity : AppCompatActivity(), ElarbaoonElnwawyView {
     }
 
 
-    override fun showDataAfterQueryText(stringList: List<ElarbaoonElnawawyModel>) {
-        //   elnawawyModelList = stringList;
-        adapterElarbaoonElnawawy = AdapterElarbaoonElnawawy(stringList) {
-            //                elnawawyModel.setPosition(elnawawyModelList.get(position).getPosition());
-//                elnawawyModel.setName_elhadeth(elnawawyModelList.get(position).getName_elhadeth());
-//                elnawawyModel.setNumber_elhadeth(elnawawyModelList.get(position).getNumber_elhadeth());
-//                openFragmentElnawary(elnawawyModel);
-        }
-        binding.ElarbaoonElnawawyActivityRecyclerView.adapter = adapterElarbaoonElnawawy
-    }
+//    override fun showDataAfterQueryText(stringList: List<ElarbaoonElnawawyModel>) {
+//        //   elnawawyModelList = stringList;
+//        adapterElarbaoonElnawawy = AdapterElarbaoonElnawawy(stringList) {
+//            //                elnawawyModel.setPosition(elnawawyModelList.get(position).getPosition());
+////                elnawawyModel.setName_elhadeth(elnawawyModelList.get(position).getName_elhadeth());
+////                elnawawyModel.setNumber_elhadeth(elnawawyModelList.get(position).getNumber_elhadeth());
+////                openFragmentElnawary(elnawawyModel);
+//        }
+//        binding.ElarbaoonElnawawyActivityRecyclerView.adapter = adapterElarbaoonElnawawy
+//    }
 
-    override fun isEmpty() {
-        binding.ElarbaoonElnawawyActivityTVNoData.visibility = View.VISIBLE
-        binding.ElarbaoonElnawawyActivityRecyclerView.visibility = View.GONE
-    }
-
-    override fun thereData() {
-        binding.ElarbaoonElnawawyActivityTVNoData.visibility = View.GONE
-        binding.ElarbaoonElnawawyActivityRecyclerView.visibility = View.VISIBLE
-    }
-
-    override fun showProgress() {
-        binding.ElarbaoonElnawawyActivityProgressBar.visibility = View.VISIBLE
-    }
-
-    override fun hideProgress() {
-        binding.ElarbaoonElnawawyActivityProgressBar.visibility = View.GONE
-    }
+//    override fun isEmpty() {
+//        binding.ElarbaoonElnawawyActivityTVNoData.visibility = View.VISIBLE
+//        binding.ElarbaoonElnawawyActivityRecyclerView.visibility = View.GONE
+//    }
+//
+//    override fun thereData() {
+//        binding.ElarbaoonElnawawyActivityTVNoData.visibility = View.GONE
+//        binding.ElarbaoonElnawawyActivityRecyclerView.visibility = View.VISIBLE
+//    }
+//
+//    override fun showProgress() {
+//        binding.ElarbaoonElnawawyActivityProgressBar.visibility = View.VISIBLE
+//    }
+//
+//    override fun hideProgress() {
+//        binding.ElarbaoonElnawawyActivityProgressBar.visibility = View.GONE
+//    }
 
     override fun onDestroy() {
         super.onDestroy()
         // elarbaoonElnwawyPresenter.onDestroy();
     }
 
-    override fun showAllElahadeth(strings: List<ElarbaoonElnawawyModel>) {
-//        elnawawyModelList = strings;
-//        adapterElarbaoonElnawawy = new AdapterElarbaoonElnawawy(elnawawyModelList, new AdapterElarbaoonElnawawy.ClickListener() {
-//            @Override
-//            public void onClick(int position) {
-//                elnawawyModel.setPosition(position);
-//                elnawawyModel.setName_elhadeth(elnawawyModelList.get(position).getName_elhadeth());
-//                elnawawyModel.setNumber_elhadeth(elnawawyModelList.get(position).getNumber_elhadeth());
-//                openFragmentElnawary(elnawawyModel);
-//            }
-//        });
-        binding.ElarbaoonElnawawyActivityRecyclerView.adapter = adapterElarbaoonElnawawy
-        adapterElarbaoonElnawawy!!.notifyDataSetChanged()
-        //For feel when Search
-        //   elarbaoonElnwawyPresenter.setOnQueryTextForElhadeth(ElarbaoonElnawawyActivitySearchView, elnawawyModelList);
-    }
-
-    override fun showAnimation() {
-        val controller = AnimationUtils.loadLayoutAnimation(
-            applicationContext, R.anim.layout_fall_dwon
-        )
-        binding.ElarbaoonElnawawyActivityRecyclerView.layoutAnimation = controller
-        binding.ElarbaoonElnawawyActivityRecyclerView.scheduleLayoutAnimation()
-    }
-
-    override fun showAfterSearch() {
-//        adapterElarbaoonElnawawy = new AdapterElarbaoonElnawawy(elnawawyModelList, new AdapterElarbaoonElnawawy.ClickListener() {
-//            @Override
-//            public void onClick(int position) {
-//                elnawawyModel.setPosition(position);
-//                elnawawyModel.setName_elhadeth(elnawawyModelList.get(position).getName_elhadeth());
-//                elnawawyModel.setNumber_elhadeth(elnawawyModelList.get(position).getNumber_elhadeth());
-//                openFragmentElnawary(elnawawyModel);
-//            }
-//        });
-//        ElarbaoonElnawawyActivityRecyclerView.setAdapter(adapterElarbaoonElnawawy);
-    }
+//    override fun showAllElahadeth(strings: List<ElarbaoonElnawawyModel>) {
+////        elnawawyModelList = strings;
+////        adapterElarbaoonElnawawy = new AdapterElarbaoonElnawawy(elnawawyModelList, new AdapterElarbaoonElnawawy.ClickListener() {
+////            @Override
+////            public void onClick(int position) {
+////                elnawawyModel.setPosition(position);
+////                elnawawyModel.setName_elhadeth(elnawawyModelList.get(position).getName_elhadeth());
+////                elnawawyModel.setNumber_elhadeth(elnawawyModelList.get(position).getNumber_elhadeth());
+////                openFragmentElnawary(elnawawyModel);
+////            }
+////        });
+//        binding.ElarbaoonElnawawyActivityRecyclerView.adapter = adapterElarbaoonElnawawy
+//        adapterElarbaoonElnawawy!!.notifyDataSetChanged()
+//        //For feel when Search
+//        //   elarbaoonElnwawyPresenter.setOnQueryTextForElhadeth(ElarbaoonElnawawyActivitySearchView, elnawawyModelList);
+//    }
+//
+//    override fun showAnimation() {
+//        val controller = AnimationUtils.loadLayoutAnimation(
+//            applicationContext, R.anim.layout_fall_dwon
+//        )
+//        binding.ElarbaoonElnawawyActivityRecyclerView.layoutAnimation = controller
+//        binding.ElarbaoonElnawawyActivityRecyclerView.scheduleLayoutAnimation()
+//    }
+//
+//    override fun showAfterSearch() {
+////        adapterElarbaoonElnawawy = new AdapterElarbaoonElnawawy(elnawawyModelList, new AdapterElarbaoonElnawawy.ClickListener() {
+////            @Override
+////            public void onClick(int position) {
+////                elnawawyModel.setPosition(position);
+////                elnawawyModel.setName_elhadeth(elnawawyModelList.get(position).getName_elhadeth());
+////                elnawawyModel.setNumber_elhadeth(elnawawyModelList.get(position).getNumber_elhadeth());
+////                openFragmentElnawary(elnawawyModel);
+////            }
+////        });
+////        ElarbaoonElnawawyActivityRecyclerView.setAdapter(adapterElarbaoonElnawawy);
+//    }
 
     fun custom_toolbar() {
         setSupportActionBar(binding.ElarbaoonElnawawyActivityTB)

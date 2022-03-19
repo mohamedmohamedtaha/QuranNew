@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.mohamedtaha.imagine.ui.home.viewModel.SwarAndPartsViewModel" />
+            type="com.mohamedtaha.imagine.ui.home.viewModel.SoundViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,7 +19,6 @@
             android:id="@+id/Fragment_Sound_RecyclerView"
             style="@style/style_default_layout_match_parent"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:setRecyclerView="@{viewModel.sound}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

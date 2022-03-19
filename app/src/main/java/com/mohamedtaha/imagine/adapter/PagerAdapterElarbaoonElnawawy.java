@@ -15,7 +15,7 @@ import com.mohamedtaha.imagine.ui.fragments.elnawawy.TextElhadethFragment;
 import com.mohamedtaha.imagine.ui.fragments.elnawawy.TranslateElhadethFragment;
 import com.google.gson.Gson;
 
-import static com.mohamedtaha.imagine.ui.activities.ElarbaoonElnawawyActivity.POSITION;
+import static com.mohamedtaha.imagine.ui.navigationview.ElarbaoonElnawawyActivity.POSITION;
 
 public class PagerAdapterElarbaoonElnawawy extends FragmentPagerAdapter {
     private Context context;

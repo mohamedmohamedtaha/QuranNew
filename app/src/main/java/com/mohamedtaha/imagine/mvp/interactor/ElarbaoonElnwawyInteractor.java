@@ -59,11 +59,11 @@ public class ElarbaoonElnwawyInteractor extends ViewModel implements ElarbaoonEl
                     transelate_elhadeth = context.getResources().getStringArray(R.array.elarbaon_elnawawaya_translate_elhadeth);
                     for (int i = 0; i < number_elhadeth.length; i++) {
                         ElarbaoonElnawawyModel elnawawyModel = new ElarbaoonElnawawyModel();
-                        elnawawyModel.setNumber_elhadeth(number_elhadeth[i]);
-                        elnawawyModel.setName_elhadeth(name_elhadeth[i]);
-                        elnawawyModel.setText_elhadeth(text_elhadeth[i]);
-                        elnawawyModel.setDescription_elhadeth(description_elhadeth[i]);
-                        elnawawyModel.setTranselate_elhadeth(transelate_elhadeth[i]);
+                        elnawawyModel.setNumberElhadeth(number_elhadeth[i]);
+                        elnawawyModel.setNameElhadeth(name_elhadeth[i]);
+                        elnawawyModel.setTextElhadeth(text_elhadeth[i]);
+                        elnawawyModel.setDescriptionElhadeth(description_elhadeth[i]);
+                        elnawawyModel.setTranslateElhadeth(transelate_elhadeth[i]);
                         elnawawyModel.setPosition(i);
                         elnawawyModelList.add(elnawawyModel);
                     }

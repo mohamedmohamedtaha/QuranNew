@@ -7,9 +7,7 @@ import com.mohamedtaha.imagine.databinding.CustomAzkarBinding
 import com.mohamedtaha.imagine.mvp.model.ModelAzkar
 import com.mohamedtaha.imagine.util.ClickListener
 
-class AdapterForAzkar(
-        private val clickListener: ClickListener
-) :
+class AdapterForAzkar(private val clickListener: ClickListener<Int>) :
     RecyclerView.Adapter<AdapterForAzkar.AzkarViewHolder>() {
     private lateinit var modelAzkars: List<ModelAzkar>
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AzkarViewHolder {

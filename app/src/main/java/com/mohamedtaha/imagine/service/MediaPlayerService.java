@@ -346,7 +346,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         try {
             //Set the data source to the mediaFile location
             //  mediaPlayer.setDataSource("http://server11.mp3quran.net/minsh_mjwd/044.mp3");
-            FILENAME = "/" + activeAudio.getName_shekh() + "/";
+            FILENAME = "/" + activeAudio.getNameShekh() + "/";
             isNetworkConnected();
         } catch (Exception e) {
             e.printStackTrace();
@@ -663,7 +663,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         noInternetConnection.execute("http://clients3.google.com/generate_204");
         boolean isConnected = NetworkConnection.networkConnectivity(getApplicationContext());
         File media_path = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS + FILENAME);
-        final File exStore = new File(media_path, activeAudio.getName_sora() + ".mp3");
+        final File exStore = new File(media_path, activeAudio.getNameSora() + ".mp3");
         ListSoundReader.ListSoundReaderLoadingIndicator.setVisibility(View.VISIBLE);
         if (DetailsSoundActivity.isDetailsActivityTrue) {
             DetailsSoundActivity.DetailsSoundActivity_loading_indicator.setVisibility(View.VISIBLE);
@@ -696,9 +696,9 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
                         removeNotification();
                         ListSoundReader.FragmentListSoundLLControlMedia.setVisibility(View.GONE);
                     } else {
-                        if (URLUtil.isValidUrl(activeAudio.getSora_link())) {
+                        if (URLUtil.isValidUrl(activeAudio.getSoraLink())) {
                             try {
-                                mediaPlayer.setDataSource(activeAudio.getSora_link());
+                                mediaPlayer.setDataSource(activeAudio.getSoraLink());
                                 mediaPlayer.prepareAsync();
                                 buildNotification(PlaybackStatus.PLAYING);
                                 ListSoundReader.FragmentListSoundLLControlMedia.setVisibility(View.VISIBLE);
@@ -728,9 +728,9 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
                 .putBitmap(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON, BitmapFactory.decodeResource(getResources(), R.mipmap.logo))
                 .putBitmap(MediaMetadataCompat.METADATA_KEY_ART, BitmapFactory.decodeResource(getResources(), R.mipmap.logo))
                 .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, albumArt)
-                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, activeAudio.getName_sora())
-                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, activeAudio.getName_shekh())
-                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, activeAudio.getName_shekh())
+                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, activeAudio.getNameSora())
+                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, activeAudio.getNameShekh())
+                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, activeAudio.getNameShekh())
                 .build());
     }
 
@@ -785,7 +785,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
             play_pauseAction = playbackAction(0);
         }
 
-        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), activeAudio.getUrl_image());//Replace with your own image
+        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), activeAudio.getUrlImage());//Replace with your own image
 
 //you only need to create  the cnannel on API 26+ devices
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -809,7 +809,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
 
         notificationBuilder.setWhen(System.currentTimeMillis())  // the time stamp
                 //Set notification content information
-                .setSmallIcon(activeAudio.getUrl_image())
+                .setSmallIcon(activeAudio.getUrlImage())
                 //.setContentText(activeAudio.getSora_name())
                 //.setContentTitle(activeAudio.getAlbum())
                 //.setContentInfo(activeAudio.getTitle())
