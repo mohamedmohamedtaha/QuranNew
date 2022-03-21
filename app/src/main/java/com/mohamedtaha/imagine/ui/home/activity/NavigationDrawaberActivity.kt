@@ -9,6 +9,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
 import android.graphics.Color
 import android.location.Geocoder
 import android.os.*
@@ -16,10 +17,8 @@ import android.os.StrictMode.ThreadPolicy
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
@@ -48,6 +47,7 @@ import com.mohamedtaha.imagine.helper.checkConnection.NetworkConnection
 import com.mohamedtaha.imagine.helper.checkConnection.NoInternetConnection
 import com.mohamedtaha.imagine.helper.images
 import com.mohamedtaha.imagine.helper.util.ConvertTimes
+import com.mohamedtaha.imagine.mvp.interactor.NavigationDrawarInteractor
 import com.mohamedtaha.imagine.mvp.view.NavigationDrawaberView
 import com.mohamedtaha.imagine.notification.morningAzkar.MorningAzkarNotificationHelper
 import com.mohamedtaha.imagine.notification.prayerTimes.AlarmUtils
@@ -58,15 +58,15 @@ import com.mohamedtaha.imagine.room.DatabaseCallback
 import com.mohamedtaha.imagine.room.TimingsAppDatabase
 import com.mohamedtaha.imagine.room.TimingsViewModel
 import com.mohamedtaha.imagine.service.GetDataEveryMonthJobService
-import com.mohamedtaha.imagine.ui.navigationview.ui.ElarbaoonElnawawyActivity
-import com.mohamedtaha.imagine.ui.activities.SettingsActivity
 import com.mohamedtaha.imagine.ui.activities.SwipePagesActivity
 import com.mohamedtaha.imagine.ui.activities.YoutubeActivity
 import com.mohamedtaha.imagine.ui.home.fragment.AzanFragment
-import com.mohamedtaha.imagine.ui.navigationview.fragment.ElarbaoonElnawawyFragmentDirections
 import com.mohamedtaha.imagine.ui.splash.SplashActivity
+import com.mohamedtaha.imagine.util.RateApp.reteApp
 import com.mohamedtaha.imagine.util.SearchBarUtils.setSearchIcons
 import com.mohamedtaha.imagine.util.SearchBarUtils.setSearchTextColor
+import com.mohamedtaha.imagine.util.SendUs.sendUs
+import com.mohamedtaha.imagine.util.ShareApp.shareApp
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -696,17 +696,19 @@ class NavigationDrawaberActivity : AppCompatActivity(),
             SharedPerefrenceHelper.removeDataForWayUsing(this)
             HelperClass.startActivity(applicationContext, SplashActivity::class.java)
         } else if (id == R.id.action_share) {
-            //    presenter!!.shareApp(getString(R.string.about), appPackageName)
+            shareApp(this)
         } else if (id == R.id.action_rate) {
-            //  presenter!!.actionRate(appPackageName)
+            reteApp(this)
         } else if (id == R.id.action_send_us) {
-            //   presenter!!.sendUs()
+            sendUs(this)
         } else if (id == R.id.action_settings) {
-            HelperClass.startActivity(applicationContext, SettingsActivity::class.java)
-                overridePendingTransition(
-                    android.R.anim.slide_in_left,
-                    android.R.anim.slide_out_right
-                )
+            val options = navOptions {
+                anim {
+                    enter = android.R.anim.slide_in_left
+                    exit = android.R.anim.slide_out_right
+                }
+            }
+            findNavController(R.id.fragmentContainerView).navigate(R.id.settingsActivity,null,options)
         }
         val drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)

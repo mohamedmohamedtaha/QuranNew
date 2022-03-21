@@ -31,5 +31,9 @@
         android:name="com.mohamedtaha.imagine.ui.navigationview.ui.ElarbaoonElnawawyActivity"
         android:label="activity_elarbaoon_elnawawy"
         tools:layout="@layout/activity_elarbaoon_elnawawy" />
+    <activity
+        android:id="@+id/settingsActivity"
+        android:name="com.mohamedtaha.imagine.ui.activities.SettingsActivity"
+        android:label="SettingsActivity" />
 
 </navigation>

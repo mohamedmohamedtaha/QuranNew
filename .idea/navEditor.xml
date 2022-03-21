@@ -196,6 +196,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="settingsActivity">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-529" />
+                            <option name="y" value="-216" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="soundFragment">
                     <value>
                       <LayoutPositions>
