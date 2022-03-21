@@ -1,5 +1,7 @@
 package com.mohamedtaha.imagine.ui.fragments.elnawawy;
 
+import static com.mohamedtaha.imagine.datastore.Session.POSITION;
+
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -12,7 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.mohamedtaha.imagine.R;
 import com.mohamedtaha.imagine.libraryTextView.TextViewEx;
-import com.mohamedtaha.imagine.ui.navigationview.ElarbaoonElnawawyActivity;
+import com.mohamedtaha.imagine.ui.navigationview.ui.ElarbaoonElnawawyActivity;
 import com.google.gson.Gson;
 
 import java.util.concurrent.Callable;
@@ -55,7 +57,7 @@ public class DescriptionElhaedthFragment extends Fragment {
         ButterKnife.bind(this, view);
         bundle_for_save_position_elhadeth = getArguments();
         if (bundle_for_save_position_elhadeth != null) {
-            position_elhadeth = new Gson().fromJson(bundle_for_save_position_elhadeth.getString(ElarbaoonElnawawyActivity.POSITION), Integer.class);
+            position_elhadeth = new Gson().fromJson(bundle_for_save_position_elhadeth.getString(POSITION), Integer.class);
             getDescriptionElhadeth(position_elhadeth);
         }
         return view;

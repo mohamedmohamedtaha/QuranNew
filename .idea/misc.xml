@@ -38,6 +38,7 @@
         <entry key="..\:/QuranNew/app/src/main/res/layout/fragment_azan.xml" value="0.11614583333333334" />
         <entry key="..\:/QuranNew/app/src/main/res/layout/fragment_azkar.xml" value="0.10677083333333333" />
         <entry key="..\:/QuranNew/app/src/main/res/layout/fragment_description_elarbaoon.xml" value="0.10677083333333333" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/fragment_description_elarbaoon2.xml" value="0.25" />
         <entry key="..\:/QuranNew/app/src/main/res/layout/fragment_description_elhaedth.xml" value="0.10677083333333333" />
         <entry key="..\:/QuranNew/app/src/main/res/layout/fragment_elarbaoon_elnawawy.xml" value="0.25" />
         <entry key="..\:/QuranNew/app/src/main/res/layout/fragment_full_screen_image.xml" value="0.10677083333333333" />
@@ -57,6 +58,7 @@
         <entry key="..\:/QuranNew/app/src/main/res/layout/row_templete.xml" value="0.24583333333333332" />
         <entry key="..\:/QuranNew/app/src/main/res/menu/activity_main_drawer.xml" value="0.25" />
         <entry key="..\:/QuranNew/app/src/main/res/menu/bottom_nav_menu.xml" value="0.2359375" />
+        <entry key="..\:/QuranNew/app/src/main/res/menu/main_drawable.xml" value="0.25" />
         <entry key="..\:/QuranNew/app/src/main/res/menu/menu.xml" value="0.25" />
         <entry key="..\:/QuranNew/app/src/main/res/xml/config_default.xml" value="0.125" />
         <entry key="..\:/QuranNew/app/src/main/res/xml/general_preferences.xml" value="0.23177083333333334" />

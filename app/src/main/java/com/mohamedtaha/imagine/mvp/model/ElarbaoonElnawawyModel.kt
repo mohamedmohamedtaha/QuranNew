@@ -1,6 +1,10 @@
 package com.mohamedtaha.imagine.mvp.model
 
-class ElarbaoonElnawawyModel {
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@kotlinx.parcelize.Parcelize
+class ElarbaoonElnawawyModel : Parcelable {
     var numberElhadeth: String? = null
     var nameElhadeth: String? = null
     var textElhadeth: String? = null

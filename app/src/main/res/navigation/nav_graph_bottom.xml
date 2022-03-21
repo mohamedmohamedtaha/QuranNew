@@ -2,13 +2,13 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
+    android:id="@+id/nav_graph_bottom"
     app:startDestination="@id/swarFragment">
-
     <fragment
         android:id="@+id/swarFragment"
         android:name="com.mohamedtaha.imagine.ui.home.fragment.SwarFragment"
-        android:label="@string/readswar" />
+        android:label="@string/readswar" >
+    </fragment>
     <fragment
         android:id="@+id/partsFragment"
         android:name="com.mohamedtaha.imagine.ui.home.fragment.PartsFragment"
@@ -26,4 +26,10 @@
         android:id="@+id/azkarFragment"
         android:name="com.mohamedtaha.imagine.ui.home.fragment.AzkarFragment"
         android:label="@string/azkar_elmosle" />
+    <activity
+        android:id="@+id/elarbaoonElnawawyActivity"
+        android:name="com.mohamedtaha.imagine.ui.navigationview.ui.ElarbaoonElnawawyActivity"
+        android:label="activity_elarbaoon_elnawawy"
+        tools:layout="@layout/activity_elarbaoon_elnawawy" />
+
 </navigation>

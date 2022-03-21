@@ -27,8 +27,11 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.navOptions
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.room.EmptyResultSetException
@@ -55,12 +58,15 @@ import com.mohamedtaha.imagine.room.DatabaseCallback
 import com.mohamedtaha.imagine.room.TimingsAppDatabase
 import com.mohamedtaha.imagine.room.TimingsViewModel
 import com.mohamedtaha.imagine.service.GetDataEveryMonthJobService
-import com.mohamedtaha.imagine.ui.navigationview.ElarbaoonElnawawyActivity
+import com.mohamedtaha.imagine.ui.navigationview.ui.ElarbaoonElnawawyActivity
 import com.mohamedtaha.imagine.ui.activities.SettingsActivity
 import com.mohamedtaha.imagine.ui.activities.SwipePagesActivity
 import com.mohamedtaha.imagine.ui.activities.YoutubeActivity
 import com.mohamedtaha.imagine.ui.home.fragment.AzanFragment
+import com.mohamedtaha.imagine.ui.navigationview.fragment.ElarbaoonElnawawyFragmentDirections
 import com.mohamedtaha.imagine.ui.splash.SplashActivity
+import com.mohamedtaha.imagine.util.SearchBarUtils.setSearchIcons
+import com.mohamedtaha.imagine.util.SearchBarUtils.setSearchTextColor
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -76,31 +82,18 @@ class NavigationDrawaberActivity : AppCompatActivity(),
     NavigationDrawaberView,
     DatabaseCallback,
     NavigationView.OnNavigationItemSelectedListener {
-
     private lateinit var binding: ActivityMainDrawableBinding
+    private val navController by lazy {
+        (supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment).navController
+    }
+    private lateinit var appBarConfiguration : AppBarConfiguration
+
 
     @Inject
     lateinit var remoteConfig: RemoteConfig
     private val datStoreViewModel: DataStoreViewModel by viewModels()
 
-//    @JvmField
-//    @Inject
-//    var sharedPreferences: SharedPreferences? = null
-
-//    @JvmField
-//    @Inject
-//    var editor: SharedPreferences.Editor? = null
-
-//    @JvmField
-//    @Inject
-//    var showGuide: ShowGuide? = null
-
-    //    @JvmField
-//    @Inject
-//    var presenter: NavigationDrawarInteractor? = null
     private var current_fragment = 0
-
-    //public static MaterialSearchView searchView;
     private var timingsViewModel: TimingsViewModel? = null
     private var prayer_timing_default: String? = null
     private var number_azan_default: String? = null
@@ -149,7 +142,6 @@ class NavigationDrawaberActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         binding = ActivityMainDrawableBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        // searchView = (MaterialSearchView) findViewById(R.id.search_view);
 
         remoteConfig.setConfigComplete()
         remoteConfig.youtubeChannel.observe(this) {
@@ -204,22 +196,25 @@ class NavigationDrawaberActivity : AppCompatActivity(),
             startActivity(intent)
             overridePendingTransition(R.anim.item_anim_slide_from_top, R.anim.item_anim_no_thing)
         }
+
         setSupportActionBar(binding.includeAppBarMain.toolbar)
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-        val navController = navHostFragment.navController
         binding.includeAppBarMain.bottomNavigationView.setupWithNavController(navController)
-        val appBarConfiguration = AppBarConfiguration(
+        //binding.navViewHeader.setupWithNavController(navController)
+        binding.navViewHeader.setNavigationItemSelectedListener(this)
+         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.swarFragment,
                 R.id.partsFragment,
                 R.id.soundFragment,
                 R.id.azanFragment,
                 R.id.azkarFragment
-            )
+            ),binding.drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
-
+        //for change color text toolbar
+        binding.includeAppBarMain.toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"))
+        binding.navViewHeader.itemIconTintList = null
 
 //        binding.includeAppBarMain.bottomNavigationView.setOnNavigationItemSelectedListener(
 //            mOnNavigationItemSelectedListener
@@ -231,21 +226,7 @@ class NavigationDrawaberActivity : AppCompatActivity(),
 //        } else {
 //            binding.includeAppBarMain.bottomNavigationView.selectedItemId = R.id.swarFragment
 //        }
-        //for change color text toolbar
-        binding.includeAppBarMain.toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"))
-        binding.navViewHeader.itemIconTintList = null
 
-
-        val toggle = ActionBarDrawerToggle(
-            this,
-            binding.drawerLayout,
-            binding.includeAppBarMain.toolbar,
-            R.string.open_drawer,
-            R.string.close_drawer
-        )
-        binding.drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-    binding.navViewHeader.setNavigationItemSelectedListener(this)
 
         //        NavigationDrawaberActivityVPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 //            @Override
@@ -275,6 +256,10 @@ class NavigationDrawaberActivity : AppCompatActivity(),
 //        });
 //        setupViewPager(NavigationDrawaberActivityVPager);
 //
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp(appBarConfiguration)||super.onSupportNavigateUp()
     }
 
     override fun onStop() {
@@ -374,19 +359,6 @@ class NavigationDrawaberActivity : AppCompatActivity(),
 
     override fun onBackPressed() {
         //  presenter.exitApp(searchView, navView, drawer);
-    }
-    private fun  setSearchIcons(searchView: SearchView, idSearchIcon:Int, drawable:Int){
-        //Change icon
-        val searchIcon = searchView.findViewById(idSearchIcon) as ImageView
-        searchIcon.setImageResource(drawable)
-
-    }
-    private fun setSearchTextColor(searchView: SearchView){
-        //Change color for search icon
-        val searchAutoComplete = searchView.findViewById(R.id.search_src_text) as SearchView.SearchAutoComplete
-        searchAutoComplete.setHintTextColor(ContextCompat.getColor(this, android.R.color.white))
-        searchAutoComplete.setTextColor(ContextCompat.getColor(this, android.R.color.white))
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -711,13 +683,15 @@ class NavigationDrawaberActivity : AppCompatActivity(),
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.elarbaoonElnawawyFragment) {
-            HelperClass.startActivity(applicationContext, ElarbaoonElnawawyActivity::class.java)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                overridePendingTransition(
-                    android.R.anim.slide_in_left,
-                    android.R.anim.slide_out_right
-                )
+            val options = navOptions {
+                anim {
+                    enter = android.R.anim.slide_in_left
+                    exit = android.R.anim.slide_out_right
+//                    popEnter =
+//                        popExit =
+                }
             }
+            findNavController(R.id.fragmentContainerView).navigate(R.id.elarbaoonElnawawyActivity,null,options)
         } else if (id == R.id.use_way) {
             SharedPerefrenceHelper.removeDataForWayUsing(this)
             HelperClass.startActivity(applicationContext, SplashActivity::class.java)
@@ -729,12 +703,10 @@ class NavigationDrawaberActivity : AppCompatActivity(),
             //   presenter!!.sendUs()
         } else if (id == R.id.action_settings) {
             HelperClass.startActivity(applicationContext, SettingsActivity::class.java)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 overridePendingTransition(
                     android.R.anim.slide_in_left,
                     android.R.anim.slide_out_right
                 )
-            }
         }
         val drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)

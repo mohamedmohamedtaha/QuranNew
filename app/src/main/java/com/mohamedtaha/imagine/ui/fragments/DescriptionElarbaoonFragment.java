@@ -1,5 +1,7 @@
 package com.mohamedtaha.imagine.ui.fragments;
 
+import static com.mohamedtaha.imagine.datastore.Session.POSITION;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +14,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.mohamedtaha.imagine.adapter.PagerAdapterElarbaoonElnawawy;
 import com.mohamedtaha.imagine.R;
 import com.mohamedtaha.imagine.mvp.model.ElarbaoonElnawawyModel;
-import com.mohamedtaha.imagine.ui.navigationview.ElarbaoonElnawawyActivity;
+import com.mohamedtaha.imagine.ui.navigationview.ui.ElarbaoonElnawawyActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 
@@ -44,7 +46,7 @@ public class DescriptionElarbaoonFragment extends Fragment {
         ButterKnife.bind(this, view);
         Bundle bundle = getArguments();
         if (bundle != null) {
-            position_elhadeth = new Gson().fromJson(bundle.getString(ElarbaoonElnawawyActivity.POSITION), ElarbaoonElnawawyModel.class);
+            position_elhadeth = new Gson().fromJson(bundle.getString(POSITION), ElarbaoonElnawawyModel.class);
             DescriptionElarbaoonFragmentTVNumberElhadeth.setText(position_elhadeth.getNumberElhadeth() + "/");
             DescriptionElarbaoonFragmentTVNameElhadeth.setText(position_elhadeth.getNameElhadeth());
 

@@ -1,5 +1,7 @@
 package com.mohamedtaha.imagine.adapter;
 
+import static com.mohamedtaha.imagine.datastore.Session.POSITION;
+
 import android.content.Context;
 import android.os.Bundle;
 
@@ -14,8 +16,6 @@ import com.mohamedtaha.imagine.ui.fragments.elnawawy.DescriptionElhaedthFragment
 import com.mohamedtaha.imagine.ui.fragments.elnawawy.TextElhadethFragment;
 import com.mohamedtaha.imagine.ui.fragments.elnawawy.TranslateElhadethFragment;
 import com.google.gson.Gson;
-
-import static com.mohamedtaha.imagine.ui.navigationview.ElarbaoonElnawawyActivity.POSITION;
 
 public class PagerAdapterElarbaoonElnawawy extends FragmentPagerAdapter {
     private Context context;

@@ -57,11 +57,7 @@
                 android:value=".ui.home.activity.NavigationDrawaberActivity" />
         </activity>
         <activity
-            android:name=".ui.activities.ContianerDescriptionElnawawyActivity"
-            android:launchMode="singleTop"
-            android:theme="@style/FullScreenWindow"/>
-        <activity
-            android:name=".ui.navigationview.ElarbaoonElnawawyActivity"
+            android:name=".ui.navigationview.ui.ElarbaoonElnawawyActivity"
             android:theme="@style/FullScreenWindow"
             android:launchMode="singleTop" />
 

@@ -1,14 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.ElarbaoonElnawawyFragment">
+    style="@style/style_default_layout_match_parent"
+    tools:context=".ui.navigationview.fragment.ElarbaoonElnawawyFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ElarbaoonElnawawyActivity_RecyclerView"
+            style="@style/style_reycler_view_elnawawy"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:layoutDirection="ltr" />
 
-</FrameLayout>
+        <ProgressBar
+            android:id="@+id/ElarbaoonElnawawyActivity_ProgressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminateDrawable="@drawable/color_progressbar"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/ElarbaoonElnawawyActivity_TV_No_Data"
+            style="@style/style_text_view_no_data" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/ElarbaoonElnawawyActivity_FloatingActionButton"
+            style="@style/float_add"
+            android:visibility="invisible" />
+        <FrameLayout
+            android:id="@+id/Cycle_Elarbaoon_Elnawawy_contener"
+            style="@style/style_default_layout_match_parent" />
+    </RelativeLayout>
+
