@@ -7,6 +7,7 @@
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/SwipePagesActivity_VP"
+        android:rotationY="180"
         style="@style/style_default_layout_match_parent" />
 
 <!--    <com.booking.rtlviewpager.RtlViewPager-->

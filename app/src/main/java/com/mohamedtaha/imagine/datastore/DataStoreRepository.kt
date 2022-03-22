@@ -10,4 +10,8 @@ interface DataStoreRepository {
     suspend fun saveReadingQuran(numberPage:Int)
     fun getReadingQuran():Flow<Int>
     suspend fun removeReadingQuran():Preferences
+
+    suspend fun saveRemembrances(numberPage: Int)
+    fun getRemembrances():Flow<Int>
+    suspend fun removeRemembrances()
 }

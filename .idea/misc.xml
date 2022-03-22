@@ -5,6 +5,8 @@
       <map>
         <entry key="..\:/QuranNew/app/src/main/res/drawable/color_progressbar.xml" value="0.151" />
         <entry key="..\:/QuranNew/app/src/main/res/drawable/ic_baseline_chrome_reader_mode_24.xml" value="0.124" />
+        <entry key="..\:/QuranNew/app/src/main/res/drawable/ic_baseline_info_24.xml" value="0.1465" />
+        <entry key="..\:/QuranNew/app/src/main/res/drawable/ic_baseline_notifications_24.xml" value="0.1465" />
         <entry key="..\:/QuranNew/app/src/main/res/drawable/ic_baseline_youtube_searched_for_24.xml" value="0.1" />
         <entry key="..\:/QuranNew/app/src/main/res/drawable/ic_close.xml" value="0.1" />
         <entry key="..\:/QuranNew/app/src/main/res/drawable/ic_email.xml" value="0.2545" />
@@ -56,6 +58,7 @@
         <entry key="..\:/QuranNew/app/src/main/res/layout/nav_header_main.xml" value="0.1" />
         <entry key="..\:/QuranNew/app/src/main/res/layout/preference_activity.xml" value="0.24583333333333332" />
         <entry key="..\:/QuranNew/app/src/main/res/layout/row_templete.xml" value="0.24583333333333332" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout/settings_activity.xml" value="0.20833333333333334" />
         <entry key="..\:/QuranNew/app/src/main/res/menu/activity_main_drawer.xml" value="0.25" />
         <entry key="..\:/QuranNew/app/src/main/res/menu/bottom_nav_menu.xml" value="0.2359375" />
         <entry key="..\:/QuranNew/app/src/main/res/menu/main_drawable.xml" value="0.25" />

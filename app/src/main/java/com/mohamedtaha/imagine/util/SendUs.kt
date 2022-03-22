@@ -11,8 +11,7 @@ private const val NAME_EMAIL = "mohamed01007919166@gmail.com"
 
 object SendUs {
 
-    fun sendUs(activity: Activity) {
-        val intent = Intent()
+    fun sendUs(activity: Activity,intent: Intent) {
         intent.action = Intent.ACTION_SEND
         val resolveInfo =
             activity.packageManager.queryIntentActivities(intent, PackageManager.MATCH_ALL)

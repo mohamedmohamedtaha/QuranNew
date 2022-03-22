@@ -11,11 +11,9 @@ const val GOOGLE_ACCOUNT_ID = "https://play.google.com/store/apps/details?id="
 private const val MARKET_ID = "market://details?id="
 
 object RateApp {
-    fun reteApp(activity: Activity) {
-        val intent = Intent()
+    fun reteApp(activity: Activity,intent: Intent) {
         intent.action = Intent.ACTION_VIEW
-        val resolveInfo =
-            activity.packageManager.queryIntentActivities(intent, PackageManager.MATCH_ALL)
+        val resolveInfo = activity.packageManager.queryIntentActivities(intent, PackageManager.MATCH_ALL)
         if (resolveInfo.size > 1) {
             try {
                 //Open the store and show the app
@@ -29,6 +27,8 @@ object RateApp {
                 activity.startActivity(intent)
 
             }
+        } else if (intent.resolveActivity(activity.packageManager) != null) {
+            activity.startActivity(intent)
         } else {
             HelperClass.customToast(activity, activity.getString(R.string.notSupport))
         }

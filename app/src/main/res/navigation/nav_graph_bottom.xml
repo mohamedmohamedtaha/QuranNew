@@ -35,5 +35,9 @@
         android:id="@+id/settingsActivity"
         android:name="com.mohamedtaha.imagine.ui.activities.SettingsActivity"
         android:label="SettingsActivity" />
+    <activity
+        android:id="@+id/splashActivity"
+        android:name="com.mohamedtaha.imagine.ui.splash.SplashActivity"
+        android:label="SplashActivity" />
 
 </navigation>

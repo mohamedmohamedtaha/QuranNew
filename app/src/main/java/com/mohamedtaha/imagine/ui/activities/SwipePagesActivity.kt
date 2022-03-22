@@ -1,7 +1,6 @@
 package com.mohamedtaha.imagine.ui.activities
 
 import android.app.NotificationManager
-import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -11,18 +10,15 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.asLiveData
 import androidx.viewpager.widget.ViewPager
-import butterknife.OnClick
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.mohamedtaha.imagine.R
-import com.mohamedtaha.imagine.adapter.AdapterForAzkarSwipe
+import com.mohamedtaha.imagine.adapter.AdapterForRemembrancesSwipe
 import com.mohamedtaha.imagine.adapter.AdapterForSwipe
 import com.mohamedtaha.imagine.databinding.ActivitySwipePagesBinding
 import com.mohamedtaha.imagine.datastore.DataStoreViewModel
 import com.mohamedtaha.imagine.helper.HelperClass
 import com.mohamedtaha.imagine.helper.SharedPerefrenceHelper
-import com.mohamedtaha.imagine.helper.ShowDialog
-import com.mohamedtaha.imagine.helper.images
 import com.mohamedtaha.imagine.helper.images.SAVE_POSITION
 import com.mohamedtaha.imagine.mvp.model.ModelAzkar
 import com.mohamedtaha.imagine.notification.morningAzkar.MorningAzkarAlarmReceiver
@@ -63,9 +59,6 @@ class SwipePagesActivity : AppCompatActivity() {
         binding = ActivitySwipePagesBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel.addImagesList()
-
-
-
         bundle = intent?.extras!!
         //to Check before change Language
         language_name = Locale.getDefault().language
@@ -84,20 +77,26 @@ class SwipePagesActivity : AppCompatActivity() {
         if (notificationId >= 0) {
             argemnetsNotification
             createImageNotification()
-         //   val adapterForSwipe = AdapterForSwipe(imagesNotification)
-          //  binding.SwipePagesActivityVP.setAdapter(adapterForSwipe);
-          //  binding.SwipePagesActivityVP.setCurrentItem(notificationId);
+            //   val adapterForSwipe = AdapterForSwipe(imagesNotification)
+            //  binding.SwipePagesActivityVP.setAdapter(adapterForSwipe);
+            //  binding.SwipePagesActivityVP.setCurrentItem(notificationId);
             Log.d("TAG", " $notificationId")
             notificationManager.cancel(timeSend)
         } else if (notificationIdMorningAzkar >= 0) {
             argemnetsForNotificationAzkar
-            val adapterForAzkarSwipe = AdapterForAzkarSwipe(this, modelAzkarList);
+            val adapterForAzkarSwipe =
+                AdapterForRemembrancesSwipe(modelAzkarList, object : ClickListener<Int> {
+                    override fun onClick(view: View?, position: Int) {
+
+                    }
+
+                })
             if (notificationIdMorningAzkar == 27) {
-                binding.SwipePagesActivityVP.setAdapter(adapterForAzkarSwipe);
-                binding.SwipePagesActivityVP.setCurrentItem(notificationIdMorningAzkar);
+                binding.SwipePagesActivityVP.adapter = adapterForAzkarSwipe
+                binding.SwipePagesActivityVP.currentItem = notificationIdMorningAzkar
             } else {
-                binding.SwipePagesActivityVP.setAdapter(adapterForAzkarSwipe);
-                binding.SwipePagesActivityVP.setCurrentItem(notificationIdMorningAzkar);
+                binding.SwipePagesActivityVP.adapter = adapterForAzkarSwipe
+                binding.SwipePagesActivityVP.currentItem = notificationIdMorningAzkar
             }
             notificationManager.cancel(timeSendMorningAzkar)
         } else if (bundle.getBoolean(SwarFragment.SAVE_STATE)) {
@@ -105,18 +104,18 @@ class SwipePagesActivity : AppCompatActivity() {
             viewModel.allImages.observe(this) {
                 images = it
                 createImage()
-                declareAdapter()
-                observeViewPager()
-                observeSaveData()
+                declareAdapterSwipe()
+                observeViewPagerSwipe()
+                observeSaveReadingQuran()
 
             }
         } else if (bundle.getBoolean(NavigationDrawaberActivity.SAVE_PAGE)) {
             getImagesFirst()
             createImagesFirst()
             val adapterForSwipe = AdapterForSwipe(
-                imagesFirst!!,object: ClickListener<Int>{
+                imagesFirst!!, object : ClickListener<Int> {
                     override fun onClick(view: View?, position: Int) {
-                        Toast.makeText(this@SwipePagesActivity,"Click",Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@SwipePagesActivity, "Click", Toast.LENGTH_LONG).show()
                     }
 
                 }
@@ -147,66 +146,50 @@ class SwipePagesActivity : AppCompatActivity() {
 //            SwipePagesActivityVP.setCurrentItem(position);
         } else {
             getAzkarList()
-            val adapterForAzkarSwipe = AdapterForAzkarSwipe(
-                this,
-                modelAzkarList,
-                object : AdapterForAzkarSwipe.showDetail {
-                    override fun showDetails(modelAzkar: ModelAzkar?) {
-                        // ShowDialog.showDialogAzkar(reques, save_position_azkar, getString(R.string.save_position_alzekr), modelAzkar)
-                    }
-
-                })
-
-            binding.SwipePagesActivityVP.addOnPageChangeListener(object :
-                ViewPager.OnPageChangeListener {
-                override fun onPageScrolled(
-                    position: Int,
-                    positionOffset: Float,
-                    positionOffsetPixels: Int
-                ) {
-
-                }
-
-                override fun onPageSelected(position: Int) {
-                    save_position_azkar = position;
-
-                }
-
-                override fun onPageScrollStateChanged(state: Int) {
-                }
-
-            });
-            binding.SwipePagesActivityVP.setAdapter(adapterForAzkarSwipe);
-            if (SharedPerefrenceHelper.getBooleanForAzkar(this, IS_TRUE_AZKAR, false)) {
-                ShowDialog.showDialogForRetrieveAzkar(
-                    this,
-                    binding.SwipePagesActivityVP,
-                    position_azkar
-                );
-            } else {
-                binding.SwipePagesActivityVP.setCurrentItem(position_azkar);
-            }
+            declareAdapterRemembrances()
+            observeViewPagerRemembrances()
+            observeSaveRemembrances()
         }
     }
 
-    private fun declareAdapter() {
+    private fun declareAdapterSwipe() {
         val adapterForSwipe = AdapterForSwipe(
-            images!!,object :ClickListener<Int>{
+            images!!, object : ClickListener<Int> {
                 override fun onClick(view: View?, position: Int) {
-                    DialogUtils.showDialog(this@SwipePagesActivity,getString(R.string.save_position),object:View.OnClickListener{
-                        override fun onClick(p0: View?) {
-                            dataStoreViewModel.deleteReadingQuran()
-                            dataStoreViewModel.saveReadingQuran(save_position)
-                            finish()
-                        }
-                    })
+                    DialogUtils.showDialog(
+                        this@SwipePagesActivity,
+                        getString(R.string.save_position),
+                        object : View.OnClickListener {
+                            override fun onClick(p0: View?) {
+                                dataStoreViewModel.removeReadingQuran()
+                                dataStoreViewModel.saveReadingQuran(save_position)
+                                finish()
+                            }
+                        })
                 }
             }
         )
         binding.SwipePagesActivityVP.adapter = adapterForSwipe
     }
+    private fun declareAdapterRemembrances(){
+        val adapterForRemembrancesSwipe = AdapterForRemembrancesSwipe(
+            modelAzkarList,
+            object : ClickListener<Int> {
+                override fun onClick(view: View?, position: Int) {
+                    DialogUtils.showDialog(
+                        this@SwipePagesActivity,
+                        getString(R.string.save_position_alzekr)
+                    ) {
+                        dataStoreViewModel.removeRemembrances()
+                        dataStoreViewModel.saveRemembrances(save_position_azkar)
+                        finish()
+                    }
+                }
+            })
+        binding.SwipePagesActivityVP.adapter = adapterForRemembrancesSwipe
+    }
 
-    private fun observeViewPager() {
+    private fun observeViewPagerSwipe() {
         binding.SwipePagesActivityVP.addOnPageChangeListener(object :
             ViewPager.OnPageChangeListener {
             override fun onPageScrolled(
@@ -225,22 +208,61 @@ class SwipePagesActivity : AppCompatActivity() {
 
         })
     }
+    private fun observeViewPagerRemembrances() {
+        binding.SwipePagesActivityVP.addOnPageChangeListener(object :
+            ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+            }
 
-    private fun observeSaveData() {
-        dataStoreViewModel.getReadingQuran.asLiveData().observe(this){
-            if (it >=0 ){
-                DialogUtils.showDialogForRetrieveReading(this,getString(R.string.app_name),getString(R.string.do_want_Save),
+            override fun onPageSelected(position: Int) {
+                save_position_azkar = position
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+
+        })
+
+
+    }
+
+    private fun observeSaveReadingQuran() {
+        dataStoreViewModel.getReadingQuran.asLiveData().observe(this) {
+            if (it >= 0) {
+                DialogUtils.showDialogForRetrieveReading(this,
+                    getString(R.string.app_name),
+                    getString(R.string.do_want_Save),
                     { _, _ ->
                         binding.SwipePagesActivityVP.currentItem = it
                     }
                 ) { _, _ ->
-                    dataStoreViewModel.deleteReadingQuran()
+                    dataStoreViewModel.removeReadingQuran()
                     binding.SwipePagesActivityVP.currentItem = position
                 }
-            }else
+            } else
                 binding.SwipePagesActivityVP.currentItem = position
         }
 
+    }
+    private fun observeSaveRemembrances(){
+        dataStoreViewModel.getRemembrances.asLiveData().observe(this){
+            if (it>= 0){
+                DialogUtils.showDialogForRetrieveReading(this,getString(R.string.app_name),getString(R.string.do_want_Save_azkar),{_,_->
+                   binding.SwipePagesActivityVP.currentItem = it
+                    Log.d("modelSora"," position: ${it}")
+
+                }){ _,_ ->
+                    dataStoreViewModel.removeRemembrances()
+                    binding.SwipePagesActivityVP.currentItem = position_azkar
+                }
+            }else{
+                binding.SwipePagesActivityVP.currentItem = position_azkar
+            }
+        }
     }
 
     private fun getScreenOn(isScreenOn: Boolean) {
@@ -318,9 +340,9 @@ class SwipePagesActivity : AppCompatActivity() {
     fun getAzkarList() {
         if (bundle != null) {
             val listType = object : TypeToken<List<ModelAzkar?>?>() {}.type
-            val st = bundle!!.getString(AzkarFragment.SAVE_AZKAR)
+            val st = bundle.getString(AzkarFragment.SAVE_AZKAR)
             modelAzkarList = Gson().fromJson(st, listType);
-            position_azkar = bundle!!.getInt(AzkarFragment.SAVE_POTION_AZKAR)
+            position_azkar = bundle.getInt(AzkarFragment.SAVE_POTION_AZKAR)
         }
         binding.SwipePagesActivityPB.visibility = View.GONE
     }
@@ -330,10 +352,10 @@ class SwipePagesActivity : AppCompatActivity() {
         private get() {
             if (bundle != null) {
                 val listType = object : TypeToken<List<ModelAzkar?>?>() {}.type
-                val st = bundle!!.getString(MorningAzkarAlarmReceiver.SAVE_POSITION_MORNING_AZKAR)
+                val st = bundle.getString(MorningAzkarAlarmReceiver.SAVE_POSITION_MORNING_AZKAR)
                 modelAzkarList = Gson().fromJson(st, listType);
                 position_azkar =
-                    bundle!!.getInt(MorningAzkarAlarmReceiver.NOTIFICATION_ID_NUMBER_AZKAR)
+                    bundle.getInt(MorningAzkarAlarmReceiver.NOTIFICATION_ID_NUMBER_AZKAR)
             }
             binding.SwipePagesActivityPB.visibility = View.GONE
         }

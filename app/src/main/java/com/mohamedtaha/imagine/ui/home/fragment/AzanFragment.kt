@@ -3,59 +3,56 @@ package com.mohamedtaha.imagine.ui.home.fragment
 import android.Manifest
 import android.app.AlertDialog
 import android.content.*
-import com.mohamedtaha.imagine.ui.home.activity.NavigationDrawaberActivity.Companion.ScheduleGetDataEveryMonth
-import com.mohamedtaha.imagine.room.DatabaseCallback
-import com.mohamedtaha.imagine.GpsUtils.onGpsListener
-import butterknife.BindView
-import com.mohamedtaha.imagine.R
-import android.widget.ProgressBar
-import android.widget.TextView
-import com.mohamedtaha.imagine.room.TimingsViewModel
-import android.location.LocationManager
-import com.mohamedtaha.imagine.mvp.model.azan.Timings
-import com.mohamedtaha.imagine.receiver.ConnectivityReceiver
-import com.mohamedtaha.imagine.receiver.NoInternetReceiver
-import com.mohamedtaha.imagine.GpsUtils
-import android.os.Bundle
-import com.mohamedtaha.imagine.adapter.AdapterAzanVP
-import butterknife.ButterKnife
-import com.mohamedtaha.imagine.helper.HelperClass
-import androidx.lifecycle.ViewModelProvider
-import com.mohamedtaha.imagine.helper.SharedPerefrenceHelper
-import com.mohamedtaha.imagine.ui.home.activity.NavigationDrawaberActivity
-import com.mohamedtaha.imagine.helper.util.ConvertTimes
-import com.mohamedtaha.imagine.receiver.GetPrayerTimesEveryMonth
-import androidx.room.EmptyResultSetException
-import com.mohamedtaha.imagine.ui.home.fragment.AzanFragment
-import com.mohamedtaha.imagine.room.TimingsAppDatabase
-import android.os.Build
-import androidx.core.content.ContextCompat
 import android.content.pm.PackageManager
-import com.google.android.material.snackbar.Snackbar
-import com.mohamedtaha.imagine.AppConstants
-import android.widget.LinearLayout
 import android.location.Geocoder
-import android.widget.Toast
-import com.mohamedtaha.imagine.helper.checkConnection.NoInternetConnection
-import com.mohamedtaha.imagine.helper.checkConnection.NetworkConnection
-import com.mohamedtaha.imagine.service.MediaPlayerService
 import android.location.Location
+import android.location.LocationManager
 import android.net.Uri
+import android.os.Build
+import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
 import android.util.Log
 import android.view.*
+import android.widget.LinearLayout
+import android.widget.ProgressBar
+import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
+import androidx.room.EmptyResultSetException
+import butterknife.BindView
 import com.google.android.gms.location.LocationListener
 import com.google.android.gms.location.LocationRequest
+import com.google.android.material.snackbar.Snackbar
+import com.mohamedtaha.imagine.AppConstants
+import com.mohamedtaha.imagine.GpsUtils
+import com.mohamedtaha.imagine.GpsUtils.onGpsListener
+import com.mohamedtaha.imagine.R
+import com.mohamedtaha.imagine.adapter.AdapterAzanVP
 import com.mohamedtaha.imagine.databinding.FragmentAzanBinding
+import com.mohamedtaha.imagine.helper.HelperClass
+import com.mohamedtaha.imagine.helper.SharedPerefrenceHelper
+import com.mohamedtaha.imagine.helper.checkConnection.NetworkConnection
+import com.mohamedtaha.imagine.helper.checkConnection.NoInternetConnection
+import com.mohamedtaha.imagine.helper.util.ConvertTimes
+import com.mohamedtaha.imagine.mvp.model.azan.Timings
+import com.mohamedtaha.imagine.receiver.ConnectivityReceiver
+import com.mohamedtaha.imagine.receiver.GetPrayerTimesEveryMonth
+import com.mohamedtaha.imagine.receiver.NoInternetReceiver
+import com.mohamedtaha.imagine.room.DatabaseCallback
+import com.mohamedtaha.imagine.room.TimingsAppDatabase
+import com.mohamedtaha.imagine.room.TimingsViewModel
+import com.mohamedtaha.imagine.service.MediaPlayerService
+import com.mohamedtaha.imagine.ui.home.activity.NavigationDrawaberActivity
+import com.mohamedtaha.imagine.ui.home.activity.NavigationDrawaberActivity.Companion.ScheduleGetDataEveryMonth
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import java.io.IOException
-import java.lang.Exception
 import java.util.*
 
 /**
@@ -63,6 +60,7 @@ import java.util.*
  */
 class AzanFragment : Fragment(), LocationListener, DatabaseCallback, onGpsListener {
     private lateinit var binding: FragmentAzanBinding
+
     //    @BindView(R.id.AzanFragment_VP)
     //    RtlViewPager AzanFragmentVP;
     @JvmField
@@ -126,7 +124,7 @@ class AzanFragment : Fragment(), LocationListener, DatabaseCallback, onGpsListen
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentAzanBinding.inflate(inflater,container,false)
+        binding = FragmentAzanBinding.inflate(inflater, container, false)
         //        RetrofitComponent retrofitComponent = ((MainApplication) getActivity().getApplication()).getRetrofitComponent();
 //        retrofitComponent.inject(this);
 //
@@ -147,7 +145,8 @@ class AzanFragment : Fragment(), LocationListener, DatabaseCallback, onGpsListen
             Log.i("TAG", " onSuccess timingsViewModel " + TimingsViewModel.store_date_today)
         }
         timingsViewModel!!.isNewlyCreated = false
-        locationManager = requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        locationManager =
+            requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
         isGPSEnabled = locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)
         bundle = arguments
         if (bundle != null) {
@@ -590,7 +589,7 @@ class AzanFragment : Fragment(), LocationListener, DatabaseCallback, onGpsListen
                 }
                 Log.i("TAG", "Not Graunted Location")
                 clearFlagForInteractiveUser()
-               // break
+                // break
             }
             else -> {}
         }
@@ -786,7 +785,7 @@ class AzanFragment : Fragment(), LocationListener, DatabaseCallback, onGpsListen
         super.onResume()
         // adapterAzan.notifyDataSetChanged();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
-            activity
+            requireActivity()
         )
 //        Prayer_timing_default = sharedPreferences.getString(
 //            getString(R.string.settings_method_key),
@@ -836,7 +835,11 @@ class AzanFragment : Fragment(), LocationListener, DatabaseCallback, onGpsListen
                     .DeletePrayerTimesForGetDataWithLocation(this@AzanFragment)
             } else {
                 if (NavigationDrawaberActivity.store_city_name != null && NavigationDrawaberActivity.store_city_name == city_name) {
-                    Snackbar.make(requireView(), "بالفعل انت في مدينة $city_name", Snackbar.LENGTH_LONG)
+                    Snackbar.make(
+                        requireView(),
+                        "بالفعل انت في مدينة $city_name",
+                        Snackbar.LENGTH_LONG
+                    )
                         .show()
                     clearFlagForInteractiveUser()
                     gpsUtils!!.stopLocationUpdtaes()
@@ -925,7 +928,7 @@ class AzanFragment : Fragment(), LocationListener, DatabaseCallback, onGpsListen
 
     private fun changeValueInListPreferenceForAzan() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
-            activity
+            requireActivity()
         )
 //        val editor = sharedPreferences.edit()
 //        editor.putString(getString(R.string.settings_azan_key), number_azan_default)
@@ -934,7 +937,7 @@ class AzanFragment : Fragment(), LocationListener, DatabaseCallback, onGpsListen
 
     private fun changeValueInListPreference() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
-            activity
+            requireActivity()
         )
 //        val editor = sharedPreferences.edit()
 //        editor.putString(getString(R.string.settings_method_key), Prayer_timing_default)
@@ -950,7 +953,7 @@ class AzanFragment : Fragment(), LocationListener, DatabaseCallback, onGpsListen
         if (progressBar != null) {
             clearFlagForInteractiveUser()
         }
-       // getPrayerTimes(getLatitude(), getLongitude())
+        // getPrayerTimes(getLatitude(), getLongitude())
         // checkBeforeGetDataFromInternet();
         Log.d("TAG", "getDataFromLocationAfterDeleteData")
     }
@@ -1092,17 +1095,17 @@ class AzanFragment : Fragment(), LocationListener, DatabaseCallback, onGpsListen
 
     private fun customForPreferencesAzan(method_key: String, method_default: String): String? {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
-            activity
+            requireActivity()
         )
-       // number_azan_default = sharedPreferences.getString(method_key, method_default)
+        // number_azan_default = sharedPreferences.getString(method_key, method_default)
         return number_azan_default
     }
 
     private fun customForPreferences(method_key: String, method_default: String): String? {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
-            activity
+            requireActivity()
         )
-       // Prayer_timing_default = sharedPreferences.getString(method_key, method_default)
+        // Prayer_timing_default = sharedPreferences.getString(method_key, method_default)
         return Prayer_timing_default
     }
 

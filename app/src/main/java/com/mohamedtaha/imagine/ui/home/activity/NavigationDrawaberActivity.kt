@@ -9,7 +9,6 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.pm.ResolveInfo
 import android.graphics.Color
 import android.location.Geocoder
 import android.os.*
@@ -22,7 +21,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
@@ -47,7 +45,6 @@ import com.mohamedtaha.imagine.helper.checkConnection.NetworkConnection
 import com.mohamedtaha.imagine.helper.checkConnection.NoInternetConnection
 import com.mohamedtaha.imagine.helper.images
 import com.mohamedtaha.imagine.helper.util.ConvertTimes
-import com.mohamedtaha.imagine.mvp.interactor.NavigationDrawarInteractor
 import com.mohamedtaha.imagine.mvp.view.NavigationDrawaberView
 import com.mohamedtaha.imagine.notification.morningAzkar.MorningAzkarNotificationHelper
 import com.mohamedtaha.imagine.notification.prayerTimes.AlarmUtils
@@ -61,7 +58,6 @@ import com.mohamedtaha.imagine.service.GetDataEveryMonthJobService
 import com.mohamedtaha.imagine.ui.activities.SwipePagesActivity
 import com.mohamedtaha.imagine.ui.activities.YoutubeActivity
 import com.mohamedtaha.imagine.ui.home.fragment.AzanFragment
-import com.mohamedtaha.imagine.ui.splash.SplashActivity
 import com.mohamedtaha.imagine.util.RateApp.reteApp
 import com.mohamedtaha.imagine.util.SearchBarUtils.setSearchIcons
 import com.mohamedtaha.imagine.util.SearchBarUtils.setSearchTextColor
@@ -83,6 +79,7 @@ class NavigationDrawaberActivity : AppCompatActivity(),
     DatabaseCallback,
     NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityMainDrawableBinding
+
     private val navController by lazy {
         (supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment).navController
     }
@@ -91,6 +88,13 @@ class NavigationDrawaberActivity : AppCompatActivity(),
 
     @Inject
     lateinit var remoteConfig: RemoteConfig
+@Inject
+    lateinit var intentShare: Intent
+    @Inject
+    lateinit var intentSendUs: Intent
+    @Inject
+    lateinit var intentRate: Intent
+
     private val datStoreViewModel: DataStoreViewModel by viewModels()
 
     private var current_fragment = 0
@@ -125,7 +129,7 @@ class NavigationDrawaberActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         //Handle the splash screen transition
-        val splashScreen = installSplashScreen()
+      //  val splashScreen = installSplashScreen()
 //        splashScreen.setOnExitAnimationListener{splashScreenView ->
 //            //Create your custom animation
 //
@@ -694,13 +698,13 @@ class NavigationDrawaberActivity : AppCompatActivity(),
             findNavController(R.id.fragmentContainerView).navigate(R.id.elarbaoonElnawawyActivity,null,options)
         } else if (id == R.id.use_way) {
             SharedPerefrenceHelper.removeDataForWayUsing(this)
-            HelperClass.startActivity(applicationContext, SplashActivity::class.java)
+            findNavController(R.id.fragmentContainerView).navigate(R.id.splashActivity)
         } else if (id == R.id.action_share) {
-            shareApp(this)
+            shareApp(this,intentShare)
         } else if (id == R.id.action_rate) {
-            reteApp(this)
+            reteApp(this,intentRate)
         } else if (id == R.id.action_send_us) {
-            sendUs(this)
+            sendUs(this,intentSendUs)
         } else if (id == R.id.action_settings) {
             val options = navOptions {
                 anim {

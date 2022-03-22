@@ -220,6 +220,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="splashActivity">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-610" />
+                            <option name="y" value="-648" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="swarFragment">
                     <value>
                       <LayoutPositions>
