@@ -56,7 +56,7 @@ import com.mohamedtaha.imagine.room.TimingsAppDatabase
 import com.mohamedtaha.imagine.room.TimingsViewModel
 import com.mohamedtaha.imagine.service.GetDataEveryMonthJobService
 import com.mohamedtaha.imagine.ui.activities.SwipePagesActivity
-import com.mohamedtaha.imagine.ui.activities.YoutubeActivity
+import com.mohamedtaha.imagine.ui.youtube.YoutubeActivity
 import com.mohamedtaha.imagine.ui.home.fragment.AzanFragment
 import com.mohamedtaha.imagine.util.RateApp.reteApp
 import com.mohamedtaha.imagine.util.SearchBarUtils.setSearchIcons

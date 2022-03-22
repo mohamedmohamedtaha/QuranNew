@@ -11,7 +11,7 @@ import com.mohamedtaha.imagine.adapter.AdapterElarbaoonElnawawy
 import com.mohamedtaha.imagine.base.BaseFragment
 import com.mohamedtaha.imagine.databinding.FragmentElarbaoonElnawawyBinding
 import com.mohamedtaha.imagine.mvp.model.ElarbaoonElnawawyModel
-import com.mohamedtaha.imagine.ui.home.viewModel.ElarbaoonElnawawyVieWModel
+import com.mohamedtaha.imagine.ui.navigationview.viewmodel.ElarbaoonElnawawyVieWModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

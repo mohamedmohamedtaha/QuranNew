@@ -2,13 +2,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <Preference
-        app:fragment="com.mohamedtaha.imagine.ui.fragments.GeneralFragment"
+        app:fragment="com.mohamedtaha.imagine.ui.preferences.fragment.GeneralFragment"
         app:icon="@drawable/ic_info"
         app:key="@string/key_general_header"
         app:title="@string/general_header" />
 
     <Preference
-        app:fragment="com.mohamedtaha.imagine.ui.fragments.NotificationFragment"
+        app:fragment="com.mohamedtaha.imagine.ui.preferences.fragment.NotificationFragment"
         app:icon="@drawable/ic_notifications"
         app:key="@string/key_notification_header"
         app:title="@string/settings_Notification_label" />

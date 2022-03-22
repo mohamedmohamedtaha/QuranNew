@@ -44,11 +44,11 @@
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
-        <activity android:name=".ui.activities.YoutubeActivity"
+        <activity android:name=".ui.youtube.YoutubeActivity"
             android:theme="@style/FullScreenWindow"/>
         <activity android:name=".FullScreenActivity" />
         <activity
-            android:name=".ui.activities.SettingsActivity"
+            android:name=".ui.preferences.activity.SettingsActivity"
             android:label="@string/settings"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme">

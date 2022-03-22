@@ -9,5 +9,6 @@ object Session {
     const val SAVE_READING_QURAN = "SAVE_READING_QURAN"
     const val SAVE_REMEMBRANCES = "SAVE_REMEMBRANCES"
     const val POSITION = "POSITION"
+    const val TITLE_SETTINGS_ACTIVITY = "TITLE_SETTINGS_ACTIVITY"
 
 }

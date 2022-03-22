@@ -1,4 +1,4 @@
-package com.mohamedtaha.imagine.ui.fragments
+package com.mohamedtaha.imagine.ui.preferences.fragment
 
 import androidx.preference.PreferenceFragmentCompat
 import android.os.Bundle

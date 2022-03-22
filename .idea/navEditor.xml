@@ -266,6 +266,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="descriptionElhaedthFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="40" />
+                            <option name="y" value="177" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="elarbaoonElnawawyFragment">
                     <value>
                       <LayoutPositions>
@@ -283,6 +295,18 @@
                               </value>
                             </entry>
                           </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="translateElhadethFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-190" />
+                            <option name="y" value="259" />
+                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>

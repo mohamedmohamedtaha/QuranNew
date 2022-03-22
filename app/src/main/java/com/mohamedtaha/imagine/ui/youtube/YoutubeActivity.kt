@@ -1,4 +1,4 @@
-package com.mohamedtaha.imagine.ui.activities
+package com.mohamedtaha.imagine.ui.youtube
 
 import android.os.Bundle
 import android.util.Log
@@ -22,7 +22,7 @@ class YoutubeActivity : AppCompatActivity(), YouTubePlayer.OnInitializedListener
     private var channelLink = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       // binding = ActivityYoutubeBinding.inflate(layoutInflater)
+        // binding = ActivityYoutubeBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_youtube)
 
 //        val fragment: YouTubePlayerSupportFragment =

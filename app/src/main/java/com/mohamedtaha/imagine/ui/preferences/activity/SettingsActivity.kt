@@ -1,10 +1,11 @@
-package com.mohamedtaha.imagine.ui.activities
+package com.mohamedtaha.imagine.ui.preferences.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mohamedtaha.imagine.R
+import com.mohamedtaha.imagine.datastore.Session.TITLE_SETTINGS_ACTIVITY
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,7 +20,7 @@ class SettingsActivity : AppCompatActivity(),
                 .replace(R.id.settings, HeaderFragment())
                 .commit()
         } else {
-            title = savedInstanceState.getCharSequence(TITLE_TAG)
+            title = savedInstanceState.getCharSequence(TITLE_SETTINGS_ACTIVITY)
         }
         supportFragmentManager.addOnBackStackChangedListener {
             if (supportFragmentManager.backStackEntryCount == 0) {
@@ -33,7 +34,7 @@ class SettingsActivity : AppCompatActivity(),
     public override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         // Save current activity title so we can set it again after a configuration change
-        outState.putCharSequence(TITLE_TAG, title)
+        outState.putCharSequence(TITLE_SETTINGS_ACTIVITY, title)
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -50,9 +51,10 @@ class SettingsActivity : AppCompatActivity(),
         val args = pref.extras
         val fragment = supportFragmentManager.fragmentFactory.instantiate(
             classLoader,
-            pref.fragment!!)
+            pref.fragment.toString()
+        )
         fragment.arguments = args
-        fragment.setTargetFragment(caller, 0)
+//       // fragment.setTargetFragment(caller, 0)
         // Replace the existing Fragment with the new Fragment
         supportFragmentManager.beginTransaction()
             .replace(R.id.settings, fragment)
@@ -66,9 +68,5 @@ class SettingsActivity : AppCompatActivity(),
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.header_preferences, rootKey)
         }
-    }
-
-    companion object {
-        private const val TITLE_TAG = "settingsActivityTitle"
     }
 }

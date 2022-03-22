@@ -18,10 +18,20 @@
         android:id="@+id/descriptionElarbaoonFragment"
         android:name="com.mohamedtaha.imagine.ui.navigationview.fragment.DescriptionElarbaoonFragment"
         android:label="fragment_description_elarbaoon"
-        tools:layout="@layout/fragment_description_elarbaoon2">
+        tools:layout="@layout/fragment_description_elarbaoon">
         <argument
             android:name="elarbaoonElnawawyModel"
             app:argType="com.mohamedtaha.imagine.mvp.model.ElarbaoonElnawawyModel" />
     </fragment>
+    <fragment
+        android:id="@+id/descriptionElhaedthFragment"
+        android:name="com.mohamedtaha.imagine.ui.navigationview.fragment.elnawawy.DescriptionElhaedthFragment"
+        android:label="fragment_description_elhaedth"
+        tools:layout="@layout/fragment_description_elhaedth" />
+    <fragment
+        android:id="@+id/translateElhadethFragment"
+        android:name="com.mohamedtaha.imagine.ui.navigationview.fragment.elnawawy.TranslateElhadethFragment"
+        android:label="fragment_translate"
+        tools:layout="@layout/fragment_translate" />
 
 </navigation>

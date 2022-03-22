@@ -12,9 +12,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.mohamedtaha.imagine.R;
-import com.mohamedtaha.imagine.ui.fragments.elnawawy.DescriptionElhaedthFragment;
-import com.mohamedtaha.imagine.ui.fragments.elnawawy.TextElhadethFragment;
-import com.mohamedtaha.imagine.ui.fragments.elnawawy.TranslateElhadethFragment;
+import com.mohamedtaha.imagine.ui.navigationview.fragment.elnawawy.DescriptionElhaedthFragment;
+import com.mohamedtaha.imagine.ui.navigationview.fragment.elnawawy.TextElhadethFragment;
+import com.mohamedtaha.imagine.ui.navigationview.fragment.elnawawy.TranslateElhadethFragment;
 import com.google.gson.Gson;
 
 public class PagerAdapterElarbaoonElnawawy extends FragmentPagerAdapter {

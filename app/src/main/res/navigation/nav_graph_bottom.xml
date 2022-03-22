@@ -33,7 +33,7 @@
         tools:layout="@layout/activity_elarbaoon_elnawawy" />
     <activity
         android:id="@+id/settingsActivity"
-        android:name="com.mohamedtaha.imagine.ui.activities.SettingsActivity"
+        android:name="com.mohamedtaha.imagine.ui.preferences.activity.SettingsActivity"
         android:label="SettingsActivity" />
     <activity
         android:id="@+id/splashActivity"
