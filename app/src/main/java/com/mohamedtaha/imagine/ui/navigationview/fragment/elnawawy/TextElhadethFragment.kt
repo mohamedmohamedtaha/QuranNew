@@ -5,16 +5,16 @@ import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.google.gson.Gson
-import com.mohamedtaha.imagine.base.BaseFragment
-import com.mohamedtaha.imagine.databinding.FragmentTranslateBinding
+import com.mohamedtaha.imagine.databinding.FragmentTextElhadethBinding
 import com.mohamedtaha.imagine.datastore.Session.TEXT
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class TranslateElhadethFragment : BaseFragment() {
-    private lateinit var binding: FragmentTranslateBinding
+class TextElhadethFragment : Fragment() {
+    private lateinit var binding: FragmentTextElhadethBinding
 
     @Inject
     lateinit var bundle: Bundle
@@ -22,13 +22,11 @@ class TranslateElhadethFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        binding = FragmentTranslateBinding.inflate(inflater, container, false)
+        binding = FragmentTextElhadethBinding.inflate(inflater, container, false)
         bundle = requireArguments()
-        val translateElhadeth = Gson().fromJson(bundle.getString(TEXT), String::class.java)
-        binding.TranslateElhadethFragmentTVTranslateElhaseth.text = translateElhadeth
-        binding.TranslateElhadethFragmentTVTranslateElhaseth.movementMethod =
-            ScrollingMovementMethod()
+        val textElhadeth = Gson().fromJson(bundle.getString(TEXT), String::class.java)
+        binding.TextElhadethFragmentTVTextElhaseth.text = textElhadeth
+        binding.TextElhadethFragmentTVTextElhaseth.movementMethod = ScrollingMovementMethod()
         return binding.root
     }
 }

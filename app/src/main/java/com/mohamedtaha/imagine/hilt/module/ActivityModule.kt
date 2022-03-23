@@ -15,4 +15,5 @@ class ActivityModule {
 
     @Provides
     fun bundleProvide():Bundle = Bundle()
+
 }

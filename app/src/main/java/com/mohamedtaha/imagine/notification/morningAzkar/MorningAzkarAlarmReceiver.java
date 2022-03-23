@@ -21,7 +21,7 @@ import androidx.core.content.ContextCompat;
 import com.mohamedtaha.imagine.R;
 import com.mohamedtaha.imagine.mvp.model.ModelAzkar;
 import com.mohamedtaha.imagine.notification.prayerTimes.ModelMessageNotification;
-import com.mohamedtaha.imagine.ui.activities.SwipePagesActivity;
+import com.mohamedtaha.imagine.ui.home.activity.SwipePagesActivity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

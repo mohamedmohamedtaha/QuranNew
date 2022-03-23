@@ -11,19 +11,20 @@ import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerSupportFragment
 import com.mohamedtaha.imagine.BuildConfig.YOUTUBE_API_KEY
 import com.mohamedtaha.imagine.R
+import com.mohamedtaha.imagine.databinding.ActivityYoutubeBinding
 import com.mohamedtaha.imagine.datastore.DataStoreViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class YoutubeActivity : AppCompatActivity(), YouTubePlayer.OnInitializedListener {
-    //private lateinit var binding: ActivityYoutubeBinding
+    private lateinit var binding: ActivityYoutubeBinding
     private val datStoreViewModel: DataStoreViewModel by viewModels()
 
     private var channelLink = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // binding = ActivityYoutubeBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_youtube)
+         binding = ActivityYoutubeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
 //        val fragment: YouTubePlayerSupportFragment =
 //            (YouTubePlayerSupportFragment) supportFragmentManager!!.findFragmentById (R.id.youtubeFragment)

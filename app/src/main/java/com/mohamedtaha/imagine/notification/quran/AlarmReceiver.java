@@ -20,7 +20,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import com.mohamedtaha.imagine.R;
-import com.mohamedtaha.imagine.ui.activities.SwipePagesActivity;
+import com.mohamedtaha.imagine.ui.home.activity.SwipePagesActivity;
 
 import java.util.ArrayList;
 import java.util.List;

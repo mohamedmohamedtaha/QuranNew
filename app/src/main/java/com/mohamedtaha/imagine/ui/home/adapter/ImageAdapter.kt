@@ -1,17 +1,14 @@
 package com.mohamedtaha.imagine.ui.home.adapter
 
-import android.app.Activity
-import android.content.Intent
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import com.mohamedtaha.imagine.databinding.CustomNameReaderBinding
 import com.mohamedtaha.imagine.mvp.model.ImageModel
-import com.mohamedtaha.imagine.ui.activities.ListSoundReader
+import com.mohamedtaha.imagine.ui.home.fragment.SoundFragmentDirections
 
-class ImageAdapter( private val activity: Activity) :
+class ImageAdapter :
     RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
     private lateinit var imageModels: List<ImageModel>
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -32,19 +29,27 @@ class ImageAdapter( private val activity: Activity) :
 //            .override(holder.binding.imageView.width, holder.binding.imageView.height)
 //            .into(holder.binding.imageView)
         holder.itemView.setOnClickListener {
-            val listSound = Intent(holder.binding.textViewShow.context, ListSoundReader::class.java)
-            val bundle = Bundle()
-            bundle.putString(SHEKH_ID, Gson().toJson(imageModel.position))
-            bundle.putString(SHEKH_NAME, Gson().toJson(imageModel.nameShekh))
-            listSound.putExtras(bundle)
-            holder.binding.textViewShow.context.startActivity(listSound)
-            activity.overridePendingTransition(
-                android.R.anim.slide_in_left,
-                android.R.anim.slide_out_right
+            val action = SoundFragmentDirections.actionSoundFragmentToSwipeFragment(
+                imageModel.position,
+                imageModel.nameShekh!!
             )
+            findNavController(holder.itemView).navigate(action)
+
+
+//            val listSound = Intent(holder.binding.textViewShow.context, ListSoundReader::class.java)
+//            val bundle = Bundle()
+//            bundle.putString(SHEKH_ID, Gson().toJson(imageModel.position))
+//            bundle.putString(SHEKH_NAME, Gson().toJson(imageModel.nameShekh))
+//            listSound.putExtras(bundle)
+//            holder.binding.textViewShow.context.startActivity(listSound)
+//            activity.overridePendingTransition(
+//                android.R.anim.slide_in_left,
+//                android.R.anim.slide_out_right
+//            )
         }
     }
-    fun setData(imageModels: List<ImageModel>){
+
+    fun setData(imageModels: List<ImageModel>) {
         this.imageModels = imageModels
 
     }

@@ -1,4 +1,4 @@
-package com.mohamedtaha.imagine.ui.activities
+package com.mohamedtaha.imagine.ui.home.activity
 
 import android.app.NotificationManager
 import android.os.Bundle
@@ -23,7 +23,6 @@ import com.mohamedtaha.imagine.helper.images.SAVE_POSITION
 import com.mohamedtaha.imagine.mvp.model.ModelAzkar
 import com.mohamedtaha.imagine.notification.morningAzkar.MorningAzkarAlarmReceiver
 import com.mohamedtaha.imagine.notification.quran.AlarmReceiver
-import com.mohamedtaha.imagine.ui.home.activity.NavigationDrawaberActivity
 import com.mohamedtaha.imagine.ui.home.fragment.AzkarFragment
 import com.mohamedtaha.imagine.ui.home.fragment.SwarFragment
 import com.mohamedtaha.imagine.ui.home.viewModel.SwarAndPartsViewModel

@@ -10,7 +10,7 @@
         android:label="@string/el_arbaoon_elnawawy"
         tools:layout="@layout/fragment_elarbaoon_elnawawy">
         <action
-            android:id="@+id/action_elarbaoonElnawawyFragment2_to_descriptionElarbaoonFragment"
+            android:id="@+id/action_elarbaoonElnawawyFragment_to_descriptionElarbaoonFragment"
             app:destination="@id/descriptionElarbaoonFragment" />
     </fragment>
 
@@ -23,15 +23,5 @@
             android:name="elarbaoonElnawawyModel"
             app:argType="com.mohamedtaha.imagine.mvp.model.ElarbaoonElnawawyModel" />
     </fragment>
-    <fragment
-        android:id="@+id/descriptionElhaedthFragment"
-        android:name="com.mohamedtaha.imagine.ui.navigationview.fragment.elnawawy.DescriptionElhaedthFragment"
-        android:label="fragment_description_elhaedth"
-        tools:layout="@layout/fragment_description_elhaedth" />
-    <fragment
-        android:id="@+id/translateElhadethFragment"
-        android:name="com.mohamedtaha.imagine.ui.navigationview.fragment.elnawawy.TranslateElhadethFragment"
-        android:label="fragment_translate"
-        tools:layout="@layout/fragment_translate" />
 
 </navigation>

@@ -16,6 +16,7 @@ import android.os.StrictMode.ThreadPolicy
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +25,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.navOptions
@@ -55,7 +58,6 @@ import com.mohamedtaha.imagine.room.DatabaseCallback
 import com.mohamedtaha.imagine.room.TimingsAppDatabase
 import com.mohamedtaha.imagine.room.TimingsViewModel
 import com.mohamedtaha.imagine.service.GetDataEveryMonthJobService
-import com.mohamedtaha.imagine.ui.activities.SwipePagesActivity
 import com.mohamedtaha.imagine.ui.youtube.YoutubeActivity
 import com.mohamedtaha.imagine.ui.home.fragment.AzanFragment
 import com.mohamedtaha.imagine.util.RateApp.reteApp
@@ -206,6 +208,19 @@ class NavigationDrawaberActivity : AppCompatActivity(),
         binding.includeAppBarMain.bottomNavigationView.setupWithNavController(navController)
         //binding.navViewHeader.setupWithNavController(navController)
         binding.navViewHeader.setNavigationItemSelectedListener(this)
+        navController.addOnDestinationChangedListener(object : NavController.OnDestinationChangedListener{
+            override fun onDestinationChanged(
+                controller: NavController,
+                destination: NavDestination,
+                arguments: Bundle?
+            ) {
+                if (destination.id == R.id.swipeFragment)
+                    binding.includeAppBarMain.bottomNavigationView.visibility = View.GONE
+                else
+                    binding.includeAppBarMain.bottomNavigationView.visibility = View.VISIBLE
+            }
+
+        })
          appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.swarFragment,

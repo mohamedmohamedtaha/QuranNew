@@ -7,14 +7,8 @@ import android.view.View
 import android.view.Window
 import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.viewpager.widget.ViewPager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.youtube.player.internal.v
 import com.mohamedtaha.imagine.R
-import com.mohamedtaha.imagine.helper.HelperClass
-import com.mohamedtaha.imagine.helper.SharedPerefrenceHelper
-import com.mohamedtaha.imagine.ui.activities.SwipePagesActivity
-import com.mohamedtaha.imagine.ui.home.fragment.SwarFragment
 
 object DialogUtils {
     fun showDialog(activity: Activity,text:String,onClickListener:View.OnClickListener){

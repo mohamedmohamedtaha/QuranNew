@@ -16,7 +16,11 @@
     <fragment
         android:id="@+id/soundFragment"
         android:name="com.mohamedtaha.imagine.ui.home.fragment.SoundFragment"
-        android:label="@string/listen_swar" />
+        android:label="@string/listen_swar" >
+        <action
+            android:id="@+id/action_soundFragment_to_swipeFragment"
+            app:destination="@id/swipeFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/azanFragment"
@@ -39,5 +43,17 @@
         android:id="@+id/splashActivity"
         android:name="com.mohamedtaha.imagine.ui.splash.SplashActivity"
         android:label="SplashActivity" />
+    <fragment
+        android:id="@+id/swipeFragment"
+        android:name="com.mohamedtaha.imagine.ui.home.fragment.SwipeFragment"
+        android:label="fragment_swipe"
+        tools:layout="@layout/fragment_swipe" >
+        <argument
+            android:name="shekh_id"
+            app:argType="integer" />
+        <argument
+            android:name="shekh_name"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

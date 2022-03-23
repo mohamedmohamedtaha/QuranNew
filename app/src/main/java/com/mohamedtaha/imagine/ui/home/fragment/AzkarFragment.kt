@@ -13,11 +13,10 @@ import com.mohamedtaha.imagine.R
 import com.mohamedtaha.imagine.base.BaseFragment
 import com.mohamedtaha.imagine.databinding.FragmentAzkarBinding
 import com.mohamedtaha.imagine.mvp.model.ModelAzkar
-import com.mohamedtaha.imagine.ui.activities.SwipePagesActivity
+import com.mohamedtaha.imagine.ui.home.activity.SwipePagesActivity
 import com.mohamedtaha.imagine.ui.home.adapter.AdapterForAzkar
 import com.mohamedtaha.imagine.ui.home.fragment.SwarFragment.Companion.SAVE_STATE
 import com.mohamedtaha.imagine.ui.home.viewModel.AzkarViewModel
-import com.mohamedtaha.imagine.ui.home.viewModel.SwarAndPartsViewModel
 import com.mohamedtaha.imagine.util.ClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

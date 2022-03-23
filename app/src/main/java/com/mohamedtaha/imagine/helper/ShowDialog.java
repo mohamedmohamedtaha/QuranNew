@@ -13,7 +13,7 @@ import android.widget.TextView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.mohamedtaha.imagine.R;
-import com.mohamedtaha.imagine.ui.activities.SwipePagesActivity;
+import com.mohamedtaha.imagine.ui.home.activity.SwipePagesActivity;
 import com.mohamedtaha.imagine.ui.home.fragment.SwarFragment;
 import com.mohamedtaha.imagine.mvp.model.ModelAzkar;
 

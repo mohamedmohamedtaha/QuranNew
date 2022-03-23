@@ -217,6 +217,15 @@
                             <option name="y" value="-170" />
                           </Point>
                         </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_soundFragment_to_swipeFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
                       </LayoutPositions>
                     </value>
                   </entry>
@@ -244,6 +253,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="swipeFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="188" />
+                            <option name="y" value="136" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                 </map>
               </option>
             </LayoutPositions>
@@ -259,9 +280,23 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="230" />
-                            <option name="y" value="-2" />
+                            <option name="x" value="-27" />
+                            <option name="y" value="-71" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_descriptionElarbaoonFragment_to_descriptionElhaedthFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_descriptionElarbaoonFragment_to_textElhadethFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -271,8 +306,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="40" />
-                            <option name="y" value="177" />
+                            <option name="x" value="227" />
+                            <option name="y" value="-202" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -283,8 +318,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-31" />
-                            <option name="y" value="2" />
+                            <option name="x" value="-212" />
+                            <option name="y" value="-74" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -299,13 +334,25 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="textElhadethFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="424" />
+                            <option name="y" value="-29" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="translateElhadethFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-190" />
-                            <option name="y" value="259" />
+                            <option name="x" value="243" />
+                            <option name="y" value="143" />
                           </Point>
                         </option>
                       </LayoutPositions>

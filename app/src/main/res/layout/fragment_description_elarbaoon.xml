@@ -56,10 +56,9 @@
         android:layout_marginEnd="@dimen/dimens_l"
         android:background="@color/colorAccent" />
 
-    <androidx.viewpager.widget.ViewPager
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/DescriptionElarbaoonFragment_ViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/View"
-        android:layout_marginTop="@dimen/dimens_l"></androidx.viewpager.widget.ViewPager>
+        android:layout_marginTop="@dimen/dimens_l"/>
 </LinearLayout><!--</layout>-->

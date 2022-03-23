@@ -5,7 +5,6 @@
 
     tools:context="com.mohamedtaha.imagine.ui.navigationview.fragment.elnawawy.TranslateElhadethFragment">
 
-    <!--    style="@style/style_default_layout_match_parent_with_background"-->
     <com.mohamedtaha.imagine.libraryTextView.TextViewEx
         android:id="@+id/TranslateElhadethFragment_TV_Translate_Elhaseth"
         android:layout_width="match_parent"
@@ -19,13 +18,5 @@
         android:scrollbars="vertical"
         android:textColor="@android:color/black"
         android:textSize="@dimen/txt_size_xxl"
-        android:textStyle="bold"
-        />
-
-    <ProgressBar
-        android:id="@+id/TranslateElhadethFragment_ProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
-
+        android:textStyle="bold" />
 </FrameLayout>

@@ -10,7 +10,7 @@ import android.view.animation.AnimationUtils
 import com.mohamedtaha.imagine.R
 import com.mohamedtaha.imagine.base.BaseFragment
 import com.mohamedtaha.imagine.databinding.FragmentReadSwarBinding
-import com.mohamedtaha.imagine.ui.activities.SwipePagesActivity
+import com.mohamedtaha.imagine.ui.home.activity.SwipePagesActivity
 import com.mohamedtaha.imagine.ui.home.adapter.AdapterForPartsAndSwar
 import com.mohamedtaha.imagine.util.ClickListener
 import dagger.hilt.android.AndroidEntryPoint

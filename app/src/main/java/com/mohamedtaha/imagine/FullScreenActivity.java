@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.mohamedtaha.imagine.mvp.model.ModelAzkar;
 import com.mohamedtaha.imagine.notification.morningAzkar.CancelMorningAzkarNotification;
-import com.mohamedtaha.imagine.ui.activities.SwipePagesActivity;
+import com.mohamedtaha.imagine.ui.home.activity.SwipePagesActivity;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;

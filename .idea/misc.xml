@@ -15,6 +15,11 @@
         <entry key="..\:/QuranNew/app/src/main/res/drawable/ic_settings.xml" value="0.2545" />
         <entry key="..\:/QuranNew/app/src/main/res/drawable/ic_share.xml" value="0.2545" />
         <entry key="..\:/QuranNew/app/src/main/res/drawable/logo.xml" value="0.1715" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout-land/activity_splash.xml" value="0.3572916666666667" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout-land/fragment_splash.xml" value="0.3572916666666667" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout-large/activity_splash.xml" value="0.6" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout-xlarge-land/activity_splash.xml" value="0.26796875" />
+        <entry key="..\:/QuranNew/app/src/main/res/layout-xlarge/activity_splash.xml" value="0.1875" />
         <entry key="..\:/QuranNew/app/src/main/res/layout-xlarge/custom_azkar_swipe.xml" value="0.176953125" />
         <entry key="..\:/QuranNew/app/src/main/res/layout-xlarge/fragment_description_elarbaoon.xml" value="0.1875" />
         <entry key="..\:/QuranNew/app/src/main/res/layout-xlarge/fragment_description_elhaedth.xml" value="0.1875" />

@@ -76,7 +76,7 @@
 <!--            </intent-filter>-->
         </activity>
         <activity
-            android:name=".ui.activities.SwipePagesActivity"
+            android:name=".ui.home.activity.SwipePagesActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/FullScreenWindow" />

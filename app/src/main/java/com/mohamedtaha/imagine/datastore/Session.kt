@@ -8,7 +8,7 @@ object Session {
     const val YOUTUBE_CHANNEL = "YOUTUBE_CHANNEL"
     const val SAVE_READING_QURAN = "SAVE_READING_QURAN"
     const val SAVE_REMEMBRANCES = "SAVE_REMEMBRANCES"
-    const val POSITION = "POSITION"
+    const val TEXT = "TEXT"
     const val TITLE_SETTINGS_ACTIVITY = "TITLE_SETTINGS_ACTIVITY"
 
 }

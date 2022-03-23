@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import com.mohamedtaha.imagine.R
 import com.mohamedtaha.imagine.base.BaseFragment
 import com.mohamedtaha.imagine.databinding.FragmentPartsBinding
-import com.mohamedtaha.imagine.ui.activities.SwipePagesActivity
+import com.mohamedtaha.imagine.ui.home.activity.SwipePagesActivity
 import com.mohamedtaha.imagine.ui.home.adapter.AdapterForPartsAndSwar
 import com.mohamedtaha.imagine.ui.home.fragment.SwarFragment.Companion.SAVE_STATE
 import com.mohamedtaha.imagine.util.ClickListener

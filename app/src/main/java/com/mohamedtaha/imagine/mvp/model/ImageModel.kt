@@ -18,5 +18,9 @@ class ImageModel {
         this.position = position
     }
 
+    override fun equals(other: Any?): Boolean {
+        return super.equals(other)
+    }
+
 
 }

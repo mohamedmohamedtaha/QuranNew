@@ -16,68 +16,28 @@ import javax.inject.Inject
 class ElarbaoonElnawawyVieWModel @Inject constructor(): ViewModel() {
     private val _elarbaoonElnawawy = MutableLiveData<List<ElarbaoonElnawawyModel>>()
     val elarbaoonElnawawy get() = _elarbaoonElnawawy
-    private val _descriptionElhadeth = MutableLiveData<String>()
-    val descriptionElhadeth get() = _descriptionElhadeth
-
-    private val _translateElhadeth = MutableLiveData<String>()
-    val translateElhadeth get() = _translateElhadeth
     fun getElarbaoonElnawawy(context: Context) {
         val elnawawyModelList = ArrayList<ElarbaoonElnawawyModel>()
-        val number_elhadeth =
+        val numberElhadeth =
             context.resources.getStringArray(R.array.elarbaon_elnawawaya_number_elhadeth)
-        val name_elhadeth =
+        val nameElhadeth =
             context.resources.getStringArray(R.array.elarbaon_elnawawaya_name_elhadeth)
-        val text_elhadeth =
+        val textElhadeth =
             context.resources.getStringArray(R.array.elarbaon_elnawawaya_text_elhadeth)
-        val description_elhadeth =
+        val descriptionElhadeth =
             context.resources.getStringArray(R.array.elarbaon_elnawawaya_decription_elhadeth)
-        val transelate_elhadeth =
+        val transelateElhadeth =
             context.resources.getStringArray(R.array.elarbaon_elnawawaya_translate_elhadeth)
-        for (i in number_elhadeth.indices) {
+        for (i in numberElhadeth.indices) {
             val elnawawyModel = ElarbaoonElnawawyModel()
-            elnawawyModel.numberElhadeth = number_elhadeth[i]
-            elnawawyModel.nameElhadeth = name_elhadeth[i]
-            elnawawyModel.textElhadeth = text_elhadeth[i]
-            elnawawyModel.descriptionElhadeth = description_elhadeth[i]
-            elnawawyModel.translateElhadeth = transelate_elhadeth[i]
+            elnawawyModel.numberElhadeth = numberElhadeth[i]
+            elnawawyModel.nameElhadeth = nameElhadeth[i]
+            elnawawyModel.textElhadeth = textElhadeth[i]
+            elnawawyModel.descriptionElhadeth = descriptionElhadeth[i]
+            elnawawyModel.translateElhadeth = transelateElhadeth[i]
             elnawawyModel.position = i
             elnawawyModelList.add(elnawawyModel);
         }
         _elarbaoonElnawawy.value = elnawawyModelList
-    }
-    fun getDescriptionElhadeth(context: Context,position_elhadeth:Int){
-
-       viewModelScope.launch {
-
-           try {
-               val text_elhadeth = context.resources.getStringArray(R.array.elarbaon_elnawawaya_decription_elhadeth)
-               for (i in text_elhadeth.indices) {
-                   if (position_elhadeth == i) {
-                       _descriptionElhadeth.value = text_elhadeth[i]
-                       break
-                   }
-               }
-
-           }catch (e:Exception){
-
-           }
-       }
-    }
-    fun gettranslate(context: Context,position_elhadeth:Int){
-        viewModelScope.launch {
-            try {
-                val text_elhadeth =
-                    context.resources.getStringArray(R.array.elarbaon_elnawawaya_translate_elhadeth)
-                for (i in text_elhadeth.indices) {
-                    Log.d("TAG", text_elhadeth[i])
-                    if (position_elhadeth == i) {
-                        _translateElhadeth.value = text_elhadeth[i]
-                        break
-                    }
-                }
-            }catch (e:Exception){
-
-            }
-        }
     }
 }

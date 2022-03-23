@@ -1,39 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools = "http://schemas.android.com/tools"
-    style="@style/style_default_layout_wrap_content"
-    android:layout_gravity="center"
-    android:orientation="horizontal">
-    <com.google.android.material.card.MaterialCardView
-        style="@style/style_material_card_view">
+<layout>
 
-        <RelativeLayout style="@style/style_default_layout_wrap_content">
+    <data>
 
-            <TextView
-                android:id="@+id/TV_Name_Elhadeth"
-                android:layout_width="@dimen/defaultValueTowHandredTen"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingTop="@dimen/dimens_mm"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/txt_size_m"
-                android:textStyle="bold"
-                tools:text="@string/nameSora" />
+        <variable
+            name="elarbaoonElnawawy"
+            type="com.mohamedtaha.imagine.mvp.model.ElarbaoonElnawawyModel" />
+    </data>
 
-            <TextView
-                android:id="@+id/TV_Number_Elhadeth"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/TV_Name_Elhadeth"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="@dimen/dimens_xl"
-                android:layout_marginBottom="@dimen/dimens_ss"
-                android:layoutDirection="rtl"
-                android:textColor="@color/colorAccent"
-                android:textSize="@dimen/txt_size_ss"
-                android:textStyle="bold"
-                tools:text="@string/nameSora" />
-        </RelativeLayout>
-    </com.google.android.material.card.MaterialCardView>
-</LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        style="@style/style_default_layout_wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <com.google.android.material.card.MaterialCardView style="@style/style_material_card_view">
+
+            <RelativeLayout style="@style/style_default_layout_wrap_content">
+
+                <TextView
+                    android:id="@+id/TV_Name_Elhadeth"
+                    android:layout_width="@dimen/defaultValueTowHandredTen"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/dimens_mm"
+                    android:text="@{elarbaoonElnawawy.nameElhadeth}"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/txt_size_m"
+                    android:textStyle="bold"
+                    tools:text="@string/nameSora" />
+
+                <TextView
+                    android:id="@+id/TV_Number_Elhadeth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/TV_Name_Elhadeth"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/dimens_xl"
+                    android:layout_marginBottom="@dimen/dimens_ss"
+                    android:layoutDirection="rtl"
+                    android:text="@{elarbaoonElnawawy.numberElhadeth}"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/txt_size_ss"
+                    android:textStyle="bold"
+                    tools:text="@string/nameSora" />
+            </RelativeLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</layout>

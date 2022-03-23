@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.mohamedtaha.imagine.ui.home.viewModel.SoundViewModel" />
+            type="com.mohamedtaha.imagine.ui.home.viewModel.ReaderViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
