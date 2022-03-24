@@ -1,4 +1,4 @@
-package com.mohamedtaha.imagine.ui.activities
+package com.mohamedtaha.imagine.ui.home.fragment
 
 import android.Manifest
 import android.annotation.TargetApi
@@ -16,24 +16,23 @@ import android.net.Uri
 import android.os.*
 import android.provider.Settings
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.Window
+import android.view.*
 import android.view.animation.AnimationUtils
 import android.widget.*
-import android.widget.SeekBar.OnSeekBarChangeListener
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import butterknife.OnClick
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.mohamedtaha.imagine.R
-import com.mohamedtaha.imagine.databinding.FragmentListSoundBinding
+import com.mohamedtaha.imagine.base.BaseFragment
+import com.mohamedtaha.imagine.databinding.FragmentListSoundReaderBinding
 import com.mohamedtaha.imagine.helper.HelperClass
 import com.mohamedtaha.imagine.helper.Utilities
 import com.mohamedtaha.imagine.helper.checkConnection.NetworkConnection
@@ -45,22 +44,24 @@ import com.mohamedtaha.imagine.receiver.ConnectivityReceiver
 import com.mohamedtaha.imagine.receiver.DownloadReceiver
 import com.mohamedtaha.imagine.receiver.NoInternetReceiver
 import com.mohamedtaha.imagine.service.MediaPlayerService
+import com.mohamedtaha.imagine.ui.activities.DetailsSoundActivity
+import com.mohamedtaha.imagine.ui.activities.ListSoundReader
 import com.mohamedtaha.imagine.ui.home.adapter.ImageAdapter
 import com.mohamedtaha.imagine.ui.home.adapter.RecycleViewReaderAdapter
 import com.mohamedtaha.imagine.ui.home.viewModel.SoundViewModel
 import com.mohamedtaha.imagine.util.ClickListener
+import com.mohamedtaha.imagine.util.SearchBarUtils
 import dagger.hilt.android.AndroidEntryPoint
 import de.hdodenhof.circleimageview.CircleImageView
 import java.io.File
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class ListSoundReader : AppCompatActivity() {
-    private lateinit var binding: FragmentListSoundBinding
+class ListSoundReaderFragment : BaseFragment() {
+    private lateinit var binding:FragmentListSoundReaderBinding
     private var respones: ArrayList<ImageModel>? = null
     var utilities: Utilities? = null
-    @Inject
-    lateinit var intentSound: Intent
+//    @Inject
+//    lateinit var intentSound: Intent
     var music_uri: Uri? = null
     private var Music_DownloadId: Long = 0
     var downloadManager: DownloadManager? = null
@@ -79,67 +80,77 @@ class ListSoundReader : AppCompatActivity() {
     private var downloadReceiver: DownloadReceiver? = null
     var downloadReference: Long = 0
     var dialog: Dialog? = null
+    val BROADCAST_INVISABLE = "com.example.createmediaplayer.invisable"
 
+    var isServiceRunning = false
+    var textNowPlaying: TextView? = null
+    var btnPlay: ImageButton? = null
+    var btnPause: ImageButton? = null
+    var textBufferDuration: TextView? = null
+    var textDuration: TextView? = null
+
+    //Create Folder to save Koran
+    var FILENAME: String? = null
+
+    var IsPlay = true
+
+    //for Service
+    val Broadcast_PLAY_NEW_AUDIO = "com.example.createmediaplayer.PlayNewAudio"
+
+    //Create arrayList from Audio class
+    val MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123
     override fun onDestroy() {
         super.onDestroy()
         if (connectivityReceiver != null) {
-            unregisterReceiver(connectivityReceiver)
+            requireActivity().unregisterReceiver(connectivityReceiver)
         }
         if (noInternetReceiver != null) {
-            unregisterReceiver(noInternetReceiver)
+            requireActivity().unregisterReceiver(noInternetReceiver)
         }
         if (downloadReceiver != null) {
-            unregisterReceiver(downloadReceiver)
+            requireActivity().unregisterReceiver(downloadReceiver)
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
-        super.onCreate(savedInstanceState)
-        binding = FragmentListSoundBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        // Inflate the layout for this fragment
+        binding = FragmentListSoundReaderBinding.inflate(inflater,container,false)
         // Create a network change broadcast receiver.
         connectivityReceiver = ConnectivityReceiver()
         noInternetReceiver = NoInternetReceiver()
         utilities = Utilities()
         isServiceRunning = Utilities.isServiceRunning(
-            MediaPlayerService::class.java.name, applicationContext
+            MediaPlayerService::class.java.name, requireContext()
         )
-        FragmentListSoundLLControlMedia = findViewById(R.id.Fragment_List_Sound_LL_Control_Media)
-        ListSoundReaderLoadingIndicator = findViewById(R.id.ListSoundReader_loading_indicator)
-        imageViewAlbumArt = findViewById(R.id.imageViewAlbumArt)
-        btnPlay = findViewById(R.id.btnPlay)
-        btnPause = findViewById(R.id.btnPause)
-        dialog = Dialog(this)
 
+        dialog = Dialog(requireContext())
+        toolbar.hideYoutubeIcon()
         //  broadCastReceverDownload();
         if (!isServiceRunning) {
             binding.FragmentListSoundLLControlMedia.setVisibility(View.GONE)
         }
-        playeIntent = Intent(this@ListSoundReader, MediaPlayerService::class.java)
-        intentSound = getIntent()
-        textBufferDuration = findViewById(R.id.textBufferDuration)
-        textDuration = findViewById(R.id.textDuration)
-        textNowPlaying = findViewById(R.id.textNowPlaying)
-        //Fragment_List_Sound_Search_View = findViewById(R.id.Fragment_List_Sound_Search_View);
+        playeIntent = Intent(requireActivity(), MediaPlayerService::class.java)
+      //  intentSound = arguments()
         binding.progressBar.progressDrawable.setColorFilter(
             resources.getColor(R.color.colorAccent),
             PorterDuff.Mode.SRC_IN
         )
-        custom_toolbar()
         respones = ArrayList()
-        val bundle = getIntent()
-        if (bundle != null) {
-//            poisition =
-//                Gson().fromJson(bundle.getStringExtra(ImageAdapter.SHEKH_ID), Int::class.java)
-//            imageModelTest =
-//                Gson().fromJson(bundle.getStringExtra(ImageAdapter.SHEKH_NAME), String::class.java)
-        }
+
+        val safeArgs : ListSoundReaderFragmentArgs by navArgs()
+            poisition = safeArgs.shekhId
+            imageModelTest =safeArgs.shekhName
+
         FILENAME = "/$imageModelTest/"
-        binding.FragmentListSoundTVNameSora.text = imageModelTest
+        (requireActivity() as AppCompatActivity).supportActionBar?.title = imageModelTest
+        //   binding.FragmentListSoundTVNameSora.text = imageModelTest
         //For start position from right don't left
         val linearLayoutManager: GridLayoutManager = object : GridLayoutManager(
-            applicationContext, 2
+            requireContext(), 2
         ) {
             override fun isLayoutRTL(): Boolean {
                 return true
@@ -153,7 +164,7 @@ class ListSoundReader : AppCompatActivity() {
 
         nameSoraViewModel.getAllNameSora(poisition)
 
-        nameSoraViewModel.getAllNameSore.observe(this) {
+        nameSoraViewModel.getAllNameSore.observe(requireActivity()) {
             respones = it
             val recycleViewAdaptor = RecycleViewReaderAdapter(
                 object : ClickListener<Int> {
@@ -164,18 +175,18 @@ class ListSoundReader : AppCompatActivity() {
                 },
                 object : ClickListener<Int> {
                     override fun onClick(view: View?, position: Int) {
-                            if (!respones.isNullOrEmpty()) {
-                                urlLink = respones!![position].soraLink
-                                name_sora = respones!![position].nameSora
-                                checkPermistion()
-                            }
+                        if (!respones.isNullOrEmpty()) {
+                            urlLink = respones!![position].soraLink
+                            name_sora = respones!![position].nameSora
+                            checkPermistion()
+                        }
                     }
 
                 })
             recycleViewAdaptor.submitList(it)
             //For Animation
             val controller = AnimationUtils.loadLayoutAnimation(
-                applicationContext, R.anim.layout_fall_dwon
+                requireActivity(), R.anim.layout_fall_dwon
             )
             binding.recycleViewSound.layoutAnimation = controller
             binding.recycleViewSound.adapter = recycleViewAdaptor
@@ -267,27 +278,27 @@ class ListSoundReader : AppCompatActivity() {
 //                return false;
 //            }
 //        });
+        return binding.root
     }
-
     private fun downloadSora() {
         //check Internet
         val noInternetConnection = NoInternetConnection()
         noInternetConnection.execute("http://clients3.google.com/generate_204")
-        val isConnected = NetworkConnection.networkConnectivity(applicationContext)
-        ListSoundReaderLoadingIndicator!!.visibility = View.VISIBLE
+        val isConnected = NetworkConnection.networkConnectivity(requireContext())
+        binding.ListSoundReaderLoadingIndicator.visibility = View.VISIBLE
         Handler().postDelayed(object : Runnable {
             override fun run() {
                 if (!isConnected) {
                     //send BroadcastReceiver to the Service -> Not Connection
                     val broadcastIntent = Intent(MediaPlayerService.BROADCAST_NOT_CONNECTION)
-                    sendBroadcast(broadcastIntent)
-                    ListSoundReaderLoadingIndicator!!.visibility = View.GONE
+                    requireActivity().sendBroadcast(broadcastIntent)
+                    binding.ListSoundReaderLoadingIndicator.visibility = View.GONE
                 } else {
                     if (!NoInternetConnection.isInternet()) {
-                        ListSoundReaderLoadingIndicator!!.visibility = View.GONE
+                        binding.ListSoundReaderLoadingIndicator.visibility = View.GONE
                         //send BroadcastReceiver to the Service -> Not Internet
                     } else {
-                        ListSoundReaderLoadingIndicator!!.visibility = View.GONE
+                        binding.ListSoundReaderLoadingIndicator.visibility = View.GONE
                         dialog!!.setCancelable(false)
                         dialog!!.setContentView(R.layout.custom_show_dialog)
                         val textView = dialog!!.findViewById<View>(R.id.show_text) as TextView
@@ -315,7 +326,7 @@ class ListSoundReader : AppCompatActivity() {
     }
 
     private fun download() {
-        val progressBarDialog = ProgressDialog(this)
+        val progressBarDialog = ProgressDialog(requireContext())
         progressBarDialog.setTitle("Download App Data, Please Wait")
         progressBarDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
         progressBarDialog.setButton(
@@ -334,7 +345,7 @@ class ListSoundReader : AppCompatActivity() {
         Thread(object : Runnable {
             override fun run() {
                 val downloading = true
-                val manager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
+                val manager = requireActivity().getSystemService(AppCompatActivity.DOWNLOAD_SERVICE) as DownloadManager
                 while (downloading) {
                     val q = DownloadManager.Query()
                     q.setFilterById(Music_DownloadId) //filter by id which you have receieved when reqesting download from download manager
@@ -349,7 +360,7 @@ class ListSoundReader : AppCompatActivity() {
 //                    }
 
                     //   final int dl_progress = (int) ((bytes_downloaded * 100l) / bytes_total);
-                    runOnUiThread(object : Runnable {
+                    requireActivity().runOnUiThread(object : Runnable {
                         override fun run() {
 
                             //  progressBarDialog.setProgress((int) dl_progress);
@@ -368,54 +379,46 @@ class ListSoundReader : AppCompatActivity() {
     private fun registerNoConnection() {
         //Register no internet receiver
         val filter = IntentFilter(MediaPlayerService.BROADCAST_NOT_CONNECTION)
-        registerReceiver(connectivityReceiver, filter)
+        requireActivity().registerReceiver(connectivityReceiver, filter)
     }
 
     private fun registerDownloadSound() {
         //Register no internet receiver
         val intentFilter = IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
-        registerReceiver(downloadReceiver, intentFilter)
+        requireActivity().registerReceiver(downloadReceiver, intentFilter)
     }
 
     private fun registerNoInternet() {
         //Register no internet receiver
         val filter = IntentFilter(MediaPlayerService.BROADCAST_NOT_INTERNET)
-        registerReceiver(noInternetReceiver, filter)
-    }
-
-    fun custom_toolbar() {
-        setSupportActionBar(binding.FragmentListSoundTB)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        supportActionBar!!.setDisplayShowHomeEnabled(true)
-        //for delete label for Activity
-        supportActionBar!!.setDisplayShowTitleEnabled(false)
+        requireActivity().registerReceiver(noInternetReceiver, filter)
     }
 
     private fun playAudio(audioIndex: Int) {
         //  //Check is service is active
-        val storageUtil = StorageUtil(applicationContext)
+        val storageUtil = StorageUtil(requireContext())
         storageUtil.storeAudio(respones)
         storageUtil.storeAudioIndex(audioIndex)
         if (!isServiceRunning) {
             //Store Serializable audioList to SharedPreferences
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                ContextCompat.startForegroundService(applicationContext, (playeIntent)!!)
+                ContextCompat.startForegroundService(requireContext(), (playeIntent)!!)
             } else {
-                startService(playeIntent)
+                requireActivity().startService(playeIntent)
             }
             isServiceRunning = true
         } else {
             //Service is active
             //send BroadcastReceiver to the Service -> PLAY_NEW_AUDIO
             val broadcastIntent = Intent(Broadcast_PLAY_NEW_AUDIO)
-            sendBroadcast(broadcastIntent)
+            requireActivity().sendBroadcast(broadcastIntent)
         }
     }
 
     private fun DownloadData(uri: Uri?, name_sora: String?): Long {
         downloadReference = 0
         //Create Requect for android download manager
-        downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
+        downloadManager = requireActivity().getSystemService(AppCompatActivity.DOWNLOAD_SERVICE) as DownloadManager
         val request = DownloadManager.Request(uri)
         //Setting title of request
         request.setTitle(FILENAME + name_sora)
@@ -424,94 +427,37 @@ class ListSoundReader : AppCompatActivity() {
         //Setting Show Notification After downloaded
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
         //Set the local destination for the download file to a path within the application's external files directory
-        media_path = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS + FILENAME)
+        media_path = requireActivity().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS + FILENAME)
 
         //check download folder for the App private
-        media_path = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS + FILENAME)
+        media_path = requireActivity().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS + FILENAME)
         //check download folder Global
         mediaStorageDir = File(media_path, name_sora + getString(R.string.mp3))
         if (mediaStorageDir != null && mediaStorageDir!!.exists()) {
-            HelperClass.customToast(this, getString(R.string.send_problem_string))
+            HelperClass.customToast(requireActivity(), getString(R.string.send_problem_string))
         } else {
             request.setVisibleInDownloadsUi(true)
             request.setDestinationInExternalFilesDir(
-                this@ListSoundReader,
+                requireContext(),
                 Environment.DIRECTORY_DOWNLOADS + FILENAME,
                 name_sora + getString(R.string.mp3)
             )
             //Enqueue download and save the referenceId
             downloadReference = downloadManager!!.enqueue(request)
-            HelperClass.customToast(this, getString(R.string.download_sound))
+            HelperClass.customToast(requireActivity(), getString(R.string.download_sound))
             //Listen for Download Sound
-            downloadReceiver = DownloadReceiver(downloadReference, this)
+            downloadReceiver = DownloadReceiver(downloadReference, requireActivity())
             registerDownloadSound()
         }
         return downloadReference
     }
-
-    //    private int getDownloadStatus(){
-    //        DownloadManager.Query query = new DownloadManager.Query();
-    //        query.setFilterById(downloadReference);
-    //
-    //        Cursor cursor = downloadManager.query(query);
-    //        if (cursor.moveToFirst()){
-    //            int columIndex = cursor.getColumnIndex(DownloadManager.COLUMN_STATUS);
-    //            int status = cursor.getInt(columIndex);
-    //            return status;
-    //
-    //        }
-    //        return DownloadManager.ERROR_UNKNOWN;
-    //    }
-    //    private void broadCastReceverDownload(){
-    //        IntentFilter intentFilter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
-    //        registerReceiver(new BroadcastReceiver() {
-    //            @Override
-    //            public void onReceive(Context context, Intent intent) {
-    //                Long  broadCastDownload = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
-    //                if (broadCastDownload == downloadReference){
-    //                    if (getDownloadStatus() == DownloadManager.STATUS_SUCCESSFUL){
-    //                        HelperClass.customToast((Activity) context, getString(R.string.download_successful));
-    //                    }else {
-    //                        HelperClass.customToast((Activity) context, getString(R.string.download_field));
-    //
-    //                    }
-    //
-    //                }
-    //
-    //            }
-    //        },intentFilter);
-    //    }
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.menu, menu)
-        val SearchItem = menu.findItem(R.id.action_search)
-        // Fragment_List_Sound_Search_View.setMenuItem(SearchItem);
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            super.onBackPressed()
-            return true
-        }
-        return false
-    }
-
-    override fun onBackPressed() {
-//        if (Fragment_List_Sound_Search_View.isSearchOpen()) {
-//            Fragment_List_Sound_Search_View.closeSearch();
-//        } else {
-//            super.onBackPressed();
-//        }
-    }
-
     private fun checkPermistion() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if ((ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+            if ((ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED)
             ) {
                 ActivityCompat.requestPermissions(
-                    this,
+                    requireActivity(),
                     arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
                     MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE
                 )
@@ -554,8 +500,8 @@ class ListSoundReader : AppCompatActivity() {
     }
 
     private fun customForOpenSettings(type_permission: Int, text_permision: Int) {
-        if (applicationContext != null) {
-            val alertDialog = AlertDialog.Builder(this)
+        if (requireActivity() != null) {
+            val alertDialog = AlertDialog.Builder(requireContext())
             alertDialog.setTitle(R.string.go_settings)
             alertDialog.setCancelable(false)
             alertDialog.setMessage(text_permision)
@@ -566,7 +512,7 @@ class ListSoundReader : AppCompatActivity() {
                         try {
                             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                             val uri =
-                                Uri.fromParts(getString(R.string.package_string), packageName, null)
+                                Uri.fromParts(getString(R.string.package_string),requireActivity().packageName, null)
                             intent.data = uri
                             startActivityForResult(intent, type_permission)
                         } catch (e: Exception) {
@@ -592,8 +538,8 @@ class ListSoundReader : AppCompatActivity() {
             params_for_space_between_buttons.setMargins(0, 0, 30, 0)
             neagtive_button.layoutParams = params_for_space_between_buttons
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                positive_button.setBackgroundColor(getColor(R.color.colorAccent))
-                neagtive_button.setBackgroundColor(getColor(R.color.colorAccent))
+                positive_button.setBackgroundColor(requireActivity().getColor(R.color.colorAccent))
+                neagtive_button.setBackgroundColor(requireActivity().getColor(R.color.colorAccent))
             } else {
                 positive_button.setBackgroundColor(resources.getColor(R.color.colorAccent))
                 neagtive_button.setBackgroundColor(resources.getColor(R.color.colorAccent))
@@ -604,14 +550,14 @@ class ListSoundReader : AppCompatActivity() {
     }
 
     private fun SnackbarPermissionStorage(title: String, text_button: String) {
-        val snackbar = Snackbar.make(findViewById(R.id.RelativeLayout), title, Snackbar.LENGTH_LONG)
+        val snackbar = Snackbar.make(requireActivity().findViewById(R.id.RelativeLayout), title, Snackbar.LENGTH_LONG)
             .setAction(text_button, object : View.OnClickListener {
                 override fun onClick(v: View) {
                     Log.i("TAG", "isStoragePermissionGranted third")
                     checkPermistion()
                 }
             })
-        snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.colorAccent))
+        snackbar.setActionTextColor(ContextCompat.getColor(requireContext(), R.color.colorAccent))
         snackbar.show()
     }
 
@@ -636,9 +582,9 @@ class ListSoundReader : AppCompatActivity() {
         }
         //   boolean isServiceRunning = Utilities.isServiceRunning(MediaPlayerService.class.getName(), getApplicationContext());
         if (isServiceRunning) {
-            updateUI(applicationContext)
+            updateUI(requireContext())
         }
-        binding.progressBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+        binding.progressBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 //    position_seekBar  = utilities.progressToTimer(seekBar.getProgress(),totalDuration);
             }
@@ -661,11 +607,11 @@ class ListSoundReader : AppCompatActivity() {
         R.id.Fragment_List_Sound_LL_Control_Media
     )
     fun onViewClicked(view: View) {
-        val openDetails = Intent(this@ListSoundReader, DetailsSoundActivity::class.java)
+        val openDetails = Intent(requireContext(), DetailsSoundActivity::class.java)
         when (view.id) {
             R.id.imageViewAlbumArt -> {
                 startActivity(openDetails)
-                overridePendingTransition(
+                requireActivity().overridePendingTransition(
                     R.anim.item_anim_slide_from_top,
                     R.anim.item_anim_no_thing
                 )
@@ -673,32 +619,32 @@ class ListSoundReader : AppCompatActivity() {
             R.id.btnPrevious -> {
                 MediaPlayerService.transportControls.skipToPrevious()
                 IsPlay = true
-                updateUI(applicationContext)
+                updateUI(requireContext())
             }
             R.id.btnPlay -> {
                 MediaPlayerService.transportControls.play()
                 IsPlay = true
-                updateUI(applicationContext)
+                updateUI(requireContext())
             }
             R.id.btnPause -> {
                 MediaPlayerService.transportControls.pause()
                 IsPlay = false
-                updateUI(applicationContext)
+                updateUI(requireContext())
             }
             R.id.btnStop -> {
                 //service is active
-                stopService(playeIntent)
-                FragmentListSoundLLControlMedia!!.visibility = View.GONE
+                requireActivity().stopService(playeIntent)
+                binding.FragmentListSoundLLControlMedia.visibility = View.GONE
                 isServiceRunning = false
             }
             R.id.btnNext -> {
                 MediaPlayerService.transportControls.skipToNext()
                 IsPlay = true
-                updateUI(applicationContext)
+                updateUI(requireContext())
             }
             R.id.Fragment_List_Sound_LL_Control_Media -> {
                 val bundle = Bundle()
-//                bundle.putString(SHEKH_ID, Gson().toJson(poisition))
+//                bundle.putString(ImageAdapter.SHEKH_ID, Gson().toJson(poisition))
 //                bundle.putString(
 //                    ImageAdapter.SHEKH_NAME,
 //                    Gson().toJson(MediaPlayerService.activeAudio.nameShekh)
@@ -706,7 +652,7 @@ class ListSoundReader : AppCompatActivity() {
                 openDetails.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 openDetails.putExtras(bundle)
                 startActivity(openDetails)
-                overridePendingTransition(
+                requireActivity().overridePendingTransition(
                     R.anim.item_anim_slide_from_top,
                     R.anim.item_anim_no_thing
                 )
@@ -714,51 +660,27 @@ class ListSoundReader : AppCompatActivity() {
         }
     }
 
-    companion object {
-        @JvmField
-        var ListSoundReaderLoadingIndicator: ProgressBar? = null
-        val BROADCAST_INVISABLE = "com.example.createmediaplayer.invisable"
+//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+//        requireActivity().menuInflater.inflate(R.menu.menu, menu)
+//         val youTubeItem = menu.findItem(R.id.action_youtube)
+//            youTubeItem.isVisible = false
+//
+//        super.onCreateOptionsMenu(menu, inflater)
+//    }
 
-        @JvmField
-        var isServiceRunning = false
-        var textNowPlaying: TextView? = null
-        var btnPlay: ImageButton? = null
-        var btnPause: ImageButton? = null
-        var textBufferDuration: TextView? = null
-        var textDuration: TextView? = null
-
-        @JvmField
-        var FragmentListSoundLLControlMedia: MaterialCardView? = null
-        private var imageViewAlbumArt: CircleImageView? = null
-
-        //Create Folder to save Koran
-        var FILENAME: String? = null
-
-        @JvmField
-        var IsPlay = true
-
-        //for Service
-        @JvmField
-        val Broadcast_PLAY_NEW_AUDIO = "com.example.createmediaplayer.PlayNewAudio"
-
-        //Create arrayList from Audio class
-        val MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123
-
-        @JvmStatic
-        fun updateUI(context: Context?) {
-            if (!IsPlay) {
-                btnPlay!!.visibility = View.VISIBLE
-                btnPause!!.visibility = View.GONE
-            } else {
-                btnPlay!!.visibility = View.GONE
-                btnPause!!.visibility = View.VISIBLE
-            }
-            textNowPlaying!!.text =
-                MediaPlayerService.activeAudio.nameSora + " / " + MediaPlayerService.activeAudio.nameShekh
-            //        Glide.with(context)
+    fun updateUI(context: Context?) {
+        if (!IsPlay) {
+            btnPlay!!.visibility = View.VISIBLE
+            btnPause!!.visibility = View.GONE
+        } else {
+            btnPlay!!.visibility = View.GONE
+            btnPause!!.visibility = View.VISIBLE
+        }
+        binding.textNowPlaying.text =
+            MediaPlayerService.activeAudio.nameSora + " / " + MediaPlayerService.activeAudio.nameShekh
+        //        Glide.with(context)
 //                .load(activeAudio.getUrl_image())
 //                .apply(new RequestOptions().placeholder(R.mipmap.logo).centerCrop())
 //                .into(imageViewAlbumArt);
-        }
     }
 }

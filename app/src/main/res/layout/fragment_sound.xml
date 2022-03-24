@@ -23,7 +23,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:spanCount="2" />
+            app:layoutRtl="@{true}"
+            />
 
         <!--    <AutofitRecyclerView-->
         <!--        android:id="@+id/Fragment_Sound_RecyclerView"-->
@@ -79,7 +80,9 @@
             android:id="@+id/Fragment_Sound_FloatingActionButton"
             style="@style/float_add_constraint"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="invisible"
+            android:contentDescription="@string/button_description" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

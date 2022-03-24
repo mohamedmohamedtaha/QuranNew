@@ -11,8 +11,10 @@ import androidx.fragment.app.viewModels
 import com.google.gson.Gson
 import com.mohamedtaha.imagine.R
 import com.mohamedtaha.imagine.base.BaseFragment
+import com.mohamedtaha.imagine.base.SearchListener
 import com.mohamedtaha.imagine.databinding.FragmentAzkarBinding
 import com.mohamedtaha.imagine.mvp.model.ModelAzkar
+import com.mohamedtaha.imagine.ui.home.activity.NavigationDrawaberActivity
 import com.mohamedtaha.imagine.ui.home.activity.SwipePagesActivity
 import com.mohamedtaha.imagine.ui.home.adapter.AdapterForAzkar
 import com.mohamedtaha.imagine.ui.home.fragment.SwarFragment.Companion.SAVE_STATE
@@ -25,12 +27,7 @@ import javax.inject.Inject
  * A simple [Fragment] subclass.
  */
 @AndroidEntryPoint
-class AzkarFragment  //    @Inject
-//    AzkarFragmentInteractor presenter;
-//    @Inject
-//    ReScrollUtil reScrollUtil;
-//    @Inject
-//    LinearLayoutManager linearLayoutManager;
+class AzkarFragment
     : BaseFragment() {
     internal val azkarViewModel: AzkarViewModel by viewModels()
 
@@ -47,21 +44,6 @@ class AzkarFragment  //    @Inject
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentAzkarBinding.inflate(inflater, container, false)
-//        AzkarFragmentComponent azkarFragmentComponent = DaggerAzkarFragmentComponent.builder()
-//                .azkarFragmentModule(new AzkarFragmentModule(this, getActivity()))
-//                .contextModule(new ContextModule(getActivity()))
-//                .rescroUtilModule(new RescroUtilModule(AzkarFragmentFloatingActionButton, AzkarFragmentRecycleView))
-//
-//                .build();
-//        azkarFragmentComponent.inject(this);
-//        if (presenter.isNewlyCreated && savedInstanceState != null) {
-//            presenter.restoreState(savedInstanceState);
-//            Log.i("TAGO", " onSuccess presenter azkar ");
-//        }
-//        presenter.getAllData();
-//        presenter.isNewlyCreated = false;
-//      //  presenter.setOnSearchView(searchView);
-//        reScrollUtil.onClickRecyclerView(R.id.AzkarFragment_FloatingActionButton);
         return binding.root
     }
 
@@ -84,6 +66,19 @@ class AzkarFragment  //    @Inject
                 )
             }
         })}
+        onclickSearchIcon()
+    }
+    private fun onclickSearchIcon(){
+        (requireActivity() as NavigationDrawaberActivity).setCallbackSearch(object : SearchListener{
+            override fun onSearch(string: String?) {
+                if (!string.isNullOrEmpty() && string.length >2)
+                    azkarViewModel.getAllAzkarBySearch(requireContext(),string)
+                else if( string.isNullOrEmpty())
+                    azkarViewModel.getAllAzkar(requireContext())
+                binding.viewModel = azkarViewModel
+            }
+
+        })
     }
 
     override fun onDestroy() {

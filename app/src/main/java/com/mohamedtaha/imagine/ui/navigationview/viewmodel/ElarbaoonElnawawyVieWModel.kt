@@ -40,4 +40,29 @@ class ElarbaoonElnawawyVieWModel @Inject constructor(): ViewModel() {
         }
         _elarbaoonElnawawy.value = elnawawyModelList
     }
+    fun getElarbaoonElnawawyBySearch(context: Context,search:String) {
+        val elnawawyModelList = ArrayList<ElarbaoonElnawawyModel>()
+        val numberElhadeth =
+            context.resources.getStringArray(R.array.elarbaon_elnawawaya_number_elhadeth)
+        val nameElhadeth =
+            context.resources.getStringArray(R.array.elarbaon_elnawawaya_name_elhadeth)
+        val textElhadeth =
+            context.resources.getStringArray(R.array.elarbaon_elnawawaya_text_elhadeth)
+        val descriptionElhadeth =
+            context.resources.getStringArray(R.array.elarbaon_elnawawaya_decription_elhadeth)
+        val transelateElhadeth =
+            context.resources.getStringArray(R.array.elarbaon_elnawawaya_translate_elhadeth)
+        for (i in numberElhadeth.indices) {
+            if (nameElhadeth[i].contains(search)){
+            val elnawawyModel = ElarbaoonElnawawyModel()
+            elnawawyModel.numberElhadeth = numberElhadeth[i]
+            elnawawyModel.nameElhadeth = nameElhadeth[i]
+            elnawawyModel.textElhadeth = textElhadeth[i]
+            elnawawyModel.descriptionElhadeth = descriptionElhadeth[i]
+            elnawawyModel.translateElhadeth = transelateElhadeth[i]
+            elnawawyModel.position = i
+            elnawawyModelList.add(elnawawyModel)
+        }}
+        _elarbaoonElnawawy.value = elnawawyModelList
+    }
 }

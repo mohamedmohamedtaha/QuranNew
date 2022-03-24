@@ -6,10 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.mohamedtaha.imagine.R
 import com.mohamedtaha.imagine.base.BaseFragment
+import com.mohamedtaha.imagine.base.SearchListener
 import com.mohamedtaha.imagine.databinding.FragmentPartsBinding
+import com.mohamedtaha.imagine.mvp.model.ModelSora
+import com.mohamedtaha.imagine.ui.home.activity.NavigationDrawaberActivity
 import com.mohamedtaha.imagine.ui.home.activity.SwipePagesActivity
 import com.mohamedtaha.imagine.ui.home.adapter.AdapterForPartsAndSwar
 import com.mohamedtaha.imagine.ui.home.fragment.SwarFragment.Companion.SAVE_STATE
@@ -35,9 +39,9 @@ class PartsFragment : BaseFragment() {
         viewModel.getAllParts(requireContext())
         binding.viewModel = viewModel
 
-        val adapter = AdapterForPartsAndSwar(true, object : ClickListener<Int> {
-            override fun onClick(view: View?, position: Int) {
-                viewModel.getPositionForNameParts(position, bundle)
+        val adapter = AdapterForPartsAndSwar(true, object : ClickListener<ModelSora> {
+            override fun onClick(view: View?, position: ModelSora) {
+                viewModel.getPositionForNameParts(position.position, bundle)
                 bundle.putBoolean(SAVE_STATE, true)
                 val intent = Intent(requireActivity(), SwipePagesActivity::class.java)
                 intent.putExtras(bundle)
@@ -51,15 +55,19 @@ class PartsFragment : BaseFragment() {
         })
         binding.PartsFragmentRecyclerView.adapter = adapter
         showAnimation()
-
-//        val linearLayoutManager: GridLayoutManager = object : GridLayoutManager(activity, 2) {
-//            override fun isLayoutRTL(): Boolean {
-//                return true
-//            }
-//        }
-//        binding.PartsFragmentRecyclerView.layoutManager = linearLayoutManager
-        //reScrollUtil.onClickRecyclerView(R.id.PartsFragment_FloatingActionButton);
+        onclickSearchIcon()
         return binding.root
+    }
+    private fun onclickSearchIcon(){
+        (requireActivity() as NavigationDrawaberActivity).setCallbackSearch(object :SearchListener{
+            override fun onSearch(string: String?) {
+                if (!string.isNullOrEmpty() && string.length > 2)
+                    viewModel.getPartsBySearch(requireContext(),string)
+                else if (string.isNullOrEmpty())viewModel.getAllParts(requireContext())
+                    binding.viewModel = viewModel
+            }
+
+        })
     }
 //
 //    override fun showAllINamePart(strings: List<ModelSora>) {

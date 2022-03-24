@@ -26,5 +26,19 @@ class AzkarViewModel @Inject constructor(): ViewModel(){
         }
         _azkar.value = azkar
     }
+    fun getAllAzkarBySearch(context: Context,search:String) {
+        val azkar = ArrayList<ModelAzkar>()
+        val arrayAzkar = context.resources.getStringArray(R.array.azkar);
+        val array_describe_azkar = context.resources.getStringArray(R.array.describe_azkar);
+        for (i in arrayAzkar.indices) {
+            if (arrayAzkar[i].contains(search)){
+            val modelAzkar = ModelAzkar()
+            modelAzkar.name_azkar = arrayAzkar[i]
+            modelAzkar.describe_azkar = array_describe_azkar[i]
+            modelAzkar.position = i
+            azkar.add(modelAzkar)}
+        }
+        _azkar.value = azkar
+    }
 
 }

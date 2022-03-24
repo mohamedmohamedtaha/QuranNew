@@ -21,6 +21,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -36,9 +37,12 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.room.EmptyResultSetException
 import com.google.android.material.navigation.NavigationView
+import com.google.android.youtube.player.internal.s
 import com.mohamedtaha.imagine.AppConstants
 import com.mohamedtaha.imagine.BuildConfig
 import com.mohamedtaha.imagine.R
+import com.mohamedtaha.imagine.base.HasToolbar
+import com.mohamedtaha.imagine.base.SearchListener
 import com.mohamedtaha.imagine.configfirebase.RemoteConfig
 import com.mohamedtaha.imagine.databinding.ActivityMainDrawableBinding
 import com.mohamedtaha.imagine.datastore.DataStoreViewModel
@@ -58,8 +62,8 @@ import com.mohamedtaha.imagine.room.DatabaseCallback
 import com.mohamedtaha.imagine.room.TimingsAppDatabase
 import com.mohamedtaha.imagine.room.TimingsViewModel
 import com.mohamedtaha.imagine.service.GetDataEveryMonthJobService
-import com.mohamedtaha.imagine.ui.youtube.YoutubeActivity
 import com.mohamedtaha.imagine.ui.home.fragment.AzanFragment
+import com.mohamedtaha.imagine.ui.youtube.YoutubeActivity
 import com.mohamedtaha.imagine.util.RateApp.reteApp
 import com.mohamedtaha.imagine.util.SearchBarUtils.setSearchIcons
 import com.mohamedtaha.imagine.util.SearchBarUtils.setSearchTextColor
@@ -76,24 +80,33 @@ import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class NavigationDrawaberActivity : AppCompatActivity(),
+class NavigationDrawaberActivity : AppCompatActivity(), HasToolbar,
     NavigationDrawaberView,
     DatabaseCallback,
     NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityMainDrawableBinding
+    private var searchListener:SearchListener?= null
+
+    fun setCallbackSearch(searchListener: SearchListener){
+        this.searchListener = searchListener
+    }
+
 
     private val navController by lazy {
         (supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment).navController
     }
-    private lateinit var appBarConfiguration : AppBarConfiguration
-
+    private lateinit var appBarConfiguration: AppBarConfiguration
+    private var mMenu: Menu? = null
 
     @Inject
     lateinit var remoteConfig: RemoteConfig
-@Inject
+
+    @Inject
     lateinit var intentShare: Intent
+
     @Inject
     lateinit var intentSendUs: Intent
+
     @Inject
     lateinit var intentRate: Intent
 
@@ -131,7 +144,7 @@ class NavigationDrawaberActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         //Handle the splash screen transition
-      //  val splashScreen = installSplashScreen()
+        //  val splashScreen = installSplashScreen()
 //        splashScreen.setOnExitAnimationListener{splashScreenView ->
 //            //Create your custom animation
 //
@@ -203,12 +216,13 @@ class NavigationDrawaberActivity : AppCompatActivity(),
             overridePendingTransition(R.anim.item_anim_slide_from_top, R.anim.item_anim_no_thing)
         }
 
-        setSupportActionBar(binding.includeAppBarMain.toolbar)
+        setToolbar(binding.includeAppBarMain.toolbar)
 
         binding.includeAppBarMain.bottomNavigationView.setupWithNavController(navController)
         //binding.navViewHeader.setupWithNavController(navController)
         binding.navViewHeader.setNavigationItemSelectedListener(this)
-        navController.addOnDestinationChangedListener(object : NavController.OnDestinationChangedListener{
+        navController.addOnDestinationChangedListener(object :
+            NavController.OnDestinationChangedListener {
             override fun onDestinationChanged(
                 controller: NavController,
                 destination: NavDestination,
@@ -221,14 +235,14 @@ class NavigationDrawaberActivity : AppCompatActivity(),
             }
 
         })
-         appBarConfiguration = AppBarConfiguration(
+        appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.swarFragment,
                 R.id.partsFragment,
                 R.id.soundFragment,
                 R.id.azanFragment,
                 R.id.azkarFragment
-            ),binding.drawerLayout
+            ), binding.drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         //for change color text toolbar
@@ -278,7 +292,7 @@ class NavigationDrawaberActivity : AppCompatActivity(),
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp(appBarConfiguration)||super.onSupportNavigateUp()
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
     override fun onStop() {
@@ -381,25 +395,21 @@ class NavigationDrawaberActivity : AppCompatActivity(),
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu, menu)
+        inflate(menu)
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
-        setSearchIcons(searchView,R.id.search_button,R.drawable.ic_search)
-        setSearchIcons(searchView,R.id.search_close_btn,R.drawable.ic_close_search)
-        setSearchIcons(searchView,R.id.search_close_btn,R.drawable.ic_close_search)
-        setSearchTextColor(searchView)
         searchView.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
                 return false
             }
-
             override fun onQueryTextChange(p0: String?): Boolean {
-                Toast.makeText(this@NavigationDrawaberActivity, "${p0}", Toast.LENGTH_LONG).show()
+                searchListener?.onSearch(p0)
                 return true
             }
 
         })
+
         return true
     }
 
@@ -710,16 +720,20 @@ class NavigationDrawaberActivity : AppCompatActivity(),
 //                        popExit =
                 }
             }
-            findNavController(R.id.fragmentContainerView).navigate(R.id.elarbaoonElnawawyActivity,null,options)
+            findNavController(R.id.fragmentContainerView).navigate(
+                R.id.elarbaoonElnawawyActivity,
+                null,
+                options
+            )
         } else if (id == R.id.use_way) {
             SharedPerefrenceHelper.removeDataForWayUsing(this)
             findNavController(R.id.fragmentContainerView).navigate(R.id.splashActivity)
         } else if (id == R.id.action_share) {
-            shareApp(this,intentShare)
+            shareApp(this, intentShare)
         } else if (id == R.id.action_rate) {
-            reteApp(this,intentRate)
+            reteApp(this, intentRate)
         } else if (id == R.id.action_send_us) {
-            sendUs(this,intentSendUs)
+            sendUs(this, intentSendUs)
         } else if (id == R.id.action_settings) {
             val options = navOptions {
                 anim {
@@ -727,7 +741,11 @@ class NavigationDrawaberActivity : AppCompatActivity(),
                     exit = android.R.anim.slide_out_right
                 }
             }
-            findNavController(R.id.fragmentContainerView).navigate(R.id.settingsActivity,null,options)
+            findNavController(R.id.fragmentContainerView).navigate(
+                R.id.settingsActivity,
+                null,
+                options
+            )
         }
         val drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
@@ -787,4 +805,50 @@ class NavigationDrawaberActivity : AppCompatActivity(),
             scheduler.schedule(info)
         }
     }
+
+    override fun setToolbar(toolbar: Toolbar) {
+        setSupportActionBar(toolbar)
+        toolbar.inflateMenu(R.menu.menu)
+
+    }
+
+    override fun getToolbar(): Toolbar {
+        return binding.includeAppBarMain.toolbar
+    }
+
+    override fun inflate(menu: Menu) {
+        mMenu = menu
+        binding.includeAppBarMain.toolbar.inflateMenu(R.menu.menu)
+        val searchItem = menu.findItem(R.id.action_search)
+        val searchView = searchItem.actionView as SearchView
+        setSearchIcons(searchView, R.id.search_button, R.drawable.ic_search)
+        setSearchIcons(searchView, R.id.search_close_btn, R.drawable.ic_close_search)
+        setSearchIcons(searchView, R.id.search_close_btn, R.drawable.ic_close_search)
+        setSearchTextColor(searchView)
+    }
+
+    override fun showToolbar() {
+        binding.includeAppBarMain.toolbar.visibility = View.VISIBLE
+    }
+
+    override fun hideYoutubeIcon() {
+    mMenu?.findItem(R.id.action_youtube)?.isVisible = false
+    }
+
+    override fun showYoutubeIcon() {
+        mMenu?.findItem(R.id.action_youtube)?.isVisible = true
+    }
+
+    override fun hideSearchIcon() {
+        mMenu?.findItem(R.id.action_search)?.isVisible = false
+    }
+
+    override fun showSearchIcon() {
+        mMenu?.findItem(R.id.action_search)?.isVisible = true
+    }
+
+    override fun hideToolbar() {
+        binding.includeAppBarMain.toolbar.visibility = View.GONE
+    }
+
 }

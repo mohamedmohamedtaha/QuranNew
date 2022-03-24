@@ -9,7 +9,10 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import com.mohamedtaha.imagine.R
 import com.mohamedtaha.imagine.base.BaseFragment
+import com.mohamedtaha.imagine.base.SearchListener
 import com.mohamedtaha.imagine.databinding.FragmentReadSwarBinding
+import com.mohamedtaha.imagine.mvp.model.ModelSora
+import com.mohamedtaha.imagine.ui.home.activity.NavigationDrawaberActivity
 import com.mohamedtaha.imagine.ui.home.activity.SwipePagesActivity
 import com.mohamedtaha.imagine.ui.home.adapter.AdapterForPartsAndSwar
 import com.mohamedtaha.imagine.util.ClickListener
@@ -31,10 +34,10 @@ class SwarFragment : BaseFragment() {
         viewModel.getAllSwar(requireActivity())
         binding.viewModel = viewModel
         binding.ReadSwarFragmentRecyclerView.adapter = AdapterForPartsAndSwar(
-            false, object : ClickListener<Int> {
-                override fun onClick(view: View?, position: Int) {
+            false, object : ClickListener<ModelSora> {
+                override fun onClick(view: View?, position: ModelSora) {
                     val bundle = Bundle()
-                    viewModel.getPositionForNameSwars(position, bundle)
+                    viewModel.getPositionForNameSwars(position.position, bundle)
                     bundle.putBoolean(SAVE_STATE, true)
                     val intent = Intent(requireActivity(), SwipePagesActivity::class.java)
                     intent.putExtras(bundle)
@@ -45,6 +48,7 @@ class SwarFragment : BaseFragment() {
                     )
                 }
             })
+
         showAnimation()
         if (savedInstanceState == null) {
             stateFragment = 0
@@ -53,6 +57,19 @@ class SwarFragment : BaseFragment() {
             stateFragment = savedInstanceState.getInt(SAVE_STATE_FOR_ROTATION)
             Log.d("TAG", "Current fragment  four is :$stateFragment")
         }
+
+        //Search icon
+        (requireActivity() as NavigationDrawaberActivity).setCallbackSearch(object :
+            SearchListener {
+            override fun onSearch(string: String?) {
+                if (!string.isNullOrEmpty() && string.length >= 2)
+                viewModel.getSwarBySearch(requireContext(), string)
+                else if(string.isNullOrEmpty())
+                    viewModel.getAllSwar(requireContext())
+                binding.viewModel = viewModel
+            }
+
+        })
         return binding.root
     }
 

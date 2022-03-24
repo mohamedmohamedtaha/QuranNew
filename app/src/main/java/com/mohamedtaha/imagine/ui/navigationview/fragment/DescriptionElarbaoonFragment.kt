@@ -22,7 +22,8 @@ class DescriptionElarbaoonFragment : BaseFragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentDescriptionElarbaoonBinding.inflate(inflater, container, false)
-        deleteToolbar()
+        //toolbar.setToolbar(toolbar.getToolbar())
+        toolbar.hideToolbar()
         val safeArgs: DescriptionElarbaoonFragmentArgs by navArgs()
         val elarbaoonElnawawy = safeArgs.elarbaoonElnawawyModel
         binding.DescriptionElarbaoonFragmentTVNumberElhadeth.text =

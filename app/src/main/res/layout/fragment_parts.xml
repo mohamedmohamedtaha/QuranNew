@@ -21,11 +21,11 @@
             android:focusable="true"
             setRecyclerView="@{viewModel.allParts}"
             android:clipToPadding="true"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layoutRtl="@{true}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:spanCount="2" />
+             />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/PartsFragment_FloatingActionButton"

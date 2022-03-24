@@ -32,6 +32,7 @@ import com.mohamedtaha.imagine.GpsUtils
 import com.mohamedtaha.imagine.GpsUtils.onGpsListener
 import com.mohamedtaha.imagine.R
 import com.mohamedtaha.imagine.adapter.AdapterAzanVP
+import com.mohamedtaha.imagine.base.BaseFragment
 import com.mohamedtaha.imagine.databinding.FragmentAzanBinding
 import com.mohamedtaha.imagine.helper.HelperClass
 import com.mohamedtaha.imagine.helper.SharedPerefrenceHelper
@@ -48,6 +49,7 @@ import com.mohamedtaha.imagine.room.TimingsViewModel
 import com.mohamedtaha.imagine.service.MediaPlayerService
 import com.mohamedtaha.imagine.ui.home.activity.NavigationDrawaberActivity
 import com.mohamedtaha.imagine.ui.home.activity.NavigationDrawaberActivity.Companion.ScheduleGetDataEveryMonth
+import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -58,7 +60,8 @@ import java.util.*
 /**
  * A simple [Fragment] subclass.
  */
-class AzanFragment : Fragment(), LocationListener, DatabaseCallback, onGpsListener {
+@AndroidEntryPoint
+class AzanFragment : BaseFragment(), LocationListener, DatabaseCallback, onGpsListener {
     private lateinit var binding: FragmentAzanBinding
 
     //    @BindView(R.id.AzanFragment_VP)
@@ -214,8 +217,7 @@ class AzanFragment : Fragment(), LocationListener, DatabaseCallback, onGpsListen
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        val SearchItem = menu.findItem(R.id.action_search)
-        SearchItem.isVisible = false
+       toolbar.hideSearchIcon()
         super.onCreateOptionsMenu(menu, inflater)
     }//   store_date_today = date_today;
 

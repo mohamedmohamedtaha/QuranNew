@@ -2,16 +2,13 @@ package com.mohamedtaha.imagine.ui.home.viewModel
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.youtube.player.internal.e
 import com.mohamedtaha.imagine.R
 import com.mohamedtaha.imagine.helper.images
-import com.mohamedtaha.imagine.mvp.model.ElarbaoonElnawawyModel
-import com.mohamedtaha.imagine.mvp.model.ImageModel
-import com.mohamedtaha.imagine.mvp.model.ModelAzkar
 import com.mohamedtaha.imagine.mvp.model.ModelSora
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -21,11 +18,11 @@ import javax.inject.Inject
 class SwarAndPartsViewModel @Inject constructor() : ViewModel() {
     private val _allSawar = MutableLiveData<List<ModelSora>>()
     val modelSora get() = _allSawar
-//    private val _allParts = MutableLiveData<Result<List<ModelSora>>>()
-//    val allParts: LiveData<Result<List<ModelSora>>> = _allParts
-private val _allParts = MutableLiveData<List<ModelSora>>()
-    val allParts: LiveData<List<ModelSora>> = _allParts
 
+    //    private val _allParts = MutableLiveData<Result<List<ModelSora>>>()
+//    val allParts: LiveData<Result<List<ModelSora>>> = _allParts
+    private val _allParts = MutableLiveData<List<ModelSora>>()
+    val allParts: LiveData<List<ModelSora>> = _allParts
     private val _allImages = MutableLiveData<List<Int>>()
     val allImages get() = _allImages
 
@@ -46,7 +43,7 @@ private val _allParts = MutableLiveData<List<ModelSora>>()
                 _allSawar.value = allSawar
 //                _allSawar.postValue(Result.Success(allSawar))
             } catch (e: Exception) {
-             //   _allSawar.postValue(Result.Error(e.message.toString()))
+                //   _allSawar.postValue(Result.Error(e.message.toString()))
             }
         }
 
@@ -65,12 +62,12 @@ private val _allParts = MutableLiveData<List<ModelSora>>()
                 allSawar.add(modelSora)
             }
         }
-        //  _allSawar.value = allSawar
+        _allSawar.value = allSawar
     }
 
     fun getAllParts(context: Context) {
         viewModelScope.launch {
-          //  _allParts.postValue(Result.Loading())
+            //  _allParts.postValue(Result.Loading())
             try {
                 val allParts = ArrayList<ModelSora>()
                 val nameParts = context.resources.getStringArray(R.array.allParts);
@@ -81,12 +78,31 @@ private val _allParts = MutableLiveData<List<ModelSora>>()
                     allParts.add(nameSoraLocal)
                 }
                 _allParts.value = allParts
-              //  _allParts.postValue(Result.Success(allParts))
+                //  _allParts.postValue(Result.Success(allParts))
             } catch (e: Exception) {
-             //   _allParts.postValue(Result.Error(e.message.toString()))
+                //   _allParts.postValue(Result.Error(e.message.toString()))
             }
         }
-
+    }
+    fun getPartsBySearch(context: Context,search: String){
+        viewModelScope.launch {
+            //  _allParts.postValue(Result.Loading())
+            try {
+                val allParts = ArrayList<ModelSora>()
+                val nameParts = context.resources.getStringArray(R.array.allParts);
+                for (name in nameParts.indices) {
+                    if (nameParts[name].contains(search)){
+                    val nameSoraLocal = ModelSora()
+                    nameSoraLocal.namePart = nameParts[name]
+                    nameSoraLocal.position = name
+                    allParts.add(nameSoraLocal)}
+                }
+                _allParts.value = allParts
+                //  _allParts.postValue(Result.Success(allParts))
+            } catch (e: Exception) {
+                //   _allParts.postValue(Result.Error(e.message.toString()))
+            }
+        }
 
     }
 

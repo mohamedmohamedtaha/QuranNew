@@ -17,7 +17,6 @@
     <fragment
         android:id="@+id/descriptionElarbaoonFragment"
         android:name="com.mohamedtaha.imagine.ui.navigationview.fragment.DescriptionElarbaoonFragment"
-        android:label="fragment_description_elarbaoon"
         tools:layout="@layout/fragment_description_elarbaoon">
         <argument
             android:name="elarbaoonElnawawyModel"

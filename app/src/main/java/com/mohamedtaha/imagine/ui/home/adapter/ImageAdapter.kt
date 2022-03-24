@@ -59,9 +59,4 @@ class ImageAdapter :
     }
 
     class ViewHolder(val binding: CustomNameReaderBinding) : RecyclerView.ViewHolder(binding.root)
-
-    companion object {
-        const val SHEKH_ID = "shekh_id"
-        const val SHEKH_NAME = "shekh_name"
-    }
 }

@@ -10,8 +10,9 @@
         card:cardElevation="@dimen/dimens_m">
             <ImageView
                 android:id="@+id/IV_Download"
-                android:layout_width="@dimen/dimens_6xl"
-                android:layout_height="@dimen/dimens_xxl"
+                android:layout_marginStart="@dimen/dimens_m"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@string/decriptionImage"
                 android:src="@drawable/ic_download" />
@@ -21,7 +22,6 @@
                 android:layout_gravity="end"
                 android:padding="@dimen/dimens_mm"
                 style="@style/style_default_layout_wrap_content"
-                android:layout_marginRight="@dimen/dimens_mm"
                 android:textSize="@dimen/txt_size_l"
                 android:textStyle="bold" />
 

@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.mohamedtaha.imagine.base.BaseFragment
+import com.mohamedtaha.imagine.base.SearchListener
 import com.mohamedtaha.imagine.ui.home.adapter.ImageAdapter
 import com.mohamedtaha.imagine.databinding.FragmentSoundBinding
 import com.mohamedtaha.imagine.mvp.model.ImageModel
+import com.mohamedtaha.imagine.ui.home.activity.NavigationDrawaberActivity
 import com.mohamedtaha.imagine.ui.home.viewModel.ReaderViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -45,6 +47,7 @@ class SoundFragment : BaseFragment() {
 //        binding.FragmentSoundRecyclerView.setLayoutManager(linearLayoutManager);
 //        binding.FragmentSoundRecyclerView.setHasFixedSize(true);
         //reScrollUtil.onClickRecyclerView(R.id.Fragment_Sound_FloatingActionButton);
+        onclickSearchIcon()
         return binding.root
     }
 
@@ -67,6 +70,18 @@ class SoundFragment : BaseFragment() {
 //            imageAdapter = ImageAdapter(it, requireActivity())
 //            binding.FragmentSoundRecyclerView.adapter = imageAdapter
 //        }
+    }
+    private fun onclickSearchIcon(){
+        (requireActivity() as NavigationDrawaberActivity).setCallbackSearch(object :SearchListener{
+            override fun onSearch(string: String?) {
+                if (!string.isNullOrEmpty() && string.length >2)
+                    readerViewModel.getDataBySearch(requireContext(),string)
+                else if(string.isNullOrEmpty())
+                    readerViewModel.getData(requireContext())
+               // binding.viewModel = readerViewModel
+            }
+
+        })
     }
 //
 //    override fun showAnimation() {

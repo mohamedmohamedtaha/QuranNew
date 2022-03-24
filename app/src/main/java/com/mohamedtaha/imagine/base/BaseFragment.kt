@@ -1,5 +1,6 @@
 package com.mohamedtaha.imagine.base
 
+import android.content.Context
 import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.widget.Toolbar
@@ -15,7 +16,7 @@ abstract class BaseFragment:Fragment() {
     internal val viewModel: SwarAndPartsViewModel by viewModels()
 
     private lateinit var progressBar:View
-    private lateinit var toolbar:Toolbar
+    protected lateinit var toolbar: HasToolbar
     fun showProgressBar(){
         progressBar = requireActivity().findViewById(R.id.MainProgressBar) as View
         progressBar.visibility =View.VISIBLE
@@ -24,13 +25,27 @@ abstract class BaseFragment:Fragment() {
         progressBar = requireActivity().findViewById(R.id.MainProgressBar) as View
         progressBar.visibility = View.GONE
     }
-    fun showToolbar(){
-        toolbar = requireActivity().findViewById(R.id.elarbaoonElnawawyActivityTB) as Toolbar
-        toolbar.visibility = View.VISIBLE
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (requireActivity() is HasToolbar)
+            toolbar = requireActivity() as HasToolbar
     }
-    fun deleteToolbar(){
-        toolbar = requireActivity().findViewById(R.id.elarbaoonElnawawyActivityTB) as Toolbar
-        toolbar.visibility = View.GONE
-    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

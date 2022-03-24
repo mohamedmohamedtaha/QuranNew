@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+        <data>
+                <variable
+                    name="viewModel"
+                    type="com.mohamedtaha.imagine.ui.navigationview.viewmodel.ElarbaoonElnawawyVieWModel" />
+        </data>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -10,13 +16,11 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ElarbaoonElnawawyActivity_RecyclerView"
             style="@style/style_reycler_view_elnawawy"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
             android:clickable="true"
             android:focusable="true"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="2"
-            android:layoutDirection="ltr" />
-
+            app:setRecyclerView="@{viewModel.elarbaoonElnawawy}"
+            app:layoutRtl="@{true}"/>
         <ProgressBar
             android:id="@+id/ElarbaoonElnawawyActivity_ProgressBar"
             style="?android:attr/progressBarStyleLarge"
@@ -25,7 +29,6 @@
             android:layout_centerInParent="true"
             android:indeterminateDrawable="@drawable/color_progressbar"
             android:visibility="gone" />
-
         <TextView
             android:id="@+id/ElarbaoonElnawawyActivity_TV_No_Data"
             style="@style/style_text_view_no_data" />
@@ -33,9 +36,10 @@
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/ElarbaoonElnawawyActivity_FloatingActionButton"
             style="@style/float_add"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            android:contentDescription="@string/button_description" />
         <FrameLayout
             android:id="@+id/Cycle_Elarbaoon_Elnawawy_contener"
             style="@style/style_default_layout_match_parent" />
     </RelativeLayout>
-
+</layout>

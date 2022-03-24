@@ -11,7 +11,7 @@ import com.mohamedtaha.imagine.util.ClickListener
 
 class AdapterForPartsAndSwar(
     private val isParts: Boolean,
-    private val clickListener: ClickListener<Int>
+    private val clickListener: ClickListener<ModelSora>
 ) : androidx.recyclerview.widget.ListAdapter<ModelSora, AdapterForPartsAndSwar.ViewHolder>(
     DiffCallback
 ) {
@@ -25,8 +25,8 @@ class AdapterForPartsAndSwar(
             )
         )
         viewHolder.itemView.setOnClickListener {
-            val position = viewHolder.adapterPosition
-            clickListener.onClick(it, position)
+            val item = getItem(viewHolder.adapterPosition)
+            clickListener.onClick(it,item)
         }
         return viewHolder
     }

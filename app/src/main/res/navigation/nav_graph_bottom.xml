@@ -45,9 +45,8 @@
         android:label="SplashActivity" />
     <fragment
         android:id="@+id/swipeFragment"
-        android:name="com.mohamedtaha.imagine.ui.home.fragment.SwipeFragment"
-        android:label="fragment_swipe"
-        tools:layout="@layout/fragment_swipe" >
+        android:name="com.mohamedtaha.imagine.ui.home.fragment.ListSoundReaderFragment"
+        tools:layout="@layout/fragment_list_sound_reader" >
         <argument
             android:name="shekh_id"
             app:argType="integer" />

@@ -9,9 +9,9 @@ import com.mohamedtaha.imagine.ui.navigationview.adapter.AdapterElarbaoonElnawaw
 import com.mohamedtaha.imagine.util.ClickListener
 
 class AdapterElarbaoonElnawawy(
-    private val elnawawyModelsList: List<ElarbaoonElnawawyModel>,
-    private val clickListener: ClickListener<Int>
+    private val clickListener: ClickListener<ElarbaoonElnawawyModel>
 ) : RecyclerView.Adapter<ElarbaoonViewHolder>() {
+    private lateinit var elnawawyModelsList: List<ElarbaoonElnawawyModel>
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ElarbaoonViewHolder {
         val viewHolder = ElarbaoonViewHolder(
             CustomElarbaoonElnawawyBinding.inflate(
@@ -21,10 +21,13 @@ class AdapterElarbaoonElnawawy(
             )
         )
         viewHolder.itemView.setOnClickListener {
-            val positionRow = viewHolder.adapterPosition
-            clickListener.onClick(it, positionRow)
+            val item = elnawawyModelsList[viewHolder.adapterPosition]
+            clickListener.onClick(it, item)
         }
         return viewHolder
+    }
+    fun setData(elnawawyModelsList: List<ElarbaoonElnawawyModel>){
+        this.elnawawyModelsList = elnawawyModelsList
     }
 
     override fun onBindViewHolder(holder: ElarbaoonViewHolder, position: Int) {
