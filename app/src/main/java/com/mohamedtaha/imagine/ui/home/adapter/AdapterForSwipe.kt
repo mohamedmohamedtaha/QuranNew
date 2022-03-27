@@ -1,4 +1,4 @@
-package com.mohamedtaha.imagine.adapter
+package com.mohamedtaha.imagine.ui.home.adapter
 
 import android.view.View
 import android.view.ViewGroup

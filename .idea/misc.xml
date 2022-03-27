@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AppsTest/QuranNew/app/src/main/res/layout-xlarge/custom_azan.xml" value="0.1" />
+        <entry key="..\:/AppsTest/QuranNew/app/src/main/res/layout/activity_elarbaoon_elnawawy.xml" value="0.25" />
+        <entry key="..\:/AppsTest/QuranNew/app/src/main/res/layout/custom_azan.xml" value="0.1" />
+        <entry key="..\:/AppsTest/QuranNew/app/src/main/res/layout/fragment_elarbaoon_elnawawy.xml" value="0.25" />
+        <entry key="..\:/AppsTest/QuranNew/app/src/main/res/menu/activity_main_drawer.xml" value="0.2359375" />
         <entry key="..\:/QuranNew/app/src/main/res/drawable/color_progressbar.xml" value="0.151" />
         <entry key="..\:/QuranNew/app/src/main/res/drawable/ic_baseline_chrome_reader_mode_24.xml" value="0.124" />
         <entry key="..\:/QuranNew/app/src/main/res/drawable/ic_baseline_info_24.xml" value="0.1465" />

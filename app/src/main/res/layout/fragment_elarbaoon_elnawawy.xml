@@ -38,6 +38,7 @@
             style="@style/float_add"
             android:visibility="invisible"
             android:contentDescription="@string/button_description" />
+
         <FrameLayout
             android:id="@+id/Cycle_Elarbaoon_Elnawawy_contener"
             style="@style/style_default_layout_match_parent" />

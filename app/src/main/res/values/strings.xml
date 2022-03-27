@@ -668,4 +668,5 @@
     <string name="logo">Logo</string>
     <string name="search">getString/search</string>
     <string name="button_description">Up button</string>
+    <string name="refresh_button">Refresh button</string>
 </resources>

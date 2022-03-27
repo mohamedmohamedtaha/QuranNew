@@ -35,9 +35,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.room.EmptyResultSetException
 import com.google.android.material.navigation.NavigationView
-import com.google.android.youtube.player.internal.s
 import com.mohamedtaha.imagine.AppConstants
 import com.mohamedtaha.imagine.BuildConfig
 import com.mohamedtaha.imagine.R
@@ -51,7 +49,7 @@ import com.mohamedtaha.imagine.helper.SharedPerefrenceHelper
 import com.mohamedtaha.imagine.helper.checkConnection.NetworkConnection
 import com.mohamedtaha.imagine.helper.checkConnection.NoInternetConnection
 import com.mohamedtaha.imagine.helper.images
-import com.mohamedtaha.imagine.helper.util.ConvertTimes
+import com.mohamedtaha.imagine.util.ConvertTimes
 import com.mohamedtaha.imagine.mvp.view.NavigationDrawaberView
 import com.mohamedtaha.imagine.notification.morningAzkar.MorningAzkarNotificationHelper
 import com.mohamedtaha.imagine.notification.prayerTimes.AlarmUtils
@@ -76,20 +74,22 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import java.io.IOException
+import java.security.SecureRandom
 import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class NavigationDrawaberActivity : AppCompatActivity(), HasToolbar,
     NavigationDrawaberView,
-    DatabaseCallback,
     NavigationView.OnNavigationItemSelectedListener {
+    //    DatabaseCallback,
     private lateinit var binding: ActivityMainDrawableBinding
     private var searchListener:SearchListener?= null
 
     fun setCallbackSearch(searchListener: SearchListener){
         this.searchListener = searchListener
     }
+
 
 
     private val navController by lazy {
@@ -189,8 +189,8 @@ class NavigationDrawaberActivity : AppCompatActivity(), HasToolbar,
             )
         }
         timingsViewModel!!.isNewlyCreated = false
-        dateTodayFromDatabase
-        cityName
+//        dateTodayFromDatabase
+//        cityName
         //for show way using
         val isFirstTimeWayUsing = SharedPerefrenceHelper.getBooleanForWayUsing(
             applicationContext,
@@ -217,10 +217,9 @@ class NavigationDrawaberActivity : AppCompatActivity(), HasToolbar,
         }
 
         setToolbar(binding.includeAppBarMain.toolbar)
-
         binding.includeAppBarMain.bottomNavigationView.setupWithNavController(navController)
-        //binding.navViewHeader.setupWithNavController(navController)
-        binding.navViewHeader.setNavigationItemSelectedListener(this)
+        binding.navViewHeader.setupWithNavController(navController)
+       // binding.navViewHeader.setNavigationItemSelectedListener(this)
         navController.addOnDestinationChangedListener(object :
             NavController.OnDestinationChangedListener {
             override fun onDestinationChanged(
@@ -228,7 +227,7 @@ class NavigationDrawaberActivity : AppCompatActivity(), HasToolbar,
                 destination: NavDestination,
                 arguments: Bundle?
             ) {
-                if (destination.id == R.id.swipeFragment)
+                if (destination.id == R.id.swipeFragment || destination.id == R.id.elarbaoonElnawawyFragment || destination.id == R.id.descriptionElarbaoonFragment)
                     binding.includeAppBarMain.bottomNavigationView.visibility = View.GONE
                 else
                     binding.includeAppBarMain.bottomNavigationView.visibility = View.VISIBLE
@@ -295,105 +294,95 @@ class NavigationDrawaberActivity : AppCompatActivity(), HasToolbar,
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    override fun onStop() {
-        super.onStop()
-    }
-    // Log.i("TAG", "e yes : " + store_date_today);// if (store_date_today <= 0) {
-
     // getPrayerTimesEveryMonth(getApplicationContext());
 // Add RXAndroid2 for support with Room because still RXjava3 don't support Room
     //getPrayerTimesEveryMonth(getApplicationContext());
-    private val dateTodayFromDatabase: Unit
-        private get() {
-            Log.i("TAG", " getDateTodayFromDatabase")
-            val date = ConvertTimes.convertDate()
-            Log.d("TAG", " date $date")
-            timingsViewModel!!.checkIsDateTodayFind(ConvertTimes.convertDate()).subscribeOn(
-                Schedulers.io()
-            )
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(
-                    object : SingleObserver<Int> {
-                        override fun onSubscribe(d: Disposable) {}
-                        override fun onSuccess(integer: Int) {
-                            Log.i("TAG", " onSuccess $integer")
-                            TimingsViewModel.store_date_today = integer
-                            Log.i(
-                                "TAG",
-                                " timingsViewModel.store_date_today onSuccess" + TimingsViewModel.store_date_today
-                            )
-                            //getPrayerTimesEveryMonth(getApplicationContext());
-                            ScheduleGetDataEveryMonth(
-                                applicationContext
-                            )
-                            GetPrayerTimesEveryMonth.enableBootReceiverEveryMonth(
-                                applicationContext
-                            )
-                        }
-
-                        override fun onError(e: Throwable) {
-                            Log.i("TAG", "  onError $e")
-                            if (e is EmptyResultSetException) {
-                                isNetworkConnected(applicationContext)
-                            } else {
-                                Log.i("TAG", "  MonError $e")
-                            }
-                        }
-                    }
-                )
-            timingsViewModel!!.getTimingsByDataToday(ConvertTimes.convertDate()).subscribeOn(
-                Schedulers.trampoline()
-            ) // Add RXAndroid2 for support with Room because still RXjava3 don't support Room
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ date_today: Int? ->
-                    TimingsViewModel.store_date_today = date_today!!
-                    Log.i(
-                        "TAG",
-                        " timingsViewModel.store_date_today second method" + TimingsViewModel.store_date_today
-                    )
-
-                    // if (store_date_today <= 0) {
-                    // getPrayerTimesEveryMonth(getApplicationContext());
-                    ScheduleGetDataEveryMonth(
-                        applicationContext
-                    )
-                    GetPrayerTimesEveryMonth.enableBootReceiverEveryMonth(applicationContext)
-                }) { e: Throwable ->
-                    // Log.i("TAG", "e yes : " + store_date_today);
-                    Toast.makeText(applicationContext, e.message, Toast.LENGTH_SHORT).show()
-                }
-            val notificationHelper =
-                NotificationHelper(
-                    applicationContext
-                )
-            notificationHelper.sendNotificationEveryHalfDay()
-            notificationHelper.enableBootRecieiver()
-            val notificationHelperPrayerTime =
-                NotificationHelperPrayerTime(
-                    applicationContext
-                )
-            notificationHelperPrayerTime.getPrayerTimesEveryday()
-            notificationHelperPrayerTime.enableBootRecieiver()
-        }
-    private val cityName: Unit
-        private get() {
-            timingsViewModel = ViewModelProvider(this).get(TimingsViewModel::class.java)
-            val getCityName = timingsViewModel!!.cityName
-            getCityName.subscribeOn(Schedulers.io())
-                .subscribe({ city_name: String? ->
-                    store_city_name = city_name
-                    Log.d("TAG", "City name from database is :" + store_city_name)
-                }) { error: Throwable ->
-                    Log.d(
-                        "TAG",
-                        "City name from database is :" + error.message
-                    )
-                }
-        }
-
-    override fun onBackPressed() {
-        //  presenter.exitApp(searchView, navView, drawer);
-    }
-
+//    private val dateTodayFromDatabase: Unit
+//        private get() {
+//            Log.i("TAG", " getDateTodayFromDatabase")
+//            val date = ConvertTimes.convertDate()
+//            Log.d("TAG", " date $date")
+//            timingsViewModel!!.checkIsDateTodayFind(ConvertTimes.convertDate()).subscribeOn(
+//                Schedulers.io()
+//            )
+//                .observeOn(AndroidSchedulers.mainThread()).subscribe(
+//                    object : SingleObserver<Int> {
+//                        override fun onSubscribe(d: Disposable) {}
+//                        override fun onSuccess(integer: Int) {
+//                            Log.i("TAG", " onSuccess $integer")
+//                            TimingsViewModel.store_date_today = integer
+//                            Log.i(
+//                                "TAG",
+//                                " timingsViewModel.store_date_today onSuccess" + TimingsViewModel.store_date_today
+//                            )
+//                            //getPrayerTimesEveryMonth(getApplicationContext());
+//                            ScheduleGetDataEveryMonth(
+//                                applicationContext
+//                            )
+//                            GetPrayerTimesEveryMonth.enableBootReceiverEveryMonth(
+//                                applicationContext
+//                            )
+//                        }
+//
+//                        override fun onError(e: Throwable) {
+//                            Log.i("TAG", "  onError $e")
+//                            if (e is EmptyResultSetException) {
+//                                isNetworkConnected(applicationContext)
+//                            } else {
+//                                Log.i("TAG", "  MonError $e")
+//                            }
+//                        }
+//                    }
+//                )
+//            timingsViewModel!!.getTimingsByDataToday(ConvertTimes.convertDate()).subscribeOn(
+//                Schedulers.trampoline()
+//            ) // Add RXAndroid2 for support with Room because still RXjava3 don't support Room
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe({ date_today: Int? ->
+//                    TimingsViewModel.store_date_today = date_today!!
+//                    Log.i(
+//                        "TAG",
+//                        " timingsViewModel.store_date_today second method" + TimingsViewModel.store_date_today
+//                    )
+//
+//                    // if (store_date_today <= 0) {
+//                    // getPrayerTimesEveryMonth(getApplicationContext());
+//                    ScheduleGetDataEveryMonth(
+//                        applicationContext
+//                    )
+//                    GetPrayerTimesEveryMonth.enableBootReceiverEveryMonth(applicationContext)
+//                }) { e: Throwable ->
+//                    // Log.i("TAG", "e yes : " + store_date_today);
+//                    Toast.makeText(applicationContext, e.message, Toast.LENGTH_SHORT).show()
+//                }
+//            val notificationHelper =
+//                NotificationHelper(
+//                    applicationContext
+//                )
+//            notificationHelper.sendNotificationEveryHalfDay()
+//            notificationHelper.enableBootRecieiver()
+//            val notificationHelperPrayerTime =
+//                NotificationHelperPrayerTime(
+//                    applicationContext
+//                )
+//            notificationHelperPrayerTime.getPrayerTimesEveryday()
+//            notificationHelperPrayerTime.enableBootRecieiver()
+//        }
+//    private val cityName: Unit
+//        private get() {
+//            timingsViewModel = ViewModelProvider(this).get(TimingsViewModel::class.java)
+//            val getCityName = timingsViewModel!!.cityName
+//            getCityName.subscribeOn(Schedulers.io())
+//                .subscribe({ city_name: String? ->
+//                    store_city_name = city_name
+//                    Log.d("TAG", "City name from database is :" + store_city_name)
+//                }) { error: Throwable ->
+//                    Log.d(
+//                        "TAG",
+//                        "City name from database is :" + error.message
+//                    )
+//                }
+//        }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         inflate(menu)
         val searchItem = menu.findItem(R.id.action_search)
@@ -502,23 +491,23 @@ class NavigationDrawaberActivity : AppCompatActivity(), HasToolbar,
                 if (!NoInternetConnection.isInternet()) {
                 } else {
                     Log.d("TAG", "TimingsAppDatabase DeletePrayerTimes AddPrayerTimes Every day ")
-                    TimingsAppDatabase.getInstance(context)
-                        .DeletePrayerTimes(this@NavigationDrawaberActivity)
+                 //   TimingsAppDatabase.getInstance(context)
+                   //     .DeletePrayerTimes(this@NavigationDrawaberActivity)
                 }
             }
         }, 1000)
     }
 
-    override fun onPrayerTimesAdded() {
-        SharedPerefrenceHelper.putStringCompareMethod(
-            this,
-            AzanFragment.COMPARE_METHOD,
-            prayer_timing_default
-        )
-        SharedPerefrenceHelper.putStringAzan(this, AzanFragment.AZAN_DEFUALT, number_azan_default)
-        changeValueInListPreference()
-        changeValueInListPreferenceForAzan()
-    }
+//    override fun onPrayerTimesAdded() {
+//        SharedPerefrenceHelper.putStringCompareMethod(
+//            this,
+//            AzanFragment.COMPARE_METHOD,
+//            prayer_timing_default
+//        )
+//        SharedPerefrenceHelper.putStringAzan(this, AzanFragment.AZAN_DEFUALT, number_azan_default)
+//        changeValueInListPreference()
+//        changeValueInListPreferenceForAzan()
+//    }
 
     private val isStoragePermissionGranted: Boolean
         private get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -699,16 +688,16 @@ class NavigationDrawaberActivity : AppCompatActivity(), HasToolbar,
         return null
     }
 
-    override fun onPrayerTimesDeleted() {
-        if (isStoragePermissionGranted) {
-            Log.d("TAG", "onPrayerTimesDeleted")
-            checkIsGetData = true
-            getCity(this)
-        }
-    }
-
-    override fun getDataFromLocationAfterDeleteData() {}
-    override fun onPrayerTimesError(e: Throwable) {}
+//    override fun onPrayerTimesDeleted() {
+//        if (isStoragePermissionGranted) {
+//            Log.d("TAG", "onPrayerTimesDeleted")
+//            checkIsGetData = true
+//            getCity(this)
+//        }
+//    }
+//
+//    override fun getDataFromLocationAfterDeleteData() {}
+//    override fun onPrayerTimesError(e: Throwable) {}
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.elarbaoonElnawawyFragment) {
@@ -720,11 +709,11 @@ class NavigationDrawaberActivity : AppCompatActivity(), HasToolbar,
 //                        popExit =
                 }
             }
-            findNavController(R.id.fragmentContainerView).navigate(
-                R.id.elarbaoonElnawawyActivity,
-                null,
-                options
-            )
+//            findNavController(R.id.fragmentContainerView).navigate(
+//                R.id.elarbaoonElnawawyActivity,
+//                null,
+//                options
+//            )
         } else if (id == R.id.use_way) {
             SharedPerefrenceHelper.removeDataForWayUsing(this)
             findNavController(R.id.fragmentContainerView).navigate(R.id.splashActivity)

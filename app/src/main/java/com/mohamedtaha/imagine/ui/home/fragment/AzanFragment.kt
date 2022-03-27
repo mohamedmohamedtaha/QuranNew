@@ -22,7 +22,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
-import androidx.room.EmptyResultSetException
 import butterknife.BindView
 import com.google.android.gms.location.LocationListener
 import com.google.android.gms.location.LocationRequest
@@ -38,7 +37,7 @@ import com.mohamedtaha.imagine.helper.HelperClass
 import com.mohamedtaha.imagine.helper.SharedPerefrenceHelper
 import com.mohamedtaha.imagine.helper.checkConnection.NetworkConnection
 import com.mohamedtaha.imagine.helper.checkConnection.NoInternetConnection
-import com.mohamedtaha.imagine.helper.util.ConvertTimes
+import com.mohamedtaha.imagine.util.ConvertTimes
 import com.mohamedtaha.imagine.mvp.model.azan.Timings
 import com.mohamedtaha.imagine.receiver.ConnectivityReceiver
 import com.mohamedtaha.imagine.receiver.GetPrayerTimesEveryMonth
@@ -49,6 +48,7 @@ import com.mohamedtaha.imagine.room.TimingsViewModel
 import com.mohamedtaha.imagine.service.MediaPlayerService
 import com.mohamedtaha.imagine.ui.home.activity.NavigationDrawaberActivity
 import com.mohamedtaha.imagine.ui.home.activity.NavigationDrawaberActivity.Companion.ScheduleGetDataEveryMonth
+import com.mohamedtaha.imagine.util.ClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -61,18 +61,19 @@ import java.util.*
  * A simple [Fragment] subclass.
  */
 @AndroidEntryPoint
-class AzanFragment : BaseFragment(), LocationListener, DatabaseCallback, onGpsListener {
+class AzanFragment : BaseFragment(), LocationListener, onGpsListener {
+    // DatabaseCallback,
     private lateinit var binding: FragmentAzanBinding
 
     //    @BindView(R.id.AzanFragment_VP)
     //    RtlViewPager AzanFragmentVP;
-    @JvmField
-    @BindView(R.id.progressBar)
-    var progressBar: ProgressBar? = null
-
-    @JvmField
-    @BindView(R.id.TV_Show_Error)
-    var TVShowError: TextView? = null
+//    @JvmField
+//    @BindView(R.id.progressBar)
+//    var progressBar: ProgressBar? = null
+//
+//    @JvmField
+//    @BindView(R.id.TV_Show_Error)
+//    var TVShowError: TextView? = null
     private var timingsViewModel: TimingsViewModel? = null
     private val locationRequest: LocationRequest? = null
     private val UPDATE_INTERVAL: Long = 15000 /* 15 secs */
@@ -126,16 +127,9 @@ class AzanFragment : BaseFragment(), LocationListener, DatabaseCallback, onGpsLi
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentAzanBinding.inflate(inflater, container, false)
-        //        RetrofitComponent retrofitComponent = ((MainApplication) getActivity().getApplication()).getRetrofitComponent();
-//        retrofitComponent.inject(this);
-//
-//        Log.i("TAG", " onSuccess apiServices " + apiServices);
-//        Log.i("TAG", " onSuccess apiServicesForCity " + apiServicesForCity);
 
-//        fragmentAzanBinding = FragmentAzanBinding.inflate(inflater);
-//        View viewBuinding = fragmentAzanBinding.getRoot();
         language_name = Locale.getDefault().language
         if (language_name != "ar") {
             HelperClass.change_language("ar", activity)
@@ -174,7 +168,7 @@ class AzanFragment : BaseFragment(), LocationListener, DatabaseCallback, onGpsLi
         registerNoInternet()
         //apiServices = getRetrofit().create(APIServices.class);
         Log.i("TAG", "onCreateView")
-        flowableGetAllPrayerTimingFromDatabase()
+        //flowableGetAllPrayerTimingFromDatabase()
         //  for avoid start show way using
         if (SharedPerefrenceHelper.getBooleanForWayUsing(
                 activity,
@@ -228,52 +222,52 @@ class AzanFragment : BaseFragment(), LocationListener, DatabaseCallback, onGpsLi
 // Add RXAndroid2 for support with Room because still RXjava3 don't support Room
     //store_date_today = integer;
     //  getPrayerTimesEveryMonth(getActivity());
-    private val dateTodayFromDatabase: Unit
-        private get() {
-            timingsViewModel!!.checkIsDateTodayFind(ConvertTimes.convertDate()).subscribeOn(
-                Schedulers.io()
-            )
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(
-                    object : SingleObserver<Int> {
-                        override fun onSubscribe(d: Disposable) {}
-                        override fun onSuccess(integer: Int) {
-                            Log.i("TAG", " onSuccess $integer")
-                            TimingsViewModel.store_date_today = integer
-                            Log.i(
-                                "TAG",
-                                " timingsViewModel.store_date_today " + TimingsViewModel.store_date_today
-                            )
-                            //store_date_today = integer;
-                            ScheduleGetDataEveryMonth(activity!!)
-                            //  getPrayerTimesEveryMonth(getActivity());
-                            GetPrayerTimesEveryMonth.enableBootReceiverEveryMonth(activity)
-                        }
-
-                        override fun onError(e: Throwable) {
-                            Log.i("TAG", "  onError $e")
-                            if (e is EmptyResultSetException) {
-                                isNetworkConnected
-                            } else {
-                                Log.i("TAG", "  MonError $e")
-                            }
-                        }
-                    }
-                )
-            timingsViewModel!!.getTimingsByDataToday(ConvertTimes.convertDate()).subscribeOn(
-                Schedulers.trampoline()
-            ) // Add RXAndroid2 for support with Room because still RXjava3 don't support Room
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ date_today: Int? ->
-                    //   store_date_today = date_today;
-                    TimingsViewModel.store_date_today = (date_today)!!
-                    //   Log.i("TAG", "date today from data base : " + store_date_today);
-                    //____________________________ Get prayer times from internet every month
-                    // if (store_date_today <= 0) {
-                    ScheduleGetDataEveryMonth(requireActivity())
-                    //  getPrayerTimesEveryMonth(getActivity());
-                    GetPrayerTimesEveryMonth.enableBootReceiverEveryMonth(requireActivity())
-                }) { e: Throwable? -> }
-        }
+//    private val dateTodayFromDatabase: Unit
+//        private get() {
+//            timingsViewModel!!.checkIsDateTodayFind(ConvertTimes.convertDate()).subscribeOn(
+//                Schedulers.io()
+//            )
+//                .observeOn(AndroidSchedulers.mainThread()).subscribe(
+//                    object : SingleObserver<Int> {
+//                        override fun onSubscribe(d: Disposable) {}
+//                        override fun onSuccess(integer: Int) {
+//                            Log.i("TAG", " onSuccess $integer")
+//                            TimingsViewModel.store_date_today = integer
+//                            Log.i(
+//                                "TAG",
+//                                " timingsViewModel.store_date_today " + TimingsViewModel.store_date_today
+//                            )
+//                            //store_date_today = integer;
+//                            ScheduleGetDataEveryMonth(activity!!)
+//                            //  getPrayerTimesEveryMonth(getActivity());
+//                            GetPrayerTimesEveryMonth.enableBootReceiverEveryMonth(activity)
+//                        }
+//
+//                        override fun onError(e: Throwable) {
+//                            Log.i("TAG", "  onError $e")
+//                            if (e is EmptyResultSetException) {
+//                                isNetworkConnected
+//                            } else {
+//                                Log.i("TAG", "  MonError $e")
+//                            }
+//                        }
+//                    }
+//                )
+//            timingsViewModel!!.getTimingsByDataToday(ConvertTimes.convertDate()).subscribeOn(
+//                Schedulers.trampoline()
+//            ) // Add RXAndroid2 for support with Room because still RXjava3 don't support Room
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe({ date_today: Int? ->
+//                    //   store_date_today = date_today;
+//                    TimingsViewModel.store_date_today = (date_today)!!
+//                    //   Log.i("TAG", "date today from data base : " + store_date_today);
+//                    //____________________________ Get prayer times from internet every month
+//                    // if (store_date_today <= 0) {
+//                    ScheduleGetDataEveryMonth(requireActivity())
+//                    //  getPrayerTimesEveryMonth(getActivity());
+//                    GetPrayerTimesEveryMonth.enableBootReceiverEveryMonth(requireActivity())
+//                }) { e: Throwable? -> }
+//        }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -282,50 +276,53 @@ class AzanFragment : BaseFragment(), LocationListener, DatabaseCallback, onGpsLi
         }
     }
 
-    private fun flowableGetAllPrayerTimingFromDatabase() {
-        val flowableGetAllPrayerTimingFromDatabase = timingsViewModel!!.allTimingsRxjava
-        flowableGetAllPrayerTimingFromDatabase.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ all_Data: List<Timings>? ->
-                getAllData = all_Data
-                Log.i(
-                    "TAG",
-                    "Azan fragment Navigation Drawaber : " + TimingsViewModel.store_date_today
-                )
-                if (TimingsViewModel.store_date_today > 0) {
-                    //if (store_date_today > 0) {
-                    if (getAllData == null && getAllData!!.size <= 0) {
-                        //The data is null
-                        TVShowError!!.visibility = View.VISIBLE
-                        TVShowError!!.text = getString(R.string.no_data)
-                        //   AzanFragmentVP.setVisibility(View.GONE);
-                        Log.i("TAG", "The data is : " + getAllData!!.size)
-                        clearFlagForInteractiveUser()
-                    } else {
-                        TVShowError!!.visibility = View.GONE
-                        //   AzanFragmentVP.setVisibility(View.VISIBLE);
-                        adapterAzan = AdapterAzanVP(activity, AdapterAzanVP.ClickListener {
-                            isRefresh = true
-                            isNetworkConnected
-                        })
-                        adapterAzan!!.setAzanList(getAllData)
-                        //                            AzanFragmentVP.setAdapter(adapterAzan);
-//                            AzanFragmentVP.setCurrentItem(store_date_today - 1);
-                        Log.i("TAG", "setCurrentItem " + TimingsViewModel.store_date_today)
-
-                        // fragmentAzanBinding.AzanFragmentVP.setCurrentItem(store_date_today - 1);
-                        clearFlagForInteractiveUser()
-                        Log.i("TAG", "all data " + getAllData!!.size)
-                    }
-                } else {
-                    TVShowError!!.visibility = View.VISIBLE
-                    TVShowError!!.text = getString(R.string.no_data)
-                    //   AzanFragmentVP.setVisibility(View.GONE);
-                    Log.i("TAG", "The data is null : " + getAllData!!.size)
-                    clearFlagForInteractiveUser()
-                }
-            }) { e: Throwable -> Log.i("TAG", "Error RXJava : " + e.message) }
-    }
+//    private fun flowableGetAllPrayerTimingFromDatabase() {
+//        val flowableGetAllPrayerTimingFromDatabase = timingsViewModel!!.allTimingsRxjava
+//        flowableGetAllPrayerTimingFromDatabase.subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe({ all_Data: List<Timings>? ->
+//                getAllData = all_Data
+//                Log.i(
+//                    "TAG",
+//                    "Azan fragment Navigation Drawaber : " + TimingsViewModel.store_date_today
+//                )
+//                if (TimingsViewModel.store_date_today > 0) {
+//                    //if (store_date_today > 0) {
+//                    if (getAllData == null && getAllData!!.size <= 0) {
+//                        //The data is null
+//                        binding.TVShowError!!.visibility = View.VISIBLE
+//                        binding.TVShowError!!.text = getString(R.string.no_data)
+//                        //   AzanFragmentVP.setVisibility(View.GONE);
+//                        Log.i("TAG", "The data is : " + getAllData!!.size)
+//                        clearFlagForInteractiveUser()
+//                    } else {
+//                        binding.TVShowError!!.visibility = View.GONE
+//                        //   AzanFragmentVP.setVisibility(View.VISIBLE);
+//                        adapterAzan = AdapterAzanVP(object: ClickListener<Int> {
+//                            override fun onClick(view: View?, position: Int) {
+//                                isRefresh = true
+//                                isNetworkConnected
+//                            }
+//
+//                        })
+//                        adapterAzan!!.submitList(getAllData)
+//                        //                            AzanFragmentVP.setAdapter(adapterAzan);
+////                            AzanFragmentVP.setCurrentItem(store_date_today - 1);
+//                        Log.i("TAG", "setCurrentItem " + TimingsViewModel.store_date_today)
+//
+//                        // fragmentAzanBinding.AzanFragmentVP.setCurrentItem(store_date_today - 1);
+//                        clearFlagForInteractiveUser()
+//                        Log.i("TAG", "all data " + getAllData!!.size)
+//                    }
+//                } else {
+//                    binding.TVShowError!!.visibility = View.VISIBLE
+//                    binding.TVShowError!!.text = getString(R.string.no_data)
+//                    //   AzanFragmentVP.setVisibility(View.GONE);
+//                    Log.i("TAG", "The data is null : " + getAllData!!.size)
+//                    clearFlagForInteractiveUser()
+//                }
+//            }) { e: Throwable -> Log.i("TAG", "Error RXJava : " + e.message) }
+//    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -370,7 +367,7 @@ class AzanFragment : BaseFragment(), LocationListener, DatabaseCallback, onGpsLi
             MY_PERMISSIONS_WRITE_STORAGE -> {
                 Log.i("TAG", "MY_PERMISSIONS_WRITE_STORAGE")
                 if (isStoragePermissionGranted) {
-                    TimingsAppDatabase.getInstance(activity).DeletePrayerTimes(this@AzanFragment)
+                   // TimingsAppDatabase.getInstance(activity).DeletePrayerTimes(this@AzanFragment)
                     //  getCity();
                     Log.i("TAG", "MY_PERMISSIONS_WRITE_STORAGE OK")
                 } else {
@@ -733,7 +730,7 @@ class AzanFragment : BaseFragment(), LocationListener, DatabaseCallback, onGpsLi
 
     private fun showTextError() {
         SnackbarForTextPermission(getString(R.string.not_allow))
-        progressBar!!.visibility = View.GONE
+        binding.progressBar!!.visibility = View.GONE
     }
 
     private fun checkGPS(): Boolean {
@@ -825,7 +822,7 @@ class AzanFragment : BaseFragment(), LocationListener, DatabaseCallback, onGpsLi
             "Azan location is locationCallback " + location.latitude + " : " + location.longitude
         )
         if (location != null) {
-            progressBar!!.visibility = View.VISIBLE
+            binding.progressBar!!.visibility = View.VISIBLE
             //Update UI with location data
             location_user = location
             //Toast.makeText(getActivity(), " " + location_user.getLongitude() + " :  " + location_user.getLatitude(), Toast.LENGTH_SHORT).show();
@@ -833,8 +830,8 @@ class AzanFragment : BaseFragment(), LocationListener, DatabaseCallback, onGpsLi
             city_name = getCityName(location)
             // if (!store_city_name.equals(null) && store_city_name.equals(city_name)) {
             if (isValueForPrayerTimesChanged) {
-                TimingsAppDatabase.getInstance(activity)
-                    .DeletePrayerTimesForGetDataWithLocation(this@AzanFragment)
+//                TimingsAppDatabase.getInstance(activity)
+//                    .DeletePrayerTimesForGetDataWithLocation(this@AzanFragment)
             } else {
                 if (NavigationDrawaberActivity.store_city_name != null && NavigationDrawaberActivity.store_city_name == city_name) {
                     Snackbar.make(
@@ -847,8 +844,8 @@ class AzanFragment : BaseFragment(), LocationListener, DatabaseCallback, onGpsLi
                     gpsUtils!!.stopLocationUpdtaes()
                     return
                 } else {
-                    TimingsAppDatabase.getInstance(activity)
-                        .DeletePrayerTimesForGetDataWithLocation(this@AzanFragment)
+//                    TimingsAppDatabase.getInstance(activity)
+//                        .DeletePrayerTimesForGetDataWithLocation(this@AzanFragment)
                 }
             }
         }
@@ -912,21 +909,21 @@ class AzanFragment : BaseFragment(), LocationListener, DatabaseCallback, onGpsLi
         return null
     }
 
-    override fun onPrayerTimesAdded() {
-        HelperClass.customToast(activity, getString(R.string.save_data))
-        if (progressBar != null) {
-            clearFlagForInteractiveUser()
-            gpsUtils!!.stopLocationUpdtaes()
-        }
-        SharedPerefrenceHelper.putStringCompareMethod(
-            activity,
-            COMPARE_METHOD,
-            Prayer_timing_default
-        )
-        changeValueInListPreference()
-        SharedPerefrenceHelper.putStringAzan(activity, AZAN_DEFUALT, number_azan_default)
-        changeValueInListPreferenceForAzan()
-    }
+//    override fun onPrayerTimesAdded() {
+//        HelperClass.customToast(activity, getString(R.string.save_data))
+//        if (binding.progressBar != null) {
+//            clearFlagForInteractiveUser()
+//            gpsUtils!!.stopLocationUpdtaes()
+//        }
+//        SharedPerefrenceHelper.putStringCompareMethod(
+//            activity,
+//            COMPARE_METHOD,
+//            Prayer_timing_default
+//        )
+//        changeValueInListPreference()
+//        SharedPerefrenceHelper.putStringAzan(activity, AZAN_DEFUALT, number_azan_default)
+//        changeValueInListPreferenceForAzan()
+//    }
 
     private fun changeValueInListPreferenceForAzan() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
@@ -946,26 +943,26 @@ class AzanFragment : BaseFragment(), LocationListener, DatabaseCallback, onGpsLi
 //        editor.commit()
     }
 
-    override fun onPrayerTimesDeleted() {
-        checkBeforeGetData()
-        Log.d("TAG", "onPrayerTimesDeleted")
-    }
-
-    override fun getDataFromLocationAfterDeleteData() {
-        if (progressBar != null) {
-            clearFlagForInteractiveUser()
-        }
-        // getPrayerTimes(getLatitude(), getLongitude())
-        // checkBeforeGetDataFromInternet();
-        Log.d("TAG", "getDataFromLocationAfterDeleteData")
-    }
-
-    override fun onPrayerTimesError(e: Throwable) {
-        if (progressBar != null) {
-            clearFlagForInteractiveUser()
-            Toast.makeText(activity, "Eror is : " + e.message, Toast.LENGTH_SHORT).show()
-        }
-    }// a potentially time consuming task//send BroadcastReceiver to the Service -> Not Internet
+//    override fun onPrayerTimesDeleted() {
+//        checkBeforeGetData()
+//        Log.d("TAG", "onPrayerTimesDeleted")
+//    }
+//
+//    override fun getDataFromLocationAfterDeleteData() {
+//        if (binding.progressBar != null) {
+//            clearFlagForInteractiveUser()
+//        }
+//        // getPrayerTimes(getLatitude(), getLongitude())
+//        // checkBeforeGetDataFromInternet();
+//        Log.d("TAG", "getDataFromLocationAfterDeleteData")
+//    }
+//
+//    override fun onPrayerTimesError(e: Throwable) {
+//        if (binding.progressBar != null) {
+//            clearFlagForInteractiveUser()
+//            Toast.makeText(activity, "Eror is : " + e.message, Toast.LENGTH_SHORT).show()
+//        }
+//    }// a potentially time consuming task//send BroadcastReceiver to the Service -> Not Internet
 
     //check Internet
     private val isNetworkConnected: Unit
@@ -993,8 +990,8 @@ class AzanFragment : BaseFragment(), LocationListener, DatabaseCallback, onGpsLi
                             Log.d("TAG", "TimingsAppDatabase DeletePrayerTimes second")
                             Thread { // a potentially time consuming task
                                 if (!NavigationDrawaberActivity.checkIsGetData) {
-                                    TimingsAppDatabase.getInstance(activity)
-                                        .DeletePrayerTimes(this@AzanFragment)
+//                                    TimingsAppDatabase.getInstance(activity)
+//                                        .DeletePrayerTimes(this@AzanFragment)
                                     Log.d(
                                         "TAG",
                                         "City name is from store_city_name" + NavigationDrawaberActivity.store_city_name
@@ -1024,12 +1021,12 @@ class AzanFragment : BaseFragment(), LocationListener, DatabaseCallback, onGpsLi
     }
 
     private fun clearFlagForInteractiveUser() {
-        progressBar!!.visibility = View.GONE
+        binding.progressBar!!.visibility = View.GONE
         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 
     fun disInteractiveUSer() {
-        progressBar!!.visibility = View.VISIBLE
+        binding.progressBar!!.visibility = View.VISIBLE
         requireActivity().window.setFlags(
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE

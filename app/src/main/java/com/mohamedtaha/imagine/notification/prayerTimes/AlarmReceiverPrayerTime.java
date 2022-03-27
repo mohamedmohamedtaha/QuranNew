@@ -22,7 +22,7 @@ import androidx.core.content.ContextCompat;
 
 import com.mohamedtaha.imagine.R;
 import com.mohamedtaha.imagine.ui.home.activity.NavigationDrawaberActivity;
-import com.mohamedtaha.imagine.helper.util.ConvertTimes;
+import com.mohamedtaha.imagine.util.ConvertTimes;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

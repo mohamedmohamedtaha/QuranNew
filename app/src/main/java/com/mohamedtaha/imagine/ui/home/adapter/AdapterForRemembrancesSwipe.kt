@@ -1,4 +1,4 @@
-package com.mohamedtaha.imagine.adapter
+package com.mohamedtaha.imagine.ui.home.adapter
 
 import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater

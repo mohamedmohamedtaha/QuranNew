@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="com.mohamedtaha.imagine.util.ConvertTimes"/>
+        <variable
+            name="covertTime"
+            type="com.mohamedtaha.imagine.util.ConvertTimes" />
+        <variable
+            name="azan_model"
+            type="com.mohamedtaha.imagine.mvp.model.azan.Timings" />
+    </data>
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background">
@@ -15,7 +25,7 @@
         android:gravity="center"
         android:text="@string/om_elqora"
         android:textColor="@android:color/black"
-        android:textSize="@dimen/dimens_l"
+        android:textSize="@dimen/txt_size_m"
         android:visibility="invisible" />
 
     <RelativeLayout
@@ -41,7 +51,8 @@
             android:layout_alignParentLeft="true"
             android:layout_marginStart="@dimen/dimens_xl"
             android:layout_marginTop="@dimen/dimens_l"
-            android:background="@drawable/ic_refresh" />
+            android:background="@drawable/ic_refresh"
+            android:contentDescription="@string/refresh_button" />
 
         <TextView
             android:id="@+id/TV_Date_Today"
@@ -49,6 +60,7 @@
             android:layout_below="@+id/TV_City"
             android:layout_centerInParent="true"
             android:layout_gravity="end"
+            android:text="@{covertTime.convertDateToFormatArabic(azan_model.date_today)}"
             tools:hint="@string/date_today" />
 
         <TextView
@@ -58,6 +70,7 @@
             android:layout_centerInParent="true"
             android:layout_marginTop="@dimen/dimens_l"
             android:layout_marginBottom="@dimen/dimens_mm"
+            android:text="@{covertTime.convertDateToFormatArabicHegry(azan_model.day_today_hegry)}"
             tools:hint="@string/date_today" />
 
 
@@ -73,6 +86,7 @@
             style="@style/style_text_view_fragment_azan_show_time"
             android:layout_below="@+id/TV_Date_Today_Hegry"
             android:layout_toEndOf="@+id/TV_Show_Time_Fagr"
+            android:text="@{covertTime.convertTimeToAM(azan_model.fajr.substring(0,5))}"
             tools:hint="@string/hello_blank_fragment" />
 
         <TextView
@@ -99,6 +113,7 @@
             style="@style/style_text_view_fragment_azan_show_time"
             android:layout_below="@+id/View_Fajr"
             android:layout_toEndOf="@+id/TV_Show_Time_sunrise"
+            android:text="@{covertTime.convertTimeToAM(azan_model.sunrise.substring(0,5))}"
             tools:hint="@string/hello_blank_fragment" />
 
         <TextView
@@ -126,6 +141,7 @@
             style="@style/style_text_view_fragment_azan_show_time"
             android:layout_below="@+id/View_Sunrise"
             android:layout_toEndOf="@+id/TV_Show_Time_Dauhr"
+            android:text="@{covertTime.convertTimeToAM(azan_model.dhuhr.substring(0,5))}"
             tools:hint="@string/hello_blank_fragment" />
 
         <TextView
@@ -154,6 +170,7 @@
             style="@style/style_text_view_fragment_azan_show_time"
             android:layout_below="@+id/View_Duhr"
             android:layout_toEndOf="@+id/TV_Show_Time_Asr"
+            android:text="@{covertTime.convertTimeToAM(azan_model.asr.substring(0,5))}"
             tools:hint="@string/hello_blank_fragment" />
 
         <TextView
@@ -181,6 +198,7 @@
             style="@style/style_text_view_fragment_azan_show_time"
             android:layout_below="@+id/ViewAsr"
             android:layout_toEndOf="@+id/TV_Show_Time_Magrib"
+            android:text="@{covertTime.convertTimeToAM(azan_model.maghrib.substring(0,5))}"
             tools:hint="@string/hello_blank_fragment" />
 
         <TextView
@@ -209,6 +227,7 @@
             style="@style/style_text_view_fragment_azan_show_time"
             android:layout_below="@+id/View_magrib"
             android:layout_toEndOf="@+id/TV_Show_Time_Esha"
+            android:text="@{covertTime.convertTimeToAM(azan_model.isha.substring(0,5))}"
             tools:hint="@string/hello_blank_fragment" />
 
         <TextView
@@ -220,3 +239,4 @@
             android:text="@string/elesha" />
     </RelativeLayout>
 </RelativeLayout>
+</layout>

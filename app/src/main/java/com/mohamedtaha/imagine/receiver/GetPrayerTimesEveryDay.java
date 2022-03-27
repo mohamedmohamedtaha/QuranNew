@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.mohamedtaha.imagine.helper.util.ConvertTimes;
+import com.mohamedtaha.imagine.util.ConvertTimes;
 import com.mohamedtaha.imagine.room.TimingsRepository;
 import com.mohamedtaha.imagine.notification.prayerTimes.NotificationHelperPrayerTime;
 

@@ -13,8 +13,8 @@ import androidx.viewpager.widget.ViewPager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.mohamedtaha.imagine.R
-import com.mohamedtaha.imagine.adapter.AdapterForRemembrancesSwipe
-import com.mohamedtaha.imagine.adapter.AdapterForSwipe
+import com.mohamedtaha.imagine.ui.home.adapter.AdapterForRemembrancesSwipe
+import com.mohamedtaha.imagine.ui.home.adapter.AdapterForSwipe
 import com.mohamedtaha.imagine.databinding.ActivitySwipePagesBinding
 import com.mohamedtaha.imagine.datastore.DataStoreViewModel
 import com.mohamedtaha.imagine.helper.HelperClass
@@ -106,7 +106,6 @@ class SwipePagesActivity : AppCompatActivity() {
                 declareAdapterSwipe()
                 observeViewPagerSwipe()
                 observeSaveReadingQuran()
-
             }
         } else if (bundle.getBoolean(NavigationDrawaberActivity.SAVE_PAGE)) {
             getImagesFirst()
@@ -116,7 +115,6 @@ class SwipePagesActivity : AppCompatActivity() {
                     override fun onClick(view: View?, position: Int) {
                         Toast.makeText(this@SwipePagesActivity, "Click", Toast.LENGTH_LONG).show()
                     }
-
                 }
             )
 //            { positon: Int ->
